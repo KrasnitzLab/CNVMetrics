@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/adeschen/CNVMetrics.svg?branch=master)](https://travis-ci.org/adeschen/CNVMetrics)
 
 # CNVMetrics
 
