@@ -1,0 +1,15 @@
+Package: CNVMetrics
+Type: Package
+Version: 0.1.0
+Date: 2018-08-23
+Title: Copy number variant metrics
+Description: This package implements metrics to facilite copy number variant comparison among samples and/or methods.
+Author: Astrid Deschênes and Pascal Belleau
+Encoding: UTF-8
+License: Artistic-2.0
+Suggests: BiocStyle, knitr, rmarkdown, testthat
+VignetteBuilder: knitr
+URL: https://github.com/adeschen/CNVMetrics
+BugReports: https://github.com/adeschen/CNVMetrics/issues
+Maintainer: Astrid Deschenes <adeschen@hotmail.com>
+RoxygenNote: 6.1.0
