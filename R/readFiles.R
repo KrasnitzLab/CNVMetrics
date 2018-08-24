@@ -1,3 +1,8 @@
+#' @title Read segment file and return a \code{GRanges}
+#' 
+#' @description Read a segment file and extract the relevant
+#' information to generate a \code{GRanges}.
+#' 
 #' @param filepath a \code{character} string, the path to the file to 
 #' read. Alternatively can be a connection.
 #'
@@ -16,6 +21,8 @@
 #' 
 #' @author Astrid Deschenes, Pascal Belleau
 #' @importFrom GenomicRanges GRanges
+#' @importFrom IRanges IRanges
+#' @importFrom utils read.table
 #' @export
 readSEGFile <- function(filepath, uniqueTag, header=FALSE) {
     
@@ -27,6 +34,7 @@ readSEGFile <- function(filepath, uniqueTag, header=FALSE) {
         stop("header must be a logical value.")
     }
     
+    print(filepath)
     data <- read.table(filepath, header=header)
     
     if (nrow(data) < 6) {

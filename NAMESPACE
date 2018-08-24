@@ -3,4 +3,6 @@
 export(prepareInformation)
 export(readSEGFile)
 importFrom(GenomicRanges,GRanges)
+importFrom(IRanges,IRanges)
 importFrom(rtracklayer,import)
+importFrom(utils,read.table)
