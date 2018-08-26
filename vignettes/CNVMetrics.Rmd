@@ -14,6 +14,8 @@ vignette: >
 ```{r style, echo = FALSE, results = 'asis', warning=FALSE, message=FALSE}
 BiocStyle::markdown()
 library(knitr)
+library(GenomeInfoDb)
+
 ```
 
 <br />
@@ -31,3 +33,48 @@ The `r Githubpkg("adeschen/CNVMetrics")` package and the underlying
 Artistic license 2.0. You are free to use and redistribute this software. 
 
 # Introduction
+
+
+
+# Inputs
+
+## Chromosomes information 
+
+The chromosomes information is mandatory. It ensures that only the selected
+chromoromes are used in the analysis. As not all CNV software use the same
+reference (reference with alternive regions or not), it ensure that
+all samples will be compared using the same reference. We strongly suggest 
+using only the primary chromosomes for this analaysis.
+
+The chromosomes information is contained inside a `Seqinfo` object. The 
+information from some UCSC genomes can be fetched automatically using
+the `r Biocpkg("GenomeInfoDb")` package. 
+
+```{r knownGenome, collapse=TRUE, eval=FALSE}
+### Import needed library
+library(GenomeInfoDb)
+
+### Get the information for Human genome version 19
+hg19Info <- Seqinfo(genome="hg19")
+
+### Subset the object to keep only the analyzed chromosomes
+hg19Subset <- hg19Info[c("chr1", "chr10", "chrX")]
+```
+
+A `Seqinfo` object can also be created using the chromosomes information 
+specific to the analyzed genome.
+
+```{r newGenome, collapse=FALSE}
+### Create an Seqinfo Object
+chrInfo <- Seqinfo(seqnames=c("chr1", "chr2", "chr3"),
+            seqlengths=c(10000, 20000, 1500), isCircular=c(FALSE, FALSE, FALSE),
+            genome="Alien")
+```
+
+```{r deleteChr, echo=FALSE, message=FALSE}
+if (exists("chrInfo", inherits = FALSE)) rm(chrInfo)
+if (exists("hg19Subset", inherits = FALSE)) rm(hg19Subset)
+if (exists("hg19Info", inherits = FALSE)) rm(hg19Info)
+```
+
+
