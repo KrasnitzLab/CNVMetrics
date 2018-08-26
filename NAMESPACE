@@ -2,7 +2,10 @@
 
 export(prepareInformation)
 export(readSEGFile)
+importFrom(GenomeInfoDb,keepSeqlevels)
+importFrom(GenomeInfoDb,seqlevels)
 importFrom(GenomicRanges,GRanges)
 importFrom(IRanges,IRanges)
+importFrom(methods,is)
 importFrom(rtracklayer,import)
 importFrom(utils,read.table)

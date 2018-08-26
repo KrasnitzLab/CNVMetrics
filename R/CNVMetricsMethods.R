@@ -39,6 +39,8 @@
 #' 
 #' @author Astrid Deschenes, Pascal Belleau
 #' @importFrom rtracklayer import
+#' @importFrom GenomeInfoDb keepSeqlevels seqlevels
+#' @importFrom methods is
 #' @export
 prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
                                segmentWithHeader=FALSE) {
@@ -72,11 +74,15 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
         segFile <- filesList[position]
         # Remove extension from file name
         segFileShort <- substr(segFile, 1, nchar(segFile) - 4)
+        print(segFileShort)
+    
         # Get file path
         segPath <- paste0(segDirectory, "/", segFile)
-        segFiles[[position]] <- readSEGFile(segPath, uniqueTag = segFile, 
+        tempRanges <- readSEGFile(segPath, uniqueTag = segFileShort, 
                                      header = segmentWithHeader)
-        
+        tempRanges <- keepSeqlevels(tempRanges, seqlevels(chrInfo), 
+                                    pruning.mode = "coarse")
+        segFiles[[position]] <- tempRanges
     }
     
     return(segFiles)
