@@ -7,6 +7,10 @@
 #' containing the segment files to compared. Only files with the ".seg" (or 
 #' ".SEG") extension will be used.
 #' 
+#' @param chrInfo a \code{Seqinfo} containing the name and the length of the
+#' chromosomes to analyze. Only the chomosomes contained in this
+#' \code{Seqinfo} will be analyzed.
+#' 
 #' @param segmentWithHeader a \code{logical}, when \code{TRUE}, the
 #' segment files have all a header that should not be imported. 
 #' Default: \code{FALSE}.
@@ -36,8 +40,13 @@
 #' @author Astrid Deschenes, Pascal Belleau
 #' @importFrom rtracklayer import
 #' @export
-prepareInformation <- function(segDirectory, bedExclusionFile = NULL,
+prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
                                segmentWithHeader=FALSE) {
+    
+    ## Validate that the chrInfo is a Seqinfo object
+    if (!is(chrInfo, "Seqinfo")) {
+        stop("chrInfo must be a Seqinfo object.")
+    }
     
     filesList <- list.files(path = segDirectory, pattern = ".seg", 
                             all.files = FALSE,
@@ -59,7 +68,11 @@ prepareInformation <- function(segDirectory, bedExclusionFile = NULL,
     ## Read segment files
     segFiles <- list()
     for (position in seq(1, length(filesList))) {
+        # Get file name
         segFile <- filesList[position]
+        # Remove extension from file name
+        segFileShort <- substr(segFile, 1, nchar(segFile) - 4)
+        # Get file path
         segPath <- paste0(segDirectory, "/", segFile)
         segFiles[[position]] <- readSEGFile(segPath, uniqueTag = segFile, 
                                      header = segmentWithHeader)
