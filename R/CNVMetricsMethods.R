@@ -5,7 +5,8 @@
 #' 
 #' @param segDirectory a \code{character} string, the path to the directory
 #' containing the segment files to compared. Only files with the ".seg" (or 
-#' ".SEG") extension will be used.
+#' ".SEG") extension will be used. At least 2 segment files are needed to
+#' be able to used the metrics.
 #' 
 #' @param chrInfo a \code{Seqinfo} containing the name and the length of the
 #' chromosomes to analyze. Only the chomosomes contained in this
@@ -61,6 +62,12 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
              "the segDirectory."))
     }
     
+    ## Validate that the directory contains at least one segment file
+    if (length(filesList) < 2) {
+        stop(paste0("At least 2 segment files (seg or SEG extension) are ", 
+                    "needed in the segDirectory."))
+    }
+    
     ## Read BED file
     excludedRegions <- NULL
     if (!is.null(bedExclusionFile)) {
@@ -74,14 +81,18 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
         segFile <- filesList[position]
         # Remove extension from file name
         segFileShort <- substr(segFile, 1, nchar(segFile) - 4)
-        print(segFileShort)
     
         # Get file path
         segPath <- paste0(segDirectory, "/", segFile)
+        
+        # Read segments
         tempRanges <- readSEGFile(segPath, uniqueTag = segFileShort, 
                                      header = segmentWithHeader)
+        
+        # Keep only segments in selected chromosomes
         tempRanges <- keepSeqlevels(tempRanges, seqlevels(chrInfo), 
                                     pruning.mode = "coarse")
+        
         segFiles[[position]] <- tempRanges
     }
     

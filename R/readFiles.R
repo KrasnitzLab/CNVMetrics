@@ -34,7 +34,6 @@ readSEGFile <- function(filepath, uniqueTag, header=FALSE) {
         stop("header must be a logical value.")
     }
     
-    print(filepath)
     data <- read.table(filepath, header=header)
     
     if (nrow(data) < 6) {
