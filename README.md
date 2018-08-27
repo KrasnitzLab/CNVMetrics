@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/adeschen/CNVMetrics.svg?branch=master)](https://travis-ci.org/adeschen/CNVMetrics)
+[![codecov](https://codecov.io/gh/adeschen/CNVMetrics/branch/master/graph/badge.svg)](https://codecov.io/gh/adeschen/CNVMetrics)
 
 # CNVMetrics
 
