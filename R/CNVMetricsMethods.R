@@ -82,7 +82,12 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
     ## Read BED file
     excludedRegions <- NULL
     if (!is.null(bedExclusionFile)) {
+        # Read excluded segments
         excludedRegions <- import(bedExclusionFile, format="BED")
+        
+        # Keep only segments in selected chromosomes
+        excludedRegions <- keepSeqlevels(excludedRegions, seqlevels(chrInfo), 
+                                pruning.mode = "coarse")
     }
     
     ## Read segment files
@@ -107,5 +112,7 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
         segFiles[[position]] <- tempRanges
     }
     
-    return(segFiles)
+    result <- createSegments(segFiles, excludedRegions)
+    
+    return(result)
 }

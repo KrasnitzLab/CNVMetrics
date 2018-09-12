@@ -22,6 +22,7 @@
 createSegments <- function(fileList, bedExclusion) {
     
     if (!is.null(bedExclusion)) {
+        bedExclusion$score <- NA
         bedExclusion$source <- "exclusion"
         fileList[[length(fileList)+1]] <- bedExclusion   
     }
