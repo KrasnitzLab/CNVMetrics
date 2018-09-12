@@ -51,6 +51,17 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
         stop("chrInfo must be a Seqinfo object.")
     }
     
+    ## Validate that the segmentWithHeader is a logical 
+    if (!is.logical(segmentWithHeader)) {
+        stop("segmentWithHeader must be a logical.")
+    }
+    
+    ## Remove ending slash when present
+    if (is.character(segDirectory) && length(segDirectory) > 1 &&
+            endsWith(segDirectory, "/")) {
+        segDirectory <- segDirectory[1:length(segDirectory)-1]
+    }
+    
     filesList <- list.files(path = segDirectory, pattern = ".seg", 
                             all.files = FALSE,
                             full.names = FALSE, recursive = FALSE,

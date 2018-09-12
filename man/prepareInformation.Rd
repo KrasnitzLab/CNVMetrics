@@ -11,7 +11,8 @@ prepareInformation(segDirectory, chrInfo, bedExclusionFile = NULL,
 \arguments{
 \item{segDirectory}{a \code{character} string, the path to the directory
 containing the segment files to compared. Only files with the ".seg" (or 
-".SEG") extension will be used.}
+".SEG") extension will be used. At least 2 segment files are needed to
+be able to used the metrics.}
 
 \item{chrInfo}{a \code{Seqinfo} containing the name and the length of the
 chromosomes to analyze. Only the chomosomes contained in this
