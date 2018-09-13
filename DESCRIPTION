@@ -7,7 +7,7 @@ Description: This package implements metrics to facilite copy number variant com
 Author: Astrid Deschênes and Pascal Belleau
 Encoding: UTF-8
 License: Artistic-2.0
-Imports: rtracklayer, GenomicRanges, IRanges, GenomeInfoDb, methods, magrittr
+Imports: rtracklayer, GenomicRanges, IRanges, GenomeInfoDb, methods, magrittr, S4Vectors
 Suggests: BiocStyle, knitr, rmarkdown, testthat
 VignetteBuilder: knitr
 URL: https://github.com/adeschen/CNVMetrics

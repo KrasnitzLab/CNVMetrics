@@ -27,3 +27,4 @@ TODO
 \author{
 Astrid Deschenes, Pascal Belleau
 }
+\keyword{internal}

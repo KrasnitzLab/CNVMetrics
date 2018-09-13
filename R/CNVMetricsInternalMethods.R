@@ -16,18 +16,31 @@
 #' # TODO
 #' 
 #' @author Astrid Deschenes, Pascal Belleau
-#' @importFrom GenomicRanges disjoin 
+#' @importFrom GenomicRanges disjoin findOverlaps
+#' @importFrom S4Vectors queryHits
 #' @importFrom magrittr %>%
-#' @internal
+#' @keywords internal
 createSegments <- function(fileList, bedExclusion) {
     
-    if (!is.null(bedExclusion)) {
+    ## Add same columns to GRanges related to bed exclusion than the
+    ## other GRanges
+    if (!is.null(bedExclusion) && (length(bedExclusion) > 0)) {
         bedExclusion$score <- NA
         bedExclusion$source <- "exclusion"
         fileList[[length(fileList)+1]] <- bedExclusion   
     }
     
     results <- do.call("c", fileList) %>% disjoin()
+    results$included <- TRUE
+    
+    ## Add information about excluded regions
+    if (!is.null(bedExclusion) && (length(bedExclusion) > 0)) {
+        olaps <- findOverlaps(results, bedExclusion)
+        
+        if (length(olaps) > 0) {
+            results[queryHits(olaps)]$included <- FALSE
+        }
+    }
     
     return(results)
 }

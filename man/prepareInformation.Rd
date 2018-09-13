@@ -31,7 +31,14 @@ Default: \code{FALSE}.}
 a \code{GRanges} containing the segment information from the file.
 }
 \description{
-TODO
+The segments are extracted from each file, with a "SEG" or
+"seg" extension, present in the 
+specified directory. Each segment is associated to its original file by
+having a source metadata field assigned. When specified, the segments
+for a BED file are loaded and used to exclude regions from further analysis.
+All segments are gathered together
+and a disjoin operation is done to created a collection of non-overlapping 
+ranges. Those ranges are going to be used to calculate the metrics.
 }
 \details{
 The supported BED format requires that the first three columns are: 
@@ -45,7 +52,15 @@ feature. }}
 }
 \examples{
 
+# Path to the exclusion BED file
+bedFile <- system.file("inst/extdata/exclusion_hg38_demo_chr1_and_2.bed", 
+    package = "CNVMetrics")
+    
+# Path to the directory containing the segmentation files
+segDir <- system.file("inst/extdata", package="CNVMetrics")
+
 # TODO
+
 
 }
 \author{

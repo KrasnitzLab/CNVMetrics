@@ -1,7 +1,14 @@
 #' @title Read segment files and exclusion file to generate a dataset
 #' that can be used to calculate the metrics.
 #' 
-#' @description TODO
+#' @description The segments are extracted from each file, with a "SEG" or
+#' "seg" extension, present in the 
+#' specified directory. Each segment is associated to its original file by
+#' having a source metadata field assigned. When specified, the segments
+#' for a BED file are loaded and used to exclude regions from further analysis.
+#' All segments are gathered together
+#' and a disjoin operation is done to created a collection of non-overlapping 
+#' ranges. Those ranges are going to be used to calculate the metrics.
 #' 
 #' @param segDirectory a \code{character} string, the path to the directory
 #' containing the segment files to compared. Only files with the ".seg" (or 
@@ -36,7 +43,15 @@
 #' 
 #' @examples
 #'
+#' # Path to the exclusion BED file
+#' bedFile <- system.file("inst/extdata/exclusion_hg38_demo_chr1_and_2.bed", 
+#'     package = "CNVMetrics")
+#'     
+#' # Path to the directory containing the segmentation files
+#' segDir <- system.file("inst/extdata", package="CNVMetrics")
+#' 
 #' # TODO
+#' 
 #' 
 #' @author Astrid Deschenes, Pascal Belleau
 #' @importFrom rtracklayer import
@@ -79,15 +94,21 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
                     "needed in the segDirectory."))
     }
     
-    ## Read BED file
+    ## Read BED file and keep only segments in selected chromosomes
     excludedRegions <- NULL
     if (!is.null(bedExclusionFile)) {
-        # Read excluded segments
         excludedRegions <- import(bedExclusionFile, format="BED")
         
-        # Keep only segments in selected chromosomes
-        excludedRegions <- keepSeqlevels(excludedRegions, seqlevels(chrInfo), 
+        # Extract list of chromosomes to keep
+        seqToKeep <- seqlevels(excludedRegions)[seqlevels(excludedRegions) %in% 
+                                               seqlevels(chrInfo)]
+        
+        if (length(seqToKeep) > 0) {
+            excludedRegions <- keepSeqlevels(excludedRegions, seqToKeep, 
                                 pruning.mode = "coarse")
+        } else {
+            excludedRegions <- NULL
+        }
     }
     
     ## Read segment files
@@ -105,11 +126,17 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
         tempRanges <- readSEGFile(segPath, uniqueTag = segFileShort, 
                                      header = segmentWithHeader)
         
-        # Keep only segments in selected chromosomes
-        tempRanges <- keepSeqlevels(tempRanges, seqlevels(chrInfo), 
-                                    pruning.mode = "coarse")
+        # Extract list of chromosomes to keep
+        seqToKeep <- seqlevels(tempRanges)[seqlevels(tempRanges) %in% 
+                                                seqlevels(chrInfo)]
         
-        segFiles[[position]] <- tempRanges
+        if (length(seqToKeep) > 0) {
+            # Keep only segments in selected chromosomes
+            tempRanges <- keepSeqlevels(tempRanges, seqToKeep, 
+                                    pruning.mode = "coarse")
+            
+            segFiles[[position]] <- tempRanges
+        }  
     }
     
     result <- createSegments(segFiles, excludedRegions)
