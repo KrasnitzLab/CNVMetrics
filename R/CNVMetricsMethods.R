@@ -113,6 +113,7 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
     
     ## Read segment files
     segFiles <- list()
+    sources <- list()
     for (position in seq(1, length(filesList))) {
         # Get file name
         segFile <- filesList[position]
@@ -136,10 +137,11 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
                                     pruning.mode = "coarse")
             
             segFiles[[position]] <- tempRanges
+            sources[[position]] <- segFileShort
         }  
     }
     
-    result <- createSegments(segFiles, excludedRegions)
+    result <- createSegments(segFiles, sources, excludedRegions)
     
     return(result)
 }

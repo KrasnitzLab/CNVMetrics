@@ -4,11 +4,13 @@
 \alias{createSegments}
 \title{TODO}
 \usage{
-createSegments(fileList, bedExclusion)
+createSegments(fileList, sourceList, bedExclusion)
 }
 \arguments{
 \item{fileList}{a \code{list} of \code{GRanges}, the segments from multiple
 files.}
+
+\item{sourceList}{a \code{list}}
 
 \item{bedExclusion}{a \code{GRanges}, the regions that must be
 excluded from the analysis. Default: \code{NULL}.}

@@ -5,7 +5,9 @@
 #' 
 #' @param fileList a \code{list} of \code{GRanges}, the segments from multiple
 #' files.
-#'
+#' 
+#' @param sourceList a \code{list}
+#' 
 #' @param bedExclusion a \code{GRanges}, the regions that must be
 #' excluded from the analysis. Default: \code{NULL}.
 #' 
@@ -16,11 +18,13 @@
 #' # TODO
 #' 
 #' @author Astrid Deschenes, Pascal Belleau
-#' @importFrom GenomicRanges disjoin findOverlaps
-#' @importFrom S4Vectors queryHits
+#' @importFrom GenomicRanges disjoin findOverlaps elementMetadata
+#' @importFrom S4Vectors queryHits subjectHits values<-
 #' @importFrom magrittr %>%
 #' @keywords internal
-createSegments <- function(fileList, bedExclusion) {
+createSegments <- function(fileList, sourceList, bedExclusion) {
+    
+    fileData <- fileList
     
     ## Add same columns to GRanges related to bed exclusion than the
     ## other GRanges
@@ -39,6 +43,17 @@ createSegments <- function(fileList, bedExclusion) {
         
         if (length(olaps) > 0) {
             results[queryHits(olaps)]$included <- FALSE
+        }
+    }
+    
+    for (i in 1:length(fileData)) {
+        if (!is.null(fileData[[i]])) {
+            olaps <- findOverlaps(results, fileData[[i]])
+            temp <- elementMetadata(results)
+            temp[, sourceList[[i]]] <- NA
+            temp[queryHits(olaps), sourceList[[i]]] <- 
+                fileData[[i]]$score[subjectHits(olaps)]
+            values(results) <- temp
         }
     }
     
