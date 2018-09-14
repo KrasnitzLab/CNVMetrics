@@ -143,5 +143,54 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
     
     result <- createSegments(segFiles, sources, excludedRegions)
     
+    
     return(result)
+}
+
+
+#' @title TODO
+#' 
+#' @description TODO
+#' 
+#' @param results TODO
+#' 
+#' @return a \code{matrix} TODO
+#' 
+#' @examples
+#'
+#' # TODO
+#' 
+#' 
+#' @author Astrid Deschenes, Pascal Belleau
+#' @importFrom GenomicRanges elementMetadata
+#' @importFrom IRanges ranges width
+#' @export
+calculateWeightedEuclideanDistance <- function(results) {
+    
+    names <- colnames(elementMetadata(results))
+    names <- names[names != "included"]
+    
+    nbNames <- length(names)
+    
+    metric <- matrix(nr = nbNames, nc = nbNames, 
+                        dimnames = rep(list(ID = names), 2))
+    
+    incWidth <- width(ranges(results[results$included, ]))
+    incResults <- elementMetadata(results[results$included, ])
+    
+    for (i in 1:(nbNames-1)) {
+        for (j in (i+1):nbNames) {
+            temp01 <- incResults[, c(names[i])] - incResults[, c(names[j])]
+            temp01 <- temp01 * temp01 * log(incWidth)
+            final <- sum(temp01, na.rm = TRUE) ^ (1/2)
+            metric[names[i], names[j]] <- final
+            metric[names[j], names[i]] <- final
+        }
+    }
+ 
+    for (i in 1:nbNames) {
+        metric[names[i], names[i]] <- 0
+    }
+    
+    return(metric)   
 }
