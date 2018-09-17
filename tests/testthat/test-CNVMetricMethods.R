@@ -35,11 +35,11 @@ test_that("prepareInformation() must return error when segmentWithHeader is not 
 
 
 
-### Tests calculateWeigthedEucledianDistance() results
+### Tests calculateWeightedEuclideanDistance() results
 
-context("calculateWeigthedEucledianDistance() results")
+context("calculateWeightedEuclideanDistance() results")
 
-test_that("calculateWeigthedEucledianDistance() must return good results", {
+test_that("calculateWeightedEuclideanDistance() must return good results", {
     
     dataGR <- GRanges(seqnames = "chr1", 
                         ranges = IRanges(start=c(1, 30, 50, 56, 101, 180, 200, 221),
@@ -54,7 +54,7 @@ test_that("calculateWeigthedEucledianDistance() must return good results", {
     colnames(expMatrix) <- c("File1", "File2")
     rownames(expMatrix) <- c("File1", "File2")
     
-    expect_equivalent(calculateWeigthedEucledianDistance(dataGR), expMatrix, 
+    expect_equivalent(calculateWeightedEuclideanDistance(dataGR), expMatrix, 
                         tolerance=0.000001)
     
 })
