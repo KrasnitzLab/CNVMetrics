@@ -19,14 +19,14 @@
 #' chromosomes to analyze. Only the chomosomes contained in this
 #' \code{Seqinfo} will be analyzed.
 #' 
-#' @param segmentWithHeader a \code{logical}, when \code{TRUE}, the
-#' segment files have all a header that should not be imported. 
-#' Default: \code{FALSE}.
-#'
 #' @param bedExclusionFile a \code{character} string or \code{NULL}, the path 
 #' to the BED file that contains the regions that must be excluded from the
 #' analysis. If \code{NULL}, it is assume that there is no region of
 #' exclusion for the calculation of the metrics. Default: \code{NULL}.
+#' 
+#' @param segmentWithHeader a \code{logical}, when \code{TRUE}, the
+#' segment files have all a header that should not be imported. 
+#' Default: \code{FALSE}.
 #' 
 #' @return a \code{GRanges} containing the segment information from the file.
 #'
@@ -148,9 +148,12 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
 }
 
 
-#' @title TODO
+#' @title Calculate Weighted Euclidean distance metric between samples.
 #' 
-#' @description TODO
+#' @description The weighted euclidean distance metric correspond to the
+#' euclidean distance multiplied by the natural logarithm of the number of 
+#' bases of the segment. The final metric is the sum of the values obtained for
+#' all segments that are not excluded of the analysis.
 #' 
 #' @param results TODO
 #' 

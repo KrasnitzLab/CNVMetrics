@@ -2,7 +2,7 @@
 % Please edit documentation in R/CNVMetricsMethods.R
 \name{calculateWeightedEuclideanDistance}
 \alias{calculateWeightedEuclideanDistance}
-\title{TODO}
+\title{Calculate Weighted Euclidean distance metric between samples.}
 \usage{
 calculateWeightedEuclideanDistance(results)
 }
@@ -13,7 +13,10 @@ calculateWeightedEuclideanDistance(results)
 a \code{matrix} TODO
 }
 \description{
-TODO
+The weighted euclidean distance metric correspond to the
+euclidean distance multiplied by the natural logarithm of the number of 
+bases of the segment. The final metric is the sum of the values obtained for
+all segments that are not excluded of the analysis.
 }
 \examples{
 
