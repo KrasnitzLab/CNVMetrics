@@ -13,16 +13,18 @@ calculateWeightedEuclideanDistance(results)
 a \code{matrix} TODO
 }
 \description{
-The weighted euclidean distance metric correspond to the
-euclidean distance multiplied by the natural logarithm of the number of 
-bases of the segment. The final metric is the sum of the values obtained for
-all segments that are not excluded of the analysis.
+The weighted Euclidean distance metric corresponds to the
+euclidean distance between 2 samples multiplied by the natural logarithm 
+of the number of bases of the analyzed segment. The final metric is the 
+squared sum of the values obtained for all segments that are not 
+excluded of the analysis.
 }
 \details{
 The weighted euclidean distance is 
-\eqn{(\sum((x_{i} - y_i)^2 * log(nbr_bases_i))^0.5} 
-where x and y are the
-values of 2 samples for a specific segment i.
+\eqn{(\sum((x_i - y_i)^2 * log(nbrBases_i))^0.5} 
+where \code{x} and \code{y} are the
+values of 2 samples for a specific segment \code{i} and \code{nbrBases} the 
+number of bases of the segment \code{i}.
 }
 \examples{
 

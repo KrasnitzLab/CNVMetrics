@@ -166,7 +166,8 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
 #' The weighted euclidean distance is 
 #' \eqn{(\sum((x_i - y_i)^2 * log(nbrBases_i))^0.5} 
 #' where \code{x} and \code{y} are the
-#' values of 2 samples for a specific segment \code{i}.
+#' values of 2 samples for a specific segment \code{i} and \code{nbrBases} the 
+#' number of bases of the segment \code{i}.
 #' 
 #' 
 #' @examples
@@ -185,7 +186,7 @@ calculateWeightedEuclideanDistance <- function(results) {
     
     nbNames <- length(names)
     
-    metric <- matrix(nr = nbNames, nc = nbNames, 
+    metric <- matrix(nrow = nbNames, ncol = nbNames, 
                         dimnames = rep(list(ID = names), 2))
     
     incWidth <- width(ranges(results[results$included, ]))

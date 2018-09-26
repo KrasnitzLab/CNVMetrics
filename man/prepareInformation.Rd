@@ -28,7 +28,8 @@ segment files have all a header that should not be imported.
 Default: \code{FALSE}.}
 }
 \value{
-a \code{GRanges} containing the segment information from the file.
+an object of \class{preMetricSegments} composed of a \code{GRanges} 
+containing the segment information from the file.
 }
 \description{
 The segments are extracted from each file, with a "SEG" or
