@@ -39,13 +39,36 @@ test_that("prepareInformation() must return error when segmentWithHeader is not 
 
 context("calculateWeightedEuclideanDistance() results")
 
+test_that("calculateWeightedEuclideanDistance() must return an error when segmentData is not of good class", {
+    
+    error_message <- "segmentData must be a GRanges marked as preMetricSegments class."
+    
+    dataGR <- list()
+    
+    dataGR$segments <- GRanges(seqnames = "chr1", 
+                               ranges = IRanges(start=c(1, 30, 50, 56, 101, 180, 200, 221),
+                                                end=c(29, 49, 55, 100, 110, 199, 220, 230)))
+    
+    values(dataGR$segments) <- DataFrame(included = c(rep(TRUE, 2), rep(FALSE, 2), rep(TRUE, 4)), 
+                                File1 = c(0.1, 0.1, 0.1, NA, NA, NA, 0.5, NA), 
+                                File2 = c(NA, 0.3, 0.3, 0.3, 0.3, 0.4, 0.4, 0.4))
+    
+    
+    expect_error(calculateWeightedEuclideanDistance(dataGR), error_message) 
+})
+
+
 test_that("calculateWeightedEuclideanDistance() must return good results", {
     
-    dataGR <- GRanges(seqnames = "chr1", 
+    
+    dataGR <- list()
+    class(dataGR) <- "preMetricSegments"
+    
+    dataGR$segments <- GRanges(seqnames = "chr1", 
                         ranges = IRanges(start=c(1, 30, 50, 56, 101, 180, 200, 221),
                                          end=c(29, 49, 55, 100, 110, 199, 220, 230)))
     
-    values(dataGR) <- DataFrame(included = c(rep(TRUE, 2), rep(FALSE, 2), rep(TRUE, 4)), 
+    values(dataGR$segments) <- DataFrame(included = c(rep(TRUE, 2), rep(FALSE, 2), rep(TRUE, 4)), 
                                   File1 = c(0.1, 0.1, 0.1, NA, NA, NA, 0.5, NA), 
                                   File2 = c(NA, 0.3, 0.3, 0.3, 0.3, 0.4, 0.4, 0.4))
     
@@ -56,7 +79,6 @@ test_that("calculateWeightedEuclideanDistance() must return good results", {
     
     expect_equivalent(calculateWeightedEuclideanDistance(dataGR), expMatrix, 
                         tolerance=0.000001)
-    
 })
 
 

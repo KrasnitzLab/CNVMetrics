@@ -28,8 +28,9 @@
 #' segment files have all a header that should not be imported. 
 #' Default: \code{FALSE}.
 #' 
-#' @return a\code{GRanges} marked as a \code{preMetricSegments} \code{class}  
-#' containing the segment information from the file.
+#' @return a \code{list} marked as a \code{preMetricSegments} \code{class}  
+#' containing a \code{GRanges} with the segment information from all 
+#' segment files.
 #'
 #' @details 
 #' 
@@ -142,7 +143,8 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
         }  
     }
     
-    result <- createSegments(segFiles, sources, excludedRegions)
+    result <- list()
+    result$segments <- createSegments(segFiles, sources, excludedRegions)
     class(result) <- "preMetricSegments"
     
     return(result)
@@ -157,7 +159,9 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
 #' squared sum of the values obtained for all segments that are not 
 #' excluded of the analysis.
 #' 
-#' @param results TODO
+#' @param segmentData a \code{list} marked as a \code{preMetricSegments} 
+#' \code{class} that contains the segment information from at least 2 segment 
+#' files.
 #' 
 #' @return a \code{matrix} TODO
 #' 
@@ -179,9 +183,15 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
 #' @importFrom GenomicRanges elementMetadata
 #' @importFrom IRanges ranges width
 #' @export
-calculateWeightedEuclideanDistance <- function(results) {
+calculateWeightedEuclideanDistance <- function(segmentData) {
     
-    names <- colnames(elementMetadata(results))
+    if (! is(segmentData, "preMetricSegments")) {
+        stop("segmentData must be a GRanges marked as preMetricSegments class.")
+    }
+    
+    segments <- segmentData$segments
+    
+    names <- colnames(elementMetadata(segments))
     names <- names[names != "included"]
     
     nbNames <- length(names)
@@ -189,8 +199,8 @@ calculateWeightedEuclideanDistance <- function(results) {
     metric <- matrix(nrow = nbNames, ncol = nbNames, 
                         dimnames = rep(list(ID = names), 2))
     
-    incWidth <- width(ranges(results[results$included, ]))
-    incResults <- elementMetadata(results[results$included, ])
+    incWidth <- width(ranges(segments[segments$included, ]))
+    incResults <- elementMetadata(segments[segments$included, ])
     
     for (i in 1:(nbNames-1)) {
         for (j in (i+1):nbNames) {

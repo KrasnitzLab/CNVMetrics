@@ -4,10 +4,12 @@
 \alias{calculateWeightedEuclideanDistance}
 \title{Calculate Weighted Euclidean distance metric between samples.}
 \usage{
-calculateWeightedEuclideanDistance(results)
+calculateWeightedEuclideanDistance(segmentData)
 }
 \arguments{
-\item{results}{TODO}
+\item{segmentData}{a \code{list} marked as a \code{preMetricSegments} 
+\code{class} that contains the segment information from at least 2 segment 
+files.}
 }
 \value{
 a \code{matrix} TODO
