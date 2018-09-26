@@ -28,7 +28,8 @@
 #' segment files have all a header that should not be imported. 
 #' Default: \code{FALSE}.
 #' 
-#' @return a \code{GRanges} containing the segment information from the file.
+#' @return an object of \class{preMetricSegments} composed of a \code{GRanges} 
+#' containing the segment information from the file.
 #'
 #' @details 
 #' 
@@ -142,7 +143,7 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
     }
     
     result <- createSegments(segFiles, sources, excludedRegions)
-    
+    class(result) <- "preMetricSegments"
     
     return(result)
 }
@@ -150,14 +151,23 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
 
 #' @title Calculate Weighted Euclidean distance metric between samples.
 #' 
-#' @description The weighted euclidean distance metric correspond to the
-#' euclidean distance multiplied by the natural logarithm of the number of 
-#' bases of the segment. The final metric is the sum of the values obtained for
-#' all segments that are not excluded of the analysis.
+#' @description The weighted Euclidean distance metric corresponds to the
+#' euclidean distance between 2 samples multiplied by the natural logarithm 
+#' of the number of bases of the analyzed segment. The final metric is the 
+#' squared sum of the values obtained for all segments that are not 
+#' excluded of the analysis.
 #' 
 #' @param results TODO
 #' 
 #' @return a \code{matrix} TODO
+#' 
+#' @details 
+#' 
+#' The weighted euclidean distance is 
+#' \eqn{(\sum((x_i - y_i)^2 * log(nbrBases_i))^0.5} 
+#' where \code{x} and \code{y} are the
+#' values of 2 samples for a specific segment \code{i}.
+#' 
 #' 
 #' @examples
 #'

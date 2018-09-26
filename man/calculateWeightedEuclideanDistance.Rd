@@ -18,6 +18,12 @@ euclidean distance multiplied by the natural logarithm of the number of
 bases of the segment. The final metric is the sum of the values obtained for
 all segments that are not excluded of the analysis.
 }
+\details{
+The weighted euclidean distance is 
+\eqn{(\sum((x_{i} - y_i)^2 * log(nbr_bases_i))^0.5} 
+where x and y are the
+values of 2 samples for a specific segment i.
+}
 \examples{
 
 # TODO
