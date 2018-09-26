@@ -10,7 +10,7 @@ prepareInformation(segDirectory, chrInfo, bedExclusionFile = NULL,
 }
 \arguments{
 \item{segDirectory}{a \code{character} string, the path to the directory
-containing the segment files to compared. Only files with the ".seg" (or 
+containing the segment files to compare. Only files with the ".seg" (or 
 ".SEG") extension will be used. At least 2 segment files are needed to
 be able to used the metrics.}
 
@@ -20,7 +20,7 @@ chromosomes to analyze. Only the chomosomes contained in this
 
 \item{bedExclusionFile}{a \code{character} string or \code{NULL}, the path 
 to the BED file that contains the regions that must be excluded from the
-analysis. If \code{NULL}, it is assume that there is no region of
+analysis. If \code{NULL}, it is assumed that there is no region of
 exclusion for the calculation of the metrics. Default: \code{NULL}.}
 
 \item{segmentWithHeader}{a \code{logical}, when \code{TRUE}, the
@@ -28,7 +28,7 @@ segment files have all a header that should not be imported.
 Default: \code{FALSE}.}
 }
 \value{
-an object of \class{preMetricSegments} composed of a \code{GRanges} 
+a\code{GRanges} marked as a \code{preMetricSegments} \code{class}  
 containing the segment information from the file.
 }
 \description{
@@ -38,7 +38,7 @@ specified directory. Each segment is associated to its original file by
 having a source metadata field assigned. When specified, the segments
 for a BED file are loaded and used to exclude regions from further analysis.
 All segments are gathered together
-and a disjoin operation is done to created a collection of non-overlapping 
+and a disjoin operation is done to create a collection of non-overlapping 
 ranges. Those ranges are going to be used to calculate the metrics.
 }
 \details{
