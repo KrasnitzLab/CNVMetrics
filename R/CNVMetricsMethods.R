@@ -144,7 +144,13 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
     }
     
     result <- list()
+    
+    # Create segments using disjoin
     result$segments <- createSegments(segFiles, sources, excludedRegions)
+    
+    # Do regression using the first file as the dependant value
+    result <- doRegression(result)
+    
     class(result) <- "preMetricSegments"
     
     return(result)
@@ -186,7 +192,7 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
 calculateWeightedEuclideanDistance <- function(segmentData) {
     
     if (! is(segmentData, "preMetricSegments")) {
-        stop("segmentData must be a GRanges marked as preMetricSegments class.")
+        stop("segmentData must be a list marked as preMetricSegments class.")
     }
     
     segments <- segmentData$segments

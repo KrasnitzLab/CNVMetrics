@@ -41,7 +41,7 @@ context("calculateWeightedEuclideanDistance() results")
 
 test_that("calculateWeightedEuclideanDistance() must return an error when segmentData is not of good class", {
     
-    error_message <- "segmentData must be a GRanges marked as preMetricSegments class."
+    error_message <- "segmentData must be a list marked as preMetricSegments class."
     
     dataGR <- list()
     
