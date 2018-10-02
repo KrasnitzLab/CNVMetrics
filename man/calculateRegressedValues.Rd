@@ -2,7 +2,7 @@
 % Please edit documentation in R/CNVMetricsInternalMethods.R
 \name{calculateRegressedValues}
 \alias{calculateRegressedValues}
-\title{TODO}
+\title{calculate the regressed values for all segment file.}
 \usage{
 calculateRegressedValues(segmentData)
 }
@@ -13,6 +13,18 @@ those entries:
 \itemize{
 \item a \code{segment} that contains the \code{GRanges} with the segment
 information.
+\item a \code{regression} that contains the result of the paired 
+regressions. The number of entries corresponds to the number of paired
+segment files considering that the reference file is always the same. Each 
+entry is a \code{list} composed of those entries:
+\itemize{
+\item a \code{x_used} with the name of the file that segments values
+are used as x values in the regression model.
+\item a \code{y_used} with the name of the file that segments values
+are used as y values in the regression model. This is the reference file. 
+It is the same for all paired regressions.
+\item a \code{lm} that contains the regression model.
+}
 }}
 }
 \value{
@@ -20,14 +32,18 @@ a \code{list} of that
 contains the segments from multiple files. The \code{list} is composed of 
 those entries:
 \itemize{
-\item a \code{segment} that contains the \code{GRanges} with the segment
-information.
+\item a \code{segments} that contains the \code{GRanges} with the segment
+information and values from each segment file.
 \item a \code{regression} that contains the result of the paired 
 regressions.
+\item a \code{regressedData} that contains the \code{GRanges} with the 
+segment information and the regressed values for each segment file.
 }
 }
 \description{
-TODO
+Use the linear regression model obtained for each paired of
+segment files (current file versus reference) to calculate the regressed 
+values for all segment file except for the reference file.
 }
 \examples{
 
