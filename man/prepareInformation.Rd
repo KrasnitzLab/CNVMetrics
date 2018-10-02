@@ -2,8 +2,8 @@
 % Please edit documentation in R/CNVMetricsMethods.R
 \name{prepareInformation}
 \alias{prepareInformation}
-\title{Read segment files and exclusion file to generate a dataset
-that can be used to calculate the metrics.}
+\title{Read segment files and their values and exclusion file to generate 
+a dataset that can be used to calculate the metrics.}
 \usage{
 prepareInformation(segDirectory, chrInfo, bedExclusionFile = NULL,
   segmentWithHeader = FALSE)
@@ -33,8 +33,8 @@ containing a \code{GRanges} with the segment information from all
 segment files.
 }
 \description{
-The segments are extracted from each file, with a "SEG" or
-"seg" extension, present in the 
+The segments and their values are extracted from each file, 
+with a "SEG" or "seg" extension, present in the 
 specified directory. Each segment is associated to its original file by
 having a source metadata field assigned. When specified, the segments
 for a BED file are loaded and used to exclude regions from further analysis.

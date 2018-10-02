@@ -53,13 +53,11 @@ test_that("calculateWeightedEuclideanDistance() must return an error when segmen
                                 File1 = c(0.1, 0.1, 0.1, NA, NA, NA, 0.5, NA), 
                                 File2 = c(NA, 0.3, 0.3, 0.3, 0.3, 0.4, 0.4, 0.4))
     
-    
     expect_error(calculateWeightedEuclideanDistance(dataGR), error_message) 
 })
 
 
 test_that("calculateWeightedEuclideanDistance() must return good results", {
-    
     
     dataGR <- list()
     class(dataGR) <- "preMetricSegments"

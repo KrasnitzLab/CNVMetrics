@@ -1,8 +1,8 @@
-#' @title Read segment files and exclusion file to generate a dataset
-#' that can be used to calculate the metrics.
+#' @title Read segment files and their values and exclusion file to generate 
+#' a dataset that can be used to calculate the metrics.
 #' 
-#' @description The segments are extracted from each file, with a "SEG" or
-#' "seg" extension, present in the 
+#' @description The segments and their values are extracted from each file, 
+#' with a "SEG" or "seg" extension, present in the 
 #' specified directory. Each segment is associated to its original file by
 #' having a source metadata field assigned. When specified, the segments
 #' for a BED file are loaded and used to exclude regions from further analysis.
@@ -150,6 +150,8 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
     
     # Do regression using the first file as the dependant value
     result <- doRegression(result)
+    
+    result <- calculateRegressedValues(result)
     
     class(result) <- "preMetricSegments"
     

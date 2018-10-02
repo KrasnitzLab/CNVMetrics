@@ -109,7 +109,7 @@ doRegression <- function(segmentData) {
     
     for (i in 2:nbNames) {
         subData <- incResults[, c(names[1], names[i])]
-        colnames(subData) <- c("x", "y")
+        colnames(subData) <- c("y", "x")
         reg <- lm("y ~ x", data=subData)
         segmentData$regression[[i - 1]] <- list()
         segmentData$regression[[i - 1]][["lm"]] <- reg
@@ -118,4 +118,54 @@ doRegression <- function(segmentData) {
     }
     
     return(segmentData)   
+}
+
+
+#' @title TODO
+#' 
+#' @description TODO
+#' 
+#' @param segmentData a \code{list} of that 
+#' contains the segments from multiple files. The \code{list} is composed of 
+#' those entries:
+#' \itemize{
+#' \item a \code{segment} that contains the \code{GRanges} with the segment
+#' information.
+#' }
+#' 
+#' @return a \code{list} of that 
+#' contains the segments from multiple files. The \code{list} is composed of 
+#' those entries:
+#' \itemize{
+#' \item a \code{segment} that contains the \code{GRanges} with the segment
+#' information.
+#' \item a \code{regression} that contains the result of the paired 
+#' regressions.
+#' }
+#' 
+#' @examples
+#'
+#' # TODO
+#' 
+#' @author Astrid Deschenes, Pascal Belleau
+#' @importFrom GenomicRanges elementMetadata elementMetadata<-
+#' @importFrom stats predict
+#' @keywords internal
+calculateRegressedValues <- function(segmentData) {
+    
+    segments <- elementMetadata(segmentData$segments)
+
+    #segmentData$regressed <- segments
+    
+    for (i in 1:length(segmentData$regression)) {
+        lmData <- segmentData$regression[[i]][["lm"]]
+        xName <- segmentData$regression[[i]][["x_used"]]
+        tempVal <- data.frame(x=segments[, xName])
+        segments[, xName] <- as.vector(predict(lmData, newdata = tempVal))
+    }
+    
+    segmentData$regressedData <- segmentData$segments
+    elementMetadata(segmentData$regressedData) <- segments
+    
+    return(segmentData)
 }
