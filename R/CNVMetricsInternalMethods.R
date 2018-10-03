@@ -1,7 +1,11 @@
 
-#' @title TODO
+#' @title Generate common segments to enable calculation of metrics on 
+#' multiple segment files.
 #' 
-#' @description TODO
+#' @description All segments are gathered together, including exclusion 
+#' segments when specified, and a disjoin operation is done to create a 
+#' collection of non-overlapping ranges. The ranges included in the exclusion
+#' segments are marked as so to be removed from futur analysis.
 #' 
 #' @param fileList a \code{list} of \code{GRanges}, the segments from multiple
 #' files.

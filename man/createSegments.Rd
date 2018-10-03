@@ -2,7 +2,8 @@
 % Please edit documentation in R/CNVMetricsInternalMethods.R
 \name{createSegments}
 \alias{createSegments}
-\title{TODO}
+\title{Generate common segments to enable calculation of metrics on 
+multiple segment files.}
 \usage{
 createSegments(fileList, sourceList, bedExclusion)
 }
@@ -19,7 +20,10 @@ excluded from the analysis. Default: \code{NULL}.}
 a \code{GRanges} containing the segment information from the file.
 }
 \description{
-TODO
+All segments are gathered together, including exclusion 
+segments when specified, and a disjoin operation is done to create a 
+collection of non-overlapping ranges. The ranges included in the exclusion
+segments are marked as so to be removed from futur analysis.
 }
 \examples{
 
