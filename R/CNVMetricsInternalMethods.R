@@ -65,9 +65,12 @@ createSegments <- function(fileList, sourceList, bedExclusion) {
 }
 
 
-#' @title TODO
+#' @title Linear regression analysis between each paired samples using
+#' segment values.
 #' 
-#' @description TODO
+#' @description Do an linear regression between each paired samples using
+#' segment values only from the included segments. The segment file used as
+#' reference is the same for all analysis.
 #' 
 #' @param segmentData a \code{list} of that 
 #' contains the segments from multiple files. The \code{list} is composed of 
