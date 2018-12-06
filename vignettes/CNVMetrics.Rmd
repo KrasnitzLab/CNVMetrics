@@ -50,15 +50,15 @@ The chromosomes information is contained inside a `Seqinfo` object. The
 information from some UCSC genomes can be fetched automatically using
 the `r Biocpkg("GenomeInfoDb")` package. 
 
-```{r knownGenome, collapse=TRUE, eval=FALSE}
+```{r knownGenome, collapse=TRUE, eval=FALSE, message=FALSE, warning=FALSE}
 ### Import needed library
 library(GenomeInfoDb)
 
 ### Get the information for Human genome version 19
-hg19Info <- Seqinfo(genome="hg19")
+hg38Info <- Seqinfo(genome="hg38")
 
 ### Subset the object to keep only the analyzed chromosomes
-hg19Subset <- hg19Info[c("chr1", "chr10", "chrX")]
+seqlevels(hg38Info) <- paste0("chr", 1:22)
 ```
 
 A `Seqinfo` object can also be created using the chromosomes information 
@@ -77,4 +77,10 @@ if (exists("hg19Subset", inherits = FALSE)) rm(hg19Subset)
 if (exists("hg19Info", inherits = FALSE)) rm(hg19Info)
 ```
 
+
+
+```{r demo}
+#a<-prepareInformation(segDirectory = "inst/extdata/", bedExclusionFile = "inst/extdata/exclusion.bed", segmentWithHeader = FALSE, chrInfo = hg38Info)
+
+```
 
