@@ -43,7 +43,7 @@ segment information and the regressed values for each segment file.
 \description{
 Use the linear regression model obtained for each paired of
 segment files (current file versus reference) to calculate the regressed 
-values for all segment file except for the reference file.
+values for all segment files except for the reference file.
 }
 \examples{
 

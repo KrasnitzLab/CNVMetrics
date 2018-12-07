@@ -13,4 +13,4 @@ VignetteBuilder: knitr
 URL: https://github.com/adeschen/CNVMetrics
 BugReports: https://github.com/adeschen/CNVMetrics/issues
 Maintainer: Astrid Deschenes <adeschen@hotmail.com>
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
