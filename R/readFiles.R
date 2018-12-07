@@ -40,9 +40,9 @@ readSEGFile <- function(filepath, uniqueTag, header=FALSE) {
         stop("The segment file must have at least 6 columns.")
     }
     
-    dataRanges <- GRanges(seqnames = data$V2, 
-                          ranges=IRanges(start=data$V3, end=data$V4), 
-                          score=data$V6, source=uniqueTag)
+    dataRanges <- GRanges(seqnames = data[, 2], 
+                          ranges=IRanges(start=data[, 3], end=data[, 4]), 
+                          score=data[, 6], source=uniqueTag)
     
     return(dataRanges)
 }
