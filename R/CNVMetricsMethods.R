@@ -171,6 +171,11 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
 #' \code{class} that contains the segment information from at least 2 segment 
 #' files.
 #' 
+#' @param minThreshold a single \code{numeric} setting the minimum value 
+#' to consider two segments as different durant the metric calculation. If the 
+#' absolute difference is bellow or equal to threshold, the value will be 
+#' replaced by zero. Default: 0.2.
+#' 
 #' @return a \code{matrix} TODO
 #' 
 #' @details 
@@ -191,10 +196,14 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
 #' @importFrom GenomicRanges elementMetadata
 #' @importFrom IRanges ranges width
 #' @export
-calculateWeightedEuclideanDistance <- function(segmentData) {
+calculateWeightedEuclideanDistance <- function(segmentData, minThreshold=0.2) {
     
     if (! is(segmentData, "preMetricSegments")) {
         stop("segmentData must be a list marked as preMetricSegments class.")
+    }
+    
+    if (!is.numeric(minThreshold)) {
+        stop("minThreshold must be a numerical value.")
     }
     
     segments <- segmentData$segments
@@ -213,6 +222,13 @@ calculateWeightedEuclideanDistance <- function(segmentData) {
     for (i in 1:(nbNames-1)) {
         for (j in (i+1):nbNames) {
             temp01 <- incResults[, c(names[i])] - incResults[, c(names[j])]
+            
+            ## Set values to zero when lower than threshold
+            tempPos <- which(abs(temp01) <= minThreshold) 
+            if (length(tempPos) > 0) {
+                temp01[tempPos] <- 0.0
+            }
+            
             temp01 <- temp01 * temp01 * log(incWidth)
             final <- sum(temp01, na.rm = TRUE) ^ (1/2)
             metric[names[i], names[j]] <- final
@@ -221,7 +237,7 @@ calculateWeightedEuclideanDistance <- function(segmentData) {
     }
  
     for (i in 1:nbNames) {
-        metric[names[i], names[i]] <- 0
+        metric[names[i], names[i]] <- 0.0
     }
     
     return(metric)   

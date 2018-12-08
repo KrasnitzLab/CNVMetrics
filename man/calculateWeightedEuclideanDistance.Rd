@@ -4,12 +4,17 @@
 \alias{calculateWeightedEuclideanDistance}
 \title{Calculate Weighted Euclidean distance metric between samples.}
 \usage{
-calculateWeightedEuclideanDistance(segmentData)
+calculateWeightedEuclideanDistance(segmentData, minThreshold = 0.2)
 }
 \arguments{
 \item{segmentData}{a \code{list} marked as a \code{preMetricSegments} 
 \code{class} that contains the segment information from at least 2 segment 
 files.}
+
+\item{minThreshold}{a single \code{numeric} setting the minimum value 
+to consider two segments as different durant the metric calculation. If the 
+absolute difference is bellow or equal to threshold, the value will be 
+replaced by zero. Default: 0.2.}
 }
 \value{
 a \code{matrix} TODO

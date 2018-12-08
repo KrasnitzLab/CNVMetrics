@@ -57,7 +57,7 @@ test_that("calculateWeightedEuclideanDistance() must return an error when segmen
 })
 
 
-test_that("calculateWeightedEuclideanDistance() must return good results", {
+test_that("calculateWeightedEuclideanDistance() must return good results 01", {
     
     dataGR <- list()
     class(dataGR) <- "preMetricSegments"
@@ -75,9 +75,31 @@ test_that("calculateWeightedEuclideanDistance() must return good results", {
     colnames(expMatrix) <- c("File1", "File2")
     rownames(expMatrix) <- c("File1", "File2")
     
-    expect_equivalent(calculateWeightedEuclideanDistance(dataGR), expMatrix, 
+    expect_equivalent(calculateWeightedEuclideanDistance(dataGR, minThreshold = 0.04), expMatrix, 
                         tolerance=0.000001)
 })
 
+
+test_that("calculateWeightedEuclideanDistance() must return good results 02", {
+    
+    dataGR <- list()
+    class(dataGR) <- "preMetricSegments"
+    
+    dataGR$segments <- GRanges(seqnames = "chr1", 
+                               ranges = IRanges(start=c(1, 30, 50, 56, 101, 180, 200, 221),
+                                                end=c(29, 49, 55, 100, 110, 199, 220, 230)))
+    
+    values(dataGR$segments) <- DataFrame(included = c(rep(TRUE, 2), rep(FALSE, 2), rep(TRUE, 4)), 
+                                         File1 = c(0.1, 0.1, 0.1, NA, NA, NA, 0.5, NA), 
+                                         File2 = c(NA, 0.15, 0.3, 0.3, 0.3, 0.4, 0.4, 0.4))
+    
+    expMatrix <- matrix(c(0, 0.174485599340559, 0.174485599340559, 0), byrow = T, 
+                        ncol = 2, nrow = 2)
+    colnames(expMatrix) <- c("File1", "File2")
+    rownames(expMatrix) <- c("File1", "File2")
+    
+    expect_equivalent(calculateWeightedEuclideanDistance(dataGR, minThreshold = 0.07), expMatrix, 
+                      tolerance=0.000001)
+})
 
 
