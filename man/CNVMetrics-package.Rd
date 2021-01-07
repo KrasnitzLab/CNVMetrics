@@ -6,7 +6,7 @@
 \alias{CNVMetrics}
 \title{CNVMetrics: Copy number variant metrics}
 \description{
-This package implements metrics to facilite copy number variant 
+This package implements metrics to facilitate copy number variant 
 comparison among samples and/or methods.
 }
 \author{
@@ -14,6 +14,6 @@ Astrid Deschênes and
 Pascal Belleau
 
 Maintainer:
-Astrid Deschenes <adeschen@hotmail.com>
+Astrid Deschênes <adeschen@hotmail.com>
 }
 \keyword{package}

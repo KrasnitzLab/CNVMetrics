@@ -5,8 +5,12 @@
 \title{Read segment files and their values and exclusion file to generate 
 a dataset that can be used to calculate the metrics.}
 \usage{
-prepareInformation(segDirectory, chrInfo, bedExclusionFile = NULL,
-  segmentWithHeader = FALSE)
+prepareInformation(
+  segDirectory,
+  chrInfo,
+  bedExclusionFile = NULL,
+  segmentWithHeader = FALSE
+)
 }
 \arguments{
 \item{segDirectory}{a \code{character} string, the path to the directory
@@ -15,7 +19,7 @@ containing the segment files to compare. Only files with the ".seg" (or
 be able to used the metrics.}
 
 \item{chrInfo}{a \code{Seqinfo} containing the name and the length of the
-chromosomes to analyze. Only the chomosomes contained in this
+chromosomes to analyze. Only the chromosomes contained in this
 \code{Seqinfo} will be analyzed.}
 
 \item{bedExclusionFile}{a \code{character} string or \code{NULL}, the path 
