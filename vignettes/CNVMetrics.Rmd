@@ -42,8 +42,8 @@ Artistic license 2.0. You are free to use and redistribute this software.
 
 The chromosomes information is mandatory. It ensures that only the selected
 chromoromes are used in the analysis. As not all CNV software use the same
-reference (reference with alternive regions or not), it ensure that
-all samples will be compared using the same reference. We strongly suggest 
+reference (reference with alternative regions or not), it ensure that
+all samples will be compared using the same reference. We strongly encourage 
 using only the primary chromosomes for this analaysis.
 
 The chromosomes information is contained inside a `Seqinfo` object. The 
@@ -51,20 +51,25 @@ information from some UCSC genomes can be fetched automatically using
 the `r Biocpkg("GenomeInfoDb")` package. 
 
 ```{r knownGenome, collapse=TRUE, eval=FALSE, message=FALSE, warning=FALSE}
-### Import needed library
+### Import needed library that contains the Seqinfo method
 library(GenomeInfoDb)
 
-### Get the information for Human genome version 19
+### Get the information for Human genome version GRCh38
 hg38Info <- Seqinfo(genome="hg38")
 
 ### Subset the object to keep only the analyzed chromosomes
+### Chromosomes X and Y are often removed from subsequent analyses
 seqlevels(hg38Info) <- paste0("chr", 1:22)
 ```
 
 A `Seqinfo` object can also be created using the chromosomes information 
-specific to the analyzed genome.
+specific to the analyzed genome. The `r Biocpkg("GenomeInfoDb")` package is
+required.
 
 ```{r newGenome, collapse=FALSE}
+### Import needed library that contains the Seqinfo method
+library(GenomeInfoDb)
+
 ### Create an Seqinfo Object
 chrInfo <- Seqinfo(seqnames=c("chr1", "chr2", "chr3"),
             seqlengths=c(10000, 20000, 1500), isCircular=c(FALSE, FALSE, FALSE),
