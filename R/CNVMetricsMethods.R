@@ -16,7 +16,7 @@
 #' be able to used the metrics.
 #' 
 #' @param chrInfo a \code{Seqinfo} containing the name and the length of the
-#' chromosomes to analyze. Only the chomosomes contained in this
+#' chromosomes to analyze. Only the chromosomes contained in this
 #' \code{Seqinfo} will be analyzed.
 #' 
 #' @param bedExclusionFile a \code{character} string or \code{NULL}, the path 
@@ -148,7 +148,7 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
     # Create segments using disjoin
     result$segments <- createSegments(segFiles, sources, excludedRegions)
     
-    # Do regression using the first file as the dependant value
+    # Do regression using the first file as the dependent value
     result <- doRegression(result)
     
     result <- calculateRegressedValues(result)

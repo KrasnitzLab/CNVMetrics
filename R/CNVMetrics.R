@@ -1,6 +1,6 @@
 #' CNVMetrics: Copy number variant metrics
 #'
-#' This package implements metrics to facilite copy number variant 
+#' This package implements metrics to facilitate copy number variant 
 #' comparison among samples and/or methods.
 #'
 #' @docType package
@@ -13,7 +13,7 @@
 #' Pascal Belleau
 #'
 #' Maintainer:
-#' Astrid Deschenes <adeschen@hotmail.com>
+#' Astrid Deschênes <adeschen@hotmail.com>
 #'
 #' @keywords package
 NULL
