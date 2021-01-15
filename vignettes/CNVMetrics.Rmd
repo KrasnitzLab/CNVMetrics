@@ -41,7 +41,7 @@ Artistic license 2.0. You are free to use and redistribute this software.
 ## Chromosomes information 
 
 The chromosomes information is mandatory. It ensures that only the selected
-chromoromes are used in the analysis. As not all CNV software use the same
+chromosomes are used in the analysis. As not all CNV software use the same
 reference (reference with alternative regions or not), it ensure that
 all samples will be compared using the same reference. We strongly encourage 
 using only the primary chromosomes for this analaysis.
