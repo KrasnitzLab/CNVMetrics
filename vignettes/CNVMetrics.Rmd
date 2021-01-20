@@ -1,9 +1,10 @@
 ---
-title: "Copy number variant metrics"
+title: "Similarity between copy number profiles"
 author: Astrid Deschênes and Pascal Belleau
 output:
   BiocStyle::html_document:
     toc: true
+bibliography: CNVMetrics.bibtex
 vignette: >
   %\VignetteIndexEntry{Copy number variant metrics}
   %\VignettePackage{CNVMetrics}
@@ -34,6 +35,42 @@ Artistic license 2.0. You are free to use and redistribute this software.
 
 # Introduction
 
+Copy number variation (CNV) includes multiplication and deletions of DNA
+segment (> 1 kb). Copy number variations have been shown to be associated 
+with a wide spectrum of pathological conditions and complex traits, such 
+as developmental neuropsychiatric disorders [@Hiroi2013] and especially 
+cancer [@Stratton2009]. 
+
+# Metrics
+
+This survey represents various similarity measures that are implemented in 
+`r Githubpkg("adeschen/CNVMetrics")` package.
+
+## Sørensen
+
+
+The Sørensen coefficient [@Sorensen48] is calculated by dividing the 
+size of the intersection by the smaller of the size of the two sets:
+
+\begin{equation}
+  \frac{2\times  \left| X \cap Y \right| }{\left| X \right| + \left| Y \right|}
+  (\#eq:sorensen)
+\end{equation}    
+
+
+## Szymkiewicz–Simpson
+
+The Szymkiewicz–Simpson coefficient [@Vijaymeena2016], also known as the 
+overlap coefficient, is calculated by dividing the size of the intersection 
+by the smaller of the size of the two sets:
+
+\begin{equation}
+  \frac{\left| X \cap Y \right| }{min \left(\left| X \right| , \left| Y \right|\right)}
+  (\#eq:szymkiewicz)
+\end{equation}    
+
+If set **X** is a subset of **Y** or vice versa, the overlap coefficient 
+value is 1. 
 
 
 # Inputs
@@ -88,4 +125,18 @@ if (exists("hg19Info", inherits = FALSE)) rm(hg19Info)
 #a<-prepareInformation(segDirectory = "inst/extdata/", bedExclusionFile = "inst/extdata/exclusion.bed", segmentWithHeader = FALSE, chrInfo = hg38Info)
 
 ```
+
+
+# Session info
+
+Here is the output of `sessionInfo()` on the system on which this document was 
+compiled:
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+
+# References
+
 
