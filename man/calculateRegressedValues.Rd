@@ -51,6 +51,6 @@ values for all segment files except for the reference file.
 
 }
 \author{
-Astrid Deschenes, Pascal Belleau
+Astrid Deschênes, Pascal Belleau
 }
 \keyword{internal}

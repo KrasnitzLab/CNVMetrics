@@ -40,5 +40,5 @@ number of bases of the segment \code{i}.
 
 }
 \author{
-Astrid Deschenes, Pascal Belleau
+Astrid Deschênes, Pascal Belleau
 }

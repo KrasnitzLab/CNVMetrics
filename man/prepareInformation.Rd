@@ -70,5 +70,5 @@ segDir <- system.file("inst/extdata", package="CNVMetrics")
 
 }
 \author{
-Astrid Deschenes, Pascal Belleau
+Astrid Deschênes, Pascal Belleau
 }

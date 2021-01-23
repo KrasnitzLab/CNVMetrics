@@ -55,7 +55,7 @@
 #' # TODO
 #' 
 #' 
-#' @author Astrid Deschenes, Pascal Belleau
+#' @author Astrid Deschênes, Pascal Belleau
 #' @importFrom rtracklayer import
 #' @importFrom GenomeInfoDb keepSeqlevels seqlevels
 #' @importFrom methods is
@@ -192,7 +192,7 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
 #' # TODO
 #' 
 #' 
-#' @author Astrid Deschenes, Pascal Belleau
+#' @author Astrid Deschênes, Pascal Belleau
 #' @importFrom GenomicRanges elementMetadata
 #' @importFrom IRanges ranges width
 #' @export
@@ -241,4 +241,98 @@ calculateWeightedEuclideanDistance <- function(segmentData, minThreshold=0.2) {
     }
     
     return(metric)   
+}
+
+
+
+
+#' @title Calculate metric using overlapping amplified/deleted regions between 
+#' samples.
+#' 
+#' @description Calculate a specific metric using overlapping regions between
+#' to samples. When more than 2 samples are present, the metric is calculated
+#' for each sample pair.
+#' 
+#' @param segmentData a \code{GRangesList} that contains the segment 
+#' information, including amplified/deleted status, from at least 2 samples.
+#' 
+#' @param method a \code{character} string representing the metric to be used. 
+#' This should be (an unambiguous abbreviation of) one of "sorensen" or 
+#' "szymkiewicz-simpson". Default: "sorensen".
+#' 
+#' @return a \code{matrix} TODO
+#' 
+#' @details 
+#' 
+#' Available distance measures are (written for two Granges x and y):
+#' # TODO
+#' 
+#' 
+#' @examples
+#'
+#' ## Create a GRangesList object with 3 samples
+#' 
+#' require(GenomicRanges)
+#' 
+#' demo <- GRangesList()
+#' demo[["sample01"]] <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+#'     end = c(2004603, 4577608, 31695808)), strand =  "*",
+#'     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+#' demo[["sample02"]] <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1995066, 31611222), 
+#'     end = c(2204505, 31689898)), strand =  c("-", "+"),
+#'     state = c("AMPLIFICATION", "AMPLIFICATION"))
+#' demo[["sample03"]] <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1906069, 4558838), 
+#'     end = c(1909505, 4570601)), strand =  "*",
+#'     state = c("AMPLIFICATION", "DELETION"))
+#' 
+#' calculateOverlapRegionsMetric(demo)
+#' 
+#' 
+#' @author Astrid Deschênes, Pascal Belleau
+#' @import GenomicRanges 
+#' @export
+calculateOverlapRegionsMetric <- function(segmentData, 
+                                method=c("sorensen", "szymkiewicz")) {
+    
+    method <- match.arg(method)
+    
+    names <- names(segmentData)
+    nb <- length(names)
+    
+    ## At least 2 samples must be present
+    if (nb < 2) {
+        stop("at least 2 samples must be present in the segmentData")
+    }
+    
+    ## All samples must have a metadata column called 'state' with
+    ## AMPLIFICATION/DELETION status 
+    if (!all(sapply(segmentData, 
+            FUN = function(x) {"state" %in% colnames(mcols(x))}))) {
+        stop(paste0("at least one sample doesn't have a metadata column ", "
+             called \'state\'"))
+    }
+    
+    results <- list()
+    
+    for(type in c("AMPLIFICATION", "DELETION")) {
+        
+        dataTMP <- matrix(rep(NA, nb^2), nrow = nb)
+        rownames(dataTMP) <- names
+        colnames(dataTMP) <- names
+        
+        for(i in seq_len(nb)[-1]) {
+            for(j in seq_len(i-1)) {
+                dataTMP[i, j] <- calculateOverlapMetric(
+                    sample01 = segmentData[[names[i]]], 
+                    sample02 = segmentData[[names[j]]],
+                    method=method, type=type)
+            }
+        }
+        results[[type]] <- dataTMP
+    }
+        
+    return(results)
 }

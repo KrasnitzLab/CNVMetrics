@@ -170,7 +170,7 @@ doRegression <- function(segmentData) {
 #'
 #' # TODO
 #' 
-#' @author Astrid Deschenes, Pascal Belleau
+#' @author Astrid Deschênes, Pascal Belleau
 #' @importFrom GenomicRanges elementMetadata elementMetadata<-
 #' @importFrom stats predict
 #' @keywords internal
@@ -192,3 +192,133 @@ calculateRegressedValues <- function(segmentData) {
     
     return(segmentData)
 }
+
+
+
+
+#' @title Calculate metric using overlapping amplified/deleted regions between 
+#' two samples.
+#' 
+#' @description Calculate a specific metric using overlapping regions between
+#' two samples. 
+#' 
+#' @param sample01 a \code{GRanges} TODO 
+#' @param sample02 a \code{GRanges} TODO
+#' @param method a string of \code{character} representing the metric to be
+#' used.
+#' @param type a string of \code{character} TODO
+#' 
+#' @return a \code{list} of TODO
+#' 
+#' @examples
+#'
+#' # TODO
+#' 
+#' @author Astrid Deschênes
+#' @keywords internal
+calculateOverlapMetric <- function(sample01, sample02, method, type) {
+    
+    sample01 <- sample01[sample01$state == type,]
+    sample02 <- sample02[sample02$state == type,]
+    
+    result <- 0.0
+    
+    if (length(sample01) > 0 && length(sample02) > 0) { 
+        result <- switch(method,
+           sorensen = calculateSorensen(sample01, sample02),
+           szymkiewicz = calculateSzymkiewicz(sample01, sample02))
+    }
+    
+    return(result)
+}
+    
+
+#' @title Calculate Sorensen metric using overlapping amplified/deleted 
+#' regions between two samples.
+#' 
+#' @description Calculate Sorensen metric using overlapping regions between
+#' two samples. 
+#' 
+#' @param sample01 a \code{GRanges} TODO 
+#' @param sample02 a \code{GRanges} TODO
+#' 
+#' @return a \code{list} of TODO
+#' 
+#' @examples
+#'
+#' # TODO
+#' 
+#' require(GenomicRanges)
+#'
+#' sample01 <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+#'     end = c(2004603, 4577608, 31695808)), strand =  "*")
+#' sample02 <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1995066, 31611222), 
+#'     end = c(2204505, 31689898)), strand =  "*")
+#'     
+#' CNVMetrics:::calculateSorensen(sample01, sample02)
+#'     
+#' @author Astrid Deschênes
+#' @importFrom GenomicRanges intersect width
+#' @keywords internal
+calculateSorensen <- function(sample01, sample02) {
+    
+    inter <- sum(width(intersect(sample01, sample02, ignore.strand=TRUE)))
+    widthSample01 <- sum(width(sample01))
+    widthSample02 <- sum(width(sample02))
+    
+    result <- ifelse((widthSample01 + widthSample02) > 0, 
+                     (2.0 * inter)/(widthSample01 + widthSample02),
+                     NA)
+    return(result)
+}
+    
+#' @title Calculate Szymkiewicz-Simpson metric using overlapping 
+#' amplified/deleted regions between two samples.
+#' 
+#' @description Calculate Szymkiewicz-Simpson metric using overlapping 
+#' regions between two samples. 
+#' 
+#' @param sample01 a \code{GRanges} TODO 
+#' @param sample02 a \code{GRanges} TODO
+#' 
+#' @return a \code{list} of TODO
+#' 
+#' @examples
+#'
+#' # TODO
+#' 
+#' require(GenomicRanges)
+#'
+#' sample01 <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+#'     end = c(2004603, 4577608, 31695808)), strand =  "*")
+#' sample02 <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1995066, 31611222), 
+#'     end = c(2204505, 31689898)), strand =  c("+", "-"))
+#'     
+#' CNVMetrics:::calculateSzymkiewicz(sample01, sample02)
+#'     
+#' @author Astrid Deschênes
+#' @importFrom GenomicRanges intersect width
+#' @keywords internal
+calculateSzymkiewicz <- function(sample01, sample02) {
+    
+    inter <- sum(width(intersect(sample01, sample02, ignore.strand=TRUE)))
+    widthSample01 <- sum(width(sample01))
+    widthSample02 <- sum(width(sample02))
+    
+    
+    result <- ifelse(min(widthSample01,widthSample02) > 0, 
+                     inter/min(widthSample01,widthSample02),
+                     NA)
+    return(result)
+}
+
+
+    
+    
+    
+    
+
