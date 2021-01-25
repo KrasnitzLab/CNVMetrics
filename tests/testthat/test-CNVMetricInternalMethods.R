@@ -4,6 +4,7 @@ library(CNVMetrics)
 library(GenomicRanges)
 library(S4Vectors)
 library(IRanges)
+library(GenomeInfoDb)
 
 
 
@@ -115,7 +116,8 @@ test_that("calculateRegressedValues() must return expected results", {
     
     y <- c(0.1, 0.1, NA, NA, 0.15, 0.2)
     x <- c(NA, 0.11428571428571400459, 0.11428571428571400459, 
-           0.13214285714285700646, 0.13214285714285700646, 0.20357142857142898618)
+           0.13214285714285700646, 0.13214285714285700646, 
+           0.20357142857142898618)
     
     values(segmentExp) <- DataFrame(included = c(rep(TRUE, 6)), 
                                  File1 = y,  
@@ -181,4 +183,119 @@ test_that("doRegression() must return expected results", {
     expect_equal(results, expected)
 })
 
+### Tests calculateSzymkiewicz() results
 
+context("calculateSzymkiewicz() results")
+
+test_that("calculateSzymkiewicz() must return expected result of 1 for identical GRanges", {
+    
+    
+    sample01 <- GRanges(seqnames = c("chr1", "chr2", "chr4"), 
+                ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+                end = c(2004603, 4577608, 31695808)), strand = rep("+", 3))
+    sample02 <- GRanges(seqnames = c("chr1", "chr2", "chr4"), 
+                ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+                end = c(2004603, 4577608, 31695808)), strand = rep("-", 3))
+    
+    results <- CNVMetrics:::calculateSzymkiewicz(sample01, sample02)
+    
+    expected <- 1.0
+    
+    expect_equal(results, expected)
+})
+
+test_that("calculateSzymkiewicz() must return expected result of 1 for one GRanges included in the other", {
+    
+    
+    sample01 <- GRanges(seqnames = c("chr1", "chr2", "chr4"), 
+                        ranges =  IRanges(start = c(905048, 1554832, 31686841), 
+                                          end = c(2204603, 4577608,41695808)), 
+                        strand = rep("+", 3))
+    sample02 <- GRanges(seqnames = c("chr1", "chr2", "chr4"), 
+                        ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+                                          end = c(2004603, 4577608, 31695808)), 
+                        strand = rep("-", 3))
+    
+    results <- CNVMetrics:::calculateSzymkiewicz(sample01, sample02)
+    
+    expected <- 1.0
+    
+    expect_equal(results, expected)
+})
+
+test_that("calculateSzymkiewicz() must return expected result of NA when first GRanges empty", {
+    
+    
+    sample01 <- GRanges()
+    sample02 <- GRanges(seqnames = c("chr1", "chr2", "chr4"), 
+                        ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+                                          end = c(2004603, 4577608, 31695808)), 
+                        strand = rep("-", 3))
+    
+    results <- CNVMetrics:::calculateSzymkiewicz(sample01, sample02)
+    
+    expected <- NA
+    
+    expect_equal(results, expected)
+})
+
+
+test_that("calculateSzymkiewicz() must return expected result of NA when second GRanges empty", {
+    
+    
+    sample01 <- GRanges(seqnames = c("chr1", "chr2", "chr4"), 
+                        ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+                                          end = c(2004603, 4577608, 31695808)), 
+                        strand = rep("-", 3))
+    sample02 <- GRanges()
+    
+    results <- CNVMetrics:::calculateSzymkiewicz(sample01, sample02)
+    
+    expected <- NA
+    
+    expect_equal(results, expected)
+})
+
+test_that("calculateSzymkiewicz() must return expected result of 0.5", {
+    
+    
+    sample01 <- GRanges(seqnames = c("chr1", "chr2", "chr4"), 
+                        ranges =  IRanges(start = c(100, 10, 1000), 
+                                          end = c(199, 19, 1999)), 
+                        strand = rep("-", 3))
+    sample02 <- GRanges(seqnames = c("chr1", "chr2", "chr4"), 
+                        ranges =  IRanges(start = c(150, 15, 1500), 
+                                          end = c(249, 24, 2499)), 
+                        strand = rep("+", 3))
+    
+    results <- CNVMetrics:::calculateSzymkiewicz(sample01, sample02)
+    
+    expected <- 0.5
+    
+    expect_equal(results, expected)
+})
+
+
+test_that("calculateSzymkiewicz() must return expected result of 0", {
+    
+    ### Create a Seqinfo Object
+    chrInfo <- Seqinfo(seqnames=c("chr1", "chr2", "chr3", "chr4", "chr5"),
+                       seqlengths=rep(2500, 5), 
+                       isCircular=rep(FALSE, 5),
+                       genome="Alien")
+    
+    sample01 <- GRanges(seqnames = c("chr1", "chr2", "chr4"), 
+                        ranges =  IRanges(start = c(100, 10, 1000), 
+                                          end = c(199, 19, 1999)), 
+                        strand = rep("-", 3), seqinfo = chrInfo)
+    sample02 <- GRanges(seqnames = c("chr2", "chr3", "chr5"), 
+                        ranges =  IRanges(start = c(150, 15, 1500), 
+                                          end = c(249, 24, 2499)), 
+                        strand = rep("+", 3), seqinfo = chrInfo)
+    
+    results <- CNVMetrics:::calculateSzymkiewicz(sample01, sample02)
+    
+    expected <- 0
+    
+    expect_equal(results, expected)
+})
