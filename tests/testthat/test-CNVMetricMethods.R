@@ -120,7 +120,7 @@ test_that("calculateOverlapRegionsMetric() must return an error when segmentData
     expect_error(calculateOverlapRegionsMetric(demo), error_message) 
 })
 
-test_that("calculateOverlapRegionsMetric() must return an error when segmentData hasat least one sample without metadata state", {
+test_that("calculateOverlapRegionsMetric() must return an error when segmentData has metadata status instead of state", {
     
     error_message <- paste0("at least one sample doesn't have a metadata column ", "
              called \'state\'")
@@ -129,12 +129,31 @@ test_that("calculateOverlapRegionsMetric() must return an error when segmentData
     demo[["sample01"]] <- GRanges(seqnames = "chr1", 
                                   ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
                                                     end = c(2004603, 4577608, 31695808)), strand =  "*",
-                                  state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+                                  status = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
     demo[["sample02"]] <- GRanges(seqnames = "chr1", 
                                   ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
                                                     end = c(2004603, 4577608, 31695808)), strand =  "*",
                                   status= c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    
+    expect_error(calculateOverlapRegionsMetric(demo), error_message) 
+})
+
+test_that("calculateOverlapRegionsMetric() must return an error when segmentData doesn't have metadata state", {
+    
+    error_message <- paste0("at least one sample doesn't have a metadata column ", "
+             called \'state\'")
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1", 
+                                  ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+                                                    end = c(2004603, 4577608, 31695808)), 
+                                  strand =  "*")
+    
+    demo[["sample02"]] <- GRanges(seqnames = "chr1", 
+                                  ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+                                                    end = c(2004603, 4577608, 31695808)), 
+                                  strand =  "*")
     
     expect_error(calculateOverlapRegionsMetric(demo), error_message) 
 })
