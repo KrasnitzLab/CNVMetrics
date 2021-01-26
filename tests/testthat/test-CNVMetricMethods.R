@@ -122,8 +122,8 @@ test_that("calculateOverlapRegionsMetric() must return an error when segmentData
 
 test_that("calculateOverlapRegionsMetric() must return an error when segmentData has metadata status instead of state", {
     
-    error_message <- paste0("at least one sample doesn't have a metadata column ", "
-             called \'state\'")
+    error_message <- paste0("at least one sample doesn't have a metadata column ", 
+                                "called \'state\'")
     
     demo <- GRangesList()
     demo[["sample01"]] <- GRanges(seqnames = "chr1", 
@@ -141,8 +141,8 @@ test_that("calculateOverlapRegionsMetric() must return an error when segmentData
 
 test_that("calculateOverlapRegionsMetric() must return an error when segmentData doesn't have metadata state", {
     
-    error_message <- paste0("at least one sample doesn't have a metadata column ", "
-             called \'state\'")
+    error_message <- paste0("at least one sample doesn't have a metadata column ", 
+                                "called \'state\'")
     
     demo <- GRangesList()
     demo[["sample01"]] <- GRanges(seqnames = "chr1", 

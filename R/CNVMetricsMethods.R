@@ -61,7 +61,7 @@
 #' @importFrom methods is
 #' @export
 prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
-                               segmentWithHeader=FALSE) {
+                                segmentWithHeader = FALSE) {
     
     ## Validate that the chrInfo is a Seqinfo object
     if (!is(chrInfo, "Seqinfo")) {
@@ -82,12 +82,12 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
     filesList <- list.files(path = segDirectory, pattern = ".seg", 
                             all.files = FALSE,
                             full.names = FALSE, recursive = FALSE,
-               ignore.case = TRUE, include.dirs = FALSE, no.. = FALSE)
+                    ignore.case = TRUE, include.dirs = FALSE, no.. = FALSE)
     
     ## Validate that the directory contains at least one segment file
     if (length(filesList) == 0) {
         stop(paste0("There is not segment file (seg or SEG extension) in ", 
-             "the segDirectory."))
+                "the segDirectory."))
     }
     
     ## Validate that the directory contains at least one segment file
@@ -103,7 +103,7 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
         
         # Extract list of chromosomes to keep
         seqToKeep <- seqlevels(excludedRegions)[seqlevels(excludedRegions) %in% 
-                                               seqlevels(chrInfo)]
+                                                seqlevels(chrInfo)]
         
         if (length(seqToKeep) > 0) {
             excludedRegions <- keepSeqlevels(excludedRegions, seqToKeep, 
@@ -127,11 +127,11 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
         
         # Read segments
         tempRanges <- readSEGFile(segPath, uniqueTag = segFileShort, 
-                                     header = segmentWithHeader)
+                                        header = segmentWithHeader)
         
         # Extract list of chromosomes to keep
         seqToKeep <- seqlevels(tempRanges)[seqlevels(tempRanges) %in% 
-                                                seqlevels(chrInfo)]
+                                                    seqlevels(chrInfo)]
         
         if (length(seqToKeep) > 0) {
             # Keep only segments in selected chromosomes
@@ -235,7 +235,7 @@ calculateWeightedEuclideanDistance <- function(segmentData, minThreshold=0.2) {
             metric[names[j], names[i]] <- final
         }
     }
- 
+
     for (i in seq_len(nbNames)) {
         metric[names[i], names[i]] <- 0.0
     }
@@ -344,8 +344,8 @@ calculateOverlapRegionsMetric <- function(segmentData,
     ## AMPLIFICATION/DELETION status 
     if (!all(sapply(segmentData, 
             FUN = function(x) {"state" %in% colnames(mcols(x))}))) {
-        stop(paste0("at least one sample doesn't have a metadata column ", "
-             called \'state\'"))
+        stop(paste0("at least one sample doesn't have a metadata column ", 
+                        "called \'state\'"))
     }
     
     results <- list()

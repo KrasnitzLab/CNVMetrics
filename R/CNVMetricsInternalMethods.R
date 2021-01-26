@@ -108,7 +108,7 @@ doRegression <- function(segmentData) {
     nbNames <- length(names)
     
     metric <- matrix(nrow = nbNames, ncol = nbNames, 
-                     dimnames = rep(list(ID = names), 2))
+                        dimnames = rep(list(ID = names), 2))
     
     incResults <- elementMetadata(segments[segments$included, ])
     
@@ -225,8 +225,8 @@ calculateOverlapMetric <- function(sample01, sample02, method, type) {
     
     if (length(sample01) > 0 && length(sample02) > 0) { 
         result <- switch(method,
-           sorensen = calculateSorensen(sample01, sample02),
-           szymkiewicz = calculateSzymkiewicz(sample01, sample02))
+            sorensen = calculateSorensen(sample01, sample02),
+            szymkiewicz = calculateSzymkiewicz(sample01, sample02))
     }
     
     return(result)
@@ -270,8 +270,8 @@ calculateSorensen <- function(sample01, sample02) {
     widthSample02 <- sum(width(sample02))
     
     result <- ifelse((widthSample01 + widthSample02) > 0, 
-                     (2.0 * inter)/(widthSample01 + widthSample02),
-                     NA)
+                        (2.0 * inter)/(widthSample01 + widthSample02),
+                        NA)
     return(result)
 }
     
@@ -332,8 +332,8 @@ calculateSzymkiewicz <- function(sample01, sample02) {
     
     
     result <- ifelse(min(widthSample01,widthSample02) > 0, 
-                     inter/min(widthSample01,widthSample02),
-                     NA)
+                        inter/min(widthSample01,widthSample02),
+                        NA)
     return(result)
 }
 

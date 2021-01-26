@@ -41,8 +41,8 @@ readSEGFile <- function(filepath, uniqueTag, header=FALSE) {
     }
     
     dataRanges <- GRanges(seqnames = data[, 2], 
-                          ranges=IRanges(start=data[, 3], end=data[, 4]), 
-                          score=data[, 6], source=uniqueTag)
+                            ranges=IRanges(start=data[, 3], end=data[, 4]), 
+                            score=data[, 6], source=uniqueTag)
     
     return(dataRanges)
 }
