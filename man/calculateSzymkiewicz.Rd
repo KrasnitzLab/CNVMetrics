@@ -2,8 +2,7 @@
 % Please edit documentation in R/CNVMetricsInternalMethods.R
 \name{calculateSzymkiewicz}
 \alias{calculateSzymkiewicz}
-\title{Calculate Szymkiewicz-Simpson metric using overlapping 
-amplified/deleted regions between two samples.}
+\title{Calculate Szymkiewicz-Simpson metric}
 \usage{
 calculateSzymkiewicz(sample01, sample02)
 }
@@ -13,27 +12,46 @@ calculateSzymkiewicz(sample01, sample02)
 \item{sample02}{a \code{GRanges} TODO}
 }
 \value{
-a \code{list} of TODO
+a \code{numeric}, the value of the Szymkiewicz-Simpson metric. If
+the metric cannot be calculated, \code{NA} is returned.
 }
 \description{
 Calculate Szymkiewicz-Simpson metric using overlapping 
-regions between two samples.
+amplified/deleted regions between two samples.
+}
+\details{
+The method calculates the Szymkiewicz-Simpson metric using overlapping
+regions between the samples. All regions present in both samples all used
+for the calculation of the metric.
+
+The Szymkiewicz-Simpson metric is calculated by dividing the size of 
+the intersection by the smaller of the size of the two sets. If one sample
+has a size of zero, the metric is not calculated; the value \code{NA} is
+returned instead. The strand of the regions is not taken into account while
+calculating the intersection.
 }
 \examples{
 
-# TODO
-
+## Load required package to generate the two samples
 require(GenomicRanges)
 
+
+## Generate two samples with identical sequence levels
 sample01 <- GRanges(seqnames = "chr1", 
     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
     end = c(2004603, 4577608, 31695808)), strand =  "*")
 sample02 <- GRanges(seqnames = "chr1", 
     ranges =  IRanges(start = c(1995066, 31611222), 
     end = c(2204505, 31689898)), strand =  c("+", "-"))
-    
+   
+## Calculate Szymkiewicz-Simpson metric
 CNVMetrics:::calculateSzymkiewicz(sample01, sample02)
     
+}
+\references{
+Vijaymeena, M. K, and Kavitha K. 2016. “A Survey on Similarity Measures in 
+Text Mining.” Machine Learning and Applications: An International 
+Journal 3 (1): 19–28. doi: \url{https://doi.org/10.5121/mlaij.2016.3103}
 }
 \author{
 Astrid Deschênes

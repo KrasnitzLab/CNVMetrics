@@ -2,8 +2,7 @@
 % Please edit documentation in R/CNVMetricsMethods.R
 \name{calculateOverlapRegionsMetric}
 \alias{calculateOverlapRegionsMetric}
-\title{Calculate metric using overlapping amplified/deleted regions between 
-samples.}
+\title{Calculate metric using overlapping amplified/deleted regions}
 \usage{
 calculateOverlapRegionsMetric(
   segmentData,
@@ -12,47 +11,76 @@ calculateOverlapRegionsMetric(
 }
 \arguments{
 \item{segmentData}{a \code{GRangesList} that contains the segment 
-information, including amplified/deleted status, from at least 2 samples.}
+informations, including amplified/deleted status, from at least 2 samples. 
+All samples must have a metadata column called 'state' with amplified 
+regions identified as 'AMPLIFICATION' and deleted regions identified as
+'DELETION'; regions with different identifications will not be used in the
+calculation of the metric.}
 
 \item{method}{a \code{character} string representing the metric to be used. 
 This should be (an unambiguous abbreviation of) one of "sorensen" or 
-"szymkiewicz-simpson". Default: "sorensen".}
+"szymkiewicz". Default: "sorensen".}
 }
 \value{
-a \code{matrix} TODO
+a \code{list} TODO
 }
 \description{
-Calculate a specific metric using overlapping regions between
-to samples. When more than 2 samples are present, the metric is calculated
-for each sample pair.
+Calculate a specific metric using overlapping 
+amplified/deleted regions between to samples. The metric is calculated for
+the amplified and deleted regions separately. When more than 2 samples are 
+present, the metric is calculated for each sample pair.
 }
 \details{
-Available distance measures are (written for two Granges x and y):
-# TODO
+The two methods each estimate the overlap between paired samples. They use 
+different metrics, all in the range [0, 1] with 0 indicating no overlap.
+
+If \code{method} is "\code{sorensen}", the metric is calculated by dividing
+twice the size of the intersection by the sum of the size of the two sets. 
+With this metric, an overlap metriv value of 1 is only obtained when the
+two samples are identifical. 
+
+If \code{method} is "\code{szymkiewicz}", the metric is calculated by 
+dividing the size of the intersection by the size of the smallest set. With
+this metric, if one set is a subset of the other set, the overlap 
+metric value is 1.
 }
 \examples{
 
-## Create a GRangesList object with 3 samples
-
+## Load required package to generate the samples
 require(GenomicRanges)
 
+## Create a GRangesList object with 3 samples
+## The stand of the regions doesn't affect the calculation of the metric
 demo <- GRangesList()
 demo[["sample01"]] <- GRanges(seqnames = "chr1", 
     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
     end = c(2004603, 4577608, 31695808)), strand =  "*",
     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
 demo[["sample02"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1995066, 31611222), 
-    end = c(2204505, 31689898)), strand =  c("-", "+"),
-    state = c("AMPLIFICATION", "AMPLIFICATION"))
+    ranges =  IRanges(start = c(1995066, 31611222, 31690000), 
+    end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
+    state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
 demo[["sample03"]] <- GRanges(seqnames = "chr1", 
     ranges =  IRanges(start = c(1906069, 4558838), 
     end = c(1909505, 4570601)), strand =  "*",
     state = c("AMPLIFICATION", "DELETION"))
 
-calculateOverlapRegionsMetric(demo)
+## Calculating Sorensen metric
+calculateOverlapRegionsMetric(demo, method="sorensen")
 
+## Calculating Szymkiewicz-Simpson metric
+calculateOverlapRegionsMetric(demo, method="szymkiewicz")
 
+}
+\references{
+Sørensen, Thorvald. n.d. “A Method of Establishing Groups of Equal Amplitude 
+in Plant Sociology Based on Similarity of Species and Its Application to 
+Analyses of the Vegetation on Danish Commons.” Biologiske Skrifter, 
+no. 5: 1–34.
+
+Vijaymeena, M. K, and Kavitha K. 2016. “A Survey on Similarity Measures in 
+Text Mining.” Machine Learning and Applications: An International 
+Journal 3 (1): 19–28. doi: \url{https://doi.org/10.5121/mlaij.2016.3103}
 }
 \author{
 Astrid Deschênes, Pascal Belleau

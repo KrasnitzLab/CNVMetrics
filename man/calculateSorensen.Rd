@@ -21,17 +21,18 @@ two samples.
 }
 \examples{
 
-# TODO
-
+## Load required package to generate the two samples
 require(GenomicRanges)
 
+## Generate two samples with identical sequence levels
 sample01 <- GRanges(seqnames = "chr1", 
     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
     end = c(2004603, 4577608, 31695808)), strand =  "*")
 sample02 <- GRanges(seqnames = "chr1", 
     ranges =  IRanges(start = c(1995066, 31611222), 
     end = c(2204505, 31689898)), strand =  "*")
-    
+
+## Calculate Sorensen metric    
 CNVMetrics:::calculateSorensen(sample01, sample02)
     
 }
