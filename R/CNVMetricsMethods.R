@@ -76,7 +76,7 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
     ## Remove ending slash when present
     if (is.character(segDirectory) && length(segDirectory) > 1 &&
             endsWith(segDirectory, "/")) {
-        segDirectory <- segDirectory[1:length(segDirectory)-1]
+        segDirectory <- segDirectory[seq_len(length(segDirectory)-1)]
     }
     
     filesList <- list.files(path = segDirectory, pattern = ".seg", 
@@ -219,7 +219,7 @@ calculateWeightedEuclideanDistance <- function(segmentData, minThreshold=0.2) {
     incWidth <- width(ranges(segments[segments$included, ]))
     incResults <- elementMetadata(segments[segments$included, ])
     
-    for (i in 1:(nbNames-1)) {
+    for (i in seq_len(nbNames-1)) {
         for (j in (i+1):nbNames) {
             temp01 <- incResults[, c(names[i])] - incResults[, c(names[j])]
             
@@ -236,7 +236,7 @@ calculateWeightedEuclideanDistance <- function(segmentData, minThreshold=0.2) {
         }
     }
  
-    for (i in 1:nbNames) {
+    for (i in seq_len(nbNames)) {
         metric[names[i], names[i]] <- 0.0
     }
     

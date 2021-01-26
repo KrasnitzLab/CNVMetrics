@@ -50,7 +50,7 @@ createSegments <- function(fileList, sourceList, bedExclusion) {
         }
     }
     
-    for (i in 1:length(fileData)) {
+    for (i in seq_len(length(fileData))) {
         if (!is.null(fileData[[i]])) {
             olaps <- findOverlaps(results, fileData[[i]])
             temp <- elementMetadata(results)
@@ -180,7 +180,7 @@ calculateRegressedValues <- function(segmentData) {
 
     #segmentData$regressed <- segments
     
-    for (i in 1:length(segmentData$regression)) {
+    for (i in seq_len(length(segmentData$regression))) {
         lmData <- segmentData$regression[[i]][["lm"]]
         xName <- segmentData$regression[[i]][["x_used"]]
         tempVal <- data.frame(x=segments[, xName])
