@@ -271,8 +271,8 @@ calculateWeightedEuclideanDistance <- function(segmentData, minThreshold=0.2) {
 #' 
 #' If \code{method} is "\code{sorensen}", the metric is calculated by dividing
 #' twice the size of the intersection by the sum of the size of the two sets. 
-#' With this metric, an overlap metriv value of 1 is only obtained when the
-#' two samples are identifical. 
+#' With this metric, an overlap metric value of 1 is only obtained when the
+#' two samples are identical. 
 #' 
 #' If \code{method} is "\code{szymkiewicz}", the metric is calculated by 
 #' dividing the size of the intersection by the size of the smallest set. With

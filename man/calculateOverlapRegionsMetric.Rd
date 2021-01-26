@@ -36,8 +36,8 @@ different metrics, all in the range [0, 1] with 0 indicating no overlap.
 
 If \code{method} is "\code{sorensen}", the metric is calculated by dividing
 twice the size of the intersection by the sum of the size of the two sets. 
-With this metric, an overlap metriv value of 1 is only obtained when the
-two samples are identifical. 
+With this metric, an overlap metric value of 1 is only obtained when the
+two samples are identical. 
 
 If \code{method} is "\code{szymkiewicz}", the metric is calculated by 
 dividing the size of the intersection by the size of the smallest set. With
@@ -56,10 +56,14 @@ demo[["sample01"]] <- GRanges(seqnames = "chr1",
     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
     end = c(2004603, 4577608, 31695808)), strand =  "*",
     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+
 demo[["sample02"]] <- GRanges(seqnames = "chr1", 
     ranges =  IRanges(start = c(1995066, 31611222, 31690000), 
     end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+
+## The amplified region in sample03 is a subset of the amplified regions 
+## in sample01
 demo[["sample03"]] <- GRanges(seqnames = "chr1", 
     ranges =  IRanges(start = c(1906069, 4558838), 
     end = c(1909505, 4570601)), strand =  "*",
