@@ -70,7 +70,7 @@ test_that("calculateWeightedEuclideanDistance() must return good results 01", {
                                   File1 = c(0.1, 0.1, 0.1, NA, NA, NA, 0.5, NA), 
                                   File2 = c(NA, 0.3, 0.3, 0.3, 0.3, 0.4, 0.4, 0.4))
     
-    expMatrix <- matrix(c(0, 0.387652570, 0.387652570, 0), byrow = T, 
+    expMatrix <- matrix(c(0, 0.387652570, 0.387652570, 0), byrow = TRUE, 
                             ncol = 2, nrow = 2)
     colnames(expMatrix) <- c("File1", "File2")
     rownames(expMatrix) <- c("File1", "File2")
@@ -93,8 +93,8 @@ test_that("calculateWeightedEuclideanDistance() must return good results 02", {
                                          File1 = c(0.1, 0.1, 0.1, NA, NA, NA, 0.5, NA), 
                                          File2 = c(NA, 0.15, 0.3, 0.3, 0.3, 0.4, 0.4, 0.4))
     
-    expMatrix <- matrix(c(0, 0.174485599340559, 0.174485599340559, 0), byrow = T, 
-                        ncol = 2, nrow = 2)
+    expMatrix <- matrix(c(0, 0.174485599340559, 0.174485599340559, 0), 
+                        byrow = TRUE, ncol = 2, nrow = 2)
     colnames(expMatrix) <- c("File1", "File2")
     rownames(expMatrix) <- c("File1", "File2")
     
