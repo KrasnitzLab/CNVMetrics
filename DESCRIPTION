@@ -5,7 +5,6 @@ Date: 2018-08-23
 Title: Copy number variant metrics
 Description: This package implements metrics to facilite copy number variant 
     comparison among samples and/or methods.
-Author: Astrid Deschênes and Pascal Belleau
 Authors@R: c(person("Astrid", "Deschênes", email = "adeschen@hotmail.com",
     role = c("aut", "cre")), 
     person("Pascal", "Belleau", email = "pascal_belleau@hotmail.com",
@@ -18,7 +17,9 @@ Imports: rtracklayer,
     GenomeInfoDb,
     methods, 
     magrittr, 
-    S4Vectors
+    S4Vectors,
+    stats,
+    utils
 Suggests: BiocStyle, 
     knitr, 
     rmarkdown, 
@@ -29,5 +30,4 @@ biocViews: BiologicalQuestion,
 VignetteBuilder: knitr
 URL: https://github.com/adeschen/CNVMetrics
 BugReports: https://github.com/adeschen/CNVMetrics/issues
-Maintainer: Astrid Deschênes <adeschen@hotmail.com>
 RoxygenNote: 7.1.1
