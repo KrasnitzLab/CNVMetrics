@@ -253,11 +253,12 @@ calculateWeightedEuclideanDistance <- function(segmentData, minThreshold=0.2) {
 #' the amplified and deleted regions separately. When more than 2 samples are 
 #' present, the metric is calculated for each sample pair.
 #' 
-#' @param segmentData a \code{GRangesList} that contains the segment 
-#' informations, including amplified/deleted status, from at least 2 samples. 
-#' All samples must have a metadata column called 'state' with amplified 
-#' regions identified as 'AMPLIFICATION' and deleted regions identified as
-#' 'DELETION'; regions with different identifications will not be used in the
+#' @param segmentData a \code{GRangesList} that contains a collection of 
+#' genomic ranges representing copy number events, including amplified/deleted 
+#' status, from at least 2 samples. All samples must have a metadata column 
+#' called '\code{state}' with amplified regions identified as 
+#' '\code{AMPLIFICATION}' and deleted regions identified as '\code{DELETION}'; 
+#' regions with different identifications will not be used in the
 #' calculation of the metric. 
 #' 
 #' @param method a \code{character} string representing the metric to be used. 
@@ -269,24 +270,53 @@ calculateWeightedEuclideanDistance <- function(segmentData, minThreshold=0.2) {
 #' The two methods each estimate the overlap between paired samples. They use 
 #' different metrics, all in the range [0, 1] with 0 indicating no overlap.
 #' 
-#' If \code{method} is "\code{sorensen}", the metric is calculated by dividing
-#' twice the size of the intersection by the sum of the size of the two sets. 
+#' The available metrics are (written for two GRanges):
+#' 
+#' \code{sorensen}:
+#' 
+#' This metric is calculated by dividing twice the size of the intersection 
+#' by the sum of the size of the two sets. 
 #' With this metric, an overlap metric value of 1 is only obtained when the
 #' two samples are identical. 
 #' 
-#' If \code{method} is "\code{szymkiewicz}", the metric is calculated by 
-#' dividing the size of the intersection by the size of the smallest set. With
-#' this metric, if one set is a subset of the other set, the overlap 
-#' metric value is 1.
+#' \code{szymkiewicz}:
 #' 
-#' @return a \code{list} TODO
+#' This metric is calculated by dividing the size of the intersection 
+#' by the size of the smallest set. With this metric, if one set is a 
+#' subset of the other set, the overlap metric value is 1.
+#' 
+#' @return a \code{list} of class "\code{CNVMetric}". This list has
+#' the following components:
+#' \itemize{
+#' \item{\code{AMPLIFICATION}}{ a lower-triangular \code{matrix} with the 
+#'     results of the selected metric on the amplified regions for each paired
+#'     samples. The value \code{NA} is present when the metric cannot be 
+#'     calculated. The value \code{NA} is also present in the top-triangular 
+#'     section of the matrix.
+#'  }
+#'  \item{\code{DELETION}}{ a lower-triangular \code{matrix} with the 
+#'     results of the selected metric on the deleted regions for each paired
+#'     samples. The value \code{NA} is present when the metric cannot be 
+#'     calculated. The value \code{NA} is also present in the top-triangular 
+#'     section of the matrix.
+#' }}
+#' 
+#' The object has the following attributes (besides "class" equal 
+#' to "CNVMetric"):
+#' \itemize{
+#' \item{\code{metric}}{ the metric used for the calculation.
+#'  } 
+#' \item{\code{names}}{ the names of the two matrix containing the metrics for
+#' the amplified and deleted regions.
+#' }}         
+#' 
 #' 
 #' @references 
 #' 
-#' Sørensen, Thorvald. n.d. “A Method of Establishing Groups of Equal Amplitude 
-#' in Plant Sociology Based on Similarity of Species and Its Application to 
-#' Analyses of the Vegetation on Danish Commons.” Biologiske Skrifter, 
-#' no. 5: 1–34.
+#' Sørensen, Thorvald. n.d. “A Method of Establishing Groups of Equal 
+#' Amplitude in Plant Sociology Based on Similarity of Species and Its 
+#' Application to Analyses of the Vegetation on Danish Commons.” 
+#' Biologiske Skrifter, no. 5: 1–34.
 #' 
 #' Vijaymeena, M. K, and Kavitha K. 2016. “A Survey on Similarity Measures in 
 #' Text Mining.” Machine Learning and Applications: An International 
@@ -367,6 +397,12 @@ calculateOverlapRegionsMetric <- function(segmentData,
         }
         results[[type]] <- dataTMP
     }
-        
+    
+    # Return a list marked as an CNVMetric class containing:
+    # 1- the metric results for the amplified regions
+    # 2- the metric results for the deleted regions
+    class(results) <- "CNVMetric"
+    attr(results, 'metric') <- method
+    
     return(results)
 }

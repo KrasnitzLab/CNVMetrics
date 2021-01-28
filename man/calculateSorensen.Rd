@@ -2,22 +2,35 @@
 % Please edit documentation in R/CNVMetricsInternalMethods.R
 \name{calculateSorensen}
 \alias{calculateSorensen}
-\title{Calculate Sorensen metric using overlapping amplified/deleted 
-regions between two samples.}
+\title{Calculate Sorensen metric}
 \usage{
 calculateSorensen(sample01, sample02)
 }
 \arguments{
-\item{sample01}{a \code{GRanges} TODO}
+\item{sample01}{a \code{GRanges} which contains a collection of 
+genomic ranges representing copy number events for the first sample.}
 
-\item{sample02}{a \code{GRanges} TODO}
+\item{sample02}{a \code{GRanges} which contains a collection of 
+genomic ranges representing copy number events for the second sample.}
 }
 \value{
-a \code{list} of TODO
+a \code{numeric}, the value of the Sorensen metric. If
+the metric cannot be calculated, \code{NA} is returned.
 }
 \description{
-Calculate Sorensen metric using overlapping regions between
+Calculate Sorensen metric using overlapping regions between 
 two samples.
+}
+\details{
+The method calculates the Sorensen metric using overlapping
+regions between the samples. All regions present in both samples are used
+for the calculation of the metric.
+
+The Sorensen metric is calculated by dividing twice the size of 
+the intersection by the sum of the size of the two sets. If the sum of
+the size of the two sets is zero; the value \code{NA} is
+returned instead. The strand of the regions is not taken into account while
+calculating the intersection.
 }
 \examples{
 
@@ -35,6 +48,12 @@ sample02 <- GRanges(seqnames = "chr1",
 ## Calculate Sorensen metric    
 CNVMetrics:::calculateSorensen(sample01, sample02)
     
+}
+\references{
+Sørensen, Thorvald. n.d. “A Method of Establishing Groups of Equal 
+Amplitude in Plant Sociology Based on Similarity of Species and Its 
+Application to Analyses of the Vegetation on Danish Commons.” 
+Biologiske Skrifter, no. 5: 1–34.
 }
 \author{
 Astrid Deschênes

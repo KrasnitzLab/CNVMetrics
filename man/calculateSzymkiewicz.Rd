@@ -7,9 +7,11 @@
 calculateSzymkiewicz(sample01, sample02)
 }
 \arguments{
-\item{sample01}{a \code{GRanges} TODO}
+\item{sample01}{a \code{GRanges} which contains a collection of 
+genomic ranges representing copy number events for the first sample.}
 
-\item{sample02}{a \code{GRanges} TODO}
+\item{sample02}{a \code{GRanges} which contains a collection of 
+genomic ranges representing copy number events for the second sample.}
 }
 \value{
 a \code{numeric}, the value of the Szymkiewicz-Simpson metric. If
@@ -17,7 +19,7 @@ the metric cannot be calculated, \code{NA} is returned.
 }
 \description{
 Calculate Szymkiewicz-Simpson metric using overlapping 
-amplified/deleted regions between two samples.
+regions between two samples.
 }
 \details{
 The method calculates the Szymkiewicz-Simpson metric using overlapping
@@ -34,7 +36,6 @@ calculating the intersection.
 
 ## Load required package to generate the two samples
 require(GenomicRanges)
-
 
 ## Generate two samples with identical sequence levels
 sample01 <- GRanges(seqnames = "chr1", 
