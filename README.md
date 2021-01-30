@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/adeschen/CNVMetrics.svg?branch=master)](https://travis-ci.org/adeschen/CNVMetrics)
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/adeschen/CNVMetrics/workflows/R-CMD-check/badge.svg)](https://github.com/adeschen/CNVMetrics/actions)
+<!-- badges: end -->
 [![codecov](https://codecov.io/gh/adeschen/CNVMetrics/branch/master/graph/badge.svg)](https://codecov.io/gh/adeschen/CNVMetrics)
 [![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
 
