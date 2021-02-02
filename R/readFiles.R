@@ -17,9 +17,12 @@
 #'
 #' @examples
 #'
-#' # TODO
-#' segFile <- system.file("inst/extdata/dem01.seg", 
-#'     package = "CNVMetrics")
+#' ## Path to a demo segmentation file
+#' segFile <- system.file("extdata", "demo01.seg", package = "CNVMetrics")
+#' 
+#' ## This segment file has a header
+#' ## Load the content of the segment file
+#' readSEGFile(filepath = segFile, uniqueTag = "demo01", header = TRUE)
 #' 
 #' @author Astrid Deschenes, Pascal Belleau
 #' @importFrom GenomicRanges GRanges
