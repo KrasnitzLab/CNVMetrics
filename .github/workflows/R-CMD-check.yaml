@@ -18,6 +18,8 @@ jobs:
 
     name: ${{ matrix.config.os }} (R ${{ matrix.config.r }}) (Bioc ${{ matrix.config.bioc }})
 
+    container: ${{ matrix.config.cont }}
+    
     strategy:
       fail-fast: false
       matrix:
