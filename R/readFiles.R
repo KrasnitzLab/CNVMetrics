@@ -41,7 +41,7 @@ readSEGFile <- function(filepath, uniqueTag, header=FALSE) {
     
     data <- read.table(filepath, header=header)
     
-    if (nrow(data) < 6) {
+    if (ncol(data) < 6) {
         stop("The segment file must have at least 6 columns.")
     }
     
