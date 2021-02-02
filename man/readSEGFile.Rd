@@ -27,6 +27,8 @@ information to generate a \code{GRanges}.
 \examples{
 
 # TODO
+segFile <- system.file("inst/extdata/dem01.seg", 
+    package = "CNVMetrics")
 
 }
 \author{

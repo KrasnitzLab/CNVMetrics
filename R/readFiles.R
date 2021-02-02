@@ -18,6 +18,8 @@
 #' @examples
 #'
 #' # TODO
+#' segFile <- system.file("inst/extdata/dem01.seg", 
+#'     package = "CNVMetrics")
 #' 
 #' @author Astrid Deschenes, Pascal Belleau
 #' @importFrom GenomicRanges GRanges
