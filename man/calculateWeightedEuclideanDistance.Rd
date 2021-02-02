@@ -35,9 +35,17 @@ number of bases of the segment \code{i}.
 }
 \examples{
 
-# TODO
+## TODO
 
+# Path to the exclusion BED file
+bedFile <- system.file("extdata", "mm10.blacklist.bed", 
+    package = "CNVMetrics")
+    
+# Path to the directory containing the segmentation files
+segDir <- system.file("extdata", package="CNVMetrics")
 
+ ## TODO
+  
 }
 \author{
 Astrid Deschênes, Pascal Belleau

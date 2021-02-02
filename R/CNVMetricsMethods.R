@@ -46,16 +46,27 @@
 #' @examples
 #'
 #' # Path to the exclusion BED file
-#' bedFile <- system.file("inst/extdata/exclusion_hg38_demo_chr1_and_2.bed", 
+#' bedFile <- system.file("extdata", "mm10.blacklist.bed", 
 #'     package = "CNVMetrics")
-#'     
-#' # Path to the directory containing the segmentation files
-#' segDir <- system.file("inst/extdata", package="CNVMetrics")
+#' 
+#' ## Prepare information about the chromosomes
+#' ## The files are from mouse samples, chr1 to chr4
+#' require(GenomeInfoDb)
+#' 
+#' ## Get the information for mouse genome mm10
+#' ## Limit the information to chromosomes 1 to 4
+#' mouseInfo <- Seqinfo(genome="mm10")    
+#' mouseInfo <- mouseInfo[c("chr1", "chr2", "chr3", "chr4"),]
+#'             
+#' ## Path to the directory containing the segmentation files
+#' segDir <- system.file("extdata", package="CNVMetrics")
 #' 
 #' # TODO
 #' 
+#' prepareInformation(segDirectory = segDir, chrInfo = mouseInfo,
+#'     bedExclusionFile = bedFile, segmentWithHeader = TRUE)
 #' 
-#' @author Astrid Deschênes, Pascal Belleau
+#' @author Astrid Deschenes, Pascal Belleau
 #' @importFrom rtracklayer import
 #' @importFrom GenomeInfoDb keepSeqlevels seqlevels
 #' @importFrom methods is
@@ -189,9 +200,17 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
 #' 
 #' @examples
 #'
-#' # TODO
+#' ## TODO
 #' 
+#' # Path to the exclusion BED file
+#' bedFile <- system.file("extdata", "mm10.blacklist.bed", 
+#'     package = "CNVMetrics")
+#'     
+#' # Path to the directory containing the segmentation files
+#' segDir <- system.file("extdata", package="CNVMetrics")
 #' 
+#'  ## TODO
+#'   
 #' @author Astrid Deschênes, Pascal Belleau
 #' @importFrom GenomicRanges elementMetadata
 #' @importFrom IRanges ranges width
