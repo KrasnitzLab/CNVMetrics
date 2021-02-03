@@ -49,8 +49,8 @@ This survey represents various similarity measures that are implemented in
 ## Sørensen
 
 
-The Sørensen coefficient [@Sorensen48] is calculated by dividing the 
-size of the intersection by the smaller of the size of the two sets:
+The Sørensen coefficient [@Sorensen48] is calculated by dividing twice the  
+size of the intersection by the sum of the size of the two sets:
 
 \begin{equation}
   \frac{2\times  \left| X \cap Y \right| }{\left| X \right| + \left| Y \right|}
