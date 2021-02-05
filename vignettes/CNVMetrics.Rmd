@@ -52,6 +52,13 @@ mouse pancreatic organoid [@Oni2020] and plot with
 
 ![Figure 1. Copy number profile of a mouse metastatic pancreatic organoid.]( mM30_Feb_03_2021.jpeg "Copy number profile"){ width=100% }
 
+While visual representation are a practical way to qualitatively compare copy 
+number profiles, metrics are useful statistical tools for quantitatively 
+measuring similarity and dissimilarity between profiles. Similarity metrics can
+be used to compare independent samples but also related samples such as 
+copy number profiles from bulk cancer tissues and paired organoids generated 
+from those.
+
 The `r Githubpkg("adeschen/CNVMetrics")` package calculates metrics to 
 estimate the level of similarity between copy number profiles. Some metrics 
 are calculated using the _CNV calls_ (amplification/deletion status) while 
@@ -90,6 +97,11 @@ by the smaller of the size of the two sets:
 
 If set **X** is a subset of **Y** or vice versa, the overlap coefficient 
 value is 1. 
+
+
+<!---
+![Figure 2. Copy number profile of a mouse metastatic pancreatic organoid.](overlap_demo2.jpg "Copy number profile"){ width=100% }
+-->
 
 
 # Metrics using the level of amplification/deletion
