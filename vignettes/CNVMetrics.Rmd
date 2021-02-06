@@ -35,7 +35,7 @@ Artistic license 2.0. You are free to use and redistribute this software.
 
 # Introduction
 
-Copy number variation (CNV) includes multiplication and deletions of DNA
+Copy number variation (CNV) includes multiplication and deletion of DNA
 segment (> 1 kb). Copy number variations have been shown to be associated 
 with a wide spectrum of pathological conditions and complex traits, such 
 as developmental neuropsychiatric disorders [@Hiroi2013] and especially 
@@ -45,12 +45,12 @@ CNV are usually reported, for each sample, as genomic regions that are
 duplicated or deleted with respect to a reference. Those regions are denoted 
 as _CNV calls_. The level of amplification or deletion can also be reported, 
 usually in log2 ratio values or normalized read depth [@Zhao2013]. As an 
-example, the Figure 1, the copy number profile obtained with 
-`r Githubpkg("KrasnitzLab/CNprep")` [@Belleau2020] from sequencing data of 
-mouse pancreatic organoid [@Oni2020] and plot with 
+example, the Figure 1 shows the copy number profiles from sequencing data of 
+two mouse pancreatic organoids [@Oni2020], calculated with 
+`r Githubpkg("KrasnitzLab/CNprep")` [@Belleau2020] and plot with 
 `r Biocpkg("gtrellis")` [@Gu2016a].
 
-![Figure 1. Copy number profile of a mouse metastatic pancreatic organoid.]( mM30_Feb_03_2021.jpeg "Copy number profile"){ width=100% }
+![Figure 1. Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).]( mM30_mM10_Feb_05_2021.jpeg "Copy number profile"){ width=100% }
 
 While visual representation are a practical way to qualitatively compare copy 
 number profiles, metrics are useful statistical tools for quantitatively 
