@@ -50,7 +50,7 @@ two mouse pancreatic organoids [@Oni2020], calculated with
 `r Githubpkg("KrasnitzLab/CNprep")` [@Belleau2020] and plot with 
 `r Biocpkg("gtrellis")` [@Gu2016a].
 
-![Figure 1. Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).]( mM30_mM10_Feb_05_2021.jpeg "Copy number profile"){ width=100% }
+![Figure 1. Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).]( CNV_mM30_mM10_v03_Feb_08_2021.jpeg "Copy number profile"){ width=100% }
 
 While visual representation are a practical way to qualitatively compare copy 
 number profiles, metrics are useful statistical tools for quantitatively 
@@ -64,6 +64,45 @@ estimate the level of similarity between copy number profiles. Some metrics
 are calculated using the _CNV calls_ (amplification/deletion status) while 
 others use the level of amplification/deletion.
 
+
+# Workflow for metrics calculated using _CNV calls_
+
+The following figure gives an overview of the capabilities of  
+`r Githubpkg("adeschen/CNVMetrics")` to calculate metrics using the 
+_CNV calls_ (amplification/deletion status):
+
+
+The key functions for each step are:
+
+ Step                   | Function                    
+----------------------- | ---------------------------------------------
+ Data Importation       | `GenomicRanges::makeGRangesListFromDataFrame(...)`
+ Metric Calculation     | `calculateOverlapRegionsMetric(...)`   
+ Visualization          | `TODO`
+ 
+The `package::function` notation is used for functions from other packages.
+
+## Data Input - Copy number file
+
+_CNV calls_ are represented as segments with a copy number state. The state 
+be general, such as "amplification", "deletion" or "neutral", or more 
+specific such as TODO.
+
+A basic five-column input file containing genomic position 
+(chromosome, start, end), sample identification and CNV calls is required. 
+All samples that need to be analyzed together have to be present in the file. 
+
+A column named **state** is required. In this column, the amplified and 
+deleted segments must be assigned those values:
+
+* **<span style="color:darkred">AMPLIFICATION</span>**
+* **<span style="color:darkred">DELETION</span>**
+
+Segments with other state values can be present in the file. However, those 
+segments won't be retain for the calculation of the metrics.
+
+
+![Figure 2. Example of a copy number file containing CNV calls.](Input_CNfile_2.jpg  "Example of a copy number file containing CNV calls."){ width=95% }
 
 # Metrics using the _CNV calls_
 
