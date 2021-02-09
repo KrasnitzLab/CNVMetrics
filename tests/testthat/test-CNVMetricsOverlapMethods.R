@@ -122,6 +122,7 @@ test_that("calculateOverlapRegionsMetric() must return expected results with sor
     expect_equal(result, expected)
 })
 
+
 test_that("calculateOverlapRegionsMetric() must return expected results with szymkiewicz", {
     
     demo <- GRangesList()
@@ -162,4 +163,39 @@ test_that("calculateOverlapRegionsMetric() must return expected results with szy
 })
 
 
+### Tests plotOverlapMetric() results
 
+context("plotOverlapMetric() results")
+
+test_that("plotOverlapMetric() must return error when type wrong", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(100, 300, 800), end = c(200, 500, 900)), 
+        strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    demo[["sample02"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(150, 600, 1000), end = c(250, 700, 1500)), 
+        strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    
+    
+    metric <- calculateOverlapRegionsMetric(segmentData = demo, 
+                                                method = "szymkiewicz")
+    
+    
+    error_message <- gettextf("'arg' should be one of %s", 
+                              paste(dQuote(c("BOTH", "AMPLIFICATION", 
+                                                "DELETION")), 
+                                        collapse = ", "))
+    
+    expect_error(plotOverlapMetric(metric = metric,  type = "SAVE"), 
+                 error_message)
+})
+
+
+test_that("plotOverlapMetric() must return error when metric is not CNVMetric object", {
+    
+    error_message <- "\'metric\' must be a CNVMetric object."
+    
+    expect_error(plotOverlapMetric(metric = "TEST01",  type = "SAVE"), 
+                 error_message)
+})
