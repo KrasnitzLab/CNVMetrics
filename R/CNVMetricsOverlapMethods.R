@@ -136,15 +136,15 @@ calculateOverlapRegionsMetric <- function(segmentData,
     
     for(type in c("AMPLIFICATION", "DELETION")) {
         
-        dataTMP <- matrix(rep(NA, nb^2), nrow = nb)
+        dataTMP <- matrix(rep(NA, nb^2), nrow=nb)
         rownames(dataTMP) <- names
         colnames(dataTMP) <- names
         
         for(i in seq_len(nb)[-1]) {
             for(j in seq_len(i-1)) {
                 dataTMP[i, j] <- calculateOverlapMetric(
-                    sample01 = segmentData[[names[i]]], 
-                    sample02 = segmentData[[names[j]]],
+                    sample01=segmentData[[names[i]]], 
+                    sample02=segmentData[[names[j]]],
                     method=method, type=type)
             }
         }
@@ -158,4 +158,117 @@ calculateOverlapRegionsMetric <- function(segmentData,
     attr(results, 'metric') <- method
     
     return(results)
+}
+
+
+#' @title Plot metrics based on overlapping amplified/deleted regions
+#' 
+#' @description Plot a heatmap of the metrics based on overlapping 
+#' amplified/deleted regions.
+#' 
+#' @param metric a \code{CNVMetric} object containing the metrics calculated
+#' by \code{calculateOverlapRegionsMetric}.
+#' 
+#' @param type a \code{character} string indicating which graph to generate. 
+#' This should be (an unambiguous abbreviation of) one of "\code{BOTH}", 
+#' "\code{AMPLIFICATION}" or "\code{DELETION}". Default: "\code{BOTH}".
+#' 
+#' 
+#' @return a \code{gtable} object containing the heatmap of the specified 
+#' metric. TODO
+#' 
+#' @examples
+#' 
+#' ## Load required package to generate the samples
+#' require(GenomicRanges)
+#' 
+#' ## Create a GRangesList object with 3 samples
+#' ## The stand of the regions doesn't affect the calculation of the metric
+#' demo <- GRangesList()
+#' demo[["sample01"]] <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+#'     end = c(2004603, 4577608, 31695808)), strand =  "*",
+#'     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+#' 
+#' demo[["sample02"]] <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1995066, 31611222, 31690000), 
+#'     end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
+#'     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+#' 
+#' ## The amplified region in sample03 is a subset of the amplified regions 
+#' ## in sample01
+#' demo[["sample03"]] <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1906069, 4558838), 
+#'     end = c(1909505, 4570601)), strand =  "*",
+#'     state = c("AMPLIFICATION", "DELETION"))
+#' 
+#' ## Calculating Sorensen metric
+#' metric <- calculateOverlapRegionsMetric(demo, method="sorensen")
+#' 
+#' ## Plot both amplification and deletion metrics
+#' plotOverlapMetric(metric, type="BOTH")
+#' 
+#' @seealso 
+#' 
+#' The default method  \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}}.
+#' 
+#' @author Astrid Deschênes, Pascal Belleau
+#' @importFrom grDevices colorRampPalette
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom pheatmap pheatmap
+#' @importFrom gridExtra grid.arrange arrangeGrob
+#' @import GenomicRanges
+#' @export
+plotOverlapMetric <- function(metric, 
+                              type=c("BOTH", "AMPLIFICATION", "DELETION")) {
+    
+    ## Validate that the metric parameter is a CNVMetric object
+    if (!is.CNVMetric(metric)) {
+        stop("\'metric\' must be a CNVMetric object.")
+    }
+    
+    ## Assign type parameter
+    type <- match.arg(type)
+    
+    ## Extract the type of metric
+    metricInfo <- attributes(metric)$metric
+    
+    plot_list <- list()
+    
+    colors <- colorRampPalette(brewer.pal(9, "Blues"))(255)
+    breaks <-  seq(0, 1, length.out = 255)
+    
+    ## Amplification
+    if (type %in% c("AMPLIFICATION", "BOTH")) {
+        ampMatrix <- metric$AMPLIFICATION
+        diag(ampMatrix) <- 1.0
+        ampMatrix[upper.tri(ampMatrix)] <- t(ampMatrix)[upper.tri(ampMatrix)]
+        
+        rownames(ampMatrix) <-  rownames(metric$AMPLIFICATION)
+        colnames(ampMatrix) <- NULL
+        plot_list[["AMPLIFICATION"]] <- pheatmap(ampMatrix, cluster_rows=TRUE, 
+                                                 cluster_cols=TRUE,
+                                                 main="Amplification",
+                                                 color=colors, 
+                                                 breaks=breaks)[[4]]    
+    }
+    
+    ## Deletion
+    if (type %in% c("DELETION", "BOTH")) {
+        delMatrix <- metric$DELETION
+        diag(delMatrix) <- 1.0
+        delMatrix[upper.tri(delMatrix)] <- t(delMatrix)[upper.tri(delMatrix)]
+        
+        rownames(delMatrix) <-  rownames(metric$DELETION)
+        colnames(delMatrix) <- NULL
+        
+        plot_list[["DELETION"]] <- pheatmap(delMatrix, cluster_rows=TRUE, 
+                                            cluster_cols=TRUE,
+                                            main="Deletion",
+                                            color=colors, breaks=breaks)[[4]]   
+    }
+    
+    n_col <- ifelse(type == "BOTH", 2, 1)
+    
+    grid.arrange(arrangeGrob(grobs= plot_list, ncol=n_col))
 }
