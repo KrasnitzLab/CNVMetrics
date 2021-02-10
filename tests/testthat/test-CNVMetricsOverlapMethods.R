@@ -61,17 +61,17 @@ test_that("calculateOverlapRegionsMetric() must return 1 when two samples identi
                     end = c(2004603, 4577608, 31695808)), strand =  "*",
                     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
-    result <- calculateOverlapRegionsMetric(segmentData = demo, 
-                                                metho = "sorensen")
+    result <- calculateOverlapRegionsMetric(segmentData=demo, 
+                                                method="sorensen")
     
     expected <- list()
-    expected$AMPLIFICATION <- matrix(c(NA, NA, 1, NA), nrow = 2, ncol = 2, 
-                                    byrow = TRUE)
+    expected$AMPLIFICATION <- matrix(c(NA, NA, 1, NA), nrow=2, ncol=2, 
+                                    byrow=TRUE)
     colnames(expected$AMPLIFICATION) <- c("sample01", "sample02")
     rownames(expected$AMPLIFICATION) <- c("sample01", "sample02")
     
-    expected$DELETION <- matrix(c(NA, NA, 1, NA), nrow = 2, ncol = 2, 
-                                   byrow = TRUE)
+    expected$DELETION <- matrix(c(NA, NA, 1, NA), nrow=2, ncol=2, 
+                                   byrow=TRUE)
     colnames(expected$DELETION) <- c("sample01", "sample02")
     rownames(expected$DELETION) <- c("sample01", "sample02")
     
@@ -99,20 +99,20 @@ test_that("calculateOverlapRegionsMetric() must return expected results with sor
                 state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
     
-    result <- calculateOverlapRegionsMetric(segmentData = demo, 
-                                            metho = "sorensen")
+    result <- calculateOverlapRegionsMetric(segmentData=demo, 
+                                            method="sorensen")
     
     expected <- list()
     expected$AMPLIFICATION <- matrix(c(NA, NA, NA, 0.202380952380952, NA, NA, 
-                0.334437086092715, 0.801587301587302, NA), nrow = 3, ncol = 3, 
-                                    byrow = TRUE)
+                0.334437086092715, 0.801587301587302, NA), nrow=3, ncol=3, 
+                                    byrow=TRUE)
     colnames(expected$AMPLIFICATION) <- c("sample01", "sample02", "sample03")
     rownames(expected$AMPLIFICATION) <- c("sample01", "sample02", "sample03")
     
     expected$DELETION <- matrix(c(NA, NA, NA, 0, NA, NA, 
                                   0, 0.667110519307590, NA), 
-                                nrow = 3, ncol = 3, 
-                                byrow = TRUE)
+                                nrow=3, ncol=3, 
+                                byrow=TRUE)
     colnames(expected$DELETION) <- c("sample01", "sample02", "sample03")
     rownames(expected$DELETION) <- c("sample01", "sample02", "sample03")
     
@@ -139,8 +139,8 @@ test_that("calculateOverlapRegionsMetric() must return expected results with szy
                     end = c(250, 700, 2000)), strand =  "*",
                     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
-    result <- calculateOverlapRegionsMetric(segmentData = demo, 
-                                            metho = "szymkiewicz")
+    result <- calculateOverlapRegionsMetric(segmentData=demo, 
+                                            metho="szymkiewicz")
     
     expected <- list()
     expected$AMPLIFICATION <- matrix(c(NA, NA, NA, 0.252475247524752, NA, NA, 
@@ -170,24 +170,24 @@ context("plotOverlapMetric() results")
 test_that("plotOverlapMetric() must return error when type wrong", {
     
     demo <- GRangesList()
-    demo[["sample01"]] <- GRanges(seqnames = "chr1",
-        ranges =  IRanges(start = c(100, 300, 800), end = c(200, 500, 900)), 
+    demo[["sample01"]] <- GRanges(seqnames="chr1",
+        ranges =  IRanges(start=c(100, 300, 800), end=c(200, 500, 900)), 
         strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
-    demo[["sample02"]] <- GRanges(seqnames = "chr1",
-        ranges =  IRanges(start = c(150, 600, 1000), end = c(250, 700, 1500)), 
-        strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    demo[["sample02"]] <- GRanges(seqnames="chr1",
+        ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)), 
+        strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
     
-    metric <- calculateOverlapRegionsMetric(segmentData = demo, 
-                                                method = "szymkiewicz")
+    metric <- calculateOverlapRegionsMetric(segmentData=demo, 
+                                                method="szymkiewicz")
     
     
     error_message <- gettextf("'arg' should be one of %s", 
                               paste(dQuote(c("BOTH", "AMPLIFICATION", 
                                                 "DELETION")), 
-                                        collapse = ", "))
+                                        collapse=", "))
     
-    expect_error(plotOverlapMetric(metric = metric,  type = "SAVE"), 
+    expect_error(plotOverlapMetric(metric=metric,  type="SAVE"), 
                  error_message)
 })
 
@@ -196,6 +196,48 @@ test_that("plotOverlapMetric() must return error when metric is not CNVMetric ob
     
     error_message <- "\'metric\' must be a CNVMetric object."
     
-    expect_error(plotOverlapMetric(metric = "TEST01",  type = "SAVE"), 
+    expect_error(plotOverlapMetric(metric="TEST01",  type="SAVE"), 
+                 error_message)
+})
+
+
+test_that("plotOverlapMetric() must return error when colorRange is vector of single letters", {
+    
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(100, 300, 800), end = c(200, 500, 900)), 
+        strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    demo[["sample02"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(150, 600, 1000), end = c(250, 700, 1500)), 
+        strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    
+    metric <- calculateOverlapRegionsMetric(segmentData = demo, 
+                                            method = "szymkiewicz")
+    
+    error_message <- "\'colorRange\' must be be a vector of 2 valid color names."
+    
+    expect_error(plotOverlapMetric(metric=metric,  type="AMPLIFICATION",
+                        colorRange=c("a", "b")), 
+                 error_message)
+})
+
+test_that("plotOverlapMetric() must return error when colorRange is vector of one color", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames="chr1",
+        ranges=IRanges(start=c(100, 300, 800), end = c(200, 500, 900)), 
+        strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    demo[["sample02"]] <- GRanges(seqnames="chr1",
+        ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)), 
+        strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    
+    metric <- calculateOverlapRegionsMetric(segmentData = demo, 
+                                            method = "szymkiewicz")
+    
+    error_message <- "\'colorRange\' must be a vector of 2 color names."
+    
+    expect_error(plotOverlapMetric(metric=metric,  type="AMPLIFICATION",
+                                   colorRange=c("red")), 
                  error_message)
 })
