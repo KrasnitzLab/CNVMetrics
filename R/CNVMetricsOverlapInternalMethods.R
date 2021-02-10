@@ -68,27 +68,27 @@
 #'     state = c("AMPLIFICATION", "DELETION", "DELETION"))
 #' 
 #' ## Calculate Sorensen metric for the amplified regions   
-#' CNVMetrics:::calculateOverlapMetric(sample01, sample02, method="sorensen",
-#'     type="AMPLIFICATION")
+#' CNVMetrics:::calculateOneOverlapMetric(sample01, sample02, 
+#'     method="sorensen", type="AMPLIFICATION")
 #' 
 #' ## Calculate Szymkiewicz-Simpson metric for the amplified regions   
 #' ## Amplified regions of sample02 are a subset of the amplified 
 #' ## regions in sample01
-#' CNVMetrics:::calculateOverlapMetric(sample01, sample02, method="szymkiewicz",
-#'     type="AMPLIFICATION")
+#' CNVMetrics:::calculateOneOverlapMetric(sample01, sample02, 
+#'     method="szymkiewicz", type="AMPLIFICATION")
 #' 
 #' ## Calculate Sorensen metric for the deleted regions   
-#' CNVMetrics:::calculateOverlapMetric(sample01, sample02, method="sorensen",
-#'     type="DELETION")
+#' CNVMetrics:::calculateOneOverlapMetric(sample01, sample02, 
+#'     method="sorensen", type="DELETION")
 #'     
 #' ## Calculate Szymkiewicz-Simpson metric for the deleted regions    
-#' CNVMetrics:::calculateOverlapMetric(sample01, sample02, method="szymkiewicz",
-#'     type="DELETION")
+#' CNVMetrics:::calculateOneOverlapMetric(sample01, sample02,
+#'     method="szymkiewicz", type="DELETION")
 #' 
 #' @author Astrid Deschênes
 #' @encoding UTF-8
 #' @keywords internal
-calculateOverlapMetric <- function(sample01, sample02, method, type) {
+calculateOneOverlapMetric <- function(sample01, sample02, method, type) {
     
     sample01 <- sample01[sample01$state == type,]
     sample02 <- sample02[sample02$state == type,]
@@ -246,7 +246,7 @@ calculateSzymkiewicz <- function(sample01, sample02) {
 #' amplified/deleted regions. 
 #' 
 #' @param metric a \code{CNVMetric} object containing the metrics calculated
-#' by \code{calculateOverlapRegionsMetric}.
+#' by \code{calculateOverlapMetric}.
 #' 
 #' @param type a \code{character} string indicating which graph to generate. 
 #' This should be (an unambiguous abbreviation of) one of  
@@ -291,7 +291,7 @@ calculateSzymkiewicz <- function(sample01, sample02) {
 #'     state = c("AMPLIFICATION", "DELETION"))
 #' 
 #' ## Calculating Sorensen metric
-#' metric <- calculateOverlapRegionsMetric(demo, method="sorensen")
+#' metric <- calculateOverlapMetric(demo, method="sorensen")
 #' 
 #' ## Plot both amplification metrics using darkorange color
 #' CNVMetrics:::plotOneOverlapMetric(metric, type="AMPLIFICATION", 
@@ -314,8 +314,8 @@ plotOneOverlapMetric <- function(metric, type, colorRange, show_colnames, ...)
 
     ## Prepare main title (might not be used if main argument given by user)
     metricInfo <- switch(attributes(metric)$metric, 
-                         "szymkiewicz"="Szymkiewicz-Simpson", 
-                         "sorensen"="Sorensen")
+                            "szymkiewicz"="Szymkiewicz-Simpson", 
+                            "sorensen"="Sorensen")
     metricInfo <- paste0(type, " - ", metricInfo, " metric")
     
     ## Create heatmap
@@ -328,10 +328,10 @@ plotOneOverlapMetric <- function(metric, type, colorRange, show_colnames, ...)
         
         if (!hasArg("main")) {
             pheatmap(metricMat, main=metricInfo, show_colnames=show_colnames, 
-                     color=colors, breaks=breaks, ...)[[4]] 
+                        color=colors, breaks=breaks, ...)[[4]] 
         } else {
             pheatmap(metricMat, show_colnames=show_colnames, 
-                     color=colors, breaks=breaks, ...)[[4]]  
+                        color=colors, breaks=breaks, ...)[[4]]  
         }
     } else {
         if (!hasArg("main")) {

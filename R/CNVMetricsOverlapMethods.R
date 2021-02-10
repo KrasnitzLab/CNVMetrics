@@ -102,16 +102,16 @@
 #'     state = c("AMPLIFICATION", "DELETION"))
 #' 
 #' ## Calculating Sorensen metric
-#' calculateOverlapRegionsMetric(demo, method="sorensen")
+#' calculateOverlapMetric(demo, method="sorensen")
 #' 
 #' ## Calculating Szymkiewicz-Simpson metric
-#' calculateOverlapRegionsMetric(demo, method="szymkiewicz")
+#' calculateOverlapMetric(demo, method="szymkiewicz")
 #' 
 #' @author Astrid Deschênes, Pascal Belleau
 #' @import GenomicRanges 
 #' @encoding UTF-8
 #' @export
-calculateOverlapRegionsMetric <- function(segmentData, 
+calculateOverlapMetric <- function(segmentData, 
                                     method=c("sorensen", "szymkiewicz")) {
     
     method <- match.arg(method)
@@ -143,7 +143,7 @@ calculateOverlapRegionsMetric <- function(segmentData,
         
         for(i in seq_len(nb)[-1]) {
             for(j in seq_len(i-1)) {
-                dataTMP[i, j] <- calculateOverlapMetric(
+                dataTMP[i, j] <- calculateOneOverlapMetric(
                     sample01=segmentData[[names[i]]], 
                     sample02=segmentData[[names[j]]],
                     method=method, type=type)
@@ -169,7 +169,7 @@ calculateOverlapRegionsMetric <- function(segmentData,
 #' heatmap related to amplified, deleted regions or both.
 #' 
 #' @param metric a \code{CNVMetric} object containing the metrics calculated
-#' by \code{calculateOverlapRegionsMetric}.
+#' by \code{calculateOverlapMetric}.
 #' 
 #' @param type a \code{character} string indicating which graph to generate. 
 #' This should be (an unambiguous abbreviation of) one of "\code{BOTH}", 
@@ -215,7 +215,7 @@ calculateOverlapRegionsMetric <- function(segmentData,
 #'     state = c("AMPLIFICATION", "DELETION"))
 #' 
 #' ## Calculating Sorensen metric
-#' metric <- calculateOverlapRegionsMetric(demo, method="sorensen")
+#' metric <- calculateOverlapMetric(demo, method="sorensen")
 #' 
 #' ## Plot both amplification and deletion metrics
 #' plotOverlapMetric(metric, type="BOTH")

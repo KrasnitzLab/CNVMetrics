@@ -2,7 +2,7 @@
 
 S3method(is,CNVMetric)
 S3method(print,CNVMetric)
-export(calculateOverlapRegionsMetric)
+export(calculateOverlapMetric)
 export(calculateWeightedEuclideanDistance)
 export(plotOverlapMetric)
 export(prepareInformation)

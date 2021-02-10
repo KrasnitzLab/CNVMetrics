@@ -29,7 +29,7 @@ test_that("print() for CNVMetric object must return identical object", {
         state = c("AMPLIFICATION", "DELETION"))
 
     ## Calculating Sorensen metric
-    expected <- calculateOverlapRegionsMetric(demo, method="sorensen")
+    expected <- calculateOverlapMetric(demo, method="sorensen")
     
     result <- print(expected)
     
@@ -60,7 +60,7 @@ test_that("is() for CNVMetric object must return identical object", {
                                   state = c("AMPLIFICATION", "DELETION"))
     
     ## Calculating Sorensen metric
-    metric <- calculateOverlapRegionsMetric(demo, method="sorensen")
+    metric <- calculateOverlapMetric(demo, method="sorensen")
     
     result <- is.CNVMetric(metric)
     
