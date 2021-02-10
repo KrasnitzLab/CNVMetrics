@@ -15,5 +15,6 @@
 #' Maintainer:
 #' Astrid Deschênes <adeschen@hotmail.com>
 #'
+#' @encoding UTF-8
 #' @keywords package
 NULL

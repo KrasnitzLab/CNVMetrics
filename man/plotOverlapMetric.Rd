@@ -15,7 +15,7 @@ plotOverlapMetric(
 }
 \arguments{
 \item{metric}{a \code{CNVMetric} object containing the metrics calculated
-by \code{calculateOverlapRegionsMetric}.}
+by \code{calculateOverlapMetric}.}
 
 \item{type}{a \code{character} string indicating which graph to generate. 
 This should be (an unambiguous abbreviation of) one of "\code{BOTH}", 
@@ -67,7 +67,7 @@ demo[["sample03"]] <- GRanges(seqnames = "chr1",
     state = c("AMPLIFICATION", "DELETION"))
 
 ## Calculating Sorensen metric
-metric <- calculateOverlapRegionsMetric(demo, method="sorensen")
+metric <- calculateOverlapMetric(demo, method="sorensen")
 
 ## Plot both amplification and deletion metrics
 plotOverlapMetric(metric, type="BOTH")

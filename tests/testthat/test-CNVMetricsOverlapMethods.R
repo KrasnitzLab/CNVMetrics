@@ -7,11 +7,11 @@ library(IRanges)
 library(GenomeInfoDb)
 
 
-### Tests calculateOverlapRegionsMetric() results
+### Tests calculateOverlapMetric() results
 
-context("calculateOverlapRegionsMetric() results")
+context("calculateOverlapMetric() results")
 
-test_that("calculateOverlapRegionsMetric() must return error when only one sample present", {
+test_that("calculateOverlapMetric() must return error when only one sample present", {
     
     demo <- GRangesList()
     demo[["sample01"]] <- GRanges(seqnames = "chr1",
@@ -22,12 +22,12 @@ test_that("calculateOverlapRegionsMetric() must return error when only one sampl
 
     error_message <- "at least 2 samples must be present in the segmentData"
     
-    expect_error(calculateOverlapRegionsMetric(segmentData = demo, 
+    expect_error(calculateOverlapMetric(segmentData = demo, 
                                                 method = "sorensen"), 
                  error_message)
 })
 
-test_that("calculateOverlapRegionsMetric() must return error when method is available", {
+test_that("calculateOverlapMetric() must return error when method is available", {
     
     demo <- GRangesList()
     demo[["sample01"]] <- GRanges(seqnames = "chr1",
@@ -43,13 +43,13 @@ test_that("calculateOverlapRegionsMetric() must return error when method is avai
              paste(dQuote(c("sorensen", "szymkiewicz")), 
                                                 collapse = ", "))
 
-    expect_error(calculateOverlapRegionsMetric(segmentData = demo, 
+    expect_error(calculateOverlapMetric(segmentData = demo, 
                                                method = "typo"), 
                  error_message)
 })
 
 
-test_that("calculateOverlapRegionsMetric() must return 1 when two samples identical with sorensen", {
+test_that("calculateOverlapMetric() must return 1 when two samples identical with sorensen", {
     
     demo <- GRangesList()
     demo[["sample01"]] <- GRanges(seqnames = "chr1",
@@ -61,7 +61,7 @@ test_that("calculateOverlapRegionsMetric() must return 1 when two samples identi
                     end = c(2004603, 4577608, 31695808)), strand =  "*",
                     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
-    result <- calculateOverlapRegionsMetric(segmentData=demo, 
+    result <- calculateOverlapMetric(segmentData=demo, 
                                                 method="sorensen")
     
     expected <- list()
@@ -82,7 +82,7 @@ test_that("calculateOverlapRegionsMetric() must return 1 when two samples identi
 })
 
 
-test_that("calculateOverlapRegionsMetric() must return expected results with sorensen", {
+test_that("calculateOverlapMetric() must return expected results with sorensen", {
     
     demo <- GRangesList()
     demo[["sample01"]] <- GRanges(seqnames = "chr1",
@@ -99,7 +99,7 @@ test_that("calculateOverlapRegionsMetric() must return expected results with sor
                 state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
     
-    result <- calculateOverlapRegionsMetric(segmentData=demo, 
+    result <- calculateOverlapMetric(segmentData=demo, 
                                             method="sorensen")
     
     expected <- list()
@@ -123,7 +123,7 @@ test_that("calculateOverlapRegionsMetric() must return expected results with sor
 })
 
 
-test_that("calculateOverlapRegionsMetric() must return expected results with szymkiewicz", {
+test_that("calculateOverlapMetric() must return expected results with szymkiewicz", {
     
     demo <- GRangesList()
     demo[["sample01"]] <- GRanges(seqnames = "chr1",
@@ -139,7 +139,7 @@ test_that("calculateOverlapRegionsMetric() must return expected results with szy
                     end = c(250, 700, 2000)), strand =  "*",
                     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
-    result <- calculateOverlapRegionsMetric(segmentData=demo, 
+    result <- calculateOverlapMetric(segmentData=demo, 
                                             metho="szymkiewicz")
     
     expected <- list()
@@ -163,6 +163,58 @@ test_that("calculateOverlapRegionsMetric() must return expected results with szy
 })
 
 
+test_that("calculateOverlapMetric() must return an error when segmentData has only one sample", {
+    
+    error_message <- "at least 2 samples must be present in the segmentData"
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1", 
+                                  ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+                                                    end = c(2004603, 4577608, 31695808)), strand =  "*",
+                                  state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    
+    expect_error(calculateOverlapMetric(demo), error_message) 
+})
+
+test_that("calculateOverlapMetric() must return an error when segmentData has metadata status instead of state", {
+    
+    error_message <- paste0("at least one sample doesn't have a metadata column ", 
+                            "called \'state\'")
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1", 
+                                  ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+                                                    end = c(2004603, 4577608, 31695808)), strand =  "*",
+                                  status = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    
+    demo[["sample02"]] <- GRanges(seqnames = "chr1", 
+                                  ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+                                                    end = c(2004603, 4577608, 31695808)), strand =  "*",
+                                  status= c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    
+    expect_error(calculateOverlapMetric(demo), error_message) 
+})
+
+test_that("calculateOverlapMetric() must return an error when segmentData doesn't have metadata state", {
+    
+    error_message <- paste0("at least one sample doesn't have a metadata column ", 
+                            "called \'state\'")
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1", 
+                                  ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+                                                    end = c(2004603, 4577608, 31695808)), 
+                                  strand =  "*")
+    
+    demo[["sample02"]] <- GRanges(seqnames = "chr1", 
+                                  ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+                                                    end = c(2004603, 4577608, 31695808)), 
+                                  strand =  "*")
+    
+    expect_error(calculateOverlapMetric(demo), error_message) 
+})
+
+
 ### Tests plotOverlapMetric() results
 
 context("plotOverlapMetric() results")
@@ -178,7 +230,7 @@ test_that("plotOverlapMetric() must return error when type wrong", {
         strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
     
-    metric <- calculateOverlapRegionsMetric(segmentData=demo, 
+    metric <- calculateOverlapMetric(segmentData=demo, 
                                                 method="szymkiewicz")
     
     
@@ -212,7 +264,7 @@ test_that("plotOverlapMetric() must return error when colorRange is vector of si
         ranges =  IRanges(start = c(150, 600, 1000), end = c(250, 700, 1500)), 
         strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
-    metric <- calculateOverlapRegionsMetric(segmentData = demo, 
+    metric <- calculateOverlapMetric(segmentData = demo, 
                                             method = "szymkiewicz")
     
     error_message <- "\'colorRange\' must be be a vector of 2 valid color names."
@@ -232,7 +284,7 @@ test_that("plotOverlapMetric() must return error when colorRange is vector of on
         ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)), 
         strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
-    metric <- calculateOverlapRegionsMetric(segmentData = demo, 
+    metric <- calculateOverlapMetric(segmentData = demo, 
                                             method = "szymkiewicz")
     
     error_message <- "\'colorRange\' must be a vector of 2 color names."
