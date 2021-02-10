@@ -21,7 +21,6 @@ Imports: rtracklayer,
     stats,
     utils,
     pheatmap,
-    RColorBrewer,
     gridExtra,
     grDevices
 Suggests: BiocStyle, 

@@ -109,6 +109,7 @@
 #' 
 #' @author Astrid Deschênes, Pascal Belleau
 #' @import GenomicRanges 
+#' @encoding UTF-8
 #' @export
 calculateOverlapRegionsMetric <- function(segmentData, 
                                     method=c("sorensen", "szymkiewicz")) {
@@ -163,8 +164,9 @@ calculateOverlapRegionsMetric <- function(segmentData,
 
 #' @title Plot metrics based on overlapping amplified/deleted regions
 #' 
-#' @description Plot a heatmap of the metrics based on overlapping 
-#' amplified/deleted regions.
+#' @description Plot one heatmap (or two heatmaps) of the metrics based on 
+#' overlapping amplified/deleted regions. The user can select to print the
+#' heatmap related to amplified, deleted regions or both.
 #' 
 #' @param metric a \code{CNVMetric} object containing the metrics calculated
 #' by \code{calculateOverlapRegionsMetric}.
@@ -173,9 +175,19 @@ calculateOverlapRegionsMetric <- function(segmentData,
 #' This should be (an unambiguous abbreviation of) one of "\code{BOTH}", 
 #' "\code{AMPLIFICATION}" or "\code{DELETION}". Default: "\code{BOTH}".
 #' 
+#' @param colorRange a \code{vector} of 2 \code{character} string 
+#' representing the 2 colors that will be
+#' assigned to the lowest (0) and highest value (1) in the heatmap. 
+#' Default: \code{c("white", "darkblue")}.
 #' 
-#' @return a \code{gtable} object containing the heatmap of the specified 
-#' metric. TODO
+#' @param show_colnames a \code{boolean} specifying if column names are 
+#' be shown. Default: \code{FALSE}.
+#' 
+#' @param \ldots further arguments passed to 
+#' \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method.
+#' 
+#' @return a \code{gtable} object containing the heatmap(s) of the specified 
+#' metric(s).
 #' 
 #' @examples
 #' 
@@ -212,15 +224,17 @@ calculateOverlapRegionsMetric <- function(segmentData,
 #' 
 #' The default method  \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}}.
 #' 
-#' @author Astrid Deschênes, Pascal Belleau
-#' @importFrom grDevices colorRampPalette
-#' @importFrom RColorBrewer brewer.pal
+#' @author Astrid Deschênes
+#' @importFrom grDevices colorRampPalette col2rgb 
 #' @importFrom pheatmap pheatmap
 #' @importFrom gridExtra grid.arrange arrangeGrob
 #' @import GenomicRanges
+#' @encoding UTF-8
 #' @export
 plotOverlapMetric <- function(metric, 
-                              type=c("BOTH", "AMPLIFICATION", "DELETION")) {
+                                type=c("BOTH", "AMPLIFICATION", "DELETION"),
+                                colorRange=c(c("white", "darkblue")), 
+                                show_colnames=FALSE, ...) {
     
     ## Validate that the metric parameter is a CNVMetric object
     if (!is.CNVMetric(metric)) {
@@ -230,45 +244,38 @@ plotOverlapMetric <- function(metric,
     ## Assign type parameter
     type <- match.arg(type)
     
+    ## Validate that the color name has only one value
+    if (!is.character(colorRange) || length(colorRange) < 2) {
+        stop("\'colorRange\' must be a vector of 2 character strings.")
+    }
+    
+    ## Validate that the color name is valid
+    tryCatch(col2rgb(colorRange), error = function(e) {
+        stop("\'colorRange\' must be be a vector of 2 valid color names.")
+    })
+    
     ## Extract the type of metric
     metricInfo <- attributes(metric)$metric
     
     plot_list <- list()
     
-    colors <- colorRampPalette(brewer.pal(9, "Blues"))(255)
-    breaks <-  seq(0, 1, length.out = 255)
-    
     ## Amplification
     if (type %in% c("AMPLIFICATION", "BOTH")) {
-        ampMatrix <- metric$AMPLIFICATION
-        diag(ampMatrix) <- 1.0
-        ampMatrix[upper.tri(ampMatrix)] <- t(ampMatrix)[upper.tri(ampMatrix)]
-        
-        rownames(ampMatrix) <-  rownames(metric$AMPLIFICATION)
-        colnames(ampMatrix) <- NULL
-        plot_list[["AMPLIFICATION"]] <- pheatmap(ampMatrix, cluster_rows=TRUE, 
-                                                 cluster_cols=TRUE,
-                                                 main="Amplification",
-                                                 color=colors, 
-                                                 breaks=breaks)[[4]]    
+        plot_list[["AMPLIFICATION"]] <- plotOneOverlapMetric(metric=metric,
+                                            type="AMPLIFICATION", 
+                                            colorRange=colorRange, 
+                                            show_colnames=show_colnames, ...)  
     }
     
     ## Deletion
     if (type %in% c("DELETION", "BOTH")) {
-        delMatrix <- metric$DELETION
-        diag(delMatrix) <- 1.0
-        delMatrix[upper.tri(delMatrix)] <- t(delMatrix)[upper.tri(delMatrix)]
-        
-        rownames(delMatrix) <-  rownames(metric$DELETION)
-        colnames(delMatrix) <- NULL
-        
-        plot_list[["DELETION"]] <- pheatmap(delMatrix, cluster_rows=TRUE, 
-                                            cluster_cols=TRUE,
-                                            main="Deletion",
-                                            color=colors, breaks=breaks)[[4]]   
+        plot_list[["DELETION"]] <- plotOneOverlapMetric(metric=metric,
+                                            type="DELETION", 
+                                            colorRange=colorRange, 
+                                            show_colnames=show_colnames, ...)  
     }
     
     n_col <- ifelse(type == "BOTH", 2, 1)
     
-    grid.arrange(arrangeGrob(grobs= plot_list, ncol=n_col))
+    grid.arrange(arrangeGrob(grobs=plot_list, ncol=n_col))
 }
