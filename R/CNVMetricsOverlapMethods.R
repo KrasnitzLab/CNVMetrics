@@ -246,7 +246,7 @@ plotOverlapMetric <- function(metric,
     
     ## Validate that the color name has only one value
     if (!is.character(colorRange) || length(colorRange) < 2) {
-        stop("\'colorRange\' must be a vector of 2 character strings.")
+        stop("\'colorRange\' must be a vector of 2 color names.")
     }
     
     ## Validate that the color name is valid
