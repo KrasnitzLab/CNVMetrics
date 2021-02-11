@@ -7,8 +7,19 @@
 \alias{CNVMetrics}
 \title{CNVMetrics: Copy number variant metrics}
 \description{
-This package implements metrics to facilitate copy number variant 
-comparison among samples and/or methods.
+The CNVMetrics package calculates similarity metrics to facilitate copy 
+number variant comparison among samples and/or methods. Some metrics are 
+based on the shared amplified/deleted regions while other metrics rely on 
+the level of amplification/deletion. Finally, a visualization tool is 
+provided to explore resulting metrics.
+}
+\seealso{
+\itemize{
+    \item \code{\link{calculateOverlapMetric}} {for calculating metric 
+    using overlapping amplified/deleted regions}
+    \item \code{\link{plotOneOverlapMetric}} {for plotting metrics based 
+    on overlapping amplified/deleted regions}
+}
 }
 \author{
 Astrid Deschênes and
