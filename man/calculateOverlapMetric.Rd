@@ -21,8 +21,8 @@ This should be (an unambiguous abbreviation of) one of "sorensen" or
 "szymkiewicz". Default: "sorensen".}
 }
 \value{
-a \code{list} of class "\code{CNVMetric}". This list has
-the following components:
+an object of class "\code{CNVMetric}" which contains the calculated
+metric. This object is a list with the following components:
 \itemize{
 \item{\code{AMPLIFICATION}}{ a lower-triangular \code{matrix} with the 
     results of the selected metric on the amplified regions for each paired

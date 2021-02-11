@@ -38,8 +38,8 @@
 #' by the size of the smallest set. With this metric, if one set is a 
 #' subset of the other set, the overlap metric value is 1.
 #' 
-#' @return a \code{list} of class "\code{CNVMetric}". This list has
-#' the following components:
+#' @return an object of class "\code{CNVMetric}" which contains the calculated
+#' metric. This object is a list with the following components:
 #' \itemize{
 #' \item{\code{AMPLIFICATION}}{ a lower-triangular \code{matrix} with the 
 #'     results of the selected metric on the amplified regions for each paired
