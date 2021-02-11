@@ -3,14 +3,18 @@ Type: Package
 Version: 0.1.2
 Date: 2021-02-10
 Title: Copy Number Variant Metrics
-Description: Calculate similarity metrics to facilite copy number variant 
-    comparison among samples and/or methods.
+Description: The CNVMetrics package calculates similarity metrics to 
+    facilitate copy number variant comparison among samples and/or methods. 
+    Some metrics are based on the shared amplified/deleted regions while other 
+    metrics rely on the level of amplification/deletion. Finally, 
+    a visualization tool is provided to explore resulting metrics.
 Authors@R: c(person("Astrid", "Deschênes", email = "adeschen@hotmail.com",
     role = c("aut", "cre")), 
     person("Pascal", "Belleau", email = "pascal_belleau@hotmail.com",
     role = c("aut")))
 Encoding: UTF-8
 License: Artistic-2.0
+Depends: R (>= 4.0)
 Imports: rtracklayer, 
     GenomicRanges, 
     IRanges, 
