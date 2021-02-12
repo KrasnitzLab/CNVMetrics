@@ -162,9 +162,10 @@ calculateSorensen <- function(sample01, sample02) {
     
     ## Calculate intersection between the two sets as well as the 
     ## total size of each set
-    inter <- sum(width(intersect(sample01, sample02, ignore.strand=TRUE)))
-    widthSample01 <- sum(width(sample01))
-    widthSample02 <- sum(width(sample02))
+    inter <- sum(as.numeric(width(intersect(sample01, sample02, 
+                                                ignore.strand=TRUE))))
+    widthSample01 <- sum(as.numeric(width(sample01)))
+    widthSample02 <- sum(as.numeric(width(sample02)))
     
     ## Calculate Sorensen metric if possible; otherwise NA
     result <- ifelse((widthSample01 + widthSample02) > 0, 
@@ -228,9 +229,10 @@ calculateSzymkiewicz <- function(sample01, sample02) {
     
     ## Calculate intersection between the two sets as well as the 
     ## total size of each set
-    inter <- sum(width(intersect(sample01, sample02, ignore.strand=TRUE)))
-    widthSample01 <- sum(width(sample01))
-    widthSample02 <- sum(width(sample02))
+    inter <- sum(as.numeric(width(intersect(sample01, sample02, 
+                                                ignore.strand=TRUE))))
+    widthSample01 <- sum(as.numeric(width(sample01)))
+    widthSample02 <- sum(as.numeric(width(sample02)))
     
     ## Calculate Szymkiewicz-Simpson metric if possible; otherwise NA
     result <- ifelse(min(widthSample01,widthSample02) > 0, 
@@ -310,7 +312,7 @@ plotOneOverlapMetric <- function(metric, type, colorRange, show_colnames, ...)
     metricMat <- metric[[type]]
     diag(metricMat) <- 1.0
     metricMat[upper.tri(metricMat)] <- t(metricMat)[upper.tri(metricMat)]
-    
+    metricMat[is.na(metricMat)] <- 0.0
 
     ## Prepare main title (might not be used if main argument given by user)
     metricInfo <- switch(attributes(metric)$metric, 
