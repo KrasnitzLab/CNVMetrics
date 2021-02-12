@@ -4,10 +4,13 @@
 [![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
 <!-- badges: end -->
 
+<p align="center">
+<img src="./vignettes/CNVMetrics_text.jpg" alt="CNVMetrics">
+</p>
 
-# CNVMetrics
 
-A R package to compare copy number variant (CNV) results from multiple samples/methods.
+A R package to compare copy number variant (CNV) results from multiple samples/methods using similarity metrics. Some metrics are based on the 
+shared amplified/deleted regions while other metrics rely on the level of amplification/deletion. Finally, a visualization tool is provided to explore resulting metrics
 
 
 ## Authors ##
