@@ -28,13 +28,13 @@ metric. This object is a list with the following components:
     results of the selected metric on the amplified regions for each paired
     samples. The value \code{NA} is present when the metric cannot be 
     calculated. The value \code{NA} is also present in the top-triangular 
-    section of the matrix.
+    section, as well as the diagonal, of the matrix.
  }
  \item{\code{DELETION}}{ a lower-triangular \code{matrix} with the 
     results of the selected metric on the deleted regions for each paired
     samples. The value \code{NA} is present when the metric cannot be 
     calculated. The value \code{NA} is also present in the top-triangular 
-    section of the matrix.
+    section, as well as the diagonal, of the matrix.
 }}
 
 The object has the following attributes (besides "class" equal 

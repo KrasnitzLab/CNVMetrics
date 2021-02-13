@@ -30,7 +30,9 @@ Default: \code{c("white", "darkblue")}.}
 be shown. Default: \code{FALSE}.}
 
 \item{\ldots}{further arguments passed to 
-\code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method.}
+\code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method. Beware that
+the \code{filename} argument cannot be used when \code{type} is 
+ "\code{BOTH}".}
 }
 \value{
 a \code{gtable} object containing the heatmap(s) of the specified 
@@ -71,6 +73,14 @@ metric <- calculateOverlapMetric(demo, method="sorensen")
 
 ## Plot both amplification and deletion metrics
 plotOverlapMetric(metric, type="BOTH")
+
+
+## Extra parameters, used by pheatmap(), can also be passed to the function
+## Here, we have the metric values print to the cell while the 
+## row names and column names are removed
+plotOverlapMetric(metric, type="DELETION", show_rownames=FALSE,
+    show_colnames=FALSE, main="deletion", display_numbers=TRUE,
+    number_format="\%.2f")
 
 }
 \seealso{

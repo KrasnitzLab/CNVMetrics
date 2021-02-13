@@ -45,13 +45,13 @@
 #'     results of the selected metric on the amplified regions for each paired
 #'     samples. The value \code{NA} is present when the metric cannot be 
 #'     calculated. The value \code{NA} is also present in the top-triangular 
-#'     section of the matrix.
+#'     section, as well as the diagonal, of the matrix.
 #'  }
 #'  \item{\code{DELETION}}{ a lower-triangular \code{matrix} with the 
 #'     results of the selected metric on the deleted regions for each paired
 #'     samples. The value \code{NA} is present when the metric cannot be 
 #'     calculated. The value \code{NA} is also present in the top-triangular 
-#'     section of the matrix.
+#'     section, as well as the diagonal, of the matrix.
 #' }}
 #' 
 #' The object has the following attributes (besides "class" equal 
@@ -184,7 +184,9 @@ calculateOverlapMetric <- function(segmentData,
 #' be shown. Default: \code{FALSE}.
 #' 
 #' @param \ldots further arguments passed to 
-#' \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method.
+#' \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method. Beware that
+#' the \code{filename} argument cannot be used when \code{type} is 
+#'  "\code{BOTH}".
 #' 
 #' @return a \code{gtable} object containing the heatmap(s) of the specified 
 #' metric(s).
@@ -220,6 +222,14 @@ calculateOverlapMetric <- function(segmentData,
 #' ## Plot both amplification and deletion metrics
 #' plotOverlapMetric(metric, type="BOTH")
 #' 
+#' 
+#' ## Extra parameters, used by pheatmap(), can also be passed to the function
+#' ## Here, we have the metric values print to the cell while the 
+#' ## row names and column names are removed
+#' plotOverlapMetric(metric, type="DELETION", show_rownames=FALSE,
+#'     show_colnames=FALSE, main="deletion", display_numbers=TRUE,
+#'     number_format="%.2f")
+#' 
 #' @seealso 
 #' 
 #' The default method  \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}}.
@@ -228,6 +238,7 @@ calculateOverlapMetric <- function(segmentData,
 #' @importFrom grDevices colorRampPalette col2rgb 
 #' @importFrom pheatmap pheatmap
 #' @importFrom gridExtra grid.arrange arrangeGrob
+#' @importFrom methods hasArg
 #' @import GenomicRanges
 #' @encoding UTF-8
 #' @export
@@ -243,6 +254,17 @@ plotOverlapMetric <- function(metric,
     
     ## Assign type parameter
     type <- match.arg(type)
+    
+    ## Validate that the filename argument is not used when
+    ## type "BOTH" is selected
+    if (type == "BOTH" &&  hasArg("filename")) {
+        stop("\'type\' cannot be \'BOTH\' when filename argument is used.")
+    }
+    
+    ## Validate that the color name has only one value
+    if (!is.character(colorRange) || length(colorRange) < 2) {
+        stop("\'colorRange\' must be a vector of 2 color names.")
+    }
     
     ## Validate that the color name has only one value
     if (!is.character(colorRange) || length(colorRange) < 2) {

@@ -293,3 +293,25 @@ test_that("plotOverlapMetric() must return error when colorRange is vector of on
                                    colorRange=c("red")), 
                  error_message)
 })
+
+
+test_that("plotOverlapMetric() must return error when type==BOTH and filename given", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames="chr1",
+                                  ranges=IRanges(start=c(100, 300, 800), end = c(200, 500, 900)), 
+                                  strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    demo[["sample02"]] <- GRanges(seqnames="chr1",
+                                  ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)), 
+                                  strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    
+    metric <- calculateOverlapMetric(segmentData = demo, 
+                                     method = "szymkiewicz")
+    
+    error_message <- "\'type\' cannot be \'BOTH\' when filename argument is used."
+    
+    expect_error(plotOverlapMetric(metric=metric,  type="BOTH",
+                                   filename="test.pdf"), 
+                 error_message)
+})
+
