@@ -149,20 +149,63 @@ copy number information into an R `data.frame` and then, use the
 `GenomicRanges::makeGRangesListFromDataFrame()` function to convert them 
 to a `GRangesList`.
 
+For this demonstration, we consider _CNV calls_ as obtained with 
+`r Githubpkg("KrasnitzLab/CNprep")` [@Belleau2020], 
+from ten mouse pancreatic organoids [@Oni2020]. 
+
+```{r demoImport01}
+## Load required libraries
+library(GenomicRanges)
+library(CNVMetrics)
+
+## Load file containing CNV calls for 10 mouse organoids
+data.dir <- system.file("extdata", package="CNVMetrics")
+cnv.file <- file.path(data.dir, "mousePairedOrganoids.txt")
+calls <- read.table(cnv.file, header=TRUE, sep="\t")
+
+## The CNV calls for all samples are present in one file
+## The 'state' column is required
+## The chromosome Y has been removed
+head(calls)
+
+## The ID column identifies the 10 samples
+unique(calls[,"ID"])
+
+## The ID column is used to split the samples into different GRanges 
+## inside a GRangesList
+## The 'keep.extra.column=TRUE' parameter is needed to retained the extra 
+## column 'state' that is needed for the calculation of the metrics
+grl <- GenomicRanges::makeGRangesListFromDataFrame(calls, 
+    split.field="ID", keep.extra.columns=TRUE)
+grl
+```
+
+
 ## Metric Calculation
 
 The calculation of the similarity metrics is done with the 
 `calculateOverlapMetric()` function. 
 
+```{r demoCalculateMetric01}
+metric <- calculateOverlapMetric(grl, method = "sorensen")
+
+metric
+```
+
 ## Metric Visualization  
 
-A heatmap of this similarity metrics can be an useful tool to get an overview 
+A heatmap of this similarity metrics can be a useful tool to get an overview 
 over similarities and dissimilarities between samples.
 
 The `plotOverlapMetric()` function generates a graphical representation of 
 the similarity metrics. By default, an hierarchical clustering is used. 
 
 
+```{r demoPlot01}
+
+plotOverlapMetric(metric, type = "BOTH", silent=TRUE)
+
+```
 
 # Metrics using the _CNV calls_
 
