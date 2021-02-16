@@ -155,9 +155,14 @@ The calculation of the similarity metrics is done with the
 `calculateOverlapMetric()` function. 
 
 ## Metric Visualization  
- 
+
+A heatmap of this similarity metrics can be an useful tool to get an overview 
+over similarities and dissimilarities between samples.
+
 The `plotOverlapMetric()` function generates a graphical representation of 
-the similarity metrics.
+the similarity metrics. By default, an hierarchical clustering is used. 
+
+
 
 # Metrics using the _CNV calls_
 
