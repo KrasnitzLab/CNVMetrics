@@ -5,7 +5,7 @@
 <!-- badges: end -->
 
 <p align="center">
-<img src="./vignettes/CNVMetrics_text.jpg" alt="CNVMetrics">
+<img src="man/figures/CNVMetrics_text.jpg" alt="CNVMetrics">
 </p>
 
 
