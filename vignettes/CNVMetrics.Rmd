@@ -155,8 +155,9 @@ The calculation of the similarity metrics is done with the
 `calculateOverlapMetric()` function. 
 
 ## Metric Visualization  
-
-TODO
+ 
+The `plotOverlapMetric()` function generates a graphical representation of 
+the similarity metrics.
 
 # Metrics using the _CNV calls_
 
@@ -190,11 +191,6 @@ by the smaller of the size of the two sets:
 
 If set **X** is a subset of **Y** or vice versa, the overlap coefficient 
 value is 1. 
-
-
-<!---
-![Figure 2. Copy number profile of a mouse metastatic pancreatic organoid.](overlap_demo2.jpg "Copy number profile"){ width=100% }
--->
 
 
 # Metrics using the level of amplification/deletion
