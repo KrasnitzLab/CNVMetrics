@@ -171,17 +171,119 @@ Example of a copy number file containing CNV calls.
 <a href="#data-importation---grangeslist" class="anchor"></a>Data Importation - GRangesList</h2>
 <p>The input format for the copy number information, as needed by the <code><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric()</a></code> function, is a <code>GRangesList</code> object.</p>
 <p>The easiest way to generate a <code>GRangesList</code> object is to first load the copy number information into an R <code>data.frame</code> and then, use the <code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function to convert them to a <code>GRangesList</code>.</p>
+<p>For this demonstration, we consider <em>CNV calls</em> as obtained with <em><a href="https://github.com/KrasnitzLab/CNprep">CNprep</a></em> <span class="citation">(Belleau et al. 2020)</span>, from ten mouse pancreatic organoids <span class="citation">(Oni et al. 2020)</span>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Load required libraries</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges">GenomicRanges</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/adeschen/CNVMetrics">CNVMetrics</a></span><span class="op">)</span>
+
+<span class="co">## Load file containing CNV calls for 10 mouse organoids</span>
+<span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"CNVMetrics"</span><span class="op">)</span>
+<span class="va">cnv.file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"mousePairedOrganoids.txt"</span><span class="op">)</span>
+<span class="va">calls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="va">cnv.file</span>, header<span class="op">=</span><span class="cn">TRUE</span>, sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span>
+
+<span class="co">## The CNV calls for all samples are present in one file</span>
+<span class="co">## The 'state' column is required</span>
+<span class="co">## The chromosome Y has been removed</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">calls</span><span class="op">)</span></code></pre></div>
+<pre><code>##    ID  chr     start       end    log2value         state
+## 1 mT3 chr1   3527630 195471971  0.143253158       NEUTRAL
+## 2 mT3 chr2   3549740 182113224  0.008638116       NEUTRAL
+## 3 mT3 chr3   3536051 160039680  0.032630258       NEUTRAL
+## 4 mT3 chr4   3734693 156508116 -0.026741963       NEUTRAL
+## 5 mT3 chr5   3575586 111373751 -0.018519856       NEUTRAL
+## 6 mT3 chr5 111373751 114262563  0.226961493 AMPLIFICATION</code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## The ID column identifies the 10 samples</span>
+<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">calls</span><span class="op">[</span>,<span class="st">"ID"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<pre><code>##  [1] "mT3"  "mM6"  "mM10" "mM15" "mT6"  "mT19" "mT23" "mT34" "mM1"  "mM3P"</code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## The ID column is used to split the samples into different GRanges </span>
+<span class="co">## inside a GRangesList</span>
+<span class="co">## The 'keep.extra.column=TRUE' parameter is needed to retained the extra </span>
+<span class="co">## column 'state' that is needed for the calculation of the metrics</span>
+<span class="va">grl</span> <span class="op">&lt;-</span> <span class="fu">GenomicRanges</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html">makeGRangesListFromDataFrame</a></span><span class="op">(</span><span class="va">calls</span>, 
+    split.field<span class="op">=</span><span class="st">"ID"</span>, keep.extra.columns<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">grl</span></code></pre></div>
+<pre><code>## GRangesList object of length 10:
+## $mM1
+## GRanges object with 33 ranges and 2 metadata columns:
+##        seqnames             ranges strand |  log2value         state
+##           &lt;Rle&gt;          &lt;IRanges&gt;  &lt;Rle&gt; |  &lt;numeric&gt;   &lt;character&gt;
+##    [1]     chr1   3527630-62533399      * |  0.0351701       NEUTRAL
+##    [2]     chr1  62533399-82082589      * | -0.1066207       NEUTRAL
+##    [3]     chr1 82082589-195471971      * |  0.0807449       NEUTRAL
+##    [4]     chr2  3549740-182113224      * |  0.0527007       NEUTRAL
+##    [5]     chr3  3536051-136509203      * |  0.3431661 AMPLIFICATION
+##    ...      ...                ...    ... .        ...           ...
+##   [29]    chr18   3558909-90702639      * |  0.0736673       NEUTRAL
+##   [30]    chr19   3614043-61431566      * |  0.0902238       NEUTRAL
+##   [31]     chrX   5577384-62973719      * | -0.2259987       NEUTRAL
+##   [32]     chrX  62973719-84082850      * | -0.0641819       NEUTRAL
+##   [33]     chrX 84082850-169538352      * | -0.3902963      DELETION
+##   -------
+##   seqinfo: 20 sequences from an unspecified genome; no seqlengths
+## 
+## ...
+## &lt;9 more elements&gt;</code></pre>
 </div>
 <div id="metric-calculation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#metric-calculation" class="anchor"></a>Metric Calculation</h2>
 <p>The calculation of the similarity metrics is done with the <code><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric()</a></code> function.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">metric</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric</a></span><span class="op">(</span><span class="va">grl</span>, method <span class="op">=</span> <span class="st">"sorensen"</span><span class="op">)</span>
+
+<span class="va">metric</span></code></pre></div>
+<pre><code>## CNV Metric done on overlapping regions
+## Metric:
+## [1] "sorensen"
+## 
+## AMPLIFICATION:
+##            mM1       mM10      mM15      mM3P       mM6      mT19       mT23
+## mM1         NA         NA        NA        NA        NA        NA         NA
+## mM10 0.4437132         NA        NA        NA        NA        NA         NA
+## mM15 0.0000000 0.00000000        NA        NA        NA        NA         NA
+## mM3P 0.1713638 0.23807300 0.0000000        NA        NA        NA         NA
+## mM6  0.4048136 0.55451473 0.0000000 0.2952499        NA        NA         NA
+## mT19 0.0000000 0.02203665 0.0000000 0.0000000 0.0000000        NA         NA
+## mT23 0.0000000 0.22206155 0.0000000 0.0000000 0.1771307 0.1280093         NA
+## mT3  0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000 0.07606719
+## mT34 0.0000000 0.00000000 0.1944268 0.0000000 0.0000000 0.0000000 0.19379995
+## mT6  0.0000000 0.02162337 0.0000000 0.0000000 0.0000000 0.5355322 0.31039491
+##            mT3      mT34 mT6
+## mM1         NA        NA  NA
+## mM10        NA        NA  NA
+## mM15        NA        NA  NA
+## mM3P        NA        NA  NA
+## mM6         NA        NA  NA
+## mT19        NA        NA  NA
+## mT23        NA        NA  NA
+## mT3         NA        NA  NA
+## mT34 0.1987085        NA  NA
+## mT6  0.3197464 0.4477146  NA
+## 
+## DELETION:
+##            mM1       mM10      mM15        mM3P mM6 mT19 mT23 mT3 mT34 mT6
+## mM1         NA         NA        NA          NA  NA   NA   NA  NA   NA  NA
+## mM10 0.0000000         NA        NA          NA  NA   NA   NA  NA   NA  NA
+## mM15 0.4595765 0.00000000        NA          NA  NA   NA   NA  NA   NA  NA
+## mM3P 0.2568018 0.33369790 0.6481145          NA  NA   NA   NA  NA   NA  NA
+## mM6  0.0000000 0.00000000 0.0000000 0.009185940  NA   NA   NA  NA   NA  NA
+## mT19        NA         NA        NA          NA  NA   NA   NA  NA   NA  NA
+## mT23 0.0000000 0.02664788 0.0000000 0.008444335   0   NA   NA  NA   NA  NA
+## mT3  0.6852435 0.00000000 0.7280788 0.440730426   0   NA    0  NA   NA  NA
+## mT34 0.6852435 0.00000000 0.7280788 0.440730426   0   NA    0   1   NA  NA
+## mT6  0.6852435 0.00000000 0.7280788 0.440730426   0   NA    0   1    1  NA</code></pre>
 </div>
 <div id="metric-visualization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#metric-visualization" class="anchor"></a>Metric Visualization</h2>
-<p>A heatmap of this similarity metrics can be an useful tool to get an overview over similarities and dissimilarities between samples.</p>
+<p>A heatmap of this similarity metrics can be a useful tool to get an overview over similarities and dissimilarities between samples.</p>
 <p>The <code><a href="../reference/plotOverlapMetric.html">plotOverlapMetric()</a></code> function generates a graphical representation of the similarity metrics. By default, an hierarchical clustering is used.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/plotOverlapMetric.html">plotOverlapMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"BOTH"</span>, silent<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p><img src="CNVMetrics_files/figure-html/demoPlot01-1.png" width="700"></p>
 </div>
 </div>
 <div id="metrics-using-the-cnv-calls" class="section level1">
@@ -224,7 +326,7 @@ size of the intersection by the sum of the size of the two sets:</p>
 <a href="#chromosomes-information" class="anchor"></a>Chromosomes information</h2>
 <p>The chromosomes information is mandatory. It ensures that only the selected chromosomes are used in the analysis. As not all CNV software use the same reference (reference with alternative regions or not), it ensure that all samples will be compared using the same reference. We strongly encourage using only the primary chromosomes for this analaysis.</p>
 <p>The chromosomes information is contained inside a <code>Seqinfo</code> object. The information from some UCSC genomes can be fetched automatically using the <em><a href="https://bioconductor.org/packages/3.12/GenomeInfoDb">GenomeInfoDb</a></em> package.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">### Import needed library that contains the Seqinfo method</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomeInfoDb">GenomeInfoDb</a></span><span class="op">)</span>
 
@@ -235,7 +337,7 @@ size of the intersection by the sum of the size of the two sets:</p>
 <span class="co">### Chromosomes X and Y are often removed from subsequent analyses</span>
 <span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html">seqlevels</a></span><span class="op">(</span><span class="va">hg38Info</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">22</span><span class="op">)</span></code></pre></div>
 <p>A <code>Seqinfo</code> object can also be created using the chromosomes information specific to the analyzed genome. The <em><a href="https://bioconductor.org/packages/3.12/GenomeInfoDb">GenomeInfoDb</a></em> package is required.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">### Import needed library that contains the Seqinfo method</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomeInfoDb">GenomeInfoDb</a></span><span class="op">)</span>
 
@@ -243,7 +345,7 @@ size of the intersection by the sum of the size of the two sets:</p>
 <span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/Seqinfo-class.html">Seqinfo</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr2"</span>, <span class="st">"chr3"</span><span class="op">)</span>,
             seqlengths<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10000</span>, <span class="fl">20000</span>, <span class="fl">1500</span><span class="op">)</span>, isCircular<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span>,
             genome<span class="op">=</span><span class="st">"Alien"</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#a&lt;-prepareInformation(segDirectory = "inst/extdata/", bedExclusionFile = "inst/extdata/exclusion.bed", segmentWithHeader = FALSE, chrInfo = hg38Info)</span></code></pre></div>
 </div>
 </div>
