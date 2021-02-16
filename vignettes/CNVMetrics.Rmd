@@ -12,11 +12,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r style, echo = FALSE, results = 'asis', warning=FALSE, message=FALSE}
+```{r style, echo = FALSE, results = 'hide', warning=FALSE, message=FALSE}
 BiocStyle::markdown()
-library(knitr)
-library(GenomeInfoDb)
 
+suppressPackageStartupMessages({
+  library(knitr)
+  library(GenomeInfoDb)
+  library(GenomicRanges)
+  library(CNVMetrics)
+})
 ```
 
 <br />
@@ -50,7 +54,11 @@ two mouse pancreatic organoids [@Oni2020], calculated with
 `r Githubpkg("KrasnitzLab/CNprep")` [@Belleau2020] and plot with 
 `r Biocpkg("gtrellis")` [@Gu2016a].
 
-![Figure 1. Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).]( CNV_mM30_mM10_v03_Feb_08_2021.jpeg "Copy number profile"){ width=100% }
+
+```{r graphCNVpro, echo = FALSE, fig.align="center", fig.cap="Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).", out.width = '95%'}
+knitr::include_graphics("CNV_mM30_mM10_v03_Feb_08_2021_small.jpeg")
+```
+
 
 While visual representation are a practical way to qualitatively compare copy 
 number profiles, metrics are useful statistical tools for quantitatively 
@@ -62,13 +70,38 @@ from those.
 The `r Githubpkg("adeschen/CNVMetrics")` package calculates metrics to 
 estimate the level of similarity between copy number profiles. Some metrics 
 are calculated using the _CNV calls_ (amplification/deletion status) while 
-others use the level of amplification/deletion.
+others are based on the level of amplification/deletion. Finally, a 
+visualization tool is provided to explore resulting metrics.
 
+# Installation
+
+To install the latest version accessible on the 
+[CNVMetrics Github Website](https://github.com/adeschen/CNVMetrics/releases "CNVMetrics Github Site"), the `r CRANpkg("devtools")` package is required.
+
+```{r installDemo01, eval=FALSE}
+## Load required package
+library(devtools)
+
+## Install the latest version of CNVMetrics
+devtools::install_github('adeschen/CNVMetrics')
+```
+
+It is also possible to install an official release. The list of available 
+releases is posted on the [CNVMetrics Release Website](https://github.com/adeschen/CNVMetrics/releases "CNVMetrics Release Site").
+
+
+```{r installDemo02, eval=FALSE}
+## Load required package
+library(devtools)
+
+## Install the version v0.1.2 of CNVMetrics
+## using 'ref' parameter
+devtools::install_github('adeschen/CNVMetrics', ref = "v0.1.2")
+```
 
 # Workflow for metrics calculated using _CNV calls_
 
-The following figure gives an overview of the capabilities of  
-`r Githubpkg("adeschen/CNVMetrics")` to calculate metrics using the 
+The following figure gives an overview of the capabilities of  `r Githubpkg("adeschen/CNVMetrics")` to calculate metrics using the 
 _CNV calls_ (amplification/deletion status):
 
 
@@ -76,11 +109,11 @@ The key functions for each step are:
 
  Step                   | Function                    
 ----------------------- | ---------------------------------------------
- Data Importation       | `GenomicRanges::makeGRangesListFromDataFrame(...)`
- Metric Calculation     | `calculateOverlapRegionsMetric(...)`   
- Visualization          | `TODO`
+ Data Importation       | `GenomicRanges::makeGRangesListFromDataFrame()`
+ Metric Calculation     | `calculateOverlapMetric()`   
+ Metric Visualization   | `plotOverlapMetric()`
  
-The `package::function` notation is used for functions from other packages.
+The `package::function()` notation is used for functions from other packages.
 
 ## Data Input - Copy number file
 
@@ -101,8 +134,29 @@ deleted segments must be assigned those values:
 Segments with other state values can be present in the file. However, those 
 segments won't be retain for the calculation of the metrics.
 
+```{r figureCNVFile, echo = FALSE, fig.align="center", fig.cap="Example of a copy number file containing CNV calls.", out.width = '95%'}
+knitr::include_graphics("Input_CNfile_2_small.jpg")
+```
 
-![Figure 2. Example of a copy number file containing CNV calls.](Input_CNfile_2.jpg  "Example of a copy number file containing CNV calls."){ width=95% }
+
+## Data Importation - GRangesList
+
+The input format for the copy number information, as needed by the 
+`calculateOverlapMetric()` function, is a `GRangesList` object.
+
+The easiest way to generate a `GRangesList` object is to first load the 
+copy number information into an R `data.frame` and then, use the 
+`GenomicRanges::makeGRangesListFromDataFrame()` function to convert them 
+to a `GRangesList`.
+
+## Metric Calculation
+
+The calculation of the similarity metrics is done with the 
+`calculateOverlapMetric()` function. 
+
+## Metric Visualization  
+
+TODO
 
 # Metrics using the _CNV calls_
 
