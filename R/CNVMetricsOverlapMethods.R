@@ -183,6 +183,9 @@ calculateOverlapMetric <- function(segmentData,
 #' @param show_colnames a \code{boolean} specifying if column names are 
 #' be shown. Default: \code{FALSE}.
 #' 
+#' @param silent a \code{boolean} specifying if the plot should not be drawn. 
+#' Default: \code{TRUE}.
+#' 
 #' @param \ldots further arguments passed to 
 #' \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method. Beware that
 #' the \code{filename} argument cannot be used when \code{type} is 
@@ -245,7 +248,7 @@ calculateOverlapMetric <- function(segmentData,
 plotOverlapMetric <- function(metric, 
                                 type=c("BOTH", "AMPLIFICATION", "DELETION"),
                                 colorRange=c(c("white", "darkblue")), 
-                                show_colnames=FALSE, ...) {
+                                show_colnames=FALSE, silent=TRUE, ...) {
     
     ## Validate that the metric parameter is a CNVMetric object
     if (!is.CNVMetric(metric)) {
@@ -286,7 +289,8 @@ plotOverlapMetric <- function(metric,
         plot_list[["AMPLIFICATION"]] <- plotOneOverlapMetric(metric=metric,
                                             type="AMPLIFICATION", 
                                             colorRange=colorRange, 
-                                            show_colnames=show_colnames, ...)  
+                                            show_colnames=show_colnames, 
+                                            silent=silent, ...)  
     }
     
     ## Deletion
@@ -294,7 +298,8 @@ plotOverlapMetric <- function(metric,
         plot_list[["DELETION"]] <- plotOneOverlapMetric(metric=metric,
                                             type="DELETION", 
                                             colorRange=colorRange, 
-                                            show_colnames=show_colnames, ...)  
+                                            show_colnames=show_colnames, 
+                                            silent=silent, ...)  
     }
     
     n_col <- ifelse(type == "BOTH", 2, 1)

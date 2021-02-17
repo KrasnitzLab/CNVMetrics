@@ -6,7 +6,7 @@
 \title{Plot one graph related to metrics based on overlapping 
 amplified/deleted regions}
 \usage{
-plotOneOverlapMetric(metric, type, colorRange, show_colnames, ...)
+plotOneOverlapMetric(metric, type, colorRange, show_colnames, silent, ...)
 }
 \arguments{
 \item{metric}{a \code{CNVMetric} object containing the metrics calculated
@@ -18,6 +18,8 @@ This should be (an unambiguous abbreviation of) one of
 
 \item{show_colnames}{a \code{boolean} specifying if column names are 
 be shown.}
+
+\item{silent}{a \code{boolean} specifying if the plot should not be drawn.}
 
 \item{\ldots}{further arguments passed to 
 \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method.}
@@ -58,9 +60,9 @@ demo[["sample03"]] <- GRanges(seqnames = "chr1",
 ## Calculating Sorensen metric
 metric <- calculateOverlapMetric(demo, method="sorensen")
 
-## Plot both amplification metrics using darkorange color
+## Plot amplification metrics using darkorange color
 CNVMetrics:::plotOneOverlapMetric(metric, type="AMPLIFICATION", 
-    colorRange=c("white", "darkorange"), show_colnames=FALSE)
+    colorRange=c("white", "darkorange"), show_colnames=FALSE, silent=TRUE)
 
 }
 \seealso{
