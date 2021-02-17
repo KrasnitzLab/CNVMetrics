@@ -84,7 +84,7 @@
 
     
     
-<p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre], Pascal Belleau [aut]<br><strong>Version</strong>: 0.1.2<br><strong>Compiled date</strong>: 2021-02-16<br><strong>License</strong>: Artistic-2.0<br></p>
+<p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre], Pascal Belleau [aut]<br><strong>Version</strong>: 0.1.2<br><strong>Compiled date</strong>: 2021-02-17<br><strong>License</strong>: Artistic-2.0<br></p>
 <div id="licensing" class="section level1">
 <h1 class="hasAnchor">
 <a href="#licensing" class="anchor"></a>Licensing</h1>
@@ -280,10 +280,49 @@ Example of a copy number file containing CNV calls.
 <h2 class="hasAnchor">
 <a href="#metric-visualization" class="anchor"></a>Metric Visualization</h2>
 <p>A heatmap of this similarity metrics can be a useful tool to get an overview over similarities and dissimilarities between samples.</p>
-<p>The <code><a href="../reference/plotOverlapMetric.html">plotOverlapMetric()</a></code> function generates a graphical representation of the similarity metrics. By default, an hierarchical clustering is used.</p>
+<p>The <code><a href="../reference/plotOverlapMetric.html">plotOverlapMetric()</a></code> function generates a graphical representation of the similarity metrics. By default, an hierarchical clustering based on based on the sample distances (1-metrics) is used.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plotOverlapMetric.html">plotOverlapMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"BOTH"</span>, silent<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p><img src="CNVMetrics_files/figure-html/demoPlot01-1.png" width="700"></p>
+<code class="sourceCode R"><span class="co">## Create graph for the metrics related to amplified regions</span>
+<span class="fu"><a href="../reference/plotOverlapMetric.html">plotOverlapMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"AMPLIFICATION"</span><span class="op">)</span></code></pre></div>
+<p><img src="CNVMetrics_files/figure-html/demoPlot01-1.png" width="700" style="display: block; margin: auto;"></p>
+<p><br></p>
+<p><br></p>
+<p>The <code><a href="../reference/plotOverlapMetric.html">plotOverlapMetric()</a></code> function uses the <em><a href="https://CRAN.R-project.org/package=pheatmap">pheatmap</a></em> package to generate the graph. All arguments accepted by <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap::pheatmap</a></code> function are valid arguments.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Create graph for the metrics related to deleted regions</span>
+<span class="co">## Metric value is printed as 'display_numbers' and 'number_format' are</span>
+<span class="co">## arguments recognized by pheatmap() function</span>
+<span class="fu"><a href="../reference/plotOverlapMetric.html">plotOverlapMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"DELETION"</span>, 
+                    colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"darkorange"</span><span class="op">)</span>,
+                    display_numbers<span class="op">=</span><span class="cn">TRUE</span>,
+                    number_format<span class="op">=</span><span class="st">"%.2f"</span><span class="op">)</span></code></pre></div>
+<p><img src="CNVMetrics_files/figure-html/demoPlot02-1.png" width="700" style="display: block; margin: auto;"></p>
+<p><br></p>
+<p><br></p>
+<p>Row or column annotation are often useful and can easy by added with the <code>annotation_row</code> or <code>annotation_col</code> arguments, as described in the <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap::pheatmap</a></code> method.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Load file containing annotations for the mouse organoids</span>
+<span class="co">## The mouse ID identifying the source of the sample</span>
+<span class="co">## The stage identifying the state (tumor vs metastasis) of the sample</span>
+<span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"CNVMetrics"</span><span class="op">)</span>
+<span class="va">annotation.file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"mousePairedOrganoidsInfo.txt"</span><span class="op">)</span>
+<span class="va">annotOrg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="va">annotation.file</span>, header<span class="op">=</span><span class="cn">TRUE</span>, sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span>
+
+<span class="co">## The row names must correspond to the names assigned to the rows/columns</span>
+<span class="co">## in the CNVMetric object</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">annotOrg</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annotOrg</span><span class="op">$</span><span class="va">ID</span>
+<span class="va">annotOrg</span><span class="op">$</span><span class="va">ID</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">annotOrg</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">metric</span><span class="op">$</span><span class="va">AMPLIFICATION</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Create graph for the metrics related to amplified regions</span>
+<span class="co">## Rows are annotated with the stage and mouse information</span>
+<span class="fu"><a href="../reference/plotOverlapMetric.html">plotOverlapMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"AMPLIFICATION"</span>, 
+                    colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"steelblue"</span><span class="op">)</span>,
+                    annotation_row<span class="op">=</span><span class="va">annotOrg</span><span class="op">)</span></code></pre></div>
+<p><img src="CNVMetrics_files/figure-html/demoPlot03-1.png" width="700" style="display: block; margin: auto;"></p>
+<p><br></p>
 </div>
 </div>
 <div id="metrics-using-the-cnv-calls" class="section level1">
@@ -326,7 +365,7 @@ size of the intersection by the sum of the size of the two sets:</p>
 <a href="#chromosomes-information" class="anchor"></a>Chromosomes information</h2>
 <p>The chromosomes information is mandatory. It ensures that only the selected chromosomes are used in the analysis. As not all CNV software use the same reference (reference with alternative regions or not), it ensure that all samples will be compared using the same reference. We strongly encourage using only the primary chromosomes for this analaysis.</p>
 <p>The chromosomes information is contained inside a <code>Seqinfo</code> object. The information from some UCSC genomes can be fetched automatically using the <em><a href="https://bioconductor.org/packages/3.12/GenomeInfoDb">GenomeInfoDb</a></em> package.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">### Import needed library that contains the Seqinfo method</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomeInfoDb">GenomeInfoDb</a></span><span class="op">)</span>
 
@@ -337,7 +376,7 @@ size of the intersection by the sum of the size of the two sets:</p>
 <span class="co">### Chromosomes X and Y are often removed from subsequent analyses</span>
 <span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html">seqlevels</a></span><span class="op">(</span><span class="va">hg38Info</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">22</span><span class="op">)</span></code></pre></div>
 <p>A <code>Seqinfo</code> object can also be created using the chromosomes information specific to the analyzed genome. The <em><a href="https://bioconductor.org/packages/3.12/GenomeInfoDb">GenomeInfoDb</a></em> package is required.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">### Import needed library that contains the Seqinfo method</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomeInfoDb">GenomeInfoDb</a></span><span class="op">)</span>
 
@@ -345,7 +384,7 @@ size of the intersection by the sum of the size of the two sets:</p>
 <span class="va">chrInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/Seqinfo-class.html">Seqinfo</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr2"</span>, <span class="st">"chr3"</span><span class="op">)</span>,
             seqlengths<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10000</span>, <span class="fl">20000</span>, <span class="fl">1500</span><span class="op">)</span>, isCircular<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span>,
             genome<span class="op">=</span><span class="st">"Alien"</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#a&lt;-prepareInformation(segDirectory = "inst/extdata/", bedExclusionFile = "inst/extdata/exclusion.bed", segmentWithHeader = FALSE, chrInfo = hg38Info)</span></code></pre></div>
 </div>
 </div>
@@ -394,18 +433,18 @@ size of the intersection by the sum of the size of the two sets:</p>
 ## [27] highr_0.8                   scales_1.1.1               
 ## [29] BiocManager_1.30.10         DelayedArray_0.16.1        
 ## [31] cachem_1.0.4                desc_1.2.0                 
-## [33] XVector_0.30.0              systemfonts_1.0.1          
-## [35] fs_1.5.0                    Rsamtools_2.6.0            
-## [37] textshaping_0.3.0           gridExtra_2.3              
-## [39] digest_0.6.27               stringi_1.5.3              
-## [41] bookdown_0.21               grid_4.0.3                 
-## [43] rprojroot_2.0.2             tools_4.0.3                
-## [45] bitops_1.0-6                magrittr_2.0.1             
-## [47] RCurl_1.98-1.2              crayon_1.4.1               
-## [49] Matrix_1.3-2                pheatmap_1.0.12            
-## [51] assertthat_0.2.1            rmarkdown_2.6              
-## [53] R6_2.5.0                    GenomicAlignments_1.26.0   
-## [55] compiler_4.0.3</code></pre>
+## [33] XVector_0.30.0              farver_2.0.3               
+## [35] systemfonts_1.0.1           fs_1.5.0                   
+## [37] Rsamtools_2.6.0             textshaping_0.3.0          
+## [39] gridExtra_2.3               digest_0.6.27              
+## [41] stringi_1.5.3               bookdown_0.21              
+## [43] grid_4.0.3                  rprojroot_2.0.2            
+## [45] tools_4.0.3                 bitops_1.0-6               
+## [47] magrittr_2.0.1              RCurl_1.98-1.2             
+## [49] crayon_1.4.1                Matrix_1.3-2               
+## [51] pheatmap_1.0.12             assertthat_0.2.1           
+## [53] rmarkdown_2.6               R6_2.5.0                   
+## [55] GenomicAlignments_1.26.0    compiler_4.0.3</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
