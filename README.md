@@ -27,6 +27,21 @@ the Artistic license 2.0. You are free to use and redistribute this software.
 For more information on Artistic 2.0 License see
 [http://opensource.org/licenses/Artistic-2.0](http://opensource.org/licenses/Artistic-2.0)
 
+## Documentation ##
+
+[CNVMetrics Website](https://adeschen.github.io/CNVMetrics/)
+
+## Installation ##
+
+To install the latest version accessible, the  [devtools](https://cran.r-project.org/web/packages/devtools/index.html) package 
+is required.
+
+     ## Load required package
+     library(devtools)
+
+     ## Install the latest version of CNVMetrics
+     devtools::install_github('adeschen/CNVMetrics')
+
 ## Bugs/Feature requests ##
 
 If you have any bugs or feature requests, 
