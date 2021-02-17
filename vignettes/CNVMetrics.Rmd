@@ -1,5 +1,5 @@
 ---
-title: "Similarity between copy number profiles"
+title: "Quantifying similarity between copy number profiles"
 author: Astrid Deschênes and Pascal Belleau
 output:
   BiocStyle::html_document:
