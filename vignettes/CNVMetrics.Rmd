@@ -21,6 +21,8 @@ suppressPackageStartupMessages({
   library(GenomicRanges)
   library(CNVMetrics)
 })
+
+set.seed(121444)
 ```
 
 <br />
@@ -198,14 +200,63 @@ A heatmap of this similarity metrics can be a useful tool to get an overview
 over similarities and dissimilarities between samples.
 
 The `plotOverlapMetric()` function generates a graphical representation of 
-the similarity metrics. By default, an hierarchical clustering is used. 
+the similarity metrics. By default, an hierarchical clustering based on
+based on the sample distances (1-metrics) is used.
 
-
-```{r demoPlot01}
-
-plotOverlapMetric(metric, type = "BOTH", silent=TRUE)
-
+```{r demoPlot01, fig.align="center"}
+## Create graph for the metrics related to amplified regions
+plotOverlapMetric(metric, type = "AMPLIFICATION")
 ```
+
+<br>
+
+<br>
+
+The `plotOverlapMetric()` function uses the `r CRANpkg("pheatmap")` package to 
+generate the graph. All arguments accepted by `pheatmap::pheatmap` function 
+are valid arguments.
+
+```{r demoPlot02, fig.align="center"}
+## Create graph for the metrics related to deleted regions
+## Metric value is printed as 'display_numbers' and 'number_format' are
+## arguments recognized by pheatmap() function
+plotOverlapMetric(metric, type = "DELETION", 
+                    colorRange=c("white", "darkorange"),
+                    display_numbers=TRUE,
+                    number_format="%.2f")
+```
+
+<br>
+
+<br>
+
+Row or column annotation are often useful and can easy by added with the
+`annotation_row` or `annotation_col` arguments, as described in the 
+`pheatmap::pheatmap` method.
+
+```{r demoPlot03, fig.align="center"}
+## Load file containing annotations for the mouse organoids
+## The mouse ID identifying the source of the sample
+## The stage identifying the state (tumor vs metastasis) of the sample
+data.dir <- system.file("extdata", package="CNVMetrics")
+annotation.file <- file.path(data.dir, "mousePairedOrganoidsInfo.txt")
+annotOrg <- read.table(annotation.file, header=TRUE, sep="\t")
+
+## The row names must correspond to the names assigned to the rows/columns
+## in the CNVMetric object
+rownames(annotOrg) <- annotOrg$ID
+annotOrg$ID <- NULL
+
+all(rownames(annotOrg) == rownames(metric$AMPLIFICATION))
+
+## Create graph for the metrics related to amplified regions
+## Rows are annotated with the stage and mouse information
+plotOverlapMetric(metric, type = "AMPLIFICATION", 
+                    colorRange=c("white", "steelblue"),
+                    annotation_row=annotOrg)
+```
+
+<br>
 
 # Metrics using the _CNV calls_
 

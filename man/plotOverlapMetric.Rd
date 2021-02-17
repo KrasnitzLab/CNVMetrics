@@ -10,6 +10,7 @@ plotOverlapMetric(
   type = c("BOTH", "AMPLIFICATION", "DELETION"),
   colorRange = c(c("white", "darkblue")),
   show_colnames = FALSE,
+  silent = TRUE,
   ...
 )
 }
@@ -28,6 +29,9 @@ Default: \code{c("white", "darkblue")}.}
 
 \item{show_colnames}{a \code{boolean} specifying if column names are 
 be shown. Default: \code{FALSE}.}
+
+\item{silent}{a \code{boolean} specifying if the plot should not be drawn. 
+Default: \code{TRUE}.}
 
 \item{\ldots}{further arguments passed to 
 \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method. Beware that

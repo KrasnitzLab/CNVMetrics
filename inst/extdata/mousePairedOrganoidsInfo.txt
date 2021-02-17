@@ -1,0 +1,11 @@
+ID	Mouse	Stage
+mM1	mouse_1	metastasis
+mM10	mouse_4	metastasis
+mM15	mouse_5	metastasis
+mM3P	mouse_2	metastasis
+mM6	mouse_3	metastasis
+mT19	mouse_3	tumor
+mT23	mouse_4	tumor
+mT3	mouse_1	tumor
+mT34	mouse_5	tumor
+mT6	mouse_2	tumor
