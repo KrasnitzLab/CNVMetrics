@@ -35,6 +35,6 @@ biocViews: BiologicalQuestion,
     Software,
     CopyNumberVariation
 VignetteBuilder: knitr
-URL: https://github.com/adeschen/CNVMetrics
+URL: https://github.com/adeschen/CNVMetrics, https://adeschen.github.io/CNVMetrics/
 BugReports: https://github.com/adeschen/CNVMetrics/issues
 RoxygenNote: 7.1.1
