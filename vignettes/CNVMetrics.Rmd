@@ -62,7 +62,7 @@ knitr::include_graphics("CNV_mM30_mM10_v03_Feb_08_2021_small.jpeg")
 ```
 
 
-While visual representation are a practical way to qualitatively compare copy 
+While visual representation is a practical way to qualitatively compare copy 
 number profiles, metrics are useful statistical tools for quantitatively 
 measuring similarity and dissimilarity between profiles. Similarity metrics can
 be used to compare independent samples but also related samples such as 
