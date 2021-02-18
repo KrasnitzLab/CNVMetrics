@@ -9,8 +9,12 @@ Description: The CNVMetrics package calculates similarity metrics to
     metrics rely on the level of amplification/deletion. Finally, 
     a visualization tool is provided to explore resulting metrics.
 Authors@R: c(person("Astrid", "Deschênes", email = "adeschen@hotmail.com",
-    role = c("aut", "cre")), 
+    role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0001-7846-6749")), 
     person("Pascal", "Belleau", email = "pascal_belleau@hotmail.com",
+    role = c("aut"),
+    comment = c(ORCID = "0000-0002-0802-1071")),
+    person("Alexander", "Krasnitz", email = "krasnitz@cshl.edu",
     role = c("aut")))
 Encoding: UTF-8
 License: Artistic-2.0
