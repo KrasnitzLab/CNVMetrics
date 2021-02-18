@@ -1,8 +1,18 @@
+# CNVMetrics 0.1.3
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+* `plotOneOverlapMetric()` method has a new argument `silent=TRUE` so that the plot is not drawn by default.
+
+BUG FIXES
+
+* `plotOneOverlapMetric()` method now uses sample distance for clustering as default clustering method.
+
+
 # CNVMetrics 0.1.2
 
 NEW FEATURES
 
-* Added a `NEWS.md` file to track changes to the package.
 * `plotOneOverlapMetric()` method enables plotting result of overlapping metric calculation.
 
 SIGNIFICANT USER-VISIBLE CHANGES
