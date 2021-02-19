@@ -1,6 +1,6 @@
 ---
 title: "Quantifying similarity between copy number profiles"
-author: Astrid Deschênes and Pascal Belleau
+author: Astrid Deschênes, Pascal Belleau and Alexander Krasnitz
 output:
   BiocStyle::html_document:
     toc: true
@@ -42,17 +42,17 @@ Artistic license 2.0. You are free to use and redistribute this software.
 # Introduction
 
 Copy number variation (CNV) includes multiplication and deletion of DNA
-segment (> 1 kb). Copy number variations have been shown to be associated 
+segment. Copy number variations have been shown to be associated 
 with a wide spectrum of pathological conditions and complex traits, such 
 as developmental neuropsychiatric disorders [@Hiroi2013] and especially 
 cancer [@Stratton2009]. 
 
-CNV are usually reported, for each sample, as genomic regions that are 
+CNVs are usually reported, for each sample, as genomic regions that are 
 duplicated or deleted with respect to a reference. Those regions are denoted 
-as _CNV calls_. The level of amplification or deletion can also be reported, 
-usually in log2 ratio values or normalized read depth [@Zhao2013]. As an 
-example, the Figure 1 shows the copy number profiles from sequencing data of 
-two mouse pancreatic organoids [@Oni2020], calculated with 
+as _CNV status calls_. The level of amplification or deletion can also be 
+reported, usually in log2 ratio values or normalized read depth [@Zhao2013]. 
+As an example, the Figure 1 shows the copy number profiles from sequencing 
+data of two mouse pancreatic organoids [@Oni2020], calculated with 
 `r Githubpkg("KrasnitzLab/CNprep")` [@Belleau2020] and plot with 
 `r Biocpkg("gtrellis")` [@Gu2016a].
 
@@ -61,19 +61,22 @@ two mouse pancreatic organoids [@Oni2020], calculated with
 knitr::include_graphics("CNV_mM30_mM10_v03_Feb_08_2021_small.jpeg")
 ```
 
-
 While visual representation is a practical way to qualitatively compare copy 
 number profiles, metrics are useful statistical tools for quantitatively 
-measuring similarity and dissimilarity between profiles. Similarity metrics can
-be used to compare independent samples but also related samples such as 
-copy number profiles from bulk cancer tissues and paired organoids generated 
-from those.
+measuring similarity and dissimilarity between profiles. Similarity metrics 
+can be employed to compare CNV profiles of genetically unrelated samples. 
+Moreover, those metrics can as well be put to use on samples with common 
+genetic background. As an example, a comparison between primary and metastatic 
+tumor CNV profiles may reveal genomic determinants of metastasis. Similarly,
+patient-derived xenograft or organoid models of cancer are expected to 
+recapitulate CNV patterns of the tumor tissue of origin [@Gendoo2019].
 
 The `r Githubpkg("adeschen/CNVMetrics")` package calculates metrics to 
 estimate the level of similarity between copy number profiles. Some metrics 
-are calculated using the _CNV calls_ (amplification/deletion status) while 
-others are based on the level of amplification/deletion. Finally, a 
-visualization tool is provided to explore resulting metrics.
+are calculated using the _CNV status calls_ (amplification/deletion status) 
+while others are based on the level of amplification/deletion. Finally, a 
+visualization tool is provided to explore resulting metrics in the form of 
+sample-to-sample heatmaps.
 
 # Installation
 
@@ -101,10 +104,11 @@ library(devtools)
 devtools::install_github('adeschen/CNVMetrics', ref = "v0.1.2")
 ```
 
-# Workflow for metrics calculated using _CNV calls_
+# Workflow for metrics calculated using _CNV status calls_
 
-The following figure gives an overview of the capabilities of  `r Githubpkg("adeschen/CNVMetrics")` to calculate metrics using the 
-_CNV calls_ (amplification/deletion status):
+The following figure gives an overview of the capabilities of 
+`r Githubpkg("adeschen/CNVMetrics")` to calculate metrics using the 
+_CNV status calls_ (amplification/deletion status):
 
 
 The key functions for each step are:
@@ -119,13 +123,14 @@ The `package::function()` notation is used for functions from other packages.
 
 ## Data Input - Copy number file
 
-_CNV calls_ are represented as segments with a copy number state. The state 
-be general, such as "amplification", "deletion" or "neutral", or more 
+_CNV status calls_ are represented as segments with a copy number state. The 
+state be general, such as "amplification", "deletion" or "neutral", or more 
 specific such as TODO.
 
 A basic five-column input file containing genomic position 
-(chromosome, start, end), sample identification and CNV calls is required. 
-All samples that need to be analyzed together have to be present in the file. 
+(chromosome, start, end), sample identification and _CNV status calls_ is 
+required. All samples that need to be analyzed together have to be combined 
+into one file. 
 
 A column named **state** is required. In this column, the amplified and 
 deleted segments must be assigned those values:
@@ -133,8 +138,8 @@ deleted segments must be assigned those values:
 * **<span style="color:darkred">AMPLIFICATION</span>**
 * **<span style="color:darkred">DELETION</span>**
 
-Segments with other state values can be present in the file. However, those 
-segments won't be retain for the calculation of the metrics.
+Segments with other **state** values can be present in the file. However, 
+those segments won't be retain for the calculation of the metrics.
 
 ```{r figureCNVFile, echo = FALSE, fig.align="center", fig.cap="Example of a copy number file containing CNV calls.", out.width = '95%'}
 knitr::include_graphics("Input_CNfile_2_small.jpg")
@@ -151,7 +156,7 @@ copy number information into an R `data.frame` and then, use the
 `GenomicRanges::makeGRangesListFromDataFrame()` function to convert them 
 to a `GRangesList`.
 
-For this demonstration, we consider _CNV calls_ as obtained with 
+For this demonstration, we consider _CNV status calls_ as obtained with 
 `r Githubpkg("KrasnitzLab/CNprep")` [@Belleau2020], 
 from ten mouse pancreatic organoids [@Oni2020]. 
 
@@ -165,7 +170,7 @@ data.dir <- system.file("extdata", package="CNVMetrics")
 cnv.file <- file.path(data.dir, "mousePairedOrganoids.txt")
 calls <- read.table(cnv.file, header=TRUE, sep="\t")
 
-## The CNV calls for all samples are present in one file
+## The CNV status calls for all samples are present in one file
 ## The 'state' column is required
 ## The chromosome Y has been removed
 head(calls)
@@ -200,8 +205,9 @@ A heatmap of this similarity metrics can be a useful tool to get an overview
 over similarities and dissimilarities between samples.
 
 The `plotOverlapMetric()` function generates a graphical representation of 
-the similarity metrics. By default, an hierarchical clustering based on
-based on the sample distances (1-metrics) is used.
+the similarity metrics in the form of a sample-to-sample heatmap. By default, 
+an hierarchical clustering based on based on the sample distances 
+(1-metrics) is used.
 
 ```{r demoPlot01, fig.align="center"}
 ## Create graph for the metrics related to amplified regions
@@ -222,6 +228,7 @@ are valid arguments.
 ## arguments recognized by pheatmap() function
 plotOverlapMetric(metric, type = "DELETION", 
                     colorRange=c("white", "darkorange"),
+                    show_colnames=TRUE,
                     display_numbers=TRUE,
                     number_format="%.2f")
 ```
@@ -230,8 +237,8 @@ plotOverlapMetric(metric, type = "DELETION",
 
 <br>
 
-Row or column annotation are often useful and can easy by added with the
-`annotation_row` or `annotation_col` arguments, as described in the 
+Row and/or column annotation is often useful and can easy by included with 
+the `annotation_row` or `annotation_col` arguments, as described in the 
 `pheatmap::pheatmap` method.
 
 ```{r demoPlot03, fig.align="center"}
@@ -258,15 +265,14 @@ plotOverlapMetric(metric, type = "AMPLIFICATION",
 
 <br>
 
-# Metrics using the _CNV calls_
+# Metrics using the _CNV status calls_
 
 This survey represents the similarity measures that are implemented in 
 `r Githubpkg("adeschen/CNVMetrics")` package. Those metrics are calculated 
-using the _CNV calls_. The size of the amplified/deleted regions as well as 
-the size of the overlapping of regions are always in base paired. 
+using the _CNV status calls_. The size of the amplified/deleted regions as 
+well as the size of the overlapping of regions are always in base paired. 
 
 ## Sørensen
-
 
 The Sørensen coefficient [@Sorensen48] is calculated by dividing twice the  
 size of the intersection by the sum of the size of the two sets:
@@ -302,57 +308,29 @@ TODO
 
 
 
-# Inputs
+# Supplementary information
 
-## Chromosomes information 
+## Creating your own GRangesList
 
-The chromosomes information is mandatory. It ensures that only the selected
-chromosomes are used in the analysis. As not all CNV software use the same
-reference (reference with alternative regions or not), it ensure that
-all samples will be compared using the same reference. We strongly encourage 
-using only the primary chromosomes for this analaysis.
+The `GenomicRanges::makeGRangesListFromDataFrame()` function enables the 
+creation of a list of `GRangesList` objects from a `data.frame`. However, 
+`GRangesList` can also be generated and filled manually. 
 
-The chromosomes information is contained inside a `Seqinfo` object. The 
-information from some UCSC genomes can be fetched automatically using
-the `r Biocpkg("GenomeInfoDb")` package. 
+```{r demoGR}
+## Construction a GRangesList()
+gr1 <- GRanges(seqnames="chr2", ranges=IRanges(3, 6000),
+          strand="+", state="AMPLIFICATION", 
+          log2ratio=0.45)
+gr2 <- GRanges(seqnames=c("chr1", "chr2"),
+          ranges=IRanges(c(7,5555), width=c(1200, 40)),
+          strand=c("+", "-"),  state=c("NEUTRAL", "AMPLIFICATION"), 
+          log2ratio=c(0.034, 0.5))
+gr3 <- GRanges(seqnames=c("chr1", "chr2"),
+          ranges=IRanges(c(1, 5577), c(3, 5666)),
+          strand=c("-", "-"), state=c("NEUTRAL", "AMPLIFICATION"), 
+          log2ratio=c(0.04, 0.31))
 
-```{r knownGenome, collapse=TRUE, eval=FALSE, message=FALSE, warning=FALSE}
-### Import needed library that contains the Seqinfo method
-library(GenomeInfoDb)
-
-### Get the information for Human genome version GRCh38
-hg38Info <- Seqinfo(genome="hg38")
-
-### Subset the object to keep only the analyzed chromosomes
-### Chromosomes X and Y are often removed from subsequent analyses
-seqlevels(hg38Info) <- paste0("chr", 1:22)
-```
-
-A `Seqinfo` object can also be created using the chromosomes information 
-specific to the analyzed genome. The `r Biocpkg("GenomeInfoDb")` package is
-required.
-
-```{r newGenome, collapse=FALSE}
-### Import needed library that contains the Seqinfo method
-library(GenomeInfoDb)
-
-### Create an Seqinfo Object
-chrInfo <- Seqinfo(seqnames=c("chr1", "chr2", "chr3"),
-            seqlengths=c(10000, 20000, 1500), isCircular=c(FALSE, FALSE, FALSE),
-            genome="Alien")
-```
-
-```{r deleteChr, echo=FALSE, message=FALSE}
-if (exists("chrInfo", inherits = FALSE)) rm(chrInfo)
-if (exists("hg19Subset", inherits = FALSE)) rm(hg19Subset)
-if (exists("hg19Info", inherits = FALSE)) rm(hg19Info)
-```
-
-
-
-```{r demo}
-#a<-prepareInformation(segDirectory = "inst/extdata/", bedExclusionFile = "inst/extdata/exclusion.bed", segmentWithHeader = FALSE, chrInfo = hg38Info)
-
+grl <- GRangesList("sample01"=gr1, "sample02"=gr2, "sample03"=gr3)
 ```
 
 
