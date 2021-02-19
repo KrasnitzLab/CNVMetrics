@@ -1,6 +1,6 @@
 <!-- badges: start -->
 [![R-CMD-check-bio](https://github.com/KrasnitzLab/CNVMetrics/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/KrasnitzLab/CNVMetrics/actions)
-[![codecov](https://codecov.io/gh/adeschen/CNVMetrics/branch/master/graph/badge.svg)](https://codecov.io/gh/adeschen/CNVMetrics)
+[![codecov](https://codecov.io/gh/KrasnitzLab/CNVMetrics/branch/master/graph/badge.svg)](https://codecov.io/gh/KrasnitzLab/CNVMetrics)
 [![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
 <!-- badges: end -->
 
@@ -8,7 +8,7 @@
 <img src="man/figures/CNVMetrics_text.jpg" alt="CNVMetrics">
 </p>
 
-The _CNVMetrics_ package offers multiple quantitative metrics of similarity between copy number profiles.
+The **_CNVMetrics_** package offers multiple quantitative metrics of similarity between copy number profiles.
 Among these are metrics based on CNV status calls only (amplification/deletion status) or on the level of amplification/deletion. In addition, a visualization tool is provided to explore resulting metrics.
 
 
@@ -21,7 +21,7 @@ Among these are metrics based on CNV status calls only (amplification/deletion s
 
 ## License ##
 
-This package and the underlying CNVMetrics code are distributed under 
+This package and the underlying **_CNVMetrics_** code are distributed under 
 the Artistic license 2.0. You are free to use and redistribute this software. 
 
 For more information on Artistic 2.0 License see
