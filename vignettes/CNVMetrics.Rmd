@@ -35,8 +35,8 @@ set.seed(121444)
 
 # Licensing 
 
-The `r Githubpkg("adeschen/CNVMetrics")` package and the underlying 
-`r Githubpkg("adeschen/CNVMetrics")` code are distributed under the 
+The `r Githubpkg("KrasnitzLab/CNVMetrics")` package and the underlying 
+`r Githubpkg("KrasnitzLab/CNVMetrics")` code are distributed under the 
 Artistic license 2.0. You are free to use and redistribute this software. 
 
 # Introduction
@@ -71,7 +71,7 @@ tumor CNV profiles may reveal genomic determinants of metastasis. Similarly,
 patient-derived xenograft or organoid models of cancer are expected to 
 recapitulate CNV patterns of the tumor tissue of origin [@Gendoo2019].
 
-The `r Githubpkg("adeschen/CNVMetrics")` package calculates metrics to 
+The `r Githubpkg("KrasnitzLab/CNVMetrics")` package calculates metrics to 
 estimate the level of similarity between copy number profiles. Some metrics 
 are calculated using the _CNV status calls_ (amplification/deletion status) 
 while others are based on the level of amplification/deletion. Finally, a 
@@ -81,7 +81,7 @@ sample-to-sample heatmaps.
 # Installation
 
 To install the latest version accessible on the 
-[CNVMetrics Github Website](https://github.com/adeschen/CNVMetrics/releases "CNVMetrics Github Site"), the `r CRANpkg("devtools")` package is required.
+[CNVMetrics Github Website](https://github.com/KrasnitzLab/CNVMetrics "CNVMetrics Github Site"), the `r CRANpkg("devtools")` package is required.
 
 ```{r installDemo01, eval=FALSE}
 ## Load required package
@@ -92,7 +92,7 @@ devtools::install_github('KrasnitzLab/CNVMetrics')
 ```
 
 It is also possible to install an official release. The list of available 
-releases is posted on the [CNVMetrics Release Website](https://github.com/adeschen/CNVMetrics/releases "CNVMetrics Release Site").
+releases is posted on the [CNVMetrics Release Website](https://github.com/KrasnitzLab/CNVMetrics/releases "CNVMetrics Release Site").
 
 
 ```{r installDemo02, eval=FALSE}
@@ -107,7 +107,7 @@ devtools::install_github('KrasnitzLab/CNVMetrics', ref = "v0.1.4")
 # Workflow for metrics calculated using _CNV status calls_
 
 The following figure gives an overview of the capabilities of 
-`r Githubpkg("adeschen/CNVMetrics")` to calculate metrics using the 
+`r Githubpkg("KrasnitzLab/CNVMetrics")` to calculate metrics using the 
 _CNV status calls_ (amplification/deletion status):
 
 
@@ -268,7 +268,7 @@ plotOverlapMetric(metric, type = "AMPLIFICATION",
 # Metrics using the _CNV status calls_
 
 This survey represents the similarity measures that are implemented in 
-`r Githubpkg("adeschen/CNVMetrics")` package. Those metrics are calculated 
+`r Githubpkg("KrasnitzLab/CNVMetrics")` package. Those metrics are calculated 
 using the _CNV status calls_. The size of the amplified/deleted regions as 
 well as the size of the overlapping of regions are always in base paired. 
 
@@ -301,7 +301,7 @@ value is 1.
 # Metrics using the level of amplification/deletion
 
 This survey represents the similarity measures that are implemented in 
-`r Githubpkg("adeschen/CNVMetrics")` package.
+`r Githubpkg("KrasnitzLab/CNVMetrics")` package.
 
 TODO
 
