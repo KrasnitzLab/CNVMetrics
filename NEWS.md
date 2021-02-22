@@ -1,3 +1,10 @@
+# CNVMetrics 0.1.4
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+* New website https://krasnitzlab.github.io/CNVMetrics/index.html associated to package.
+* Vignette section 'Workflow for metrics calculated using CNV status calls' is completed.
+
 # CNVMetrics 0.1.3
 
 SIGNIFICANT USER-VISIBLE CHANGES
