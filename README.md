@@ -33,8 +33,8 @@ For more information on Artistic 2.0 License see
 
 ## Installation ##
 
-To install the latest version accessible, the  [devtools](https://cran.r-project.org/web/packages/devtools/index.html) package 
-is required.
+To install the latest version accessible, the  [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
+package is required.
 
      ## Load required package
      library(devtools)
