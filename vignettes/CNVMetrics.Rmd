@@ -88,7 +88,7 @@ To install the latest version accessible on the
 library(devtools)
 
 ## Install the latest version of CNVMetrics
-devtools::install_github('adeschen/CNVMetrics')
+devtools::install_github('KrasnitzLab/CNVMetrics')
 ```
 
 It is also possible to install an official release. The list of available 
@@ -99,9 +99,9 @@ releases is posted on the [CNVMetrics Release Website](https://github.com/adesch
 ## Load required package
 library(devtools)
 
-## Install the version v0.1.2 of CNVMetrics
+## Install the version v0.1.4 of CNVMetrics
 ## using 'ref' parameter
-devtools::install_github('adeschen/CNVMetrics', ref = "v0.1.2")
+devtools::install_github('KrasnitzLab/CNVMetrics', ref = "v0.1.4")
 ```
 
 # Workflow for metrics calculated using _CNV status calls_
