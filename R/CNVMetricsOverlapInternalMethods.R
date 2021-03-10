@@ -98,7 +98,8 @@ calculateOneOverlapMetric <- function(sample01, sample02, method, type) {
     if (length(sample01) > 0 && length(sample02) > 0) { 
         result <- switch(method,
                         sorensen = calculateSorensen(sample01, sample02),
-                        szymkiewicz = calculateSzymkiewicz(sample01, sample02))
+                        szymkiewicz = calculateSzymkiewicz(sample01, sample02),
+                        jaccard = calculateJaccard(sample01, sample02))
     }
     
     return(result)
@@ -240,6 +241,76 @@ calculateSzymkiewicz <- function(sample01, sample02) {
                         NA)
     return(result)
 }
+
+
+
+#' @title Calculate Jaccard metric
+#' 
+#' @description Calculate Jaccard metric using overlapping regions between 
+#' two samples. 
+#' 
+#' @param sample01 a \code{GRanges} which contains a collection of 
+#' genomic ranges representing copy number events for the first sample.  
+#' @param sample02 a \code{GRanges} which contains a collection of 
+#' genomic ranges representing copy number events for the second sample.
+#' 
+#' @details 
+#' 
+#' The method calculates the Jaccard metric using overlapping
+#' regions between the samples. All regions present in both samples are used
+#' for the calculation of the metric.
+#' 
+#' The Jaccard metric is calculated by dividing the size of 
+#' the intersection by the size of the union of the two sets. If the
+#' the size of the union of the two sets is zero; the value \code{NA} is
+#' returned instead. The strand of the regions is not taken into account while
+#' calculating the intersection.
+#' 
+#' 
+#' @return a \code{numeric}, the value of the Jaccard metric. If
+#' the metric cannot be calculated, \code{NA} is returned.
+#' 
+#' @references 
+#' 
+#' Jaccard, P. (1912), The Distribution of the Flora in the Alpine Zone.  
+#' New Phytologist, 11: 37-50. DOI: 10.1111/j.1469-8137.1912.tb05611.x
+#' 
+#' @examples
+#'
+#' ## Load required package to generate the two samples
+#' require(GenomicRanges)
+#'
+#' ## Generate two samples with identical sequence levels
+#' sample01 <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+#'     end = c(2004603, 4577608, 31695808)), strand =  "*")
+#' sample02 <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1995066, 31611222), 
+#'     end = c(2204505, 31689898)), strand =  "*")
+#' 
+#' ## Calculate Sorensen metric    
+#' CNVMetrics:::calculateJaccard(sample01, sample02)
+#'     
+#' @author Astrid Deschênes
+#' @importFrom GenomicRanges intersect width
+#' @encoding UTF-8
+#' @keywords internal
+calculateJaccard <- function(sample01, sample02) {
+    
+    ## Calculate intersection between the two sets as well as the 
+    ## total size of each set
+    inter <- sum(as.numeric(width(intersect(sample01, sample02, 
+                                            ignore.strand=TRUE))))
+    widthSample01 <- sum(as.numeric(width(sample01)))
+    widthSample02 <- sum(as.numeric(width(sample02)))
+    
+    ## Calculate Jaccard metric if possible; otherwise NA
+    result <- ifelse((widthSample01 + widthSample02 - inter) > 0, 
+                        (inter)/(widthSample01 + widthSample02 - inter),
+                        NA)
+    return(result)
+}
+
 
 #' @title Plot one graph related to metrics based on overlapping 
 #' amplified/deleted regions
