@@ -20,11 +20,35 @@ print.CNVMetric <- function(x, ...) {
     # Print title before printing the content of the regression object
     cat("CNV Metric done on overlapping regions\n")
     cat("Metric:\n")
-    print(attr(x, 'metric'))
+    cat(attr(x, 'metric'))
+    cat("\n")
+    
     cat("\nAMPLIFICATION:\n")
-    print(x$AMPLIFICATION, ...)
+    if (nrow(x$AMPLIFICATION) > 5) {
+        print(x$AMPLIFICATION[seq_len(5),seq_len(5)], ...)
+        if (nrow(x$AMPLIFICATION) == 6) {
+            cat("[ -- omitted 1 row/column ]")
+        } else {
+            cat(paste0("[ -- omitted ", (nrow(x$AMPLIFICATION) - 5), 
+                            " rows/columns ]"))
+        }
+    } else {
+        print(x$AMPLIFICATION, ...) 
+    }
+    cat("\n")
     cat("\nDELETION:\n")
-    print(x$DELETION, ...)
+    if (nrow(x$DELETION) > 5) {
+        print(x$DELETION[seq_len(5),seq_len(5)], ...)
+        if (nrow(x$DELETION) == 6) {
+            cat("[ -- omitted 1 row/column ]")
+        } else {
+            cat(paste0("[ -- omitted ", (nrow(x$DELETION) - 5), 
+                        " rows/columns ]"))
+        }
+    } else {
+        print(x$DELETION, ...)
+    }
+    cat("\n")
     invisible(x)
 }
 
