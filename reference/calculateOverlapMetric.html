@@ -231,7 +231,7 @@ Journal 3 (1): 19–28. doi: <a href='https://doi.org/10.5121/mlaij.2016.3103'>h
 <span class='fu'>calculateOverlapMetric</span><span class='op'>(</span><span class='va'>demo</span>, method<span class='op'>=</span><span class='st'>"sorensen"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; CNV Metric done on overlapping regions
 #&gt; Metric:
-#&gt; [1] "sorensen"
+#&gt; sorensen
 #&gt; 
 #&gt; AMPLIFICATION:
 #&gt;            sample01 sample02 sample03
@@ -239,16 +239,18 @@ Journal 3 (1): 19–28. doi: <a href='https://doi.org/10.5121/mlaij.2016.3103'>h
 #&gt; sample02 0.04647582       NA       NA
 #&gt; sample03 0.05465532        0       NA
 #&gt; 
+#&gt; 
 #&gt; DELETION:
 #&gt;           sample01 sample02 sample03
 #&gt; sample01        NA       NA       NA
 #&gt; sample02 0.0541291       NA       NA
-#&gt; sample03 0.0000000        0       NA</div><div class='input'>
+#&gt; sample03 0.0000000        0       NA
+#&gt; </div><div class='input'>
 <span class='co'>## Calculating Szymkiewicz-Simpson metric</span>
 <span class='fu'>calculateOverlapMetric</span><span class='op'>(</span><span class='va'>demo</span>, method<span class='op'>=</span><span class='st'>"szymkiewicz"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; CNV Metric done on overlapping regions
 #&gt; Metric:
-#&gt; [1] "szymkiewicz"
+#&gt; szymkiewicz
 #&gt; 
 #&gt; AMPLIFICATION:
 #&gt;            sample01 sample02 sample03
@@ -256,11 +258,13 @@ Journal 3 (1): 19–28. doi: <a href='https://doi.org/10.5121/mlaij.2016.3103'>h
 #&gt; sample02 0.07796751       NA       NA
 #&gt; sample03 1.00000000        0       NA
 #&gt; 
+#&gt; 
 #&gt; DELETION:
 #&gt;           sample01 sample02 sample03
 #&gt; sample01        NA       NA       NA
 #&gt; sample02 0.6477475       NA       NA
-#&gt; sample03 0.0000000        0       NA</div><div class='input'>
+#&gt; sample03 0.0000000        0       NA
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

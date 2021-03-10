@@ -84,7 +84,7 @@
 
     
     
-<p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="uri">https://orcid.org/0000-0002-0802-1071</a>), Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.1.4<br><strong>Compiled date</strong>: 2021-02-23<br><strong>License</strong>: Artistic-2.0<br></p>
+<p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="uri">https://orcid.org/0000-0002-0802-1071</a>), Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.1.4<br><strong>Compiled date</strong>: 2021-03-10<br><strong>License</strong>: Artistic-2.0<br></p>
 <div id="licensing" class="section level1">
 <h1 class="hasAnchor">
 <a href="#licensing" class="anchor"></a>Licensing</h1>
@@ -237,44 +237,25 @@ Example of a copy number file containing CNV calls.
 <span class="va">metric</span></code></pre></div>
 <pre><code>## CNV Metric done on overlapping regions
 ## Metric:
-## [1] "sorensen"
+## sorensen
 ## 
 ## AMPLIFICATION:
-##            mM1       mM10      mM15      mM3P       mM6      mT19       mT23
-## mM1         NA         NA        NA        NA        NA        NA         NA
-## mM10 0.4437132         NA        NA        NA        NA        NA         NA
-## mM15 0.0000000 0.00000000        NA        NA        NA        NA         NA
-## mM3P 0.1713638 0.23807300 0.0000000        NA        NA        NA         NA
-## mM6  0.4048136 0.55451473 0.0000000 0.2952499        NA        NA         NA
-## mT19 0.0000000 0.02203665 0.0000000 0.0000000 0.0000000        NA         NA
-## mT23 0.0000000 0.22206155 0.0000000 0.0000000 0.1771307 0.1280093         NA
-## mT3  0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000 0.07606719
-## mT34 0.0000000 0.00000000 0.1944268 0.0000000 0.0000000 0.0000000 0.19379995
-## mT6  0.0000000 0.02162337 0.0000000 0.0000000 0.0000000 0.5355322 0.31039491
-##            mT3      mT34 mT6
-## mM1         NA        NA  NA
-## mM10        NA        NA  NA
-## mM15        NA        NA  NA
-## mM3P        NA        NA  NA
-## mM6         NA        NA  NA
-## mT19        NA        NA  NA
-## mT23        NA        NA  NA
-## mT3         NA        NA  NA
-## mT34 0.1987085        NA  NA
-## mT6  0.3197464 0.4477146  NA
+##            mM1      mM10 mM15      mM3P mM6
+## mM1         NA        NA   NA        NA  NA
+## mM10 0.4437132        NA   NA        NA  NA
+## mM15 0.0000000 0.0000000   NA        NA  NA
+## mM3P 0.1713638 0.2380730    0        NA  NA
+## mM6  0.4048136 0.5545147    0 0.2952499  NA
+## [ -- omitted 5 rows/columns ]
 ## 
 ## DELETION:
-##            mM1       mM10      mM15        mM3P mM6 mT19 mT23 mT3 mT34 mT6
-## mM1         NA         NA        NA          NA  NA   NA   NA  NA   NA  NA
-## mM10 0.0000000         NA        NA          NA  NA   NA   NA  NA   NA  NA
-## mM15 0.4595765 0.00000000        NA          NA  NA   NA   NA  NA   NA  NA
-## mM3P 0.2568018 0.33369790 0.6481145          NA  NA   NA   NA  NA   NA  NA
-## mM6  0.0000000 0.00000000 0.0000000 0.009185940  NA   NA   NA  NA   NA  NA
-## mT19        NA         NA        NA          NA  NA   NA   NA  NA   NA  NA
-## mT23 0.0000000 0.02664788 0.0000000 0.008444335   0   NA   NA  NA   NA  NA
-## mT3  0.6852435 0.00000000 0.7280788 0.440730426   0   NA    0  NA   NA  NA
-## mT34 0.6852435 0.00000000 0.7280788 0.440730426   0   NA    0   1   NA  NA
-## mT6  0.6852435 0.00000000 0.7280788 0.440730426   0   NA    0   1    1  NA</code></pre>
+##            mM1      mM10      mM15       mM3P mM6
+## mM1         NA        NA        NA         NA  NA
+## mM10 0.0000000        NA        NA         NA  NA
+## mM15 0.4595765 0.0000000        NA         NA  NA
+## mM3P 0.2568018 0.3336979 0.6481145         NA  NA
+## mM6  0.0000000 0.0000000 0.0000000 0.00918594  NA
+## [ -- omitted 5 rows/columns ]</code></pre>
 </div>
 <div id="metric-visualization" class="section level2">
 <h2 class="hasAnchor">
@@ -421,24 +402,24 @@ size of the intersection by the sum of the size of the two sets:</p>
 ## [15] lifecycle_1.0.0             stringr_1.4.0              
 ## [17] zlibbioc_1.36.0             MatrixGenerics_1.2.1       
 ## [19] Biostrings_2.58.0           munsell_0.5.0              
-## [21] gtable_0.3.0                ragg_1.1.0                 
+## [21] gtable_0.3.0                ragg_1.1.1                 
 ## [23] memoise_2.0.0               evaluate_0.14              
 ## [25] Biobase_2.50.0              fastmap_1.1.0              
 ## [27] highr_0.8                   scales_1.1.1               
-## [29] BiocManager_1.30.10         DelayedArray_0.16.1        
-## [31] cachem_1.0.4                desc_1.2.0                 
-## [33] XVector_0.30.0              farver_2.0.3               
+## [29] BiocManager_1.30.10         DelayedArray_0.16.2        
+## [31] cachem_1.0.4                desc_1.3.0                 
+## [33] XVector_0.30.0              farver_2.1.0               
 ## [35] systemfonts_1.0.1           fs_1.5.0                   
-## [37] Rsamtools_2.6.0             textshaping_0.3.0          
+## [37] Rsamtools_2.6.0             textshaping_0.3.1          
 ## [39] gridExtra_2.3               digest_0.6.27              
 ## [41] stringi_1.5.3               bookdown_0.21              
 ## [43] grid_4.0.3                  rprojroot_2.0.2            
 ## [45] tools_4.0.3                 bitops_1.0-6               
 ## [47] magrittr_2.0.1              RCurl_1.98-1.2             
 ## [49] crayon_1.4.1                Matrix_1.3-2               
-## [51] pheatmap_1.0.12             assertthat_0.2.1           
-## [53] rmarkdown_2.7               R6_2.5.0                   
-## [55] GenomicAlignments_1.26.0    compiler_4.0.3</code></pre>
+## [51] pheatmap_1.0.12             rmarkdown_2.7              
+## [53] R6_2.5.0                    GenomicAlignments_1.26.0   
+## [55] compiler_4.0.3</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
