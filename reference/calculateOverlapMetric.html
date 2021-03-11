@@ -129,7 +129,10 @@ the amplified and deleted regions separately. When more than 2 samples are
 present, the metric is calculated for each sample pair.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calculateOverlapMetric</span><span class='op'>(</span><span class='va'>segmentData</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sorensen"</span>, <span class='st'>"szymkiewicz"</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>calculateOverlapMetric</span><span class='op'>(</span>
+  <span class='va'>segmentData</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sorensen"</span>, <span class='st'>"szymkiewicz"</span>, <span class='st'>"jaccard"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,8 +150,8 @@ calculation of the metric.</p></td>
     <tr>
       <th>method</th>
       <td><p>a <code>character</code> string representing the metric to be used. 
-This should be (an unambiguous abbreviation of) one of "sorensen" or 
-"szymkiewicz". Default: "sorensen".</p></td>
+This should be (an unambiguous abbreviation of) one of "sorensen", 
+"szymkiewicz" or "jaccard". Default: "sorensen".</p></td>
     </tr>
     </table>
 
@@ -189,6 +192,10 @@ two samples are identical.</p>
 <p>This metric is calculated by dividing the size of the intersection 
 by the size of the smallest set. With this metric, if one set is a 
 subset of the other set, the overlap metric value is 1.</p>
+<p><code>jaccard</code>:</p>
+<p>This metric is calculated by dividing the size of the intersection 
+by the size of the union of the two sets. With this metric, an overlap 
+metric value of 1 is only obtained when the two samples are identical.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Sørensen, Thorvald. n.d. “A Method of Establishing Groups of Equal 
@@ -198,6 +205,9 @@ Biologiske Skrifter, no. 5: 1–34.</p>
 <p>Vijaymeena, M. K, and Kavitha K. 2016. “A Survey on Similarity Measures in 
 Text Mining.” Machine Learning and Applications: An International 
 Journal 3 (1): 19–28. doi: <a href='https://doi.org/10.5121/mlaij.2016.3103'>https://doi.org/10.5121/mlaij.2016.3103</a></p>
+<p>Jaccard, P. (1912), The Distribution of the Flora in the Alpine Zone.  
+New Phytologist, 11: 37-50. 
+doi: <a href='https://doi.org/10.1111/j.1469-8137.1912.tb05611.x'>https://doi.org/10.1111/j.1469-8137.1912.tb05611.x</a></p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Astrid Deschênes, Pascal Belleau</p>
