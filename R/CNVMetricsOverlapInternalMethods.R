@@ -300,7 +300,7 @@ calculateJaccard <- function(sample01, sample02) {
     ## Calculate intersection between the two sets as well as the 
     ## total size of each set
     inter <- sum(as.numeric(width(intersect(sample01, sample02, 
-                                            ignore.strand=TRUE))))
+                                                ignore.strand=TRUE))))
     widthSample01 <- sum(as.numeric(width(sample01)))
     widthSample02 <- sum(as.numeric(width(sample02)))
     
