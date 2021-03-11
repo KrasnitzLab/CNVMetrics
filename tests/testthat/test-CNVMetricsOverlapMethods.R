@@ -163,6 +163,46 @@ test_that("calculateOverlapMetric() must return expected results with szymkiewic
 })
 
 
+test_that("calculateOverlapMetric() must return expected results with jaccard", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1",
+                                  ranges =  IRanges(start = c(100, 300, 800),
+                                                    end = c(200, 500, 900)), strand =  "*",
+                                  state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    demo[["sample02"]] <- GRanges(seqnames = "chr1",
+                                  ranges =  IRanges(start = c(150, 600, 1000),
+                                                    end = c(250, 700, 1500)), strand =  "*",
+                                  state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    demo[["sample03"]] <- GRanges(seqnames = "chr1",
+                                  ranges =  IRanges(start = c(50, 600, 1000),
+                                                    end = c(250, 700, 2000)), strand =  "*",
+                                  state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    
+    result <- calculateOverlapMetric(segmentData=demo, 
+                                     metho="jaccard")
+    
+    expected <- list()
+    expected$AMPLIFICATION <- matrix(c(NA, NA, NA, 0.112582781456954, NA, NA, 
+                                       0.200795228628231, 0.668874172185430, NA), 
+                                     nrow = 3, ncol = 3, byrow = TRUE)
+    colnames(expected$AMPLIFICATION) <- c("sample01", "sample02", "sample03")
+    rownames(expected$AMPLIFICATION) <- c("sample01", "sample02", "sample03")
+    
+    expected$DELETION <- matrix(c(NA, NA, NA, 0.000000000000000, NA, NA, 
+                                  0.000000000000000, 0.500499500499501, NA), 
+                                nrow = 3, ncol = 3, 
+                                byrow = TRUE)
+    colnames(expected$DELETION) <- c("sample01", "sample02", "sample03")
+    rownames(expected$DELETION) <- c("sample01", "sample02", "sample03")
+    
+    class(expected) <- "CNVMetric"
+    attr(expected, 'metric') <- "jaccard"
+    
+    expect_equal(result, expected)
+})
+
+
 test_that("calculateOverlapMetric() must return an error when segmentData has only one sample", {
     
     error_message <- "at least 2 samples must be present in the segmentData"

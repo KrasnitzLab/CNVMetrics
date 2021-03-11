@@ -15,8 +15,8 @@
 #' calculation of the metric. 
 #' 
 #' @param method a \code{character} string representing the metric to be used. 
-#' This should be (an unambiguous abbreviation of) one of "sorensen" or 
-#' "szymkiewicz". Default: "sorensen".
+#' This should be (an unambiguous abbreviation of) one of "sorensen", 
+#' "szymkiewicz" or "jaccard". Default: "sorensen".
 #' 
 #' @details 
 #' 
@@ -37,6 +37,12 @@
 #' This metric is calculated by dividing the size of the intersection 
 #' by the size of the smallest set. With this metric, if one set is a 
 #' subset of the other set, the overlap metric value is 1.
+#' 
+#' \code{jaccard}:
+#' 
+#' This metric is calculated by dividing the size of the intersection 
+#' by the size of the union of the two sets. With this metric, an overlap 
+#' metric value of 1 is only obtained when the two samples are identical. 
 #' 
 #' @return an object of class "\code{CNVMetric}" which contains the calculated
 #' metric. This object is a list with the following components:
@@ -75,6 +81,9 @@
 #' Text Mining.” Machine Learning and Applications: An International 
 #' Journal 3 (1): 19–28. doi: \url{https://doi.org/10.5121/mlaij.2016.3103}
 #' 
+#' Jaccard, P. (1912), The Distribution of the Flora in the Alpine Zone.  
+#' New Phytologist, 11: 37-50. 
+#' doi: \url{https://doi.org/10.1111/j.1469-8137.1912.tb05611.x}
 #' 
 #' @examples
 #'
@@ -112,7 +121,8 @@
 #' @encoding UTF-8
 #' @export
 calculateOverlapMetric <- function(segmentData, 
-                                    method=c("sorensen", "szymkiewicz")) {
+                                    method=c("sorensen", "szymkiewicz", 
+                                                "jaccard")) {
     
     method <- match.arg(method)
     
