@@ -44,8 +44,8 @@ bedFile <- system.file("extdata", "mm10.blacklist.bed",
 # Path to the directory containing the segmentation files
 segDir <- system.file("extdata", package="CNVMetrics")
 
- ## TODO
-  
+## TODO
+
 }
 \author{
 Astrid Deschênes, Pascal Belleau
