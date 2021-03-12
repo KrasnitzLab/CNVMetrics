@@ -31,6 +31,8 @@ For more information on Artistic 2.0 License see
 
 [CNVMetrics Website](https://krasnitzlab.github.io/CNVMetrics/)
 
+[CNVMetrics Get Started](https://krasnitzlab.github.io/CNVMetrics/articles/CNVMetrics.html)
+
 ## Installation ##
 
 To install the latest version accessible, the  [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
