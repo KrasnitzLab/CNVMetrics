@@ -32,8 +32,8 @@ metric. This object is a list with the following components:
     samples. The value \code{NA} is present when the metric cannot be 
     calculated. The value \code{NA} is also present in the top-triangular 
     section, as well as the diagonal, of the matrix.
- }
- \item{\code{DELETION}}{ a lower-triangular \code{matrix} with the 
+}
+\item{\code{DELETION}}{ a lower-triangular \code{matrix} with the 
     results of the selected metric on the deleted regions for each paired
     samples. The value \code{NA} is present when the metric cannot be 
     calculated. The value \code{NA} is also present in the top-triangular 
@@ -44,7 +44,7 @@ The object has the following attributes (besides "class" equal
 to "CNVMetric"):
 \itemize{
 \item{\code{metric}}{ the metric used for the calculation.
- } 
+} 
 \item{\code{names}}{ the names of the two matrix containing the metrics for
 the amplified and deleted regions.
 }}

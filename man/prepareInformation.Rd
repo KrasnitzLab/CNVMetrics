@@ -74,7 +74,7 @@ mouseInfo <- mouseInfo[c("chr1", "chr2", "chr3", "chr4"),]
 ## Path to the directory containing the segmentation files
 segDir <- system.file("extdata", package="CNVMetrics")
 
-# TODO
+## TODO
 
 prepareInformation(segDirectory = segDir, chrInfo = mouseInfo,
     bedExclusionFile = bedFile, segmentWithHeader = TRUE)
