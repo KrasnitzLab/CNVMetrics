@@ -52,7 +52,8 @@ CNVMetrics:::calculateJaccard(sample01, sample02)
 }
 \references{
 Jaccard, P. (1912), The Distribution of the Flora in the Alpine Zone.  
-New Phytologist, 11: 37-50. DOI: 10.1111/j.1469-8137.1912.tb05611.x
+New Phytologist, 11: 37-50. 
+DOI: \url{https://doi.org/10.1111/j.1469-8137.1912.tb05611.x}
 }
 \author{
 Astrid Deschênes

@@ -61,7 +61,7 @@
 #' ## Path to the directory containing the segmentation files
 #' segDir <- system.file("extdata", package="CNVMetrics")
 #' 
-#' # TODO
+#' ## TODO
 #' 
 #' prepareInformation(segDirectory = segDir, chrInfo = mouseInfo,
 #'     bedExclusionFile = bedFile, segmentWithHeader = TRUE)
@@ -209,8 +209,8 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
 #' # Path to the directory containing the segmentation files
 #' segDir <- system.file("extdata", package="CNVMetrics")
 #' 
-#'  ## TODO
-#'   
+#' ## TODO
+#' 
 #' @author Astrid Deschênes, Pascal Belleau
 #' @importFrom GenomicRanges elementMetadata
 #' @importFrom IRanges ranges width

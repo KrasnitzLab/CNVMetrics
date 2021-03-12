@@ -45,7 +45,7 @@ sample01 <- GRanges(seqnames = "chr1",
 sample02 <- GRanges(seqnames = "chr1", 
     ranges =  IRanges(start = c(1995066, 31611222), 
     end = c(2204505, 31689898)), strand =  c("+", "-"))
-   
+
 ## Calculate Szymkiewicz-Simpson metric
 CNVMetrics:::calculateSzymkiewicz(sample01, sample02)
     

@@ -81,7 +81,8 @@ sample-to-sample heatmaps.
 # Installation
 
 To install the latest version accessible on the 
-[CNVMetrics Github Website](https://github.com/KrasnitzLab/CNVMetrics "CNVMetrics Github Site"), the `r CRANpkg("devtools")` package is required.
+[CNVMetrics Github Website](https://github.com/KrasnitzLab/CNVMetrics "CNVMetrics Github Site"), 
+the `r CRANpkg("devtools")` package is required.
 
 ```{r installDemo01, eval=FALSE}
 ## Load required package
@@ -274,7 +275,7 @@ well as the size of the overlapping of regions are always in base paired.
 
 ## Sørensen
 
-The Sørensen coefficient [@Sorensen48] is calculated by dividing twice the  
+The Sørensen coefficient [@Sorensen48] is calculated by dividing twice the 
 size of the intersection by the sum of the size of the two sets:
 
 \begin{equation}
@@ -290,12 +291,25 @@ overlap coefficient, is calculated by dividing the size of the intersection
 by the smaller of the size of the two sets:
 
 \begin{equation}
-  \frac{\left| X \cap Y \right| }{min \left(\left| X \right| , \left| Y \right|\right)}
+  \frac{\left| X \cap Y \right|}{min \left(\left| X \right|,\left| Y \right|\right)}
   (\#eq:szymkiewicz)
 \end{equation}    
 
 If set **X** is a subset of **Y** or vice versa, the overlap coefficient 
 value is 1. 
+
+
+## Jaccard
+
+The Jaccard coefficient [@Jaccard1912], also known as coefficient of 
+community, is calculated by dividing the size 
+of the intersection by the smaller of the size of the two sets:
+
+\begin{equation}
+  \frac{\left| X \cap Y \right| }{ \left| X \cup Y \right|}
+  (\#eq:jaccard)
+\end{equation}    
+
 
 
 # Metrics using the level of amplification/deletion
