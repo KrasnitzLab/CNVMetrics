@@ -84,7 +84,7 @@
 
     
     
-<p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="uri">https://orcid.org/0000-0002-0802-1071</a>), Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.1.4<br><strong>Compiled date</strong>: 2021-03-11<br><strong>License</strong>: Artistic-2.0<br></p>
+<p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="uri">https://orcid.org/0000-0002-0802-1071</a>), Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.1.4<br><strong>Compiled date</strong>: 2021-03-12<br><strong>License</strong>: Artistic-2.0<br></p>
 <div id="licensing" class="section level1">
 <h1 class="hasAnchor">
 <a href="#licensing" class="anchor"></a>Licensing</h1>
@@ -315,8 +315,7 @@ Example of a copy number file containing CNV calls.
 <div id="sørensen" class="section level2">
 <h2 class="hasAnchor">
 <a href="#s%C3%B8rensen" class="anchor"></a>Sørensen</h2>
-<p>The Sørensen coefficient <span class="citation">(Sørensen 1948)</span> is calculated by dividing twice the<br>
-size of the intersection by the sum of the size of the two sets:</p>
+<p>The Sørensen coefficient <span class="citation">(Sørensen 1948)</span> is calculated by dividing twice the size of the intersection by the sum of the size of the two sets:</p>
 <p><span class="math display">\[\begin{equation}
   \frac{2\times  \left| X \cap Y \right| }{\left| X \right| + \left| Y \right|}
   (\#eq:sorensen)
@@ -327,10 +326,19 @@ size of the intersection by the sum of the size of the two sets:</p>
 <a href="#szymkiewiczsimpson" class="anchor"></a>Szymkiewicz–Simpson</h2>
 <p>The Szymkiewicz–Simpson coefficient <span class="citation">(Vijaymeena and K. 2016)</span>, also known as the overlap coefficient, is calculated by dividing the size of the intersection by the smaller of the size of the two sets:</p>
 <p><span class="math display">\[\begin{equation}
-  \frac{\left| X \cap Y \right| }{min \left(\left| X \right| , \left| Y \right|\right)}
+  \frac{\left| X \cap Y \right|}{min \left(\left| X \right|,\left| Y \right|\right)}
   (\#eq:szymkiewicz)
 \end{equation}\]</span></p>
 <p>If set <strong>X</strong> is a subset of <strong>Y</strong> or vice versa, the overlap coefficient value is 1.</p>
+</div>
+<div id="jaccard" class="section level2">
+<h2 class="hasAnchor">
+<a href="#jaccard" class="anchor"></a>Jaccard</h2>
+<p>The Jaccard coefficient <span class="citation">(Jaccard 1912)</span>, also known as coefficient of community, is calculated by dividing the size of the intersection by the smaller of the size of the two sets:</p>
+<p><span class="math display">\[\begin{equation}
+  \frac{\left| X \cap Y \right| }{ \left| X \cup Y \right|}
+  (\#eq:jaccard)
+\end{equation}\]</span></p>
 </div>
 </div>
 <div id="metrics-using-the-level-of-amplificationdeletion" class="section level1">
@@ -387,7 +395,7 @@ size of the intersection by the sum of the size of the two sets:</p>
 ## [8] methods   base     
 ## 
 ## other attached packages:
-## [1] CNVMetrics_0.1.4     GenomicRanges_1.42.0 GenomeInfoDb_1.26.2 
+## [1] CNVMetrics_0.1.4     GenomicRanges_1.42.0 GenomeInfoDb_1.26.4 
 ## [4] IRanges_2.24.1       S4Vectors_0.28.1     BiocGenerics_0.36.0 
 ## [7] knitr_1.31           BiocStyle_2.18.1    
 ## 
@@ -436,6 +444,9 @@ size of the intersection by the sum of the size of the two sets:</p>
 </div>
 <div id="ref-Hiroi2013">
 <p>Hiroi, N, T Takahashi, A Hishimoto, T Izumi, S Boku, and T Hiramoto. 2013. “Copy number variation at 22q11.2: from rare variants to common mechanisms of developmental neuropsychiatric disorders.” <em>Molecular Psychiatry</em> 18 (11): 1153–65. <a href="https://doi.org/10.1038/mp.2013.92">https://doi.org/10.1038/mp.2013.92</a>.</p>
+</div>
+<div id="ref-Jaccard1912">
+<p>Jaccard, Paul. 1912. “The distribution of the flora in the alpine zone.” <em>New Phytologist</em> 11 (2): 37–50. <a href="https://doi.org/10.1111/j.1469-8137.1912.tb05611.x">https://doi.org/10.1111/j.1469-8137.1912.tb05611.x</a>.</p>
 </div>
 <div id="ref-Oni2020">
 <p>Oni, Tobiloba E, Giulia Biffi, Lindsey A Baker, Yuan Hao, Claudia Tonelli, Tim D D Somerville, Astrid Deschênes, et al. 2020. “SOAT1 promotes mevalonate pathway dependency in pancreatic cancer.” <em>Journal of Experimental Medicine</em> 217 (9). <a href="https://doi.org/10.1084/jem.20192389">https://doi.org/10.1084/jem.20192389</a>.</p>
