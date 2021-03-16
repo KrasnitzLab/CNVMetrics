@@ -100,6 +100,7 @@ releases is posted on the [CNVMetrics Release Website](https://github.com/Krasni
 ## Load required package
 library(devtools)
 
+
 ## Install the version v0.1.4 of CNVMetrics
 ## using 'ref' parameter
 devtools::install_github('KrasnitzLab/CNVMetrics', ref = "v0.1.4")
@@ -142,8 +143,9 @@ deleted segments must be assigned those values:
 Segments with other **state** values can be present in the file. However, 
 those segments won't be retain for the calculation of the metrics.
 
-```{r figureCNVFile, echo = FALSE, fig.align="center", fig.cap="Example of a copy number file containing CNV calls.", out.width = '95%'}
-knitr::include_graphics("Input_CNfile_2_small.jpg")
+```{r figureCNVFile, echo = FALSE, fig.align="center", fig.cap="Example of a copy number file containing CNV calls.", out.width = '100%'}
+
+knitr::include_graphics("Input_CNV_call_300ppi_v01.jpg")
 ```
 
 
@@ -210,7 +212,7 @@ the similarity metrics in the form of a sample-to-sample heatmap. By default,
 an hierarchical clustering based on based on the sample distances 
 (1-metrics) is used.
 
-```{r demoPlot01, fig.align="center"}
+```{r demoPlot01, fig.align="center", fig.height=4.5, fig.width=4.5}
 ## Create graph for the metrics related to amplified regions
 plotOverlapMetric(metric, type = "AMPLIFICATION")
 ```
@@ -223,7 +225,7 @@ The `plotOverlapMetric()` function uses the `r CRANpkg("pheatmap")` package to
 generate the graph. All arguments accepted by `pheatmap::pheatmap` function 
 are valid arguments.
 
-```{r demoPlot02, fig.align="center"}
+```{r demoPlot02, fig.align="center", fig.height=4.8, fig.width=4.8}
 ## Create graph for the metrics related to deleted regions
 ## Metric value is printed as 'display_numbers' and 'number_format' are
 ## arguments recognized by pheatmap() function
@@ -242,7 +244,7 @@ Row and/or column annotation is often useful and can easy by included with
 the `annotation_row` or `annotation_col` arguments, as described in the 
 `pheatmap::pheatmap` method.
 
-```{r demoPlot03, fig.align="center"}
+```{r demoPlot03, fig.align="center", fig.height=4.8, fig.width=6}
 ## Load file containing annotations for the mouse organoids
 ## The mouse ID identifying the source of the sample
 ## The stage identifying the state (tumor vs metastasis) of the sample
