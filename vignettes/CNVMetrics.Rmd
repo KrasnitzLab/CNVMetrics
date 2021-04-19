@@ -100,7 +100,6 @@ releases is posted on the [CNVMetrics Release Website](https://github.com/Krasni
 ## Load required package
 library(devtools)
 
-
 ## Install the version v0.1.4 of CNVMetrics
 ## using 'ref' parameter
 devtools::install_github('KrasnitzLab/CNVMetrics', ref = "v0.1.4")
