@@ -269,7 +269,7 @@ plotOverlapMetric(metric, type = "AMPLIFICATION",
 
 # Metrics using the _CNV status calls_
 
-This survey represents the similarity measures that are implemented in 
+This survey represents the overlap metrics that are implemented in 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` package. Those metrics are calculated 
 using the _CNV status calls_. The size of the amplified/deleted regions as 
 well as the size of the overlapping of regions are always in base paired. 
@@ -284,6 +284,7 @@ size of the intersection by the sum of the size of the two sets:
   (\#eq:sorensen)
 \end{equation}    
 
+where $X$ and $Y$ represent the regions of each sample in base paired.
 
 ## Szymkiewicz–Simpson
 
@@ -296,7 +297,8 @@ by the smaller of the size of the two sets:
   (\#eq:szymkiewicz)
 \end{equation}    
 
-If set **X** is a subset of **Y** or vice versa, the overlap coefficient 
+where $X$ and $Y$ represent the regions of each sample in base paired. If 
+set $X$ is a subset of $Y$ or vice versa, the overlap coefficient 
 value is 1. 
 
 
@@ -311,17 +313,33 @@ of the intersection by the smaller of the size of the two sets:
   (\#eq:jaccard)
 \end{equation}    
 
-
+where $X$ and $Y$ represent the regions of each sample in base paired.
 
 # Metrics using the level of amplification/deletion
 
 This survey represents the similarity measures that are implemented in 
-`r Githubpkg("KrasnitzLab/CNVMetrics")` package.
+`r Githubpkg("KrasnitzLab/CNVMetrics")` package. Those metrics are calculated 
+using the level of amplification/deletion. The level of 
+amplification/deletion is in log2 ratio while the size of the regions 
+is in base paired. 
 
-TODO
+## Weighted Euclidean Distance
+
+The Weighted Euclidean Distance corresponds to the euclidean distance between
+the log2 values of the two samples multiplied by the natural logarithm 
+of the number of bases of the analyzed segments. The final metric is the 
+squared sum of the values obtained for all segments included in the 
+calculation.
 
 
+\begin{equation}
+  \sqrt{\sum_{i=1} log_{2}(w_{i}) (A_{i} - B_{i})^{2}}
+  (\#eq:euclidean)
+\end{equation}  
 
+where $A_{i}$ and $B_{i}$ represent the log2 ratio values of samples $A$ and 
+$B$ for the region $i$ while $w_{i}$ is the length of region $i$ in base 
+paired.
 
 # Supplementary information
 
