@@ -206,11 +206,11 @@ feature.</p></li>
 
 <span class='co'>## Prepare information about the chromosomes</span>
 <span class='co'>## The files are from mouse samples, chr1 to chr4</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://bioconductor.org/packages/GenomeInfoDb'>GenomeInfoDb</a></span><span class='op'>)</span>
-
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'>rtracklayer</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Loading required package: rtracklayer</span></div><div class='input'>
 <span class='co'>## Get the information for mouse genome mm10</span>
 <span class='co'>## Limit the information to chromosomes 1 to 4</span>
-<span class='va'>mouseInfo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomeInfoDb/man/Seqinfo-class.html'>Seqinfo</a></span><span class='op'>(</span>genome<span class='op'>=</span><span class='st'>"mm10"</span><span class='op'>)</span>    
+<span class='va'>mouseInfo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/rtracklayer/man/GRangesForUCSCGenome.html'>SeqinfoForUCSCGenome</a></span><span class='op'>(</span><span class='st'>"mm10"</span><span class='op'>)</span>  
 <span class='va'>mouseInfo</span> <span class='op'>&lt;-</span> <span class='va'>mouseInfo</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"chr1"</span>, <span class='st'>"chr2"</span>, <span class='st'>"chr3"</span>, <span class='st'>"chr4"</span><span class='op'>)</span>,<span class='op'>]</span>
             
 <span class='co'>## Path to the directory containing the segmentation files</span>
