@@ -97,14 +97,14 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
     
     ## Validate that the directory contains at least one segment file
     if (length(filesList) == 0) {
-        stop(paste0("There is not segment file (seg or SEG extension) in ", 
-                "the segDirectory."))
+        stop("There is not segment file (seg or SEG extension) in ", 
+                "the segDirectory.")
     }
     
     ## Validate that the directory contains at least one segment file
     if (length(filesList) < 2) {
-        stop(paste0("At least 2 segment files (seg or SEG extension) are ", 
-                    "needed in the segDirectory."))
+        stop("At least 2 segment files (seg or SEG extension) are ", 
+                    "needed in the segDirectory.")
     }
     
     ## Read BED file and keep only segments in selected chromosomes
