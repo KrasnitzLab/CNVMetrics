@@ -139,8 +139,8 @@ calculateOverlapMetric <- function(segmentData,
     if (!all(vapply(segmentData, 
                     FUN = function(x) {"state" %in% colnames(mcols(x))},
                     FUN.VALUE = logical(1)))) {
-        stop(paste0("at least one sample doesn't have a metadata column ", 
-                    "called \'state\'"))
+        stop("at least one sample doesn't have a metadata column ", 
+                    "called \'state\'")
     }
     
     results <- list()
