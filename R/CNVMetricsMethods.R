@@ -51,11 +51,11 @@
 #' 
 #' ## Prepare information about the chromosomes
 #' ## The files are from mouse samples, chr1 to chr4
-#' require(GenomeInfoDb)
+#' require(rtracklayer)
 #' 
 #' ## Get the information for mouse genome mm10
 #' ## Limit the information to chromosomes 1 to 4
-#' mouseInfo <- Seqinfo(genome="mm10")    
+#' mouseInfo <- SeqinfoForUCSCGenome("mm10")  
 #' mouseInfo <- mouseInfo[c("chr1", "chr2", "chr3", "chr4"),]
 #'             
 #' ## Path to the directory containing the segmentation files
