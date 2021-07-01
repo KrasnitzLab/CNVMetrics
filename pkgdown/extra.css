@@ -1,0 +1,59 @@
+Skip to content
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@adeschen 
+KrasnitzLab
+/
+CNprep
+2
+2
+2
+Code
+Issues
+1
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+CNprep/pkgdown/extra.css
+@adeschen
+adeschen Adding css file for vignette style with pkgdown
+Latest commit 94759dc 2 days ago
+ History
+ 1 contributor
+27 lines (27 sloc)  533 Bytes
+  
+/* add padding to figure/table anchors to allow space for navbar */
+.figure, .table span {
+  padding-top: 60px;
+}
+/* style figure captions as table captions */
+.caption {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  color: #777;
+  text-align: left;
+}
+/* style abstract to stand out from main text */
+p.abstract{
+  font-size: 24px;
+  font-family: inherit;
+  text-align: center;
+  font-weight: bold;
+}
+div.abstract{
+  margin: auto;
+  width: 90%;
+  padding-bottom: 15px;
+}
+.contents{
+  border-top: 1px solid #eee;
+  padding-top: 9px;
+}
