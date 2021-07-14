@@ -4,8 +4,6 @@ author: Astrid Deschênes, Pascal Belleau and Alexander Krasnitz
 output:
   BiocStyle::html_document:
     toc: true
-pkgdown:
-  as_is: true
 bibliography: CNVMetrics.bibtex
 vignette: >
   %\VignetteIndexEntry{Copy number variant metrics}
@@ -40,12 +38,6 @@ set.seed(121444)
 The `r Githubpkg("KrasnitzLab/CNVMetrics")` package and the underlying 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` code are distributed under the 
 Artistic license 2.0. You are free to use and redistribute this software. 
-
-# Mathjax
-
-$$f(x) = \dfrac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu^2)}{2\sigma^2}}$$
-
-Inline equations: $y=x^2$
 
 
 # Introduction
