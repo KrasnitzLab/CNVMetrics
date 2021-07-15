@@ -39,6 +39,7 @@ The `r Githubpkg("KrasnitzLab/CNVMetrics")` package and the underlying
 `r Githubpkg("KrasnitzLab/CNVMetrics")` code are distributed under the 
 Artistic license 2.0. You are free to use and redistribute this software. 
 
+
 # Introduction
 
 Copy number variation (CNV) includes multiplication and deletion of DNA
@@ -142,8 +143,9 @@ deleted segments must be assigned those values:
 Segments with other **state** values can be present in the file. However, 
 those segments won't be retain for the calculation of the metrics.
 
-```{r figureCNVFile, echo = FALSE, fig.align="center", fig.cap="Example of a copy number file containing CNV calls.", out.width = '95%'}
-knitr::include_graphics("Input_CNfile_2_small.jpg")
+```{r figureCNVFile, echo = FALSE, fig.align="center", fig.cap="Example of a copy number file containing CNV calls.", out.width = '100%'}
+
+knitr::include_graphics("Input_CNV_call_300ppi_v01.jpg")
 ```
 
 
@@ -210,7 +212,7 @@ the similarity metrics in the form of a sample-to-sample heatmap. By default,
 an hierarchical clustering based on based on the sample distances 
 (1-metrics) is used.
 
-```{r demoPlot01, fig.align="center"}
+```{r demoPlot01, fig.align="center", fig.height=4.5, fig.width=4.5}
 ## Create graph for the metrics related to amplified regions
 plotOverlapMetric(metric, type = "AMPLIFICATION")
 ```
@@ -223,7 +225,7 @@ The `plotOverlapMetric()` function uses the `r CRANpkg("pheatmap")` package to
 generate the graph. All arguments accepted by `pheatmap::pheatmap` function 
 are valid arguments.
 
-```{r demoPlot02, fig.align="center"}
+```{r demoPlot02, fig.align="center", fig.height=4.8, fig.width=4.8}
 ## Create graph for the metrics related to deleted regions
 ## Metric value is printed as 'display_numbers' and 'number_format' are
 ## arguments recognized by pheatmap() function
@@ -238,11 +240,11 @@ plotOverlapMetric(metric, type = "DELETION",
 
 <br>
 
-Row and/or column annotation is often useful and can easy by included with 
-the `annotation_row` or `annotation_col` arguments, as described in the 
-`pheatmap::pheatmap` method.
+Row and/or column annotation is often useful and can easily be done 
+by using the `annotation_row` or `annotation_col` arguments, as described in 
+the `pheatmap::pheatmap` method.
 
-```{r demoPlot03, fig.align="center"}
+```{r demoPlot03, fig.align="center", fig.height=4.8, fig.width=6}
 ## Load file containing annotations for the mouse organoids
 ## The mouse ID identifying the source of the sample
 ## The stage identifying the state (tumor vs metastasis) of the sample
@@ -254,7 +256,6 @@ annotOrg <- read.table(annotation.file, header=TRUE, sep="\t")
 ## in the CNVMetric object
 rownames(annotOrg) <- annotOrg$ID
 annotOrg$ID <- NULL
-
 all(rownames(annotOrg) == rownames(metric$AMPLIFICATION))
 
 ## Create graph for the metrics related to amplified regions
@@ -268,7 +269,7 @@ plotOverlapMetric(metric, type = "AMPLIFICATION",
 
 # Metrics using the _CNV status calls_
 
-This survey represents the similarity measures that are implemented in 
+This survey represents the overlap metrics that are implemented in 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` package. Those metrics are calculated 
 using the _CNV status calls_. The size of the amplified/deleted regions as 
 well as the size of the overlapping of regions are always in base paired. 
@@ -283,6 +284,7 @@ size of the intersection by the sum of the size of the two sets:
   (\#eq:sorensen)
 \end{equation}    
 
+where $X$ and $Y$ represent the regions of each sample in base paired.
 
 ## Szymkiewicz–Simpson
 
@@ -295,7 +297,8 @@ by the smaller of the size of the two sets:
   (\#eq:szymkiewicz)
 \end{equation}    
 
-If set **X** is a subset of **Y** or vice versa, the overlap coefficient 
+where $X$ and $Y$ represent the regions of each sample in base paired. If 
+set $X$ is a subset of $Y$ or vice versa, the overlap coefficient 
 value is 1. 
 
 
@@ -310,17 +313,33 @@ of the intersection by the smaller of the size of the two sets:
   (\#eq:jaccard)
 \end{equation}    
 
-
+where \eqn{X} and $Y$ represent the regions of each sample in base paired.
 
 # Metrics using the level of amplification/deletion
 
 This survey represents the similarity measures that are implemented in 
-`r Githubpkg("KrasnitzLab/CNVMetrics")` package.
+`r Githubpkg("KrasnitzLab/CNVMetrics")` package. Those metrics are calculated 
+using the level of amplification/deletion. The level of 
+amplification/deletion is in log2 ratio while the size of the regions 
+is in base paired. 
 
-TODO
+## Weighted Euclidean Distance
+
+The Weighted Euclidean Distance corresponds to the euclidean distance between
+the log2 values of the two samples multiplied by the natural logarithm 
+of the number of bases of the analyzed segments. The final metric is the 
+squared sum of the values obtained for all segments included in the 
+calculation.
 
 
+\begin{equation}
+  \sqrt{\sum_{i=1} log_{2}(w_{i}) (A_{i} - B_{i})^{2}}
+  (\#eq:euclidean)
+\end{equation}  
 
+where $A_{i}$ and $B_{i}$ represent the log2 ratio values of samples $A$ and 
+$B$ for the region $i$ while $w_{i}$ is the length of region $i$ in base 
+paired.
 
 # Supplementary information
 

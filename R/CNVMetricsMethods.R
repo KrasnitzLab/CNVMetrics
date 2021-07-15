@@ -51,11 +51,11 @@
 #' 
 #' ## Prepare information about the chromosomes
 #' ## The files are from mouse samples, chr1 to chr4
-#' require(GenomeInfoDb)
+#' require(rtracklayer)
 #' 
 #' ## Get the information for mouse genome mm10
 #' ## Limit the information to chromosomes 1 to 4
-#' mouseInfo <- Seqinfo(genome="mm10")    
+#' mouseInfo <- SeqinfoForUCSCGenome("mm10")  
 #' mouseInfo <- mouseInfo[c("chr1", "chr2", "chr3", "chr4"),]
 #'             
 #' ## Path to the directory containing the segmentation files
@@ -97,14 +97,14 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
     
     ## Validate that the directory contains at least one segment file
     if (length(filesList) == 0) {
-        stop(paste0("There is not segment file (seg or SEG extension) in ", 
-                "the segDirectory."))
+        stop("There is not segment file (seg or SEG extension) in ", 
+                "the segDirectory.")
     }
     
     ## Validate that the directory contains at least one segment file
     if (length(filesList) < 2) {
-        stop(paste0("At least 2 segment files (seg or SEG extension) are ", 
-                    "needed in the segDirectory."))
+        stop("At least 2 segment files (seg or SEG extension) are ", 
+                    "needed in the segDirectory.")
     }
     
     ## Read BED file and keep only segments in selected chromosomes
