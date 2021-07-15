@@ -4,8 +4,6 @@ author: Astrid Deschênes, Pascal Belleau and Alexander Krasnitz
 output:
   BiocStyle::html_document:
     toc: true
-pkgdown:
-  as_is: true
 bibliography: CNVMetrics.bibtex
 vignette: >
   %\VignetteIndexEntry{Copy number variant metrics}
@@ -40,6 +38,7 @@ set.seed(121444)
 The `r Githubpkg("KrasnitzLab/CNVMetrics")` package and the underlying 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` code are distributed under the 
 Artistic license 2.0. You are free to use and redistribute this software. 
+
 
 # Introduction
 
@@ -241,9 +240,9 @@ plotOverlapMetric(metric, type = "DELETION",
 
 <br>
 
-Row and/or column annotation is often useful and can easy by included with 
-the `annotation_row` or `annotation_col` arguments, as described in the 
-`pheatmap::pheatmap` method.
+Row and/or column annotation is often useful and can easily be done 
+by using the `annotation_row` or `annotation_col` arguments, as described in 
+the `pheatmap::pheatmap` method.
 
 ```{r demoPlot03, fig.align="center", fig.height=4.8, fig.width=6}
 ## Load file containing annotations for the mouse organoids
@@ -257,7 +256,6 @@ annotOrg <- read.table(annotation.file, header=TRUE, sep="\t")
 ## in the CNVMetric object
 rownames(annotOrg) <- annotOrg$ID
 annotOrg$ID <- NULL
-
 all(rownames(annotOrg) == rownames(metric$AMPLIFICATION))
 
 ## Create graph for the metrics related to amplified regions
@@ -315,7 +313,7 @@ of the intersection by the smaller of the size of the two sets:
   (\#eq:jaccard)
 \end{equation}    
 
-where $X$ and $Y$ represent the regions of each sample in base paired.
+where \eqn{X} and $Y$ represent the regions of each sample in base paired.
 
 # Metrics using the level of amplification/deletion
 
