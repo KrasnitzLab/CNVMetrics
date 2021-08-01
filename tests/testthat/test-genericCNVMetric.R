@@ -128,6 +128,33 @@ test_that("print() for CNVMetric object must return expected result when 7 sampl
 })
 
 
+test_that("print() for CNVMetric object must return expected result with weighted Euclidean Distance metric", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1",
+                                  ranges =  IRanges(start = c(1905048, 4554832, 31686841),
+                                                    end = c(2004603, 4577608, 31695808)), strand =  "*",
+                                  log2ratio = c(0.3211, 0.4322, -0.9292))
+    
+    demo[["sample02"]] <- GRanges(seqnames = "chr1",
+                                  ranges =  IRanges(start = c(1995066, 31611222, 31690000),
+                                                    end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
+                                  log2ratio = c(2.2323, 1.4343, -1.1313))
+    
+    demo[["sample03"]] <- GRanges(seqnames = "chr1",
+                                  ranges =  IRanges(start = c(1906069, 4558838),
+                                                    end = c(1909505, 4570601)), strand =  "*",
+                                  log2ratio = c(2.1212, -0.9898))
+    
+    ## Calculating Weighted Euclidean Distance metric
+    expected <- calculateLog2ratioMetric(demo, method="weightedEuclideanDistance", 
+                                            minThreshold=0.2, excludedRegions=NULL)
+    
+    result <- print(expected)
+    
+    expect_equal(result, expected)
+})
+
 ### Tests is() for CNVMetric class
 
 context("is() CNVMetric class")

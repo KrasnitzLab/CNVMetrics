@@ -184,3 +184,68 @@ test_that("doRegression() must return expected results", {
 })
 
 
+### Tests createDisjoinSegmentsForTwoSamples() results
+
+context("createDisjoinSegmentsForTwoSamples() results")
+
+test_that("createDisjoinSegmentsForTwoSamples() must return expected results", {
+
+    
+    segment1 <- GRanges(seqnames = "chr1", 
+                        ranges = IRanges(start=c(1, 50, 101, 150, 200, 251),
+                                         end=c(49, 100, 110, 199, 250, 300)),
+                        log2ratio=c(0.1222, 1.3211, 0.1212, -1.1111, -2.2222, -0.4444))
+    
+    
+    segment2  <- GRanges(seqnames = "chr1", 
+                        ranges = IRanges(start=c(1, 50, 101, 251),
+                                         end=c(300, 100,  199,  400)),
+                        log2ratio=c(0.002, 2.3111, 1.2222, -0.4444))
+    
+    results <- CNVMetrics:::createDisjoinSegmentsForTwoSamples(segmentDataSample1=segment1, 
+                        segmentDataSample2=segment2, bedExclusion = NULL)
+    
+   
+    expected <- GRanges(seqnames="chr1", 
+                    ranges=IRanges(start=c(1, 50, 101, 111, 150, 200, 251, 301),
+                                   end=c(49, 100, 110, 149, 199, 250, 300, 400)),
+                    included=rep(TRUE, 8),
+                    sample_1=c(0.1222, 1.3211, 0.1212, NA, -1.1111, -2.2222, -0.4444, NA),
+                    sample_2=c(0.0020, 2.3111, 1.2222, 1.2222, 1.2222, 0.0020, -0.4444, -0.4444))
+    
+    
+    expect_equal(results, expected)
+})
+
+
+test_that("createDisjoinSegmentsForTwoSamples() must return expected results when exclusion file used", {
+    
+    
+    segment1 <- GRanges(seqnames = "chr1", 
+                        ranges = IRanges(start=c(1, 50, 101, 150, 200, 251),
+                                         end=c(49, 100, 110, 199, 250, 300)),
+                        log2ratio=c(0.1222, 1.3211, 0.1212, -1.1111, -2.2222, -0.4444))
+    
+    
+    segment2  <- GRanges(seqnames = "chr1", 
+                         ranges = IRanges(start=c(1, 250, 301, 551),
+                                          end=c(200, 300,  399,  800)),
+                         log2ratio=c(0.002, 2.3111, 1.2222, -0.4444))
+    
+    exclusion <- GRanges(seqnames="chr1", ranges=IRanges(start=c(60, 444), end=c(102, 900)))
+    
+    results <- CNVMetrics:::createDisjoinSegmentsForTwoSamples(segmentDataSample1=segment1, 
+                        segmentDataSample2=segment2, bedExclusion = exclusion)
+    
+    
+    expected <- GRanges(seqnames="chr1", 
+                        ranges=IRanges(start=c(1, 50, 101, 111, 150, 200, 201, 250, 251, 301, 551),
+                                       end=c(49, 100, 110, 149, 199, 200, 249, 250, 300, 399, 800)),
+                        included=c(TRUE, FALSE, FALSE, rep(TRUE, 7), FALSE),
+                        sample_1=c(0.1222, 1.3211, 0.1212, NA, -1.1111, -2.2222, -2.2222, -2.2222, -0.4444, NA, NA),
+                        sample_2=c(0.0020, 0.0020, 0.0020, 0.0020, 0.0020, 0.0020, NA, 2.3111,  2.3111, 1.2222, -0.4444))
+    
+    
+    expect_equal(results, expected)
+})
+
