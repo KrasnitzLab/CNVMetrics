@@ -2,8 +2,9 @@
 title: "Quantifying similarity between copy number profiles"
 author: Astrid Deschênes, Pascal Belleau and Alexander Krasnitz
 output:
-  BiocStyle::html_document:
-    toc: true
+  bookdown::html_document2
+pkgdown:
+  asis: true
 bibliography: CNVMetrics.bibtex
 vignette: >
   %\VignetteIndexEntry{Copy number variant metrics}
@@ -12,7 +13,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r style, echo = FALSE, results = 'hide', warning=FALSE, message=FALSE}
+```{r style, echo = FALSE, results = 'asis', warning=FALSE, message=FALSE}
 BiocStyle::markdown()
 
 suppressPackageStartupMessages({
@@ -58,7 +59,7 @@ data of two mouse pancreatic organoids [@Oni2020], calculated with
 `r Biocpkg("gtrellis")` [@Gu2016a].
 
 
-```{r graphCNVpro, echo = FALSE, fig.align="center", fig.cap="Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).", out.width = '95%'}
+```{r graphCNVpro, echo = FALSE, fig.align="center", fig.cap="Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).", out.width = '95%', results='asis'}
 knitr::include_graphics("CNV_mM30_mM10_v03_Feb_08_2021_small.jpeg")
 ```
 
@@ -119,7 +120,7 @@ The key functions for each step are:
 ----------------------- | ---------------------------------------------
  Data Importation       | `GenomicRanges::makeGRangesListFromDataFrame()`
  Metric Calculation     | `calculateOverlapMetric()`   
- Metric Visualization   | `plotOverlapMetric()`
+ Metric Visualization   | `plotMetric()`
  
 The `package::function()` notation is used for functions from other packages.
 
@@ -207,21 +208,21 @@ metric
 A heatmap of this similarity metrics can be a useful tool to get an overview 
 over similarities and dissimilarities between samples.
 
-The `plotOverlapMetric()` function generates a graphical representation of 
+The `plotMetric()` function generates a graphical representation of 
 the similarity metrics in the form of a sample-to-sample heatmap. By default, 
 an hierarchical clustering based on based on the sample distances 
 (1-metrics) is used.
 
 ```{r demoPlot01, fig.align="center", fig.height=4.5, fig.width=4.5}
 ## Create graph for the metrics related to amplified regions
-plotOverlapMetric(metric, type = "AMPLIFICATION")
+plotMetric(metric, type = "AMPLIFICATION")
 ```
 
 <br>
 
 <br>
 
-The `plotOverlapMetric()` function uses the `r CRANpkg("pheatmap")` package to 
+The `plotMetric()` function uses the `r CRANpkg("pheatmap")` package to 
 generate the graph. All arguments accepted by `pheatmap::pheatmap` function 
 are valid arguments.
 
@@ -229,7 +230,7 @@ are valid arguments.
 ## Create graph for the metrics related to deleted regions
 ## Metric value is printed as 'display_numbers' and 'number_format' are
 ## arguments recognized by pheatmap() function
-plotOverlapMetric(metric, type = "DELETION", 
+plotMetric(metric, type = "DELETION", 
                     colorRange=c("white", "darkorange"),
                     show_colnames=TRUE,
                     display_numbers=TRUE,
@@ -260,7 +261,7 @@ all(rownames(annotOrg) == rownames(metric$AMPLIFICATION))
 
 ## Create graph for the metrics related to amplified regions
 ## Rows are annotated with the stage and mouse information
-plotOverlapMetric(metric, type = "AMPLIFICATION", 
+plotMetric(metric, type = "AMPLIFICATION", 
                     colorRange=c("white", "steelblue"),
                     annotation_row=annotOrg)
 ```
@@ -313,12 +314,31 @@ of the intersection by the smaller of the size of the two sets:
   (\#eq:jaccard)
 \end{equation}    
 
-where \eqn{X} and $Y$ represent the regions of each sample in base paired.
+where $X$ and $Y$ represent the regions of each sample in base paired.
+
+
+# Workflow for metrics calculated using _the level of amplification/deletion_
+
+The following figure gives an overview of the capabilities of 
+`r Githubpkg("KrasnitzLab/CNVMetrics")` to calculate metrics using the 
+_the level of amplification/deletion_ (log2 ratio values):
+
+
+The key functions for each step are:
+
+ Step                   | Function                    
+----------------------- | ---------------------------------------------
+ Data Importation       | `GenomicRanges::makeGRangesListFromDataFrame()`
+ Metric Calculation     | `calculateLog2ratioMetric()`   
+ Metric Visualization   | `plotMetric()`
+ 
+The `package::function()` notation is used for functions from other packages.
+
 
 # Metrics using the level of amplification/deletion
 
-This survey represents the similarity measures that are implemented in 
-`r Githubpkg("KrasnitzLab/CNVMetrics")` package. Those metrics are calculated 
+This survey represents the similarity measure that is implemented in 
+`r Githubpkg("KrasnitzLab/CNVMetrics")` package. This metric are calculated 
 using the level of amplification/deletion. The level of 
 amplification/deletion is in log2 ratio while the size of the regions 
 is in base paired. 
