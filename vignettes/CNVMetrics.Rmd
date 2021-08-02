@@ -109,12 +109,12 @@ devtools::install_github('KrasnitzLab/CNVMetrics', ref = "v0.1.4")
 
 # Workflow for metrics calculated using _CNV status calls_
 
-The following figure gives an overview of the capabilities of 
+The following workflow gives an overview of the capabilities of 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` to calculate metrics using the 
 _CNV status calls_ (amplification/deletion status):
 
 
-The key functions for each step are:
+The key functions for each step of the workflow are:
 
  Step                   | Function                    
 ----------------------- | ---------------------------------------------
@@ -146,7 +146,7 @@ those segments won't be retain for the calculation of the metrics.
 
 ```{r figureCNVFile, echo = FALSE, fig.align="center", fig.cap="Example of a copy number file containing CNV calls.", out.width = '100%'}
 
-knitr::include_graphics("Input_CNV_call_300ppi_v01.jpg")
+knitr::include_graphics("Input_CNV_call_300ppi_v01_low_quality.jpg")
 ```
 
 
@@ -319,12 +319,11 @@ where $X$ and $Y$ represent the regions of each sample in base paired.
 
 # Workflow for metrics calculated using _the level of amplification/deletion_
 
-The following figure gives an overview of the capabilities of 
+The following section gives an overview of the capabilities of 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` to calculate metrics using the 
 _the level of amplification/deletion_ (log2 ratio values):
 
-
-The key functions for each step are:
+The key functions for each step of the workflow are:
 
  Step                   | Function                    
 ----------------------- | ---------------------------------------------
@@ -333,6 +332,72 @@ The key functions for each step are:
  Metric Visualization   | `plotMetric()`
  
 The `package::function()` notation is used for functions from other packages.
+
+
+## Data Input - Copy number file
+
+Copy number are often represented as segments with a copy number state and/or
+the level of amplification/deletion. One usual unit to quantify the level 
+of amplification or deletion is in log2 ratio. 
+
+A basic five-column input file containing genomic position 
+(chromosome, start, end), sample identification and 
+_the level of amplification/deletion_ is 
+required. All samples that need to be analyzed together have to be combined 
+into one file. 
+
+A column named **log2ratio** is required. In this column, the amplified and 
+deleted segments must be assigned a numerical value representing the log2ratio
+or NA.
+
+```{r figureCNVFileLog2Ratio, echo = FALSE, fig.align="center", fig.cap="Example of a copy number file containing log2ratio values.", out.width = '100%'}
+
+knitr::include_graphics("Input_CNV_log2ratio_v01_low_quality.jpg")
+```
+
+
+## Data Importation - GRangesList
+
+The input format for the copy number information, as needed by the 
+`calculateLog2ratioMetric()` function, is a `GRangesList` object.
+
+The easiest way to generate a `GRangesList` object is to first load the 
+copy number information into an R `data.frame` and then, use the 
+`GenomicRanges::makeGRangesListFromDataFrame()` function to convert them 
+to a `GRangesList`.
+
+For this demonstration, we consider _the level of amplification/deletion_ as 
+obtained with `r Githubpkg("KrasnitzLab/CNprep")` [@Belleau2020], 
+from ten mouse pancreatic organoids [@Oni2020]. 
+
+```{r demoImport02}
+## Load required libraries
+library(GenomicRanges)
+library(CNVMetrics)
+
+## Load file containing CNV calls for 10 mouse organoids
+data.dir <- system.file("extdata", package="CNVMetrics")
+cnv.file <- file.path(data.dir, "mousePairedOrganoids.txt")
+calls <- read.table(cnv.file, header=TRUE, sep="\t")
+
+## The CNV status calls for all samples are present in one file
+## The 'log2ratio' column is required
+## The chromosome Y has been removed
+head(calls)
+
+## The ID column identifies the 10 samples
+unique(calls[,"ID"])
+
+## The ID column is used to split the samples into different GRanges 
+## inside a GRangesList
+## The 'keep.extra.column=TRUE' parameter is needed to retained the extra 
+## column 'state' that is needed for the calculation of the metrics
+grl <- GenomicRanges::makeGRangesListFromDataFrame(calls, 
+    split.field="ID", keep.extra.columns=TRUE)
+grl
+```
+
+
 
 
 # Metrics using the level of amplification/deletion
