@@ -18,44 +18,42 @@
 #' @export
 print.CNVMetric <- function(x, ...) {
     # Print title before printing the content of the regression object
-    cat("CNV Metric done on overlapping regions\n")
+    cat("CNV Metrics\n")
     cat("Metric:\n")
     cat(attr(x, 'metric'))
     cat("\n")
     
-    cat("\nAMPLIFICATION:\n")
-    if (nrow(x$AMPLIFICATION) > 5) {
-        print(x$AMPLIFICATION[seq_len(5),seq_len(5)], ...)
-        if (nrow(x$AMPLIFICATION) == 6) {
-            cat("[ -- omitted 1 row/column ]")
-        } else {
-            cat(paste0("[ -- omitted ", (nrow(x$AMPLIFICATION) - 5), 
+    for(i in seq_len(length(x))) {
+        cat(paste0("\n", names(x)[1], ":\n"))
+        dataM <- x[[i]]
+        if (nrow(dataM) > 5) {
+            print(dataM[seq_len(5), seq_len(5)], ...)
+            if (nrow(dataM) == 6) {
+                cat("[ -- omitted 1 row/column ]")
+            } else {
+                cat(paste0("[ -- omitted ", (nrow(dataM) - 5), 
                             " rows/columns ]"))
-        }
-    } else {
-        print(x$AMPLIFICATION, ...) 
-    }
-    cat("\n")
-    cat("\nDELETION:\n")
-    if (nrow(x$DELETION) > 5) {
-        print(x$DELETION[seq_len(5),seq_len(5)], ...)
-        if (nrow(x$DELETION) == 6) {
-            cat("[ -- omitted 1 row/column ]")
+            }
         } else {
-            cat(paste0("[ -- omitted ", (nrow(x$DELETION) - 5), 
-                        " rows/columns ]"))
+            print(dataM, ...) 
         }
-    } else {
-        print(x$DELETION, ...)
+        cat("\n")
     }
-    cat("\n")
     invisible(x)
 }
 
-
-
+#' @title Is an object of class \code{CNVMetric}
+#' 
+#' @description Functions to test inheritance relationships between an 
+#' object and class \code{CNVMetric}.
+#' 
 #' @method is CNVMetric
 #'
+#' @param x an object.
+#' 
+#' @param \ldots further arguments passed to or from other methods.
+#' 
+#' @importFrom methods is
 #' @export
 is.CNVMetric <- function(x, ...) {
     inherits(x, "CNVMetric")
