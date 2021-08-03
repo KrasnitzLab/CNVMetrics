@@ -97,10 +97,12 @@ document.addEventListener("DOMContentLoaded", function() {
       links[i].target = '_blank';
 });
 </script><p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="uri">https://orcid.org/0000-0002-0802-1071</a>), Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.1.5<br><strong>Compiled date</strong>: 2021-08-03<br><strong>License</strong>: Artistic-2.0<br></p>
+<p><br><br></p>
 <div id="licensing" class="section level1">
 <h1 class="hasAnchor">
 <a href="#licensing" class="anchor"></a>Licensing</h1>
 <p>The <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> package and the underlying <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> code are distributed under the Artistic license 2.0. You are free to use and redistribute this software.</p>
+<p><br><br></p>
 </div>
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
@@ -114,6 +116,7 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 </div>
 <p>While visual representation is a practical way to qualitatively compare copy number profiles, metrics are useful statistical tools for quantitatively measuring similarity and dissimilarity between profiles. Similarity metrics can be employed to compare CNV profiles of genetically unrelated samples. Moreover, those metrics can as well be put to use on samples with common genetic background. As an example, a comparison between primary and metastatic tumor CNV profiles may reveal genomic determinants of metastasis. Similarly, patient-derived xenograft or organoid models of cancer are expected to recapitulate CNV patterns of the tumor tissue of origin <span class="citation">(Gendoo et al. 2019)</span>.</p>
 <p>The <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> package calculates metrics to estimate the level of similarity between copy number profiles. Some metrics are calculated using the <em>CNV status calls</em> (amplification/deletion status) while others are based on the level of amplification/deletion. Finally, a visualization tool is provided to explore resulting metrics in the form of sample-to-sample heatmaps.</p>
+<p><br><br></p>
 </div>
 <div id="installation" class="section level1">
 <h1 class="hasAnchor">
@@ -133,6 +136,7 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 <span class="co">## Install the version v0.1.4 of CNVMetrics</span>
 <span class="co">## using 'ref' parameter</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">'KrasnitzLab/CNVMetrics'</span>, ref <span class="op">=</span> <span class="st">"v0.1.4"</span><span class="op">)</span></code></pre></div>
+<p><br><br></p>
 </div>
 <div id="workflow-for-metrics-calculated-using-cnv-status-calls" class="section level1">
 <h1 class="hasAnchor">
@@ -161,9 +165,10 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 </tbody>
 </table>
 <p>The <code>package::function()</code> notation is used for functions from other packages.</p>
-<div id="data-input---copy-number-file" class="section level2">
+<div id="data-input---copy-number-file-containing-the-cnv-status-calls" class="section level2">
 <h2 class="hasAnchor">
-<a href="#data-input---copy-number-file" class="anchor"></a>Data Input - Copy number file</h2>
+<a href="#data-input---copy-number-file-containing-the-cnv-status-calls" class="anchor"></a>Data Input - Copy number file containing the <em>CNV status calls</em>
+</h2>
 <p><em>CNV status calls</em> are represented as segments with a copy number state. The state be general, such as “amplification,” “deletion” or “neutral,” or more specific such as TODO.</p>
 <p>A basic five-column input file containing genomic position (chromosome, start, end), sample identification and <em>CNV status calls</em> is required. All samples that need to be analyzed together have to be combined into one file.</p>
 <p>A column named <strong>state</strong> is required. In this column, the amplified and deleted segments must be assigned those values:</p>
@@ -273,7 +278,7 @@ Example of a copy number file containing CNV calls.
 <h2 class="hasAnchor">
 <a href="#metric-visualization" class="anchor"></a>Metric Visualization</h2>
 <p>A heatmap of this similarity metrics can be a useful tool to get an overview over similarities and dissimilarities between samples.</p>
-<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical representation of the similarity metrics in the form of a sample-to-sample heatmap. By default, an hierarchical clustering based on based on the sample distances (1-metrics) is used.</p>
+<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical representation of the similarity metrics in the form of a sample-to-sample heatmap. By default, an hierarchical clustering based on the sample distances (1-metrics) is used. When NA values are present in the metric matrix, those are replaced by zero.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to amplified regions</span>
 <span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"AMPLIFICATION"</span><span class="op">)</span></code></pre></div>
@@ -283,7 +288,7 @@ Example of a copy number file containing CNV calls.
 <p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function uses the <em><a href="https://CRAN.R-project.org/package=pheatmap">pheatmap</a></em> package to generate the graph. All arguments accepted by <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap::pheatmap</a></code> function are valid arguments.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to deleted regions</span>
-<span class="co">## Metric value is printed as 'display_numbers' and 'number_format' are</span>
+<span class="co">## Metric values are printed as 'display_numbers' and 'number_format' are</span>
 <span class="co">## arguments recognized by pheatmap() function</span>
 <span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"DELETION"</span>, 
                     colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"darkorange"</span><span class="op">)</span>,
@@ -291,8 +296,7 @@ Example of a copy number file containing CNV calls.
                     display_numbers<span class="op">=</span><span class="cn">TRUE</span>,
                     number_format<span class="op">=</span><span class="st">"%.2f"</span><span class="op">)</span></code></pre></div>
 <p><img src="CNVMetrics_files/figure-html/demoPlot02-1.png" width="460.8" style="display: block; margin: auto;"></p>
-<p><br></p>
-<p><br></p>
+<p><br><br></p>
 <p>Row and/or column annotation is often useful and can easily be done by using the <code>annotation_row</code> or <code>annotation_col</code> arguments, as described in the <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap::pheatmap</a></code> method.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Load file containing annotations for the mouse organoids</span>
@@ -315,7 +319,7 @@ Example of a copy number file containing CNV calls.
                     colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"steelblue"</span><span class="op">)</span>,
                     annotation_row<span class="op">=</span><span class="va">annotOrg</span><span class="op">)</span></code></pre></div>
 <p><img src="CNVMetrics_files/figure-html/demoPlot03-1.png" width="576" style="display: block; margin: auto;"></p>
-<p><br></p>
+<p><br><br></p>
 </div>
 </div>
 <div id="metrics-using-the-cnv-status-calls" class="section level1">
@@ -352,6 +356,7 @@ Example of a copy number file containing CNV calls.
   (\#eq:jaccard)
 \end{equation}\]</span></p>
 <p>where <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> represent the regions of each sample in base paired.</p>
+<p><br><br></p>
 </div>
 </div>
 <div id="workflow-for-metrics-calculated-using-the-level-of-amplificationdeletion" class="section level1">
@@ -381,9 +386,10 @@ Example of a copy number file containing CNV calls.
 </tbody>
 </table>
 <p>The <code>package::function()</code> notation is used for functions from other packages.</p>
-<div id="data-input---copy-number-file-1" class="section level2">
+<div id="data-input---copy-number-file-containing-the-level-of-amplificationdeletion" class="section level2">
 <h2 class="hasAnchor">
-<a href="#data-input---copy-number-file-1" class="anchor"></a>Data Input - Copy number file</h2>
+<a href="#data-input---copy-number-file-containing-the-level-of-amplificationdeletion" class="anchor"></a>Data Input - Copy number file containing <em>the level of amplification/deletion</em>
+</h2>
 <p>Copy number are often represented as segments with a copy number state and/or the level of amplification/deletion. One usual unit to quantify the level of amplification or deletion is in log2 ratio.</p>
 <p>A basic five-column input file containing genomic position (chromosome, start, end), sample identification and <em>the level of amplification/deletion</em> is required. All samples that need to be analyzed together have to be combined into one file.</p>
 <p>A column named <strong>log2ratio</strong> is required. In this column, the amplified and deleted segments must be assigned a numerical value representing the log2ratio or NA.</p>
@@ -476,6 +482,30 @@ Example of a copy number file containing log2ratio values.
 ## mM6  0.1271844 0.09540328 0.09000475 0.08515659  NA
 ## [ -- omitted 5 rows/columns ]</code></pre>
 </div>
+<div id="metric-visualization-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#metric-visualization-1" class="anchor"></a>Metric Visualization</h2>
+<p>A heatmap of this similarity metrics can be a useful tool to get an overview over similarities and dissimilarities between samples.</p>
+<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical representation of the similarity metrics in the form of a sample-to-sample heatmap. By default, an hierarchical clustering based on the sample distances (1-metrics) is used. When NA values are present in the metric matrix, those are replaced by zero.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Create graph for the metrics related to weighted Euclidean distance-based</span>
+<span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metricLog</span><span class="op">)</span></code></pre></div>
+<p><img src="CNVMetrics_files/figure-html/demoPlotLog01-1.png" width="432" style="display: block; margin: auto;"></p>
+<p><br></p>
+<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function uses the <em><a href="https://CRAN.R-project.org/package=pheatmap">pheatmap</a></em> package to generate the graph. All arguments accepted by <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap::pheatmap</a></code> function are valid arguments.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Create graph for the weighted Euclidean distance-based metrics</span>
+<span class="co">## Remove title (argument main="")</span>
+<span class="co">## Metric values are printed as 'display_numbers' and 'number_format' are</span>
+<span class="co">## arguments recognized by pheatmap() function</span>
+<span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metricLog</span>, colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"darkorange"</span><span class="op">)</span>,
+                    show_colnames<span class="op">=</span><span class="cn">TRUE</span>,
+                    display_numbers<span class="op">=</span><span class="cn">TRUE</span>,
+                    number_format<span class="op">=</span><span class="st">"%.2f"</span>,
+                    main<span class="op">=</span><span class="st">""</span><span class="op">)</span></code></pre></div>
+<p><img src="CNVMetrics_files/figure-html/demoPlotLog02-1.png" width="460.8" style="display: block; margin: auto;"></p>
+<p><br><br></p>
+</div>
 </div>
 <div id="metrics-using-the-level-of-amplificationdeletion" class="section level1">
 <h1 class="hasAnchor">
@@ -490,6 +520,7 @@ Example of a copy number file containing log2ratio values.
   (\#eq:euclidean)
 \end{equation}\]</span></p>
 <p>where <span class="math inline">\(A_{i}\)</span> and <span class="math inline">\(B_{i}\)</span> represent the log2 ratio values of samples <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> for the region <span class="math inline">\(i\)</span> while <span class="math inline">\(w_{i}\)</span> is the length of region <span class="math inline">\(i\)</span> in base paired.</p>
+<p><br><br></p>
 </div>
 </div>
 <div id="supplementary-information" class="section level1">
@@ -499,7 +530,7 @@ Example of a copy number file containing log2ratio values.
 <h2 class="hasAnchor">
 <a href="#creating-your-own-grangeslist" class="anchor"></a>Creating your own GRangesList</h2>
 <p>The <code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function enables the creation of a list of <code>GRangesList</code> objects from a <code>data.frame</code>. However, <code>GRangesList</code> can also be generated and filled manually.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Construction a GRangesList()</span>
 <span class="va">gr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr2"</span>, ranges<span class="op">=</span><span class="fu">IRanges</span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6000</span><span class="op">)</span>,
           strand<span class="op">=</span><span class="st">"+"</span>, state<span class="op">=</span><span class="st">"AMPLIFICATION"</span>, 
@@ -514,6 +545,7 @@ Example of a copy number file containing log2ratio values.
           log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.04</span>, <span class="fl">0.31</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">grl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html">GRangesList</a></span><span class="op">(</span><span class="st">"sample01"</span><span class="op">=</span><span class="va">gr1</span>, <span class="st">"sample02"</span><span class="op">=</span><span class="va">gr2</span>, <span class="st">"sample03"</span><span class="op">=</span><span class="va">gr3</span><span class="op">)</span></code></pre></div>
+<p><br><br></p>
 </div>
 </div>
 <div id="session-info" class="section level1">
@@ -560,6 +592,7 @@ Example of a copy number file containing log2ratio values.
 ## [37] colorspace_2.0-0       ragg_1.1.0             stringi_1.5.3         
 ## [40] munsell_0.5.0          RCurl_1.98-1.2         cachem_1.0.4          
 ## [43] crayon_1.4.1</code></pre>
+<p><br><br></p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
