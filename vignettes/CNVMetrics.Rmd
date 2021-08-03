@@ -35,12 +35,18 @@ set.seed(121444)
 **License**: `r packageDescription("CNVMetrics")[["License"]]`<br />
 
 
+<br>
+<br>
+
 # Licensing 
 
 The `r Githubpkg("KrasnitzLab/CNVMetrics")` package and the underlying 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` code are distributed under the 
 Artistic license 2.0. You are free to use and redistribute this software. 
 
+
+<br>
+<br>
 
 # Introduction
 
@@ -81,6 +87,9 @@ while others are based on the level of amplification/deletion. Finally, a
 visualization tool is provided to explore resulting metrics in the form of 
 sample-to-sample heatmaps.
 
+<br>
+<br>
+
 # Installation
 
 To install the latest version accessible on the 
@@ -108,6 +117,9 @@ library(devtools)
 devtools::install_github('KrasnitzLab/CNVMetrics', ref = "v0.1.4")
 ```
 
+<br>
+<br>
+
 # Workflow for metrics calculated using _CNV status calls_
 
 The following workflow gives an overview of the capabilities of 
@@ -125,7 +137,7 @@ The key functions for each step of the workflow are:
  
 The `package::function()` notation is used for functions from other packages.
 
-## Data Input - Copy number file
+## Data Input - Copy number file containing the _CNV status calls_
 
 _CNV status calls_ are represented as segments with a copy number state. The 
 state be general, such as "amplification", "deletion" or "neutral", or more 
@@ -211,8 +223,9 @@ over similarities and dissimilarities between samples.
 
 The `plotMetric()` function generates a graphical representation of 
 the similarity metrics in the form of a sample-to-sample heatmap. By default, 
-an hierarchical clustering based on based on the sample distances 
-(1-metrics) is used.
+an hierarchical clustering based on the sample distances 
+(1-metrics) is used. When NA values are present in the metric matrix, those
+are replaced by zero.
 
 ```{r demoPlot01, fig.align="center", fig.height=4.5, fig.width=4.5}
 ## Create graph for the metrics related to amplified regions
@@ -229,7 +242,7 @@ are valid arguments.
 
 ```{r demoPlot02, fig.align="center", fig.height=4.8, fig.width=4.8}
 ## Create graph for the metrics related to deleted regions
-## Metric value is printed as 'display_numbers' and 'number_format' are
+## Metric values are printed as 'display_numbers' and 'number_format' are
 ## arguments recognized by pheatmap() function
 plotMetric(metric, type = "DELETION", 
                     colorRange=c("white", "darkorange"),
@@ -239,7 +252,6 @@ plotMetric(metric, type = "DELETION",
 ```
 
 <br>
-
 <br>
 
 Row and/or column annotation is often useful and can easily be done 
@@ -267,6 +279,7 @@ plotMetric(metric, type = "AMPLIFICATION",
                     annotation_row=annotOrg)
 ```
 
+<br>
 <br>
 
 # Metrics using the _CNV status calls_
@@ -317,6 +330,8 @@ of the intersection by the smaller of the size of the two sets:
 
 where $X$ and $Y$ represent the regions of each sample in base paired.
 
+<br>
+<br>
 
 # Workflow for metrics calculated using _the level of amplification/deletion_
 
@@ -335,7 +350,7 @@ The key functions for each step of the workflow are:
 The `package::function()` notation is used for functions from other packages.
 
 
-## Data Input - Copy number file
+## Data Input - Copy number file containing _the level of amplification/deletion_ 
 
 Copy number are often represented as segments with a copy number state and/or
 the level of amplification/deletion. One usual unit to quantify the level 
@@ -411,7 +426,42 @@ metricLog <- calculateLog2ratioMetric(segmentData=grlog,
 metricLog
 ```
 
+## Metric Visualization  
 
+A heatmap of this similarity metrics can be a useful tool to get an overview 
+over similarities and dissimilarities between samples.
+
+The `plotMetric()` function generates a graphical representation of 
+the similarity metrics in the form of a sample-to-sample heatmap. By default, 
+an hierarchical clustering based on the sample distances 
+(1-metrics) is used. When NA values are present in the metric matrix, those
+are replaced by zero.
+
+```{r demoPlotLog01, fig.align="center", fig.height=4.5, fig.width=4.5}
+## Create graph for the metrics related to weighted Euclidean distance-based
+plotMetric(metricLog)
+```
+
+<br>
+
+The `plotMetric()` function uses the `r CRANpkg("pheatmap")` package to 
+generate the graph. All arguments accepted by `pheatmap::pheatmap` function 
+are valid arguments.
+
+```{r demoPlotLog02, fig.align="center", fig.height=4.8, fig.width=4.8}
+## Create graph for the weighted Euclidean distance-based metrics
+## Remove title (argument main="")
+## Metric values are printed as 'display_numbers' and 'number_format' are
+## arguments recognized by pheatmap() function
+plotMetric(metricLog, colorRange=c("white", "darkorange"),
+                    show_colnames=TRUE,
+                    display_numbers=TRUE,
+                    number_format="%.2f",
+                    main="")
+```
+
+<br>
+<br>
 
 # Metrics using the level of amplification/deletion
 
@@ -439,6 +489,9 @@ where $A_{i}$ and $B_{i}$ represent the log2 ratio values of samples $A$ and
 $B$ for the region $i$ while $w_{i}$ is the length of region $i$ in base 
 paired.
 
+<br>
+<br>
+
 # Supplementary information
 
 ## Creating your own GRangesList
@@ -464,6 +517,8 @@ gr3 <- GRanges(seqnames=c("chr1", "chr2"),
 grl <- GRangesList("sample01"=gr1, "sample02"=gr2, "sample03"=gr3)
 ```
 
+<br>
+<br>
 
 # Session info
 
@@ -474,6 +529,8 @@ compiled:
 sessionInfo()
 ```
 
+<br>
+<br>
 
 # References
 
