@@ -5,7 +5,7 @@
 <!-- badges: end -->
 
 <p align="center">
-<img src="man/figures/CNVMetrics_text.jpg" alt="CNVMetrics">
+<img src="man/figures/CNVMetrics_text.jpg" alt="CNVMetrics"> <img src="man/figures/CNVMetrics.png" align="right" alt="" width="120" />
 </p>
 
 The **_CNVMetrics_** package offers multiple quantitative metrics of similarity between copy number profiles.
