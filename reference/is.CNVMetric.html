@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>calculate the regressed values for all segment file. — calculateRegressedValues • CNVMetrics</title>
+<title>Is an object of class CNVMetric — is.CNVMetric • CNVMetrics</title>
 
 
 <!-- jquery -->
@@ -41,10 +41,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="calculate the regressed values for all segment file. — calculateRegressedValues" />
-<meta property="og:description" content="Use the linear regression model obtained for each paired of
-segment files (current file versus reference) to calculate the regressed 
-values for all segment files except for the reference file." />
+<meta property="og:title" content="Is an object of class CNVMetric — is.CNVMetric" />
+<meta property="og:description" content="Functions to test inheritance relationships between an 
+object and class CNVMetric." />
 
 
 
@@ -118,66 +117,33 @@ values for all segment files except for the reference file." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>calculate the regressed values for all segment file.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/krasnitzlab/CNVMetrics/blob/master/R/CNVMetricsInternalMethods.R'><code>R/CNVMetricsInternalMethods.R</code></a></small>
-    <div class="hidden name"><code>calculateRegressedValues.Rd</code></div>
+    <h1>Is an object of class <code>CNVMetric</code></h1>
+    <small class="dont-index">Source: <a href='https://github.com/krasnitzlab/CNVMetrics/blob/master/R/AllGenerics.R'><code>R/AllGenerics.R</code></a></small>
+    <div class="hidden name"><code>is.CNVMetric.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Use the linear regression model obtained for each paired of
-segment files (current file versus reference) to calculate the regressed 
-values for all segment files except for the reference file.</p>
+    <p>Functions to test inheritance relationships between an 
+object and class <code>CNVMetric</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calculateRegressedValues</span><span class='op'>(</span><span class='va'>segmentData</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='co'># S3 method for CNVMetric</span>
+<span class='fu'>is</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>segmentData</th>
-      <td><p>a <code>list</code> of that 
-contains the segments from multiple files. The <code>list</code> is composed of 
-those entries:</p><ul>
-<li><p>a <code>segment</code> that contains the <code>GRanges</code> with the segment
-information.</p></li>
-<li><p>a <code>regression</code> that contains the result of the paired 
-regressions. The number of entries corresponds to the number of paired
-segment files considering that the reference file is always the same. Each 
-entry is a <code>list</code> composed of those entries:</p><ul>
-<li><p>a <code>x_used</code> with the name of the file that segments values
-are used as x values in the regression model.</p></li>
-<li><p>a <code>y_used</code> with the name of the file that segments values
-are used as y values in the regression model. This is the reference file. 
-It is the same for all paired regressions.</p></li>
-<li><p>a <code>lm</code> that contains the regression model.</p></li>
-</ul></li>
-</ul></td>
+      <th>x</th>
+      <td><p>an object.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further arguments passed to or from other methods.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code>list</code> of that 
-contains the segments from multiple files. The <code>list</code> is composed of 
-those entries:</p><ul>
-<li><p>a <code>segments</code> that contains the <code>GRanges</code> with the segment
-information and values from each segment file.</p></li>
-<li><p>a <code>regression</code> that contains the result of the paired 
-regressions.</p></li>
-<li><p>a <code>regressedData</code> that contains the <code>GRanges</code> with the 
-segment information and the regressed values for each segment file.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p>Astrid Deschênes, Pascal Belleau</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># TODO</span>
-
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

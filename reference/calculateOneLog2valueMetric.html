@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate Jaccard metric — calculateJaccard • CNVMetrics</title>
+<title>Calculate metric using the log2ratio values between two samples. — calculateOneLog2valueMetric • CNVMetrics</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Calculate Jaccard metric — calculateJaccard" />
-<meta property="og:description" content="Calculate Jaccard metric using overlapping regions between 
+<meta property="og:title" content="Calculate metric using the log2ratio values between two samples. — calculateOneLog2valueMetric" />
+<meta property="og:description" content="Calculate a specific metric using the level of 
+amplification/deletion, in log2 ratio,  between 
 two samples." />
 
 
@@ -117,17 +118,24 @@ two samples." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate Jaccard metric</h1>
-    <small class="dont-index">Source: <a href='https://github.com/krasnitzlab/CNVMetrics/blob/master/R/CNVMetricsOverlapInternalMethods.R'><code>R/CNVMetricsOverlapInternalMethods.R</code></a></small>
-    <div class="hidden name"><code>calculateJaccard.Rd</code></div>
+    <h1>Calculate metric using the log2ratio values between two samples.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/krasnitzlab/CNVMetrics/blob/master/R/CNVMetricsLog2ratioInternalMethods.R'><code>R/CNVMetricsLog2ratioInternalMethods.R</code></a></small>
+    <div class="hidden name"><code>calculateOneLog2valueMetric.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Calculate Jaccard metric using overlapping regions between 
+    <p>Calculate a specific metric using the level of 
+amplification/deletion, in log2 ratio,  between 
 two samples.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calculateJaccard</span><span class='op'>(</span><span class='va'>sample01</span>, <span class='va'>sample02</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>calculateOneLog2valueMetric</span><span class='op'>(</span>
+  <span class='va'>sample01</span>,
+  <span class='va'>sample02</span>,
+  <span class='va'>bedExclusion</span>,
+  <span class='va'>method</span>,
+  <span class='va'>minThreshold</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,34 +143,56 @@ two samples.</p>
     <tr>
       <th>sample01</th>
       <td><p>a <code>GRanges</code> which contains a collection of 
-genomic ranges representing copy number events for the first sample.</p></td>
+genomic ranges representing copy number events for the first sample. 
+The <code>GRanges</code> must have a metadata column called '<code>log2ratio</code>' 
+with the log2ratio value for each segment.</p></td>
     </tr>
     <tr>
       <th>sample02</th>
       <td><p>a <code>GRanges</code> which contains a collection of 
-genomic ranges representing copy number events for the second sample.</p></td>
+genomic ranges representing copy number events for the second sample.
+The <code>GRanges</code> must have a metadata column called '<code>log2ratio</code>' 
+with the log2ratio value for each segment.</p></td>
+    </tr>
+    <tr>
+      <th>bedExclusion</th>
+      <td><p>a <code>GRanges</code> TODO</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>a <code>character</code> string representing the metric to be
+used ('<code>weightedEuclideanDistance</code>').</p></td>
+    </tr>
+    <tr>
+      <th>minThreshold</th>
+      <td><p>a single <code>numeric</code> setting the minimum value 
+to consider two segments as different during the metric calculation. If the 
+absolute difference is below or equal to threshold, the difference will be 
+replaced by zero. Default: 0.2.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code>numeric</code>, the value of the Jaccard metric. If
+    <p>a <code>numeric</code>, the value of the specified metric. If
 the metric cannot be calculated, <code>NA</code> is returned.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The method calculates the Jaccard metric using overlapping
-regions between the samples. All regions present in both samples are used
-for the calculation of the metric.</p>
-<p>The Jaccard metric is calculated by dividing the size of 
-the intersection by the size of the union of the two sets. If the
-the size of the union of the two sets is zero; the value <code>NA</code> is
-returned instead. The strand of the regions is not taken into account while
-calculating the intersection.</p>
+    <p>The method calculates a specified metric using overlapping
+regions between the samples. Only regions corresponding to the type
+specified by user are used in the calculation of the metric. The strand of 
+the regions is not taken into account while
+calculating the metric.</p>
+<p>The Sorensen metric is calculated by dividing twice the size of 
+the intersection by the sum of the size of the two sets. If the sum of
+the size of the two sets is zero; the value <code>NA</code> is
+returned instead.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Jaccard, P. (1912), The Distribution of the Flora in the Alpine Zone.  
-New Phytologist, 11: 37-50. 
-DOI: <a href='https://doi.org/10.1111/j.1469-8137.1912.tb05611.x'>https://doi.org/10.1111/j.1469-8137.1912.tb05611.x</a></p>
+    <p>Sørensen, Thorvald. n.d. “A Method of Establishing Groups of Equal 
+Amplitude in Plant Sociology Based on Similarity of Species and Its 
+Application to Analyses of the Vegetation on Danish Commons.” 
+Biologiske Skrifter, no. 5: 1–34.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Astrid Deschênes</p>
@@ -171,35 +201,23 @@ DOI: <a href='https://doi.org/10.1111/j.1469-8137.1912.tb05611.x'>https://doi.or
     <pre class="examples"><div class='input'>
 <span class='co'>## Load required package to generate the two samples</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://bioconductor.org/packages/GenomicRanges'>GenomicRanges</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomicRanges</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: stats4</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: BiocGenerics</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: parallel</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘BiocGenerics’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:parallel’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,</span>
-#&gt; <span class='message'>    clusterExport, clusterMap, parApply, parCapply, parLapply,</span>
-#&gt; <span class='message'>    parLapplyLB, parRapply, parSapply, parSapplyLB</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    IQR, mad, sd, var, xtabs</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    anyDuplicated, append, as.data.frame, basename, cbind, colnames,</span>
-#&gt; <span class='message'>    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,</span>
-#&gt; <span class='message'>    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,</span>
-#&gt; <span class='message'>    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,</span>
-#&gt; <span class='message'>    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,</span>
-#&gt; <span class='message'>    union, unique, unsplit, which.max, which.min</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: S4Vectors</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘S4Vectors’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    expand.grid</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: IRanges</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomeInfoDb</span></div><div class='input'>
-<span class='co'>## Generate two samples with identical sequence levels</span>
-<span class='va'>sample01</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr1"</span>, 
-    ranges <span class='op'>=</span>  <span class='fu'>IRanges</span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1905048</span>, <span class='fl'>4554832</span>, <span class='fl'>31686841</span><span class='op'>)</span>, 
-    end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2004603</span>, <span class='fl'>4577608</span>, <span class='fl'>31695808</span><span class='op'>)</span><span class='op'>)</span>, strand <span class='op'>=</span>  <span class='st'>"*"</span><span class='op'>)</span>
-<span class='va'>sample02</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr1"</span>, 
-    ranges <span class='op'>=</span>  <span class='fu'>IRanges</span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1995066</span>, <span class='fl'>31611222</span><span class='op'>)</span>, 
-    end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2204505</span>, <span class='fl'>31689898</span><span class='op'>)</span><span class='op'>)</span>, strand <span class='op'>=</span>  <span class='st'>"*"</span><span class='op'>)</span>
 
-<span class='co'>## Calculate Sorensen metric    </span>
-<span class='fu'>CNVMetrics</span><span class='fu'>:::</span><span class='fu'>calculateJaccard</span><span class='op'>(</span><span class='va'>sample01</span>, <span class='va'>sample02</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.03096194</div><div class='input'>    
+<span class='co'>## Generate two samples with log2value information as a metadata column</span>
+<span class='va'>sample01</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr1"</span>, 
+    ranges <span class='op'>=</span>  <span class='fu'>IRanges</span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>201</span>, <span class='fl'>400</span><span class='op'>)</span>, 
+    end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>200</span>, <span class='fl'>350</span>, <span class='fl'>500</span><span class='op'>)</span><span class='op'>)</span>, strand <span class='op'>=</span>  <span class='st'>"*"</span>,
+    log2ratio <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1.1111</span>, <span class='fl'>2.2222</span>, <span class='op'>-</span><span class='fl'>0.9999</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>sample02</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr1"</span>, 
+    ranges <span class='op'>=</span>  <span class='fu'>IRanges</span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>150</span>, <span class='fl'>200</span>, <span class='fl'>450</span><span class='op'>)</span>, 
+    end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>250</span>, <span class='fl'>350</span>, <span class='fl'>500</span><span class='op'>)</span><span class='op'>)</span>, strand <span class='op'>=</span>  <span class='st'>"*"</span>,
+    log2ratio <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2.2121</span>, <span class='fl'>1.1212</span>, <span class='op'>-</span><span class='fl'>1.3939</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'>## Calculate weighted Euclidean distance </span>
+<span class='fu'>CNVMetrics</span><span class='fu'>:::</span><span class='fu'>calculateOneLog2valueMetric</span><span class='op'>(</span><span class='va'>sample01</span>, <span class='va'>sample02</span>,
+    bedExclusion<span class='op'>=</span><span class='cn'>NULL</span>, method<span class='op'>=</span><span class='st'>"weightedEuclideanDistance"</span>, 
+    minThreshold<span class='op'>=</span><span class='fl'>0.2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.2016362</div><div class='input'>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

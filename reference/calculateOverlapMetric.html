@@ -77,7 +77,7 @@ present, the metric is calculated for each sample pair." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNVMetrics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@ present, the metric is calculated for each sample pair." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Calculate metric using overlapping amplified/deleted regions</h1>
-    <small class="dont-index">Source: <a href='https://github.com/krasnitzlab/CNVMetrics/blob/master/R/CNVMetricsOverlapMethods.R'><code>R/CNVMetricsOverlapMethods.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/krasnitzlab/CNVMetrics/blob/master/R/CNVMetricsMethods.R'><code>R/CNVMetricsMethods.R</code></a></small>
     <div class="hidden name"><code>calculateOverlapMetric.Rd</code></div>
     </div>
 
@@ -182,7 +182,129 @@ the amplified and deleted regions.</p></li>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The two methods each estimate the overlap between paired samples. They use 
+    <p>#' @title Read segment files and their values and exclusion file to generate 
+#' a dataset that can be used to calculate the metrics.
+#' 
+#' @description The segments and their values are extracted from each file, 
+#' with a "SEG" or "seg" extension, present in the 
+#' specified directory. Each segment is associated to its original file by
+#' having a source metadata field assigned. When specified, the segments
+#' for a BED file are loaded and used to exclude regions from further analysis.
+#' All segments are gathered together
+#' and a disjoin operation is done to create a collection of non-overlapping 
+#' ranges. Those ranges are going to be used to calculate the metrics.
+#' 
+#' @param segDirectory a <code>character</code> string, the path to the directory
+#' containing the segment files to compare. Only files with the ".seg" (or 
+#' ".SEG") extension will be used. At least 2 segment files are needed to
+#' be able to used the metrics.
+#' 
+#' @param chrInfo a <code>Seqinfo</code> containing the name and the length of the
+#' chromosomes to analyze. Only the chromosomes contained in this
+#' <code>Seqinfo</code> will be analyzed.
+#' 
+#' @param bedExclusionFile a <code>character</code> string or <code>NULL</code>, the path 
+#' to the BED file that contains the regions that must be excluded from the
+#' analysis. If <code>NULL</code>, it is assumed that there is no region of
+#' exclusion for the calculation of the metrics. Default: <code>NULL</code>.
+#' 
+#' @param segmentWithHeader a <code>logical</code>, when <code>TRUE</code>, the
+#' segment files have all a header that should not be imported. 
+#' Default: <code>FALSE</code>.
+#' 
+#' @return a <code>list</code> marked as a <code>preMetricSegments</code> <code>class</code>  
+#' containing a <code>GRanges</code> with the segment information from all 
+#' segment files.
+#'
+#' @details 
+#' 
+#' The supported BED format requires that the first three columns are: 
+#'</p><ul>
+<li><p>1. chrom - The name of the chromosome.
+#'</p></li>
+<li><p>2. chromStart - The starting position of the feature in the 
+#' chromosome or scaffold. The first base in a chromosome is numbered 0.
+#'</p></li>
+<li><p>3. chromEnd - The ending position of the feature in the chromosome 
+#' or scaffold. The chromEnd base is not included in the display of the 
+#' feature.</p></li>
+</ul><p>#' 
+#' @examples
+#'
+#' # Path to the exclusion BED file
+#' bedFile &lt;- system.file("extdata", "mm10.blacklist.bed", 
+#'     package = "CNVMetrics")
+#' 
+#' ## Prepare information about the chromosomes
+#' ## The files are from mouse samples, chr1 to chr4
+#' require(rtracklayer)
+#' 
+#' ## Get the information for mouse genome mm10
+#' ## Limit the information to chromosomes 1 to 4
+#' mouseInfo &lt;- SeqinfoForUCSCGenome("mm10")  
+#' mouseInfo &lt;- mouseInfo[c("chr1", "chr2", "chr3", "chr4"),]
+#'             
+#' ## Path to the directory containing the segmentation files
+#' segDir &lt;- system.file("extdata", package="CNVMetrics")
+#' 
+#' ## TODO
+#' 
+#' prepareInformation(segDirectory = segDir, chrInfo = mouseInfo,
+#'     bedExclusionFile = bedFile, segmentWithHeader = TRUE)
+#' 
+#' @author Astrid Deschenes, Pascal Belleau
+#' @importFrom rtracklayer import
+#' @importFrom GenomeInfoDb keepSeqlevels seqlevels
+#' @importFrom methods is
+#' @export
+prepareInformation &lt;- function(segDirectory, chrInfo, bedExclusionFile = NULL,
+                                segmentWithHeader = FALSE)     ## Validate that the chrInfo is a Seqinfo object
+    if (!is(chrInfo, "Seqinfo")) 
+        stop("chrInfo must be a Seqinfo object.")    ## Validate that the segmentWithHeader is a logical 
+    if (!is.logical(segmentWithHeader)) 
+        stop("segmentWithHeader must be a logical.")    ## Remove ending slash when present
+    if (is.character(segDirectory) &amp;&amp; length(segDirectory) &gt; 1 &amp;&amp;
+            endsWith(segDirectory, "/")) 
+        segDirectory &lt;- segDirectory[seq_len(length(segDirectory)-1)]    filesList &lt;- list.files(path = segDirectory, pattern = ".seg", 
+                            all.files = FALSE,
+                            full.names = FALSE, recursive = FALSE,
+                    ignore.case = TRUE, include.dirs = FALSE, no.. = FALSE)    ## Validate that the directory contains at least one segment file
+    if (length(filesList) == 0) 
+        stop("There is not segment file (seg or SEG extension) in ", 
+                "the segDirectory.")    ## Validate that the directory contains at least one segment file
+    if (length(filesList) &lt; 2) 
+        stop("At least 2 segment files (seg or SEG extension) are ", 
+                    "needed in the segDirectory.")    ## Read BED file and keep only segments in selected chromosomes
+    excludedRegions &lt;- NULL
+    if (!is.null(bedExclusionFile)) 
+        excludedRegions &lt;- import(bedExclusionFile, format="BED")        # Extract list of chromosomes to keep
+        seqToKeep &lt;- seqlevels(excludedRegions)[seqlevels(excludedRegions) <!-- %in%  -->
+                                                seqlevels(chrInfo)]        if (length(seqToKeep) &gt; 0) 
+            excludedRegions &lt;- keepSeqlevels(excludedRegions, seqToKeep, 
+                                pruning.mode = "coarse")
+         else 
+            excludedRegions &lt;- NULL    ## Read segment files
+    segFiles &lt;- list()
+    sources &lt;- list()
+    for (position in seq(1, length(filesList))) 
+        # Get file name
+        segFile &lt;- filesList[position]
+        # Remove extension from file name
+        segFileShort &lt;- substr(segFile, 1, nchar(segFile) - 4)        # Get file path
+        segPath &lt;- paste0(segDirectory, "/", segFile)        # Read segments
+        tempRanges &lt;- readSEGFile(segPath, uniqueTag = segFileShort, 
+                                        header = segmentWithHeader)        # Extract list of chromosomes to keep
+        seqToKeep &lt;- seqlevels(tempRanges)[seqlevels(tempRanges) <!-- %in%  -->
+                                                    seqlevels(chrInfo)]        if (length(seqToKeep) &gt; 0) 
+            # Keep only segments in selected chromosomes
+            tempRanges &lt;- keepSeqlevels(tempRanges, seqToKeep, 
+                                    pruning.mode = "coarse")            segFiles[[position]] &lt;- tempRanges
+            sources[[position]] &lt;- segFileShort    result &lt;- list()    # Create segments using disjoin
+    result$segments &lt;- createSegments(segFiles, sources, excludedRegions)    # Do regression using the first file as the dependent value
+    result &lt;- doRegression(result)    result &lt;- calculateRegressedValues(result)    class(result) &lt;- "preMetricSegments"    return(result)</p>
+
+
+<p>The two methods each estimate the overlap between paired samples. They use 
 different metrics, all in the range [0, 1] with 0 indicating no overlap.</p>
 <p>The available metrics are (written for two GRanges):</p>
 <p><code>sorensen</code>:</p>
@@ -241,7 +363,7 @@ doi: <a href='https://doi.org/10.1111/j.1469-8137.1912.tb05611.x'>https://doi.or
 
 <span class='co'>## Calculating Sorensen metric</span>
 <span class='fu'>calculateOverlapMetric</span><span class='op'>(</span><span class='va'>demo</span>, method<span class='op'>=</span><span class='st'>"sorensen"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; CNV Metric done on overlapping regions
+</div><div class='output co'>#&gt; CNV Metrics
 #&gt; Metric:
 #&gt; sorensen
 #&gt; 
@@ -252,7 +374,7 @@ doi: <a href='https://doi.org/10.1111/j.1469-8137.1912.tb05611.x'>https://doi.or
 #&gt; sample03 0.05465532        0       NA
 #&gt; 
 #&gt; 
-#&gt; DELETION:
+#&gt; AMPLIFICATION:
 #&gt;           sample01 sample02 sample03
 #&gt; sample01        NA       NA       NA
 #&gt; sample02 0.0541291       NA       NA
@@ -260,7 +382,7 @@ doi: <a href='https://doi.org/10.1111/j.1469-8137.1912.tb05611.x'>https://doi.or
 #&gt; </div><div class='input'>
 <span class='co'>## Calculating Szymkiewicz-Simpson metric</span>
 <span class='fu'>calculateOverlapMetric</span><span class='op'>(</span><span class='va'>demo</span>, method<span class='op'>=</span><span class='st'>"szymkiewicz"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; CNV Metric done on overlapping regions
+</div><div class='output co'>#&gt; CNV Metrics
 #&gt; Metric:
 #&gt; szymkiewicz
 #&gt; 
@@ -271,7 +393,7 @@ doi: <a href='https://doi.org/10.1111/j.1469-8137.1912.tb05611.x'>https://doi.or
 #&gt; sample03 1.00000000        0       NA
 #&gt; 
 #&gt; 
-#&gt; DELETION:
+#&gt; AMPLIFICATION:
 #&gt;           sample01 sample02 sample03
 #&gt; sample01        NA       NA       NA
 #&gt; sample02 0.6477475       NA       NA

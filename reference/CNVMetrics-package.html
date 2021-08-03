@@ -45,8 +45,8 @@
 <meta property="og:description" content="The CNVMetrics package calculates similarity metrics to facilitate copy 
 number variant comparison among samples and/or methods. Some metrics are 
 based on the shared amplified/deleted regions while other metrics rely on 
-the level of amplification/deletion. Finally, a visualization tool is 
-provided to explore resulting metrics." />
+the level of amplification/deletion (log2 ratio). Finally, a 
+visualization tool is provided to explore resulting metrics." />
 
 
 
@@ -78,7 +78,7 @@ provided to explore resulting metrics." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNVMetrics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -129,8 +129,8 @@ provided to explore resulting metrics." />
     <p>The CNVMetrics package calculates similarity metrics to facilitate copy 
 number variant comparison among samples and/or methods. Some metrics are 
 based on the shared amplified/deleted regions while other metrics rely on 
-the level of amplification/deletion. Finally, a visualization tool is 
-provided to explore resulting metrics.</p>
+the level of amplification/deletion (log2 ratio). Finally, a 
+visualization tool is provided to explore resulting metrics.</p>
     </div>
 
 
@@ -141,8 +141,9 @@ provided to explore resulting metrics.</p>
 <ul>
 <li><p><code><a href='calculateOverlapMetric.html'>calculateOverlapMetric</a></code> for calculating metric 
     using overlapping amplified/deleted regions</p></li>
-<li><p><code><a href='plotOneOverlapMetric.html'>plotOneOverlapMetric</a></code> for plotting metrics based 
-    on overlapping amplified/deleted regions</p></li>
+<li><p><code><a href='calculateLog2ratioMetric.html'>calculateLog2ratioMetric</a></code> for calculating metric 
+    using log2ratio values</p></li>
+<li><p><code><a href='plotMetric.html'>plotMetric</a></code> for plotting metrics</p></li>
 </ul>
 </div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>

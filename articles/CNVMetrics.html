@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNVMetrics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -85,7 +85,18 @@
 
     
     
-<p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="uri">https://orcid.org/0000-0002-0802-1071</a>), Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.1.4<br><strong>Compiled date</strong>: 2021-07-15<br><strong>License</strong>: Artistic-2.0<br></p>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelector("h1").className = "title";
+});
+</script><script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  var links = document.links;  
+  for (var i = 0, linksLength = links.length; i < linksLength; i++)
+    if (links[i].hostname != window.location.hostname)
+      links[i].target = '_blank';
+});
+</script><p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="uri">https://orcid.org/0000-0002-0802-1071</a>), Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.1.5<br><strong>Compiled date</strong>: 2021-08-03<br><strong>License</strong>: Artistic-2.0<br></p>
 <div id="licensing" class="section level1">
 <h1 class="hasAnchor">
 <a href="#licensing" class="anchor"></a>Licensing</h1>
@@ -127,8 +138,8 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 <h1 class="hasAnchor">
 <a href="#workflow-for-metrics-calculated-using-cnv-status-calls" class="anchor"></a>Workflow for metrics calculated using <em>CNV status calls</em>
 </h1>
-<p>The following figure gives an overview of the capabilities of <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> to calculate metrics using the <em>CNV status calls</em> (amplification/deletion status):</p>
-<p>The key functions for each step are:</p>
+<p>The following workflow gives an overview of the capabilities of <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> to calculate metrics using the <em>CNV status calls</em> (amplification/deletion status):</p>
+<p>The key functions for each step of the workflow are:</p>
 <table class="table">
 <thead><tr class="header">
 <th>Step</th>
@@ -145,7 +156,7 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 </tr>
 <tr class="odd">
 <td>Metric Visualization</td>
-<td><code><a href="../reference/plotOverlapMetric.html">plotOverlapMetric()</a></code></td>
+<td><code><a href="../reference/plotMetric.html">plotMetric()</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -162,7 +173,7 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 </ul>
 <p>Segments with other <strong>state</strong> values can be present in the file. However, those segments won’t be retain for the calculation of the metrics.</p>
 <div class="figure" style="text-align: center">
-<img src="Input_CNV_call_300ppi_v01.jpg" alt="Example of a copy number file containing CNV calls." width="100%"><p class="caption">
+<img src="Input_CNV_call_300ppi_v01_low_quality.jpg" alt="Example of a copy number file containing CNV calls." width="100%"><p class="caption">
 Example of a copy number file containing CNV calls.
 </p>
 </div>
@@ -187,7 +198,7 @@ Example of a copy number file containing CNV calls.
 <span class="co">## The 'state' column is required</span>
 <span class="co">## The chromosome Y has been removed</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">calls</span><span class="op">)</span></code></pre></div>
-<pre><code>##    ID  chr     start       end    log2value         state
+<pre><code>##    ID  chr     start       end    log2ratio         state
 ## 1 mT3 chr1   3527630 195471971  0.143253158       NEUTRAL
 ## 2 mT3 chr2   3549740 182113224  0.008638116       NEUTRAL
 ## 3 mT3 chr3   3536051 160039680  0.032630258       NEUTRAL
@@ -209,7 +220,7 @@ Example of a copy number file containing CNV calls.
 <pre><code>## GRangesList object of length 10:
 ## $mM1
 ## GRanges object with 33 ranges and 2 metadata columns:
-##        seqnames             ranges strand |  log2value         state
+##        seqnames             ranges strand |  log2ratio         state
 ##           &lt;Rle&gt;          &lt;IRanges&gt;  &lt;Rle&gt; |  &lt;numeric&gt;   &lt;character&gt;
 ##    [1]     chr1   3527630-62533399      * |  0.0351701       NEUTRAL
 ##    [2]     chr1  62533399-82082589      * | -0.1066207       NEUTRAL
@@ -236,7 +247,7 @@ Example of a copy number file containing CNV calls.
 <code class="sourceCode R"><span class="va">metric</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric</a></span><span class="op">(</span><span class="va">grl</span>, method <span class="op">=</span> <span class="st">"sorensen"</span><span class="op">)</span>
 
 <span class="va">metric</span></code></pre></div>
-<pre><code>## CNV Metric done on overlapping regions
+<pre><code>## CNV Metrics
 ## Metric:
 ## sorensen
 ## 
@@ -249,7 +260,7 @@ Example of a copy number file containing CNV calls.
 ## mM6  0.4048136 0.5545147    0 0.2952499  NA
 ## [ -- omitted 5 rows/columns ]
 ## 
-## DELETION:
+## AMPLIFICATION:
 ##            mM1      mM10      mM15       mM3P mM6
 ## mM1         NA        NA        NA         NA  NA
 ## mM10 0.0000000        NA        NA         NA  NA
@@ -262,19 +273,19 @@ Example of a copy number file containing CNV calls.
 <h2 class="hasAnchor">
 <a href="#metric-visualization" class="anchor"></a>Metric Visualization</h2>
 <p>A heatmap of this similarity metrics can be a useful tool to get an overview over similarities and dissimilarities between samples.</p>
-<p>The <code><a href="../reference/plotOverlapMetric.html">plotOverlapMetric()</a></code> function generates a graphical representation of the similarity metrics in the form of a sample-to-sample heatmap. By default, an hierarchical clustering based on based on the sample distances (1-metrics) is used.</p>
+<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical representation of the similarity metrics in the form of a sample-to-sample heatmap. By default, an hierarchical clustering based on based on the sample distances (1-metrics) is used.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to amplified regions</span>
-<span class="fu"><a href="../reference/plotOverlapMetric.html">plotOverlapMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"AMPLIFICATION"</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"AMPLIFICATION"</span><span class="op">)</span></code></pre></div>
 <p><img src="CNVMetrics_files/figure-html/demoPlot01-1.png" width="432" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p><br></p>
-<p>The <code><a href="../reference/plotOverlapMetric.html">plotOverlapMetric()</a></code> function uses the <em><a href="https://CRAN.R-project.org/package=pheatmap">pheatmap</a></em> package to generate the graph. All arguments accepted by <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap::pheatmap</a></code> function are valid arguments.</p>
+<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function uses the <em><a href="https://CRAN.R-project.org/package=pheatmap">pheatmap</a></em> package to generate the graph. All arguments accepted by <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap::pheatmap</a></code> function are valid arguments.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to deleted regions</span>
 <span class="co">## Metric value is printed as 'display_numbers' and 'number_format' are</span>
 <span class="co">## arguments recognized by pheatmap() function</span>
-<span class="fu"><a href="../reference/plotOverlapMetric.html">plotOverlapMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"DELETION"</span>, 
+<span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"DELETION"</span>, 
                     colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"darkorange"</span><span class="op">)</span>,
                     show_colnames<span class="op">=</span><span class="cn">TRUE</span>,
                     display_numbers<span class="op">=</span><span class="cn">TRUE</span>,
@@ -300,7 +311,7 @@ Example of a copy number file containing CNV calls.
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to amplified regions</span>
 <span class="co">## Rows are annotated with the stage and mouse information</span>
-<span class="fu"><a href="../reference/plotOverlapMetric.html">plotOverlapMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"AMPLIFICATION"</span>, 
+<span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"AMPLIFICATION"</span>, 
                     colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"steelblue"</span><span class="op">)</span>,
                     annotation_row<span class="op">=</span><span class="va">annotOrg</span><span class="op">)</span></code></pre></div>
 <p><img src="CNVMetrics_files/figure-html/demoPlot03-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -340,19 +351,142 @@ Example of a copy number file containing CNV calls.
   \frac{\left| X \cap Y \right| }{ \left| X \cup Y \right|}
   (\#eq:jaccard)
 \end{equation}\]</span></p>
-<p>where  and <span class="math inline">\(Y\)</span> represent the regions of each sample in base paired.</p>
+<p>where <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> represent the regions of each sample in base paired.</p>
+</div>
+</div>
+<div id="workflow-for-metrics-calculated-using-the-level-of-amplificationdeletion" class="section level1">
+<h1 class="hasAnchor">
+<a href="#workflow-for-metrics-calculated-using-the-level-of-amplificationdeletion" class="anchor"></a>Workflow for metrics calculated using <em>the level of amplification/deletion</em>
+</h1>
+<p>The following section gives an overview of the capabilities of <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> to calculate metrics using the <em>the level of amplification/deletion</em> (log2 ratio values):</p>
+<p>The key functions for each step of the workflow are:</p>
+<table class="table">
+<thead><tr class="header">
+<th>Step</th>
+<th>Function</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Data Importation</td>
+<td><code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html">GenomicRanges::makeGRangesListFromDataFrame()</a></code></td>
+</tr>
+<tr class="even">
+<td>Metric Calculation</td>
+<td><code><a href="../reference/calculateLog2ratioMetric.html">calculateLog2ratioMetric()</a></code></td>
+</tr>
+<tr class="odd">
+<td>Metric Visualization</td>
+<td><code><a href="../reference/plotMetric.html">plotMetric()</a></code></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>package::function()</code> notation is used for functions from other packages.</p>
+<div id="data-input---copy-number-file-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#data-input---copy-number-file-1" class="anchor"></a>Data Input - Copy number file</h2>
+<p>Copy number are often represented as segments with a copy number state and/or the level of amplification/deletion. One usual unit to quantify the level of amplification or deletion is in log2 ratio.</p>
+<p>A basic five-column input file containing genomic position (chromosome, start, end), sample identification and <em>the level of amplification/deletion</em> is required. All samples that need to be analyzed together have to be combined into one file.</p>
+<p>A column named <strong>log2ratio</strong> is required. In this column, the amplified and deleted segments must be assigned a numerical value representing the log2ratio or NA.</p>
+<div class="figure" style="text-align: center">
+<img src="Input_CNV_log2ratio_v01_low_quality.jpg" alt="Example of a copy number file containing log2ratio values." width="100%"><p class="caption">
+Example of a copy number file containing log2ratio values.
+</p>
+</div>
+</div>
+<div id="data-importation---grangeslist-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#data-importation---grangeslist-1" class="anchor"></a>Data Importation - GRangesList</h2>
+<p>The input format for the copy number information, as needed by the <code><a href="../reference/calculateLog2ratioMetric.html">calculateLog2ratioMetric()</a></code> function, is a <code>GRangesList</code> object.</p>
+<p>The easiest way to generate a <code>GRangesList</code> object is to first load the copy number information into an R <code>data.frame</code> and then, use the <code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function to convert them to a <code>GRangesList</code>.</p>
+<p>For this demonstration, we consider <em>the level of amplification/deletion</em> as obtained with <em><a href="https://github.com/KrasnitzLab/CNprep">CNprep</a></em> <span class="citation">(Belleau et al. 2020)</span>, from ten mouse pancreatic organoids <span class="citation">(Oni et al. 2020)</span>.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Load required libraries</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges">GenomicRanges</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/krasnitzlab/CNVMetrics">CNVMetrics</a></span><span class="op">)</span>
+
+<span class="co">## Load file containing CNV calls for 10 mouse organoids</span>
+<span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"CNVMetrics"</span><span class="op">)</span>
+<span class="va">cnv.file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"mousePairedOrganoids.txt"</span><span class="op">)</span>
+<span class="va">calls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="va">cnv.file</span>, header<span class="op">=</span><span class="cn">TRUE</span>, sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span>
+
+<span class="co">## The CNV status calls for all samples are present in one file</span>
+<span class="co">## The 'log2ratio' column is required</span>
+<span class="co">## The chromosome Y has been removed</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">calls</span><span class="op">)</span></code></pre></div>
+<pre><code>##    ID  chr     start       end    log2ratio         state
+## 1 mT3 chr1   3527630 195471971  0.143253158       NEUTRAL
+## 2 mT3 chr2   3549740 182113224  0.008638116       NEUTRAL
+## 3 mT3 chr3   3536051 160039680  0.032630258       NEUTRAL
+## 4 mT3 chr4   3734693 156508116 -0.026741963       NEUTRAL
+## 5 mT3 chr5   3575586 111373751 -0.018519856       NEUTRAL
+## 6 mT3 chr5 111373751 114262563  0.226961493 AMPLIFICATION</code></pre>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## The ID column identifies the 10 samples</span>
+<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">calls</span><span class="op">[</span>,<span class="st">"ID"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<pre><code>##  [1] "mT3"  "mM6"  "mM10" "mM15" "mT6"  "mT19" "mT23" "mT34" "mM1"  "mM3P"</code></pre>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## The ID column is used to split the samples into different GRanges </span>
+<span class="co">## inside a GRangesList</span>
+<span class="co">## The 'keep.extra.column=TRUE' parameter is needed to retained the extra </span>
+<span class="co">## column 'state' that is needed for the calculation of the metrics</span>
+<span class="va">grlog</span> <span class="op">&lt;-</span> <span class="fu">GenomicRanges</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html">makeGRangesListFromDataFrame</a></span><span class="op">(</span>df<span class="op">=</span><span class="va">calls</span>, 
+    split.field<span class="op">=</span><span class="st">"ID"</span>, keep.extra.columns<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">grlog</span></code></pre></div>
+<pre><code>## GRangesList object of length 10:
+## $mM1
+## GRanges object with 33 ranges and 2 metadata columns:
+##        seqnames             ranges strand |  log2ratio         state
+##           &lt;Rle&gt;          &lt;IRanges&gt;  &lt;Rle&gt; |  &lt;numeric&gt;   &lt;character&gt;
+##    [1]     chr1   3527630-62533399      * |  0.0351701       NEUTRAL
+##    [2]     chr1  62533399-82082589      * | -0.1066207       NEUTRAL
+##    [3]     chr1 82082589-195471971      * |  0.0807449       NEUTRAL
+##    [4]     chr2  3549740-182113224      * |  0.0527007       NEUTRAL
+##    [5]     chr3  3536051-136509203      * |  0.3431661 AMPLIFICATION
+##    ...      ...                ...    ... .        ...           ...
+##   [29]    chr18   3558909-90702639      * |  0.0736673       NEUTRAL
+##   [30]    chr19   3614043-61431566      * |  0.0902238       NEUTRAL
+##   [31]     chrX   5577384-62973719      * | -0.2259987       NEUTRAL
+##   [32]     chrX  62973719-84082850      * | -0.0641819       NEUTRAL
+##   [33]     chrX 84082850-169538352      * | -0.3902963      DELETION
+##   -------
+##   seqinfo: 20 sequences from an unspecified genome; no seqlengths
+## 
+## ...
+## &lt;9 more elements&gt;</code></pre>
+</div>
+<div id="metric-calculation-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#metric-calculation-1" class="anchor"></a>Metric Calculation</h2>
+<p>The calculation of the similarity metrics is done with the <code><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric()</a></code> function.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">metricLog</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculateLog2ratioMetric.html">calculateLog2ratioMetric</a></span><span class="op">(</span>segmentData<span class="op">=</span><span class="va">grlog</span>, 
+                              method<span class="op">=</span><span class="st">"weightedEuclideanDistance"</span><span class="op">)</span>
+
+<span class="va">metricLog</span></code></pre></div>
+<pre><code>## CNV Metrics
+## Metric:
+## weightedEuclideanDistance
+## 
+## LOG2RATIO:
+##            mM1       mM10       mM15       mM3P mM6
+## mM1         NA         NA         NA         NA  NA
+## mM10 0.1464966         NA         NA         NA  NA
+## mM15 0.1418869 0.09603109         NA         NA  NA
+## mM3P 0.1119665 0.08102932 0.10665057         NA  NA
+## mM6  0.1271844 0.09540328 0.09000475 0.08515659  NA
+## [ -- omitted 5 rows/columns ]</code></pre>
 </div>
 </div>
 <div id="metrics-using-the-level-of-amplificationdeletion" class="section level1">
 <h1 class="hasAnchor">
 <a href="#metrics-using-the-level-of-amplificationdeletion" class="anchor"></a>Metrics using the level of amplification/deletion</h1>
-<p>This survey represents the similarity measures that are implemented in <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> package. Those metrics are calculated using the level of amplification/deletion. The level of amplification/deletion is in log2 ratio while the size of the regions is in base paired.</p>
-<div id="weighted-euclidean-distance" class="section level2">
+<p>This survey represents the similarity measure that is implemented in <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> package. This metric are calculated using the level of amplification/deletion. The level of amplification/deletion is in log2 ratio while the size of the regions is in base paired.</p>
+<div id="weighted-euclidean-distance-based" class="section level2">
 <h2 class="hasAnchor">
-<a href="#weighted-euclidean-distance" class="anchor"></a>Weighted Euclidean Distance</h2>
-<p>The Weighted Euclidean Distance corresponds to the euclidean distance between the log2 values of the two samples multiplied by the natural logarithm of the number of bases of the analyzed segments. The final metric is the squared sum of the values obtained for all segments included in the calculation.</p>
+<a href="#weighted-euclidean-distance-based" class="anchor"></a>Weighted Euclidean Distance-Based</h2>
+<p>The Weighted Euclidean Distance corresponds to the euclidean distance between the log2 values of the two samples multiplied by the natural logarithm of the number of bases of the analyzed segments. The final metric is 1 over 1 added to the squared sum of the values obtained for all segments included in the calculation.</p>
 <p><span class="math display">\[\begin{equation}
-  \sqrt{\sum_{i=1} log_{2}(w_{i}) (A_{i} - B_{i})^{2}}
+  \frac{1}{1 + \sqrt{\sum_{i=1} log_{2}(w_{i}) (A_{i} - B_{i})^{2}}}
   (\#eq:euclidean)
 \end{equation}\]</span></p>
 <p>where <span class="math inline">\(A_{i}\)</span> and <span class="math inline">\(B_{i}\)</span> represent the log2 ratio values of samples <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> for the region <span class="math inline">\(i\)</span> while <span class="math inline">\(w_{i}\)</span> is the length of region <span class="math inline">\(i\)</span> in base paired.</p>
@@ -365,7 +499,7 @@ Example of a copy number file containing CNV calls.
 <h2 class="hasAnchor">
 <a href="#creating-your-own-grangeslist" class="anchor"></a>Creating your own GRangesList</h2>
 <p>The <code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function enables the creation of a list of <code>GRangesList</code> objects from a <code>data.frame</code>. However, <code>GRangesList</code> can also be generated and filled manually.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Construction a GRangesList()</span>
 <span class="va">gr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr2"</span>, ranges<span class="op">=</span><span class="fu">IRanges</span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6000</span><span class="op">)</span>,
           strand<span class="op">=</span><span class="st">"+"</span>, state<span class="op">=</span><span class="st">"AMPLIFICATION"</span>, 
@@ -406,39 +540,26 @@ Example of a copy number file containing CNV calls.
 ## [8] methods   base     
 ## 
 ## other attached packages:
-## [1] CNVMetrics_0.1.4     GenomicRanges_1.42.0 GenomeInfoDb_1.26.7 
+## [1] CNVMetrics_0.1.5     GenomicRanges_1.42.0 GenomeInfoDb_1.26.7 
 ## [4] IRanges_2.24.1       S4Vectors_0.28.1     BiocGenerics_0.36.1 
 ## [7] knitr_1.31           BiocStyle_2.18.1    
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] SummarizedExperiment_1.20.0 xfun_0.21                  
-##  [3] lattice_0.20-41             colorspace_2.0-0           
-##  [5] htmltools_0.5.1.1           rtracklayer_1.50.0         
-##  [7] yaml_2.2.1                  XML_3.99-0.5               
-##  [9] rlang_0.4.10                pkgdown_1.6.1              
-## [11] BiocParallel_1.24.1         RColorBrewer_1.1-2         
-## [13] matrixStats_0.58.0          GenomeInfoDbData_1.2.4     
-## [15] lifecycle_1.0.0             stringr_1.4.0              
-## [17] zlibbioc_1.36.0             MatrixGenerics_1.2.1       
-## [19] Biostrings_2.58.0           munsell_0.5.0              
-## [21] gtable_0.3.0                ragg_1.1.0                 
-## [23] memoise_2.0.0               evaluate_0.14              
-## [25] Biobase_2.50.0              fastmap_1.1.0              
-## [27] highr_0.8                   scales_1.1.1               
-## [29] BiocManager_1.30.10         DelayedArray_0.16.3        
-## [31] cachem_1.0.4                desc_1.2.0                 
-## [33] XVector_0.30.0              farver_2.0.3               
-## [35] systemfonts_1.0.1           fs_1.5.0                   
-## [37] Rsamtools_2.6.0             textshaping_0.3.0          
-## [39] gridExtra_2.3               digest_0.6.27              
-## [41] stringi_1.5.3               bookdown_0.21              
-## [43] grid_4.0.3                  rprojroot_2.0.2            
-## [45] tools_4.0.3                 bitops_1.0-6               
-## [47] magrittr_2.0.1              RCurl_1.98-1.2             
-## [49] crayon_1.4.1                Matrix_1.3-2               
-## [51] pheatmap_1.0.12             assertthat_0.2.1           
-## [53] rmarkdown_2.6               R6_2.5.0                   
-## [55] GenomicAlignments_1.26.0    compiler_4.0.3</code></pre>
+##  [1] highr_0.8              RColorBrewer_1.1-2     compiler_4.0.3        
+##  [4] BiocManager_1.30.10    XVector_0.30.0         bitops_1.0-6          
+##  [7] tools_4.0.3            zlibbioc_1.36.0        digest_0.6.27         
+## [10] lifecycle_1.0.0        gtable_0.3.0           evaluate_0.14         
+## [13] memoise_2.0.0          rlang_0.4.10           yaml_2.2.1            
+## [16] pkgdown_1.6.1          xfun_0.21              fastmap_1.1.0         
+## [19] GenomeInfoDbData_1.2.4 gridExtra_2.3          stringr_1.4.0         
+## [22] desc_1.2.0             fs_1.5.0               systemfonts_1.0.1     
+## [25] rprojroot_2.0.2        grid_4.0.3             R6_2.5.0              
+## [28] textshaping_0.3.0      rmarkdown_2.6          bookdown_0.21         
+## [31] pheatmap_1.0.12        farver_2.0.3           magrittr_2.0.1        
+## [34] scales_1.1.1           htmltools_0.5.1.1      assertthat_0.2.1      
+## [37] colorspace_2.0-0       ragg_1.1.0             stringi_1.5.3         
+## [40] munsell_0.5.0          RCurl_1.98-1.2         cachem_1.0.4          
+## [43] crayon_1.4.1</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
