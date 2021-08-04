@@ -207,7 +207,7 @@ createDisjoinSegmentsForTwoSamples <- function(segmentDataSample1,
 #' @details 
 #' 
 #' The weighted euclidean distance is 
-#' \eqn{1/(1 + (\sum((x_i - y_i)^2 * log(nbrBases_i))^0.5)} 
+#' \eqn{1/(1 + (\sum((x_i - y_i)^2 * log2(nbrBases_i))^0.5)} 
 #' where \code{x} and \code{y} are the
 #' values of 2 samples for a specific segment \code{i} and \code{nbrBases} the 
 #' number of bases of the segment \code{i}.
@@ -264,7 +264,7 @@ calculateWeightedEuclideanDistanceFor2Samples <- function(segmentData,
         }
         
         ## Calculate metric
-        temp01 <- temp01 * temp01 * log(incWidth)
+        temp01 <- temp01 * temp01 * log2(incWidth)
         final <- 1/(1 + sum(temp01, na.rm = TRUE) ^ (1/2))
     }
     
