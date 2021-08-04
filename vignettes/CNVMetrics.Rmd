@@ -35,15 +35,21 @@ set.seed(121444)
 **License**: `r packageDescription("CNVMetrics")[["License"]]`<br />
 
 
-<br>
-<br>
-
 # Licensing 
 
 The `r Githubpkg("KrasnitzLab/CNVMetrics")` package and the underlying 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` code are distributed under the 
 Artistic license 2.0. You are free to use and redistribute this software. 
 
+
+<br>
+<br>
+
+# Citing
+
+If you use this package for a publication, we would ask you to cite the following:
+
+>Belleau P, Deschênes A, Beyaz S et al. CNVMetrics package: Quantifying similarity between copy number profiles [version 1; not peer reviewed]. F1000Research 2021, 10:737 (slides) (doi: 10.7490/f1000research.1118704.1)
 
 <br>
 <br>
