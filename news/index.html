@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNVMetrics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -119,13 +119,30 @@
       <small>Source: <a href='https://github.com/krasnitzlab/CNVMetrics/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="cnvmetrics-016" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.6">
+<a href="#cnvmetrics-016" class="anchor"></a>CNVMetrics 0.1.6</h1>
+<p>NEW FEATURES</p>
+<ul>
+<li>
+<code><a href="../reference/calculateLog2ratioMetric.html">calculateLog2ratioMetric()</a></code> method enables log2 ratio metric calculation using similar workflow than <code>calculateOverlapRegionsMetric()</code> method.</li>
+</ul>
+<p>SIGNIFICANT USER-VISIBLE CHANGES</p>
+<ul>
+<li>
+<code><a href="../reference/plotMetric.html">plotMetric()</a></code> replaces <code>plotOverlapMetric()</code> method. The new method can plot all metrics (state call metrics and log2 ratio metrics).</li>
+<li>Vignette section ‘Workflow for metrics calculated using the level of amplification/deletion’ is complete.</li>
+<li>New citing section in README and vignette refering to published F1000Research poster (<a href="http://www.doi.org/10.7490/f1000research.1118704.1" class="uri">http://www.doi.org/10.7490/f1000research.1118704.1</a>).</li>
+<li>Instead of calculating distance, log2 ratio metrics are calculated distance-based metrics (1/(1+distance)).</li>
+</ul>
+</div>
     <div id="cnvmetrics-014" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.4">
 <a href="#cnvmetrics-014" class="anchor"></a>CNVMetrics 0.1.4</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>New website <a href="https://krasnitzlab.github.io/CNVMetrics/index.html" class="uri">https://krasnitzlab.github.io/CNVMetrics/index.html</a> associated to package.</li>
-<li>Vignette section ‘Workflow for metrics calculated using CNV status calls’ is completed.</li>
+<li>Vignette section ‘Workflow for metrics calculated using CNV status calls’ is complete.</li>
 </ul>
 </div>
     <div id="cnvmetrics-013" class="section level1">
