@@ -1,9 +1,22 @@
+# CNVMetrics 0.1.6
+
+NEW FEATURES
+
+* `calculateLog2ratioMetric()` method enables log2 ratio metric calculation using similar workflow than `calculateOverlapRegionsMetric()` method.
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+* `plotMetric()` replaces `plotOverlapMetric()` method. The new method can plot all metrics (state call metrics and log2 ratio metrics).
+* Vignette section 'Workflow for metrics calculated using the level of amplification/deletion' is complete.
+* New citing section in README and vignette refering to published F1000Research poster (http://www.doi.org/10.7490/f1000research.1118704.1). 
+* Instead of calculating distance, log2 ratio metrics are calculated distance-based metrics (1/(1+distance)).
+
 # CNVMetrics 0.1.4
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * New website https://krasnitzlab.github.io/CNVMetrics/index.html associated to package.
-* Vignette section 'Workflow for metrics calculated using CNV status calls' is completed.
+* Vignette section 'Workflow for metrics calculated using CNV status calls' is complete.
 
 # CNVMetrics 0.1.3
 
