@@ -51,6 +51,8 @@ If you use this package for a publication, we would ask you to cite the followin
 
 >Belleau P, Deschênes A, Beyaz S et al. CNVMetrics package: Quantifying similarity between copy number profiles [version 1; not peer reviewed]. F1000Research 2021, 10:737 (slides) (doi: 10.7490/f1000research.1118704.1)
 
+[F1000Research poster](http://www.doi.org/10.7490/f1000research.1118704.1)
+
 <br>
 <br>
 
