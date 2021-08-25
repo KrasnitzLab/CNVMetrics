@@ -7,6 +7,7 @@
 \usage{
 calculateOverlapMetric(
   segmentData,
+  states = c("AMPLIFICATION", "DELETION"),
   method = c("sorensen", "szymkiewicz", "jaccard")
 )
 }
@@ -19,26 +20,26 @@ called '\code{state}' with amplified regions identified as
 regions with different identifications will not be used in the
 calculation of the metric.}
 
+\item{states}{a \code{vector} of \code{character} string with at least one
+entry. The strings are repesenting the states that will be analysed. 
+Default: c('\code{AMPLIFICATION}', '\code{DELETION}'.}
+
 \item{method}{a \code{character} string representing the metric to be used. 
 This should be (an unambiguous abbreviation of) one of "sorensen", 
 "szymkiewicz" or "jaccard". Default: "sorensen".}
 }
 \value{
 an object of class "\code{CNVMetric}" which contains the calculated
-metric. This object is a list with the following components:
+metric. This object is a list where each entry corresponds to one state
+specified in the '\code{states}' parameter. Each entry is a \code{matrix}:
 \itemize{
-\item{\code{AMPLIFICATION}}{ a lower-triangular \code{matrix} with the 
+\item{\code{state}}{ a lower-triangular \code{matrix} with the 
     results of the selected metric on the amplified regions for each paired
     samples. The value \code{NA} is present when the metric cannot be 
     calculated. The value \code{NA} is also present in the top-triangular 
     section, as well as the diagonal, of the matrix.
 }
-\item{\code{DELETION}}{ a lower-triangular \code{matrix} with the 
-    results of the selected metric on the deleted regions for each paired
-    samples. The value \code{NA} is present when the metric cannot be 
-    calculated. The value \code{NA} is also present in the top-triangular 
-    section, as well as the diagonal, of the matrix.
-}}
+}
 
 The object has the following attributes (besides "class" equal 
 to "CNVMetric"):
@@ -230,7 +231,8 @@ prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
 
 
 The two methods each estimate the overlap between paired samples. They use 
-different metrics, all in the range [0, 1] with 0 indicating no overlap.
+different metrics, all in the range [0, 1] with 0 indicating no overlap. 
+The \code{NA} is used when the metric cannot be calculated.
 
 The available metrics are (written for two GRanges):
 

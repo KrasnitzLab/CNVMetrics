@@ -186,6 +186,10 @@
 #' regions with different identifications will not be used in the
 #' calculation of the metric. 
 #' 
+#' @param states a \code{vector} of \code{character} string with at least one
+#' entry. The strings are repesenting the states that will be analysed. 
+#' Default: c('\code{AMPLIFICATION}', '\code{DELETION}'.
+#' 
 #' @param method a \code{character} string representing the metric to be used. 
 #' This should be (an unambiguous abbreviation of) one of "sorensen", 
 #' "szymkiewicz" or "jaccard". Default: "sorensen".
@@ -193,7 +197,8 @@
 #' @details 
 #' 
 #' The two methods each estimate the overlap between paired samples. They use 
-#' different metrics, all in the range [0, 1] with 0 indicating no overlap.
+#' different metrics, all in the range [0, 1] with 0 indicating no overlap. 
+#' The \code{NA} is used when the metric cannot be calculated.
 #' 
 #' The available metrics are (written for two GRanges):
 #' 
@@ -217,20 +222,16 @@
 #' metric value of 1 is only obtained when the two samples are identical. 
 #' 
 #' @return an object of class "\code{CNVMetric}" which contains the calculated
-#' metric. This object is a list with the following components:
+#' metric. This object is a list where each entry corresponds to one state
+#' specified in the '\code{states}' parameter. Each entry is a \code{matrix}:
 #' \itemize{
-#' \item{\code{AMPLIFICATION}}{ a lower-triangular \code{matrix} with the 
+#' \item{\code{state}}{ a lower-triangular \code{matrix} with the 
 #'     results of the selected metric on the amplified regions for each paired
 #'     samples. The value \code{NA} is present when the metric cannot be 
 #'     calculated. The value \code{NA} is also present in the top-triangular 
 #'     section, as well as the diagonal, of the matrix.
 #' }
-#' \item{\code{DELETION}}{ a lower-triangular \code{matrix} with the 
-#'     results of the selected metric on the deleted regions for each paired
-#'     samples. The value \code{NA} is present when the metric cannot be 
-#'     calculated. The value \code{NA} is also present in the top-triangular 
-#'     section, as well as the diagonal, of the matrix.
-#' }}
+#' }
 #' 
 #' The object has the following attributes (besides "class" equal 
 #' to "CNVMetric"):
@@ -293,10 +294,29 @@
 #' @encoding UTF-8
 #' @export
 calculateOverlapMetric <- function(segmentData, 
+                                   states=c("AMPLIFICATION", "DELETION"),
                                    method=c("sorensen", "szymkiewicz", 
                                             "jaccard")) {
     
+    ## Select metric method to be used
     method <- match.arg(method)
+    
+    ## At least one state must be present
+    if (!is.vector(states) | ! is.character(states)){
+        stop(paste0("the \'states\' argument must be a vector of strings ",
+                        "with at least one value"))
+    }
+    
+    ## At least one state must be present
+    if (length(states) < 1){
+        stop("at least one state must be specified in the \'state\' argument")
+    }
+    
+    ## The cnv data must be in a GRangesList format
+    if (!is(segmentData, "GRangesList")) {
+        stop("the \'segmentData\' argument must be a \'GRangesList\' object")
+    }
+    
     
     names <- names(segmentData)
     nb <- length(names)
@@ -307,7 +327,7 @@ calculateOverlapMetric <- function(segmentData,
     }
     
     ## All samples must have a metadata column called 'state' with
-    ## AMPLIFICATION/DELETION status 
+    ## AMPLIFICATION/DELETION/etc status 
     if (!all(vapply(segmentData, 
                     FUN = function(x) {"state" %in% colnames(mcols(x))},
                     FUN.VALUE = logical(1)))) {
@@ -317,7 +337,7 @@ calculateOverlapMetric <- function(segmentData,
     
     results <- list()
     
-    for(type in c("AMPLIFICATION", "DELETION")) {
+    for(type in states) {
         
         dataTMP <- matrix(rep(NA, nb^2), nrow=nb)
         rownames(dataTMP) <- names
