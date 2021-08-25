@@ -302,14 +302,9 @@ calculateOverlapMetric <- function(segmentData,
     method <- match.arg(method)
     
     ## At least one state must be present
-    if (!is.vector(states) | ! is.character(states)){
+    if (!is.vector(states) | ! is.character(states) | length(states) < 1){
         stop(paste0("the \'states\' argument must be a vector of strings ",
                         "with at least one value"))
-    }
-    
-    ## At least one state must be present
-    if (length(states) < 1){
-        stop("at least one state must be specified in the \'state\' argument")
     }
     
     ## The cnv data must be in a GRangesList format
