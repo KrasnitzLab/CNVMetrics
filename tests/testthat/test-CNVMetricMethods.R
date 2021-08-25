@@ -240,5 +240,9 @@ test_that("plotMetric() must return a gtable when graph for deletion", {
     expect_is(object=result, class="gtable")
 })
 
+### Tests calculateOverlapMetric() results
+
+context("calculateOverlapMetric() results")
+
 
 

@@ -254,3 +254,24 @@ test_that("calculateOverlapMetric() must return an error when segmentData doesn'
     expect_error(calculateOverlapMetric(demo), error_message) 
 })
 
+
+test_that("calculateOverlapMetric() must return an error when states is a vector of integers", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(1905048, 4554832, 31686841),
+        end = c(2004603, 4577608, 31695808)), strand =  "*",
+        state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    
+    demo[["sample02"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(1995066, 31611222, 31690000),
+        end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
+        state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    
+    
+    error_message <- paste0("the \'states\' argument must be a ",
+                        "vector of strings with at least one value")
+    
+    expect_error(calculateOverlapMetric(segmentData = demo, states = c(33, 11),
+                                        method="sorensen"), error_message)
+})
