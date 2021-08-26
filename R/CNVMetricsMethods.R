@@ -375,10 +375,10 @@ calculateOverlapMetric <- function(segmentData,
 #' This should be (an unambiguous abbreviation of) one of 
 #' "weightedEuclideanDistance". Default: "weightedEuclideanDistance".
 #' 
-#' @param minThreshold a single \code{numeric} setting the minimum value 
-#' to consider two segments as different during the metric calculation. If the 
-#' absolute difference is below or equal to threshold, the difference will be 
-#' replaced by zero. Default: 0.2.
+#' @param minThreshold a single positive \code{numeric} setting the minimum 
+#' value to consider two segments as different during the metric calculation. 
+#' If the absolute difference is below or equal to threshold, the difference 
+#' will be replaced by zero. Default: 0.2.
 #'  
 #' 
 #' @param excludedRegions an optional \code{GRanges} containing the regions 
@@ -451,12 +451,28 @@ calculateLog2ratioMetric <- function(segmentData,
     
     method <- match.arg(method)
     
+    ## The cnv data must be in a GRangesList format
+    if (!is(segmentData, "GRangesList")) {
+        stop("the \'segmentData\' argument must be a \'GRangesList\' object")
+    }
+    
+    ## The minThreshold must be a positive numeric value
+    if (!is.numeric(minThreshold) | minThreshold < 0.0) {
+        stop("the \'minThreshold\' argument must be a positive numeric value")
+    }
+    
+    ## The minThreshold must be a positive numeric value
+    if (!is.null(excludedRegions) & !is(excludedRegions, "GRanges")) {
+        stop(paste0("the \'excludedRegions\' argument must ", 
+            "a \'Granges\' object or NULL"))
+    }
+    
     names <- names(segmentData)
     nb <- length(names)
     
     ## At least 2 samples must be present
     if (nb < 2) {
-        stop("At least 2 samples must be present in segmentData")
+        stop("at least 2 samples must be present in segmentData")
     }
     
     ## All samples must have a metadata column called 'log2ratio' with

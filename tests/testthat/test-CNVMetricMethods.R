@@ -462,3 +462,133 @@ test_that("calculateOverlapMetric() must return an error when segmentData is a l
 })
 
 
+#############################################################################
+### Tests calculateLog2ratioMetric() results
+#############################################################################
+
+context("calculateLog2ratioMetric() results")
+
+test_that("calculateLog2ratioMetric() must return an error when segmentData is a list", {
+    
+    demo <- list()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(1905048, 4554832, 31686841),
+        end = c(2004603, 4577608, 31695808)), strand =  "*",
+        log2ratio = c(2.5555, 1.9932, -0.9999))
+
+    demo[["sample02"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(1995066, 31611222, 31690000),
+        end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
+        log2ratio = c(0.3422, 0.5454, -1.4444))
+    
+    error_message <- paste0("the \'segmentData\' argument must be a", 
+                                " \'GRangesList\' object")
+    
+    expect_error(calculateLog2ratioMetric(segmentData = demo, 
+        method="weightedEuclideanDistance", minThreshold=0.2, 
+        excludedRegions=NULL), error_message)
+})
+
+
+test_that("calculateLog2ratioMetric() must return an error when segmentData has only one sample", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(1905048, 4554832, 31686841),
+        end = c(2004603, 4577608, 31695808)), strand =  "*",
+        log2ratio = c(2.5555, 1.9932, -0.9999))
+    
+    error_message <- "at least 2 samples must be present in segmentData"
+    
+    expect_error(calculateLog2ratioMetric(segmentData = demo, 
+                                          method="weightedEuclideanDistance", minThreshold=0.2, 
+                                          excludedRegions=NULL), error_message)
+})
+
+
+test_that("calculateLog2ratioMetric() must return an error when segmentData doesn't have a log2ratio column", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1",
+            ranges =  IRanges(start = c(1905048, 4554832, 31686841),
+            end = c(2004603, 4577608, 31695808)), strand =  "*",
+            log2ratios = c(2.5555, 1.9932, -0.9999))
+    
+    demo[["sample02"]] <- GRanges(seqnames = "chr1",
+            ranges =  IRanges(start = c(1995066, 31611222, 31690000),
+            end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
+            log2ratios = c(0.3422, 0.5454, -1.4444))
+    
+    error_message <- paste0("at least one sample doesn't have a metadata ", 
+            "column called \'log2ratio\'")
+    
+    expect_error(calculateLog2ratioMetric(segmentData = demo, 
+            method="weightedEuclideanDistance", minThreshold=0.2, 
+            excludedRegions=NULL), error_message)
+})
+
+
+test_that("calculateLog2ratioMetric() must return an error when minThreshold is negative value", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(1905048, 4554832, 31686841),
+        end = c(2004603, 4577608, 31695808)), strand =  "*",
+        log2ratios = c(2.5555, 1.9932, -0.9999))
+    
+    demo[["sample02"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(1995066, 31611222, 31690000),
+        end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
+        log2ratios = c(0.3422, 0.5454, -1.4444))
+    
+    error_message <- paste0("the \'minThreshold\' argument must be a ", 
+                                "positive numeric value")
+    
+    expect_error(calculateLog2ratioMetric(segmentData = demo, 
+        method="weightedEuclideanDistance", minThreshold=-0.2, 
+        excludedRegions=NULL), error_message)
+})
+
+
+test_that("calculateLog2ratioMetric() must return an error when minThreshold is a string", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(1905048, 4554832, 31686841),
+        end = c(2004603, 4577608, 31695808)), strand =  "*",
+        log2ratios = c(2.5555, 1.9932, -0.9999))
+    
+    demo[["sample02"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(1995066, 31611222, 31690000),
+        end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
+        log2ratios = c(0.3422, 0.5454, -1.4444))
+    
+    error_message <- paste0("the \'minThreshold\' argument must be a ", 
+                                "positive numeric value")
+    
+    expect_error(calculateLog2ratioMetric(segmentData = demo, 
+        method="weightedEuclideanDistance", minThreshold="0.01", 
+        excludedRegions=NULL), error_message)
+})
+
+
+test_that("calculateLog2ratioMetric() must return an error when excludedRegions is a string", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(1905048, 4554832, 31686841),
+        end = c(2004603, 4577608, 31695808)), strand =  "*",
+        log2ratio = c(2.5555, 1.9932, -0.9999))
+    
+    demo[["sample02"]] <- GRanges(seqnames = "chr1",
+        ranges =  IRanges(start = c(1995066, 31611222, 31690000),
+        end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
+        log2ratio = c(0.3422, 0.5454, -1.4444))
+    
+    error_message <- paste0("the \'excludedRegions\' argument must ", 
+                                "a \'Granges\' object or NULL")
+    
+    expect_error(calculateLog2ratioMetric(segmentData = demo, 
+                method="weightedEuclideanDistance", minThreshold=0.4, 
+                excludedRegions="hello"), error_message)
+})
