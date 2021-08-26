@@ -526,11 +526,11 @@ calculateLog2ratioMetric <- function(segmentData,
 #' @param metric a \code{CNVMetric} object containing the metrics calculated
 #' by \code{calculateOverlapMetric} or by \code{calculateLog2ratioMetric}.
 #' 
-#' @param type a \code{character} string indicating which graph to generate. 
-#' This should be (an unambiguous abbreviation of) one of "\code{ALL}", 
-#' "\code{AMPLIFICATION}" or "\code{DELETION}". This is useful for the 
-#' overlapping metrics that have both the amplified and deleted metrics in the
-#' \code{CNVMetric} object. Default: "\code{ALL}".
+#' @param type a single \code{character} string indicating which graph 
+#' to generate. This should be a type present in the \code{CNVMetric} object or 
+#' "\code{ALL}". This is useful for the 
+#' overlapping metrics that have multiple types specified by the user. 
+#' Default: "\code{ALL}".
 #' 
 #' @param colorRange a \code{vector} of 2 \code{character} string 
 #' representing the 2 colors that will be
@@ -546,7 +546,7 @@ calculateLog2ratioMetric <- function(segmentData,
 #' @param \ldots further arguments passed to 
 #' \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method. Beware that
 #' the \code{filename} argument cannot be used when \code{type} is 
-#'  "\code{BOTH}".
+#'  "\code{ALL}".
 #' 
 #' @return a \code{gtable} object containing the heatmap(s) of the specified 
 #' metric(s).
@@ -601,35 +601,29 @@ calculateLog2ratioMetric <- function(segmentData,
 #' @import GenomicRanges
 #' @encoding UTF-8
 #' @export
-plotMetric <- function(metric, 
-                              type=c("ALL", "AMPLIFICATION", "DELETION"),
-                              colorRange=c(c("white", "darkblue")), 
-                              show_colnames=FALSE, silent=TRUE, ...) {
+plotMetric <- function(metric, type="ALL",
+                        colorRange=c(c("white", "darkblue")), 
+                        show_colnames=FALSE, silent=TRUE, ...) {
     
     ## Validate that the metric parameter is a CNVMetric object
     if (!is.CNVMetric(metric)) {
         stop("\'metric\' must be a CNVMetric object.")
     }
     
-    ## Assign type parameter
-    type <- match.arg(type)
-    
     ## Validate that the filename argument is not used when
     ## type "ALL" is selected
-    if (type == "ALL" &&  hasArg("filename")) {
+    if (type == "ALL" &&  length(names(metric)) > 1 & hasArg("filename")) {
         stop("\'type\' cannot be \'ALL\' when filename argument is used.")
     }
     
-    ## Validate that the type argument is not "AMPLIFICATION"
-    ## when the metric does not contain this type of metric
-    if (type == "AMPLIFICATION" &&  ! "AMPLIFICATION" %in% names(metric)) {
-        stop("\'type\' cannot be \'AMPLIFICATION\' for this metric object.")
+    ## Validate that the type argument is a single character string
+    if (!is.character(type) | length(type) > 1) {
+        stop("the \'type\' must be a single character string")
     }
     
-    ## Validate that the type argument is not "DELETION"
-    ## when the metric does not contain this type of metric
-    if (type == "DELETION" &&  ! "DELETION" %in% names(metric)) {
-        stop("\'type\' cannot be \'DELETION\' for this metric object.")
+    ## Validate that the type argument is present in the object
+    if (type != "ALL" & ! type %in% names(metric)) {
+        stop("the specified \'type\' is not present in this metric object.")
     }
     
     ## Validate that the color name has only one value
@@ -647,8 +641,7 @@ plotMetric <- function(metric,
     
     plot_list <- list()
     
-    nameList <- ifelse(type %in% c("AMPLIFICATION", "DELETION"), type, 
-                                                            names(metric))
+    nameList <- ifelse(type != "ALL", type, names(metric))
     
     for (name in nameList) {
         plot_list[[name]] <- plotOneMetric(metric=metric,
