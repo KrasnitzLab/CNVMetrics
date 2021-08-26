@@ -14,28 +14,42 @@ library(GenomeInfoDb)
 
 context("plotMetric() results")
 
-test_that("plotMetric() must return error when type wrong", {
+test_that("plotMetric() must return error when type not in metric object", {
 
     demo <- GRangesList()
     demo[["sample01"]] <- GRanges(seqnames="chr1",
-                                  ranges =  IRanges(start=c(100, 300, 800), end=c(200, 500, 900)),
-                                  strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+        ranges =  IRanges(start=c(100, 300, 800), end=c(200, 500, 900)),
+        strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     demo[["sample02"]] <- GRanges(seqnames="chr1",
-                                  ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)),
-                                  strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+        ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)),
+        strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
 
+    metric <- calculateOverlapMetric(segmentData=demo, method="szymkiewicz")
 
-    metric <- calculateOverlapMetric(segmentData=demo,
-                                     method="szymkiewicz")
-
-
-    error_message <- gettextf("'arg' should be one of %s",
-                              paste(dQuote(c("ALL", "AMPLIFICATION",
-                                             "DELETION")),
-                                    collapse=", "))
+    error_message <- paste0("the specified 'type' is not present in ", 
+                        "this metric object.")
 
     expect_error(plotMetric(metric=metric,  type="SAVE"),
                  error_message)
+})
+
+
+test_that("plotMetric() must return error when type is an integer", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames="chr1",
+        ranges =  IRanges(start=c(100, 300, 800), end=c(200, 500, 900)),
+        strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    demo[["sample02"]] <- GRanges(seqnames="chr1",
+        ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)),
+        strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    
+    metric <- calculateOverlapMetric(segmentData=demo,
+                                        method="szymkiewicz")
+    
+    error_message <- "the \'type\' must be a single character string"
+    
+    expect_error(plotMetric(metric=metric,  type=33), error_message)
 })
 
 
@@ -44,7 +58,7 @@ test_that("plotMetric() must return error when metric is not CNVMetric object", 
     error_message <- "\'metric\' must be a CNVMetric object."
 
     expect_error(plotMetric(metric="TEST01",  type="SAVE"),
-                 error_message)
+                    error_message)
 })
 
 
@@ -53,14 +67,14 @@ test_that("plotMetric() must return error when colorRange is vector of single le
 
     demo <- GRangesList()
     demo[["sample01"]] <- GRanges(seqnames = "chr1",
-                                  ranges =  IRanges(start = c(100, 300, 800), end = c(200, 500, 900)),
-                                  strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+        ranges =  IRanges(start = c(100, 300, 800), end = c(200, 500, 900)),
+        strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     demo[["sample02"]] <- GRanges(seqnames = "chr1",
-                                  ranges =  IRanges(start = c(150, 600, 1000), end = c(250, 700, 1500)),
-                                  strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+        ranges =  IRanges(start = c(150, 600, 1000), end = c(250, 700, 1500)),
+        strand =  "*", state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
 
     metric <- calculateOverlapMetric(segmentData = demo,
-                                     method = "szymkiewicz")
+                                        method = "szymkiewicz")
 
     error_message <- "\'colorRange\' must be be a vector of 2 valid color names."
 
@@ -73,20 +87,19 @@ test_that("plotMetric() must return error when colorRange is vector of one color
 
     demo <- GRangesList()
     demo[["sample01"]] <- GRanges(seqnames="chr1",
-                                  ranges=IRanges(start=c(100, 300, 800), end = c(200, 500, 900)),
-                                  strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+        ranges=IRanges(start=c(100, 300, 800), end = c(200, 500, 900)),
+        strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     demo[["sample02"]] <- GRanges(seqnames="chr1",
-                                  ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)),
-                                  strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+        ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)),
+        strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
 
     metric <- calculateOverlapMetric(segmentData = demo,
-                                     method = "szymkiewicz")
+                                        method = "szymkiewicz")
 
     error_message <- "\'colorRange\' must be a vector of 2 color names."
 
     expect_error(plotMetric(metric=metric,  type="AMPLIFICATION",
-                                   colorRange=c("red")),
-                 error_message)
+                        colorRange=c("red")), error_message)
 })
 
 
@@ -94,11 +107,11 @@ test_that("plotMetric() must return error when type==ALL and filename given", {
     
     demo <- GRangesList()
     demo[["sample01"]] <- GRanges(seqnames="chr1",
-                                  ranges=IRanges(start=c(100, 300, 800), end = c(200, 500, 900)), 
-                                  strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+        ranges=IRanges(start=c(100, 300, 800), end = c(200, 500, 900)), 
+        strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     demo[["sample02"]] <- GRanges(seqnames="chr1",
-                                  ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)), 
-                                  strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+        ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)), 
+        strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
     metric <- calculateOverlapMetric(segmentData = demo, 
                                      method = "szymkiewicz")
@@ -106,8 +119,7 @@ test_that("plotMetric() must return error when type==ALL and filename given", {
     error_message <- "\'type\' cannot be \'ALL\' when filename argument is used."
     
     expect_error(plotMetric(metric=metric,  type="ALL",
-                                   filename="test.pdf"), 
-                 error_message)
+                            filename="test.pdf"),  error_message)
 })
 
 
@@ -134,14 +146,14 @@ test_that("plotMetric() must return a gtable when graph for deletion", {
     
     demo <- GRangesList()
     demo[["sample01"]] <- GRanges(seqnames="chr1",
-                                  ranges=IRanges(start=c(100, 300, 800), end = c(200, 500, 900)), 
-                                  strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+        ranges=IRanges(start=c(100, 300, 800), end = c(200, 500, 900)), 
+        strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     demo[["sample02"]] <- GRanges(seqnames="chr1",
-                                  ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)), 
-                                  strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+        ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)), 
+        strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
     metric <- calculateOverlapMetric(segmentData = demo, 
-                                     method = "szymkiewicz")
+                                            method = "szymkiewicz")
     
     result <- plotMetric(metric=metric,  type="DELETION")
     

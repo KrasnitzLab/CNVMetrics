@@ -22,10 +22,10 @@ called '\code{log2ratio}' with the log2ratio values.}
 This should be (an unambiguous abbreviation of) one of 
 "weightedEuclideanDistance". Default: "weightedEuclideanDistance".}
 
-\item{minThreshold}{a single \code{numeric} setting the minimum value 
-to consider two segments as different during the metric calculation. If the 
-absolute difference is below or equal to threshold, the difference will be 
-replaced by zero. Default: 0.2.}
+\item{minThreshold}{a single positive \code{numeric} setting the minimum 
+value to consider two segments as different during the metric calculation. 
+If the absolute difference is below or equal to threshold, the difference 
+will be replaced by zero. Default: 0.2.}
 
 \item{excludedRegions}{an optional \code{GRanges} containing the regions 
 that have to be excluded for the metric calculation. Default: \code{NULL}.}
