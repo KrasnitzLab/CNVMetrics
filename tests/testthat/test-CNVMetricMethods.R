@@ -57,7 +57,7 @@ test_that("plotMetric() must return error when metric is not CNVMetric object", 
 
     error_message <- "\'metric\' must be a CNVMetric object."
 
-    expect_error(plotMetric(metric="TEST01",  type="SAVE"),
+    expect_error(plotMetric(metric="TEST01",  type="DELETION"),
                     error_message)
 })
 
@@ -102,6 +102,26 @@ test_that("plotMetric() must return error when colorRange is vector of one color
                         colorRange=c("red")), error_message)
 })
 
+test_that("plotMetric() must return an error when type is not in the CNVMetric object", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames="chr1",
+                                  ranges=IRanges(start=c(100, 300, 800), end = c(200, 500, 900)),
+                                  strand="*", state=c("LOH", "LOH", "DELETION"))
+    demo[["sample02"]] <- GRanges(seqnames="chr1",
+                                  ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)),
+                                  strand="*", state=c("LOH", "LOH", "DELETION"))
+    
+    metric <- calculateOverlapMetric(segmentData = demo,states = c("LOH"),
+                                     method = "szymkiewicz")
+    
+    error_message <- "the specified \'type\' is not present in this metric object."
+    
+    expect_error(plotMetric(metric=metric,  type="AMPLIFICATION",
+                                colorRange=c("red", "violet")), error_message)
+})
+
+
 
 test_that("plotMetric() must return error when type==ALL and filename given", {
     
@@ -127,11 +147,11 @@ test_that("plotMetric() must return a gtable when graph for amplification", {
     
     demo <- GRangesList()
     demo[["sample01"]] <- GRanges(seqnames="chr1",
-                                  ranges=IRanges(start=c(100, 300, 800), end = c(200, 500, 900)), 
-                                  strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+        ranges=IRanges(start=c(100, 300, 800), end = c(200, 500, 900)), 
+        strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     demo[["sample02"]] <- GRanges(seqnames="chr1",
-                                  ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)), 
-                                  strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+        ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)), 
+        strand="*", state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
     
     metric <- calculateOverlapMetric(segmentData = demo, 
                                      method = "szymkiewicz")
@@ -155,7 +175,26 @@ test_that("plotMetric() must return a gtable when graph for deletion", {
     metric <- calculateOverlapMetric(segmentData = demo, 
                                             method = "szymkiewicz")
     
-    result <- plotMetric(metric=metric,  type="DELETION")
+    result <- plotMetric(metric=metric, type="DELETION")
+    
+    expect_is(object=result, class="gtable")
+})
+
+
+test_that("plotMetric() must return a gtable when graph for LOH", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames="chr1",
+        ranges=IRanges(start=c(100, 300, 800), end = c(200, 500, 900)), 
+        strand="*", state=c("LOH", "LOH", "DELETION"))
+    demo[["sample02"]] <- GRanges(seqnames="chr1",
+        ranges=IRanges(start=c(150, 600, 1000), end=c(250, 700, 1500)), 
+        strand="*", state=c("LOH", "LOH", "DELETION"))
+    
+    metric <- calculateOverlapMetric(segmentData = demo, states = "LOH",
+                                            method = "jaccard")
+    
+    result <- plotMetric(metric=metric, type="LOH")
     
     expect_is(object=result, class="gtable")
 })

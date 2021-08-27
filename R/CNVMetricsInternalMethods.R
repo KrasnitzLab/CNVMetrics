@@ -295,7 +295,8 @@ plotOneMetric <- function(metric, type, colorRange, show_colnames,
     if (!hasArg("main")) {
         metricInfo <- switch(attributes(metric)$metric, 
                              "szymkiewicz"="Szymkiewicz-Simpson", 
-                             "sorensen"="Sorensen")
+                             "sorensen"="Sorensen",
+                             "jaccard"="Jaccard")
         dots[["main"]] <- paste0(type, " - ", metricInfo, " metric")
     }
     
