@@ -201,6 +201,27 @@ test_that("plotMetric() must return a gtable when graph for LOH", {
 
 
 
+test_that("plotMetric() must return a gtable when graph for log2ratio metric", {
+    
+    demo <- GRangesList()
+    demo[["sample01"]] <- GRanges(seqnames = "chr1", 
+        ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+        end = c(2004603, 4577608, 31895999)), strand =  "*",
+        log2ratio = c(2.5555, 1.9932, -0.9999))
+    demo[["sample02"]] <- GRanges(seqnames = "chr1", 
+        ranges =  IRanges(start = c(1995066, 31611222, 31690000), 
+        end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
+        log2ratio = c(0.3422, 0.5454, -1.4444))
+    
+    metric <- calculateLog2ratioMetric(demo, 
+                                        method="weightedEuclideanDistance")
+    
+    result <- plotMetric(metric=metric)
+    
+    expect_is(object=result, class="gtable")
+})
+
+
 #############################################################################
 ### Tests calculateOverlapMetric() results
 #############################################################################
