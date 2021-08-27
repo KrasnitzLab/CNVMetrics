@@ -294,9 +294,10 @@ plotOneMetric <- function(metric, type, colorRange, show_colnames,
     ## Prepare main title (might not be used if main argument given by user)
     if (!hasArg("main")) {
         metricInfo <- switch(attributes(metric)$metric, 
-                             "szymkiewicz"="Szymkiewicz-Simpson", 
-                             "sorensen"="Sorensen",
-                             "jaccard"="Jaccard")
+                    "szymkiewicz"="Szymkiewicz-Simpson", 
+                    "sorensen"="Sorensen",
+                    "jaccard"="Jaccard",
+                    "weightedEuclideanDistance"="Weighted Euclidean Distance")
         dots[["main"]] <- paste0(type, " - ", metricInfo, " metric")
     }
     
