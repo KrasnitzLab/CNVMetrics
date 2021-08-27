@@ -15,7 +15,7 @@
 #' calculation of the metric. 
 #' 
 #' @param states a \code{vector} of \code{character} string with at least one
-#' entry. The strings are repesenting the states that will be analysed. 
+#' entry. The strings are representing the states that will be analyzed. 
 #' Default: c('\code{AMPLIFICATION}', '\code{DELETION}'.
 #' 
 #' @param method a \code{character} string representing the metric to be used. 
