@@ -15,14 +15,12 @@ calculateOverlapMetric(
 \item{segmentData}{a \code{GRangesList} that contains a collection of 
 genomic ranges representing copy number events, including amplified/deleted 
 status, from at least 2 samples. All samples must have a metadata column 
-called '\code{state}' with amplified regions identified as 
-'\code{AMPLIFICATION}' and deleted regions identified as '\code{DELETION}'; 
-regions with different identifications will not be used in the
-calculation of the metric.}
+called '\code{state}' with a state, in an character string format, 
+specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).}
 
 \item{states}{a \code{vector} of \code{character} string with at least one
 entry. The strings are representing the states that will be analyzed. 
-Default: c('\code{AMPLIFICATION}', '\code{DELETION}'.}
+Default: c('\code{AMPLIFICATION}', '\code{DELETION}').}
 
 \item{method}{a \code{character} string representing the metric to be used. 
 This should be (an unambiguous abbreviation of) one of "sorensen", 
@@ -52,9 +50,11 @@ the amplified and deleted regions.
 }
 \description{
 Calculate a specific metric using overlapping 
-amplified/deleted regions between to samples. The metric is calculated for
-the amplified and deleted regions separately. When more than 2 samples are 
-present, the metric is calculated for each sample pair.
+regions of specific state between to samples. The metric is calculated for
+each state separately. When more than 2 samples are 
+present, the metric is calculated for each sample pair. By default, the
+function is calculating metrics for the AMPLIFICATION and DELETION states. 
+However, the user can specify the list of states to be analyzed.
 }
 \details{
 The two methods each estimate the overlap between paired samples. They use 
@@ -91,14 +91,14 @@ require(GenomicRanges)
 ## The stand of the regions doesn't affect the calculation of the metric
 demo <- GRangesList()
 demo[["sample01"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
-    end = c(2004603, 4577608, 31695808)), strand =  "*",
-    state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    ranges =  IRanges(start = c(1905048, 4554832, 31686841, 32686222), 
+    end = c(2004603, 4577608, 31695808, 32689222)), strand =  "*",
+    state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 
 demo[["sample02"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1995066, 31611222, 31690000), 
-    end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
-    state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    ranges =  IRanges(start = c(1995066, 31611222, 31690000, 32006222), 
+    end = c(2204505, 31689898, 31895666, 32789233)), strand =  c("-", "+", "+", "+"),
+    state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 
 ## The amplified region in sample03 is a subset of the amplified regions 
 ## in sample01
@@ -107,11 +107,14 @@ demo[["sample03"]] <- GRanges(seqnames = "chr1",
     end = c(1909505, 4570601)), strand =  "*",
     state = c("AMPLIFICATION", "DELETION"))
 
-## Calculating Sorensen metric
+## Calculating Sorensen metric for both AMPLIFICATION and DELETION
 calculateOverlapMetric(demo, method="sorensen")
 
-## Calculating Szymkiewicz-Simpson metric
-calculateOverlapMetric(demo, method="szymkiewicz")
+## Calculating Szymkiewicz-Simpson metric on AMPLIFICATION only
+calculateOverlapMetric(demo, states="AMPLIFICATION", method="szymkiewicz")
+
+## Calculating Jaccard metric on LOH only
+calculateOverlapMetric(demo, states="LOH", method="jaccard")
 
 }
 \references{
