@@ -38,7 +38,7 @@ Default: \code{TRUE}.}
 \item{\ldots}{further arguments passed to 
 \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method. Beware that
 the \code{filename} argument cannot be used when \code{type} is 
- "\code{BOTH}".}
+ "\code{ALL}".}
 }
 \value{
 a \code{gtable} object containing the heatmap(s) of the specified 
