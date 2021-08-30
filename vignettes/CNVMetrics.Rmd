@@ -90,9 +90,10 @@ recapitulate CNV patterns of the tumor tissue of origin [@Gendoo2019].
 
 The `r Githubpkg("KrasnitzLab/CNVMetrics")` package calculates metrics to 
 estimate the level of similarity between copy number profiles. Some metrics 
-are calculated using the _CNV status calls_ (amplification/deletion status) 
-while others are based on the level of amplification/deletion. Finally, a 
-visualization tool is provided to explore resulting metrics in the form of 
+are calculated using the _CNV status calls_ (amplification/deletion/LOH status
+or any user specific status) while others are based on the level of 
+amplification/deletion in log2 ratio. Finally, a visualization tool is 
+provided to explore resulting metrics in the form of 
 sample-to-sample heatmaps.
 
 <br>
@@ -132,7 +133,8 @@ devtools::install_github('KrasnitzLab/CNVMetrics', ref = "v0.1.4")
 
 The following workflow gives an overview of the capabilities of 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` to calculate metrics using the 
-_CNV status calls_ (amplification/deletion status):
+_CNV status calls_ (amplification/deletion status or any user specific 
+status):
 
 
 The key functions for each step of the workflow are:
@@ -149,21 +151,39 @@ The `package::function()` notation is used for functions from other packages.
 
 _CNV status calls_ are represented as segments with a copy number state. The 
 state be general, such as "amplification", "deletion" or "neutral", or more 
-specific such as TODO.
+specific such as of loss of heterozygosity (LOH), 1-copy gain, 2-copy gain, 
+1-copy loss and so on.
 
 A basic five-column input file containing genomic position 
 (chromosome, start, end), sample identification and _CNV status calls_ is 
 required. All samples that need to be analyzed together have to be combined 
 into one file. 
 
-A column named **state** is required. In this column, the amplified and 
-deleted segments must be assigned those values:
+A column named **state** is required. In this column, The _CNV status call_ of
+each segment must be specified using a string. By default, the states that are
+analyzed by this package are the amplification/deletion states with
+this specific notation:
 
 * **<span style="color:darkred">AMPLIFICATION</span>**
 * **<span style="color:darkred">DELETION</span>**
 
 Segments with other **state** values can be present in the file. However, 
 those segments won't be retain for the calculation of the metrics.
+
+However, the user can define is how notation and decided which **state** will
+be used to calculate the similarity metrics. The user defined states can be
+in upper or lower cases. Examples of possible states:
+
+
+* **<span style="color:darkred">LOH</span>**
+* **<span style="color:darkred">loh</span>**
+* **<span style="color:darkred">1-copy gain</span>**
+* **<span style="color:darkred">GAIN</span>**
+* **<span style="color:darkred">loss</span>**
+* and so on...
+
+Beware that states with different spelling or upper/lower case nomenclature 
+are considered as distinct states and are analyzed separately.
 
 ```{r figureCNVFile, echo = FALSE, fig.align="center", fig.cap="Example of a copy number file containing CNV calls.", out.width = '100%'}
 
