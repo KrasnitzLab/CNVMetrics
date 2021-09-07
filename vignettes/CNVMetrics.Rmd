@@ -187,7 +187,7 @@ are considered as distinct states and are analyzed separately.
 
 ```{r figureCNVFile, echo = FALSE, fig.align="center", fig.cap="Example of a copy number file containing CNV calls.", out.width = '100%'}
 
-knitr::include_graphics("Input_CNV_call_300ppi_v01_low_quality.jpg")
+knitr::include_graphics("Input_CNV_call_300ppi_v02_low_quality.jpg")
 ```
 
 
@@ -252,7 +252,7 @@ over similarities and dissimilarities between samples.
 The `plotMetric()` function generates a graphical representation of 
 the similarity metrics in the form of a sample-to-sample heatmap. By default, 
 an hierarchical clustering based on the sample distances 
-(1-metrics) is used. When NA values are present in the metric matrix, those
+(1-metric) is used. When NA values are present in the metric matrix, those
 are replaced by zero.
 
 ```{r demoPlot01, fig.align="center", fig.height=4.5, fig.width=4.5}
@@ -265,7 +265,7 @@ plotMetric(metric, type = "AMPLIFICATION")
 <br>
 
 The `plotMetric()` function uses the `r CRANpkg("pheatmap")` package to 
-generate the graph. All arguments accepted by `pheatmap::pheatmap` function 
+generate the graph. All arguments accepted by `pheatmap::pheatmap()` function 
 are valid arguments.
 
 ```{r demoPlot02, fig.align="center", fig.height=4.8, fig.width=4.8}
@@ -493,7 +493,7 @@ plotMetric(metricLog, colorRange=c("white", "darkorange"),
 
 # Metrics using the level of amplification/deletion
 
-This survey represents the similarity measure that is implemented in 
+This section presents the similarity measure that is implemented in 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` package. This metric are calculated 
 using the level of amplification/deletion. The level of 
 amplification/deletion is in log2 ratio while the size of the regions 
