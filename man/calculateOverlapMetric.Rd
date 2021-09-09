@@ -7,6 +7,7 @@
 \usage{
 calculateOverlapMetric(
   segmentData,
+  states = c("AMPLIFICATION", "DELETION"),
   method = c("sorensen", "szymkiewicz", "jaccard")
 )
 }
@@ -14,10 +15,12 @@ calculateOverlapMetric(
 \item{segmentData}{a \code{GRangesList} that contains a collection of 
 genomic ranges representing copy number events, including amplified/deleted 
 status, from at least 2 samples. All samples must have a metadata column 
-called '\code{state}' with amplified regions identified as 
-'\code{AMPLIFICATION}' and deleted regions identified as '\code{DELETION}'; 
-regions with different identifications will not be used in the
-calculation of the metric.}
+called '\code{state}' with a state, in an character string format, 
+specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).}
+
+\item{states}{a \code{vector} of \code{character} string with at least one
+entry. The strings are representing the states that will be analyzed. 
+Default: c('\code{AMPLIFICATION}', '\code{DELETION}').}
 
 \item{method}{a \code{character} string representing the metric to be used. 
 This should be (an unambiguous abbreviation of) one of "sorensen", 
@@ -25,20 +28,16 @@ This should be (an unambiguous abbreviation of) one of "sorensen",
 }
 \value{
 an object of class "\code{CNVMetric}" which contains the calculated
-metric. This object is a list with the following components:
+metric. This object is a list where each entry corresponds to one state
+specified in the '\code{states}' parameter. Each entry is a \code{matrix}:
 \itemize{
-\item{\code{AMPLIFICATION}}{ a lower-triangular \code{matrix} with the 
+\item{\code{state}}{ a lower-triangular \code{matrix} with the 
     results of the selected metric on the amplified regions for each paired
     samples. The value \code{NA} is present when the metric cannot be 
     calculated. The value \code{NA} is also present in the top-triangular 
     section, as well as the diagonal, of the matrix.
 }
-\item{\code{DELETION}}{ a lower-triangular \code{matrix} with the 
-    results of the selected metric on the deleted regions for each paired
-    samples. The value \code{NA} is present when the metric cannot be 
-    calculated. The value \code{NA} is also present in the top-triangular 
-    section, as well as the diagonal, of the matrix.
-}}
+}
 
 The object has the following attributes (besides "class" equal 
 to "CNVMetric"):
@@ -51,186 +50,16 @@ the amplified and deleted regions.
 }
 \description{
 Calculate a specific metric using overlapping 
-amplified/deleted regions between to samples. The metric is calculated for
-the amplified and deleted regions separately. When more than 2 samples are 
-present, the metric is calculated for each sample pair.
+regions of specific state between to samples. The metric is calculated for
+each state separately. When more than 2 samples are 
+present, the metric is calculated for each sample pair. By default, the
+function is calculating metrics for the AMPLIFICATION and DELETION states. 
+However, the user can specify the list of states to be analyzed.
 }
 \details{
-#' @title Read segment files and their values and exclusion file to generate 
-#' a dataset that can be used to calculate the metrics.
-#' 
-#' @description The segments and their values are extracted from each file, 
-#' with a "SEG" or "seg" extension, present in the 
-#' specified directory. Each segment is associated to its original file by
-#' having a source metadata field assigned. When specified, the segments
-#' for a BED file are loaded and used to exclude regions from further analysis.
-#' All segments are gathered together
-#' and a disjoin operation is done to create a collection of non-overlapping 
-#' ranges. Those ranges are going to be used to calculate the metrics.
-#' 
-#' @param segDirectory a \code{character} string, the path to the directory
-#' containing the segment files to compare. Only files with the ".seg" (or 
-#' ".SEG") extension will be used. At least 2 segment files are needed to
-#' be able to used the metrics.
-#' 
-#' @param chrInfo a \code{Seqinfo} containing the name and the length of the
-#' chromosomes to analyze. Only the chromosomes contained in this
-#' \code{Seqinfo} will be analyzed.
-#' 
-#' @param bedExclusionFile a \code{character} string or \code{NULL}, the path 
-#' to the BED file that contains the regions that must be excluded from the
-#' analysis. If \code{NULL}, it is assumed that there is no region of
-#' exclusion for the calculation of the metrics. Default: \code{NULL}.
-#' 
-#' @param segmentWithHeader a \code{logical}, when \code{TRUE}, the
-#' segment files have all a header that should not be imported. 
-#' Default: \code{FALSE}.
-#' 
-#' @return a \code{list} marked as a \code{preMetricSegments} \code{class}  
-#' containing a \code{GRanges} with the segment information from all 
-#' segment files.
-#'
-#' @details 
-#' 
-#' The supported BED format requires that the first three columns are: 
-#' \itemize{
-#' \item { 1. chrom - The name of the chromosome.}
-#' \item { 2. chromStart - The starting position of the feature in the 
-#' chromosome or scaffold. The first base in a chromosome is numbered 0.}
-#' \item { 3. chromEnd - The ending position of the feature in the chromosome 
-#' or scaffold. The chromEnd base is not included in the display of the 
-#' feature. }}
-#' 
-#' @examples
-#'
-#' # Path to the exclusion BED file
-#' bedFile <- system.file("extdata", "mm10.blacklist.bed", 
-#'     package = "CNVMetrics")
-#' 
-#' ## Prepare information about the chromosomes
-#' ## The files are from mouse samples, chr1 to chr4
-#' require(rtracklayer)
-#' 
-#' ## Get the information for mouse genome mm10
-#' ## Limit the information to chromosomes 1 to 4
-#' mouseInfo <- SeqinfoForUCSCGenome("mm10")  
-#' mouseInfo <- mouseInfo[c("chr1", "chr2", "chr3", "chr4"),]
-#'             
-#' ## Path to the directory containing the segmentation files
-#' segDir <- system.file("extdata", package="CNVMetrics")
-#' 
-#' ## TODO
-#' 
-#' prepareInformation(segDirectory = segDir, chrInfo = mouseInfo,
-#'     bedExclusionFile = bedFile, segmentWithHeader = TRUE)
-#' 
-#' @author Astrid Deschenes, Pascal Belleau
-#' @importFrom rtracklayer import
-#' @importFrom GenomeInfoDb keepSeqlevels seqlevels
-#' @importFrom methods is
-#' @export
-prepareInformation <- function(segDirectory, chrInfo, bedExclusionFile = NULL,
-                                segmentWithHeader = FALSE) {
-    
-    ## Validate that the chrInfo is a Seqinfo object
-    if (!is(chrInfo, "Seqinfo")) {
-        stop("chrInfo must be a Seqinfo object.")
-    }
-    
-    ## Validate that the segmentWithHeader is a logical 
-    if (!is.logical(segmentWithHeader)) {
-        stop("segmentWithHeader must be a logical.")
-    }
-    
-    ## Remove ending slash when present
-    if (is.character(segDirectory) && length(segDirectory) > 1 &&
-            endsWith(segDirectory, "/")) {
-        segDirectory <- segDirectory[seq_len(length(segDirectory)-1)]
-    }
-    
-    filesList <- list.files(path = segDirectory, pattern = ".seg", 
-                            all.files = FALSE,
-                            full.names = FALSE, recursive = FALSE,
-                    ignore.case = TRUE, include.dirs = FALSE, no.. = FALSE)
-    
-    ## Validate that the directory contains at least one segment file
-    if (length(filesList) == 0) {
-        stop("There is not segment file (seg or SEG extension) in ", 
-                "the segDirectory.")
-    }
-    
-    ## Validate that the directory contains at least one segment file
-    if (length(filesList) < 2) {
-        stop("At least 2 segment files (seg or SEG extension) are ", 
-                    "needed in the segDirectory.")
-    }
-    
-    ## Read BED file and keep only segments in selected chromosomes
-    excludedRegions <- NULL
-    if (!is.null(bedExclusionFile)) {
-        excludedRegions <- import(bedExclusionFile, format="BED")
-        
-        # Extract list of chromosomes to keep
-        seqToKeep <- seqlevels(excludedRegions)[seqlevels(excludedRegions) %in% 
-                                                seqlevels(chrInfo)]
-        
-        if (length(seqToKeep) > 0) {
-            excludedRegions <- keepSeqlevels(excludedRegions, seqToKeep, 
-                                pruning.mode = "coarse")
-        } else {
-            excludedRegions <- NULL
-        }
-    }
-    
-    ## Read segment files
-    segFiles <- list()
-    sources <- list()
-    for (position in seq(1, length(filesList))) {
-        # Get file name
-        segFile <- filesList[position]
-        # Remove extension from file name
-        segFileShort <- substr(segFile, 1, nchar(segFile) - 4)
-    
-        # Get file path
-        segPath <- paste0(segDirectory, "/", segFile)
-        
-        # Read segments
-        tempRanges <- readSEGFile(segPath, uniqueTag = segFileShort, 
-                                        header = segmentWithHeader)
-        
-        # Extract list of chromosomes to keep
-        seqToKeep <- seqlevels(tempRanges)[seqlevels(tempRanges) %in% 
-                                                    seqlevels(chrInfo)]
-        
-        if (length(seqToKeep) > 0) {
-            # Keep only segments in selected chromosomes
-            tempRanges <- keepSeqlevels(tempRanges, seqToKeep, 
-                                    pruning.mode = "coarse")
-            
-            segFiles[[position]] <- tempRanges
-            sources[[position]] <- segFileShort
-        }  
-    }
-    
-    result <- list()
-    
-    # Create segments using disjoin
-    result$segments <- createSegments(segFiles, sources, excludedRegions)
-    
-    # Do regression using the first file as the dependent value
-    result <- doRegression(result)
-    
-    result <- calculateRegressedValues(result)
-    
-    class(result) <- "preMetricSegments"
-    
-    return(result)
-}
-
-
-
 The two methods each estimate the overlap between paired samples. They use 
-different metrics, all in the range [0, 1] with 0 indicating no overlap.
+different metrics, all in the range [0, 1] with 0 indicating no overlap. 
+The \code{NA} is used when the metric cannot be calculated.
 
 The available metrics are (written for two GRanges):
 
@@ -262,14 +91,14 @@ require(GenomicRanges)
 ## The stand of the regions doesn't affect the calculation of the metric
 demo <- GRangesList()
 demo[["sample01"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
-    end = c(2004603, 4577608, 31695808)), strand =  "*",
-    state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    ranges =  IRanges(start = c(1905048, 4554832, 31686841, 32686222), 
+    end = c(2004603, 4577608, 31695808, 32689222)), strand =  "*",
+    state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 
 demo[["sample02"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1995066, 31611222, 31690000), 
-    end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
-    state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+    ranges =  IRanges(start = c(1995066, 31611222, 31690000, 32006222), 
+    end = c(2204505, 31689898, 31895666, 32789233)), strand =  c("-", "+", "+", "+"),
+    state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 
 ## The amplified region in sample03 is a subset of the amplified regions 
 ## in sample01
@@ -278,11 +107,14 @@ demo[["sample03"]] <- GRanges(seqnames = "chr1",
     end = c(1909505, 4570601)), strand =  "*",
     state = c("AMPLIFICATION", "DELETION"))
 
-## Calculating Sorensen metric
+## Calculating Sorensen metric for both AMPLIFICATION and DELETION
 calculateOverlapMetric(demo, method="sorensen")
 
-## Calculating Szymkiewicz-Simpson metric
-calculateOverlapMetric(demo, method="szymkiewicz")
+## Calculating Szymkiewicz-Simpson metric on AMPLIFICATION only
+calculateOverlapMetric(demo, states="AMPLIFICATION", method="szymkiewicz")
+
+## Calculating Jaccard metric on LOH only
+calculateOverlapMetric(demo, states="LOH", method="jaccard")
 
 }
 \references{
