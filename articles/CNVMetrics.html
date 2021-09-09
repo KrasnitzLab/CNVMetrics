@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="uri">https://orcid.org/0000-0002-0802-1071</a>), Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.1.6<br><strong>Compiled date</strong>: 2021-08-17<br><strong>License</strong>: Artistic-2.0<br></p>
+</script><p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="uri">https://orcid.org/0000-0002-0802-1071</a>), Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.1.6<br><strong>Compiled date</strong>: 2021-09-09<br><strong>License</strong>: Artistic-2.0<br></p>
 <div id="licensing" class="section level1">
 <h1 class="hasAnchor">
 <a href="#licensing" class="anchor"></a>Licensing</h1>
@@ -124,7 +124,7 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 </p>
 </div>
 <p>While visual representation is a practical way to qualitatively compare copy number profiles, metrics are useful statistical tools for quantitatively measuring similarity and dissimilarity between profiles. Similarity metrics can be employed to compare CNV profiles of genetically unrelated samples. Moreover, those metrics can as well be put to use on samples with common genetic background. As an example, a comparison between primary and metastatic tumor CNV profiles may reveal genomic determinants of metastasis. Similarly, patient-derived xenograft or organoid models of cancer are expected to recapitulate CNV patterns of the tumor tissue of origin <span class="citation">(Gendoo et al. 2019)</span>.</p>
-<p>The <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> package calculates metrics to estimate the level of similarity between copy number profiles. Some metrics are calculated using the <em>CNV status calls</em> (amplification/deletion status) while others are based on the level of amplification/deletion. Finally, a visualization tool is provided to explore resulting metrics in the form of sample-to-sample heatmaps.</p>
+<p>The <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> package calculates metrics to estimate the level of similarity between copy number profiles. Some metrics are calculated using the <em>CNV status calls</em> (amplification/deletion/LOH status or any user specific status) while others are based on the level of amplification/deletion in log2 ratio. Finally, a visualization tool is provided to explore resulting metrics in the form of sample-to-sample heatmaps.</p>
 <p><br><br></p>
 </div>
 <div id="installation" class="section level1">
@@ -151,7 +151,7 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 <h1 class="hasAnchor">
 <a href="#workflow-for-metrics-calculated-using-cnv-status-calls" class="anchor"></a>Workflow for metrics calculated using <em>CNV status calls</em>
 </h1>
-<p>The following workflow gives an overview of the capabilities of <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> to calculate metrics using the <em>CNV status calls</em> (amplification/deletion status):</p>
+<p>The following workflow gives an overview of the capabilities of <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> to calculate metrics using the <em>CNV status calls</em> (amplification/deletion status or any user specific status):</p>
 <p>The key functions for each step of the workflow are:</p>
 <table class="table">
 <thead><tr class="header">
@@ -178,16 +178,26 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 <h2 class="hasAnchor">
 <a href="#data-input---copy-number-file-containing-the-cnv-status-calls" class="anchor"></a>Data Input - Copy number file containing the <em>CNV status calls</em>
 </h2>
-<p><em>CNV status calls</em> are represented as segments with a copy number state. The state be general, such as “amplification,” “deletion” or “neutral,” or more specific such as TODO.</p>
+<p><em>CNV status calls</em> are represented as segments with a copy number state. The state be general, such as “amplification,” “deletion” or “neutral,” or more specific such as of loss of heterozygosity (LOH), 1-copy gain, 2-copy gain, 1-copy loss and so on.</p>
 <p>A basic five-column input file containing genomic position (chromosome, start, end), sample identification and <em>CNV status calls</em> is required. All samples that need to be analyzed together have to be combined into one file.</p>
-<p>A column named <strong>state</strong> is required. In this column, the amplified and deleted segments must be assigned those values:</p>
+<p>A column named <strong>state</strong> is required. In this column, The <em>CNV status call</em> of each segment must be specified using a string. By default, the states that are analyzed by this package are the amplification/deletion states with this specific notation:</p>
 <ul>
 <li><strong><span style="color:darkred">AMPLIFICATION</span></strong></li>
 <li><strong><span style="color:darkred">DELETION</span></strong></li>
 </ul>
 <p>Segments with other <strong>state</strong> values can be present in the file. However, those segments won’t be retain for the calculation of the metrics.</p>
+<p>However, the user can define is how notation and decided which <strong>state</strong> will be used to calculate the similarity metrics. The user defined states can be in upper or lower cases. Examples of possible states:</p>
+<ul>
+<li><strong><span style="color:darkred">LOH</span></strong></li>
+<li><strong><span style="color:darkred">loh</span></strong></li>
+<li><strong><span style="color:darkred">1-copy gain</span></strong></li>
+<li><strong><span style="color:darkred">GAIN</span></strong></li>
+<li><strong><span style="color:darkred">loss</span></strong></li>
+<li>and so on…</li>
+</ul>
+<p>Beware that states with different spelling or upper/lower case nomenclature are considered as distinct states and are analyzed separately.</p>
 <div class="figure" style="text-align: center">
-<img src="Input_CNV_call_300ppi_v01_low_quality.jpg" alt="Example of a copy number file containing CNV calls." width="100%"><p class="caption">
+<img src="Input_CNV_call_300ppi_v02_low_quality.jpg" alt="Example of a copy number file containing CNV calls." width="100%"><p class="caption">
 Example of a copy number file containing CNV calls.
 </p>
 </div>
@@ -258,7 +268,11 @@ Example of a copy number file containing CNV calls.
 <a href="#metric-calculation" class="anchor"></a>Metric Calculation</h2>
 <p>The calculation of the similarity metrics is done with the <code><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric()</a></code> function.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">metric</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric</a></span><span class="op">(</span><span class="va">grl</span>, method <span class="op">=</span> <span class="st">"sorensen"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="co">## In this case, the default states (AMPLIFICATION, DELETION) are used. </span>
+<span class="co">## So, the 'states' parameter doesn't have to be specified</span>
+<span class="co">## The 'states' parameter needs to be adjusted for user-specific states</span>
+<span class="co">## Ex: states=c("LOH", "gain")</span>
+<span class="va">metric</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric</a></span><span class="op">(</span><span class="va">grl</span>, method <span class="op">=</span> <span class="st">"sorensen"</span><span class="op">)</span>
 
 <span class="va">metric</span></code></pre></div>
 <pre><code>## CNV Metrics
@@ -287,19 +301,19 @@ Example of a copy number file containing CNV calls.
 <h2 class="hasAnchor">
 <a href="#metric-visualization" class="anchor"></a>Metric Visualization</h2>
 <p>A heatmap of this similarity metrics can be a useful tool to get an overview over similarities and dissimilarities between samples.</p>
-<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical representation of the similarity metrics in the form of a sample-to-sample heatmap. By default, an hierarchical clustering based on the sample distances (1-metrics) is used. When NA values are present in the metric matrix, those are replaced by zero.</p>
+<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical representation of the similarity metrics in the form of a sample-to-sample heatmap. By default, an hierarchical clustering based on the sample distances (1-metric) is used. When NA values are present in the metric matrix, those are replaced by zero.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to amplified regions</span>
-<span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"AMPLIFICATION"</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type<span class="op">=</span><span class="st">"AMPLIFICATION"</span><span class="op">)</span></code></pre></div>
 <p><img src="CNVMetrics_files/figure-html/demoPlot01-1.png" width="432" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p><br></p>
-<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function uses the <em><a href="https://CRAN.R-project.org/package=pheatmap">pheatmap</a></em> package to generate the graph. All arguments accepted by <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap::pheatmap</a></code> function are valid arguments.</p>
+<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function uses the <em><a href="https://CRAN.R-project.org/package=pheatmap">pheatmap</a></em> package to generate the graph. All arguments accepted by <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap::pheatmap()</a></code> function are valid arguments.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to deleted regions</span>
 <span class="co">## Metric values are printed as 'display_numbers' and 'number_format' are</span>
 <span class="co">## arguments recognized by pheatmap() function</span>
-<span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"DELETION"</span>, 
+<span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type<span class="op">=</span><span class="st">"DELETION"</span>, 
                     colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"darkorange"</span><span class="op">)</span>,
                     show_colnames<span class="op">=</span><span class="cn">TRUE</span>,
                     display_numbers<span class="op">=</span><span class="cn">TRUE</span>,
@@ -324,7 +338,7 @@ Example of a copy number file containing CNV calls.
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to amplified regions</span>
 <span class="co">## Rows are annotated with the stage and mouse information</span>
-<span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type <span class="op">=</span> <span class="st">"AMPLIFICATION"</span>, 
+<span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type<span class="op">=</span><span class="st">"AMPLIFICATION"</span>, 
                     colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"steelblue"</span><span class="op">)</span>,
                     annotation_row<span class="op">=</span><span class="va">annotOrg</span><span class="op">)</span></code></pre></div>
 <p><img src="CNVMetrics_files/figure-html/demoPlot03-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -495,7 +509,7 @@ Example of a copy number file containing log2ratio values.
 <h2 class="hasAnchor">
 <a href="#metric-visualization-1" class="anchor"></a>Metric Visualization</h2>
 <p>A heatmap of this similarity metrics can be a useful tool to get an overview over similarities and dissimilarities between samples.</p>
-<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical representation of the similarity metrics in the form of a sample-to-sample heatmap. By default, an hierarchical clustering based on the sample distances (1-metrics) is used. When NA values are present in the metric matrix, those are replaced by zero.</p>
+<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical representation of the similarity metrics in the form of a sample-to-sample heatmap. By default, an hierarchical clustering based on the sample distances (1-metric) is used. When NA values are present in the metric matrix, those are replaced by zero.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to weighted Euclidean distance-based</span>
 <span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metricLog</span><span class="op">)</span></code></pre></div>
@@ -519,7 +533,7 @@ Example of a copy number file containing log2ratio values.
 <div id="metrics-using-the-level-of-amplificationdeletion" class="section level1">
 <h1 class="hasAnchor">
 <a href="#metrics-using-the-level-of-amplificationdeletion" class="anchor"></a>Metrics using the level of amplification/deletion</h1>
-<p>This survey represents the similarity measure that is implemented in <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> package. This metric are calculated using the level of amplification/deletion. The level of amplification/deletion is in log2 ratio while the size of the regions is in base paired.</p>
+<p>This section presents the similarity measure that is implemented in <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> package. This metric are calculated using the level of amplification/deletion. The level of amplification/deletion is in log2 ratio while the size of the regions is in base paired.</p>
 <div id="weighted-euclidean-distance-based" class="section level2">
 <h2 class="hasAnchor">
 <a href="#weighted-euclidean-distance-based" class="anchor"></a>Weighted Euclidean Distance-Based</h2>

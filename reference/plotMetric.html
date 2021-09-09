@@ -135,7 +135,7 @@ the creation of the heatmap.</p>
 
     <pre class="usage"><span class='fu'>plotMetric</span><span class='op'>(</span>
   <span class='va'>metric</span>,
-  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ALL"</span>, <span class='st'>"AMPLIFICATION"</span>, <span class='st'>"DELETION"</span><span class='op'>)</span>,
+  type <span class='op'>=</span> <span class='st'>"ALL"</span>,
   colorRange <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"white"</span>, <span class='st'>"darkblue"</span><span class='op'>)</span><span class='op'>)</span>,
   show_colnames <span class='op'>=</span> <span class='cn'>FALSE</span>,
   silent <span class='op'>=</span> <span class='cn'>TRUE</span>,
@@ -152,11 +152,11 @@ by <code>calculateOverlapMetric</code> or by <code>calculateLog2ratioMetric</cod
     </tr>
     <tr>
       <th>type</th>
-      <td><p>a <code>character</code> string indicating which graph to generate. 
-This should be (an unambiguous abbreviation of) one of "<code>ALL</code>", 
-"<code>AMPLIFICATION</code>" or "<code>DELETION</code>". This is useful for the 
-overlapping metrics that have both the amplified and deleted metrics in the
-<code>CNVMetric</code> object. Default: "<code>ALL</code>".</p></td>
+      <td><p>a single <code>character</code> string indicating which graph 
+to generate. This should be a type present in the <code>CNVMetric</code> object or 
+"<code>ALL</code>". This is useful for the 
+overlapping metrics that have multiple types specified by the user. 
+Default: "<code>ALL</code>".</p></td>
     </tr>
     <tr>
       <th>colorRange</th>
@@ -180,7 +180,7 @@ Default: <code>TRUE</code>.</p></td>
       <td><p>further arguments passed to 
 <code><a href='https://rdrr.io/pkg/pheatmap/man/pheatmap.html'>pheatmap::pheatmap()</a></code> method. Beware that
 the <code>filename</code> argument cannot be used when <code>type</code> is 
- "<code>BOTH</code>".</p></td>
+ "<code>ALL</code>".</p></td>
     </tr>
     </table>
 
