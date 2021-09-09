@@ -7,7 +7,7 @@
 \usage{
 plotMetric(
   metric,
-  type = c("ALL", "AMPLIFICATION", "DELETION"),
+  type = "ALL",
   colorRange = c(c("white", "darkblue")),
   show_colnames = FALSE,
   silent = TRUE,
@@ -18,11 +18,11 @@ plotMetric(
 \item{metric}{a \code{CNVMetric} object containing the metrics calculated
 by \code{calculateOverlapMetric} or by \code{calculateLog2ratioMetric}.}
 
-\item{type}{a \code{character} string indicating which graph to generate. 
-This should be (an unambiguous abbreviation of) one of "\code{ALL}", 
-"\code{AMPLIFICATION}" or "\code{DELETION}". This is useful for the 
-overlapping metrics that have both the amplified and deleted metrics in the
-\code{CNVMetric} object. Default: "\code{ALL}".}
+\item{type}{a single \code{character} string indicating which graph 
+to generate. This should be a type present in the \code{CNVMetric} object or 
+"\code{ALL}". This is useful for the 
+overlapping metrics that have multiple types specified by the user. 
+Default: "\code{ALL}".}
 
 \item{colorRange}{a \code{vector} of 2 \code{character} string 
 representing the 2 colors that will be
@@ -38,7 +38,7 @@ Default: \code{TRUE}.}
 \item{\ldots}{further arguments passed to 
 \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method. Beware that
 the \code{filename} argument cannot be used when \code{type} is 
- "\code{BOTH}".}
+ "\code{ALL}".}
 }
 \value{
 a \code{gtable} object containing the heatmap(s) of the specified 
