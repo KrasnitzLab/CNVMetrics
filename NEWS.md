@@ -11,14 +11,32 @@ SIGNIFICANT USER-VISIBLE CHANGES
 * New citing section in README and vignette refering to published F1000Research poster (http://www.doi.org/10.7490/f1000research.1118704.1). 
 * Instead of calculating distance, log2 ratio metrics are calculated distance-based metrics (1/(1+distance)).
 
+BUG FIXES
+
+* None
+
+
 # CNVMetrics 0.1.4
+
+NEW FEATURES
+
+* None
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * New website https://krasnitzlab.github.io/CNVMetrics/index.html associated to package.
 * Vignette section 'Workflow for metrics calculated using CNV status calls' is complete.
 
+BUG FIXES
+
+* None
+
+
 # CNVMetrics 0.1.3
+
+NEW FEATURES
+
+* None
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -38,6 +56,10 @@ NEW FEATURES
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * `calculateOverlapRegionsMetric()` method changed to `calculateOverlapMetric()`.
+
+BUG FIXES
+
+* None
 
 
 # CNVMetrics 0.1.1
