@@ -239,6 +239,10 @@ The calculation of the similarity metrics is done with the
 `calculateOverlapMetric()` function. 
 
 ```{r demoCalculateMetric01}
+## In this case, the default states (AMPLIFICATION, DELETION) are used. 
+## So, the 'states' parameter doesn't have to be specified
+## The 'states' parameter needs to be adjusted for user-specific states
+## Ex: states=c("LOH", "gain")
 metric <- calculateOverlapMetric(grl, method = "sorensen")
 
 metric
@@ -257,7 +261,7 @@ are replaced by zero.
 
 ```{r demoPlot01, fig.align="center", fig.height=4.5, fig.width=4.5}
 ## Create graph for the metrics related to amplified regions
-plotMetric(metric, type = "AMPLIFICATION")
+plotMetric(metric, type="AMPLIFICATION")
 ```
 
 <br>
@@ -272,7 +276,7 @@ are valid arguments.
 ## Create graph for the metrics related to deleted regions
 ## Metric values are printed as 'display_numbers' and 'number_format' are
 ## arguments recognized by pheatmap() function
-plotMetric(metric, type = "DELETION", 
+plotMetric(metric, type="DELETION", 
                     colorRange=c("white", "darkorange"),
                     show_colnames=TRUE,
                     display_numbers=TRUE,
@@ -302,7 +306,7 @@ all(rownames(annotOrg) == rownames(metric$AMPLIFICATION))
 
 ## Create graph for the metrics related to amplified regions
 ## Rows are annotated with the stage and mouse information
-plotMetric(metric, type = "AMPLIFICATION", 
+plotMetric(metric, type="AMPLIFICATION", 
                     colorRange=c("white", "steelblue"),
                     annotation_row=annotOrg)
 ```
@@ -462,7 +466,7 @@ over similarities and dissimilarities between samples.
 The `plotMetric()` function generates a graphical representation of 
 the similarity metrics in the form of a sample-to-sample heatmap. By default, 
 an hierarchical clustering based on the sample distances 
-(1-metrics) is used. When NA values are present in the metric matrix, those
+(1-metric) is used. When NA values are present in the metric matrix, those
 are replaced by zero.
 
 ```{r demoPlotLog01, fig.align="center", fig.height=4.5, fig.width=4.5}
