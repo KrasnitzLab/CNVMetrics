@@ -20,7 +20,6 @@ pkgURL <- function(pkg) {
 pkgAuthors <- function(pkg) {
     if (!exists("meta") || is.null(meta)) meta <- packageDescription(pkg)
     authorsL <- eval(str2expression(meta$`Authors@R`))
-    print(authorsL[2])
     authorsList <- ""
     for (i in authorsL) {
      authorsList <- paste0(authorsList, i$given, " ", i$family, ", ")
