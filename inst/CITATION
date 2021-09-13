@@ -1,0 +1,72 @@
+pkgVer <- function(pkg) {
+    if (!exists("meta") || is.null(meta)) meta <- packageDescription(pkg)
+    ver <- meta$Version
+    paste0('https://github.com//', pkg, ' - R package version ', ver)
+}
+
+pkgTitle <- function(pkg) {
+    if (!exists("meta") || is.null(meta)) meta <- packageDescription(pkg)
+    title <- meta$Title
+    package <- meta$Package
+    paste0(package, ": ", title)
+}
+
+pkgURL <- function(pkg) {
+    if (!exists("meta") || is.null(meta)) meta <- packageDescription(pkg)
+    url <- meta$URL
+    paste0(url)
+}
+
+pkgAuthors <- function(pkg) {
+    if (!exists("meta") || is.null(meta)) meta <- packageDescription(pkg)
+    authorsL <- eval(str2expression(meta$`Authors@R`))
+    print(authorsL[2])
+    authorsList <- ""
+    for (i in authorsL) {
+     authorsList <- paste0(authorsList, i$given, " ", i$family, ", ")
+    }
+    strtrim(authorsList, nchar(authorsList)-2)
+}
+
+
+pkgTextVer <- function(pkg) {
+    if (!exists("meta") || is.null(meta)) meta <- packageDescription(pkg)
+    packageTitle <- pkgTitle(pkg)
+    urlLink <- pkgURL(pkg)
+    authors <- pkgAuthors(pkg)
+    paste0(authors, ' (', format(Sys.Date(), "%Y"), '). ', packageTitle, 
+        '. ', urlLink)
+}
+
+c(
+    bibentry(bibtype="manual",
+        title = pkgTitle('CNVMetrics'),
+        author = personList(
+            as.person("Astrid Deschênes"),
+            as.person("Pascal Belleau"),
+            as.person("Alexander Krasnitz")
+        ),
+        year = format(Sys.Date(), "%Y"),
+        url = "https://krasnitzlab.github.io/CNVMetrics",
+        note = pkgVer('CNVMetrics'),
+        doi = '',
+        textVersion = pkgTextVer('CNVMetrics')
+    ),
+    bibentry(bibtype="manual",
+        title = "CNVMetrics package: Quantifying similarity between copy number profiles [version 1; not peer reviewed]",
+        author = personList(
+            as.person("Pascal Belleau"),
+            as.person("Astrid Deschênes"),
+            as.person("Semir Beyaz"),
+            as.person("David A. Tuveson"),
+            as.person("Alex Krasnitz")
+        ),
+        year = "2021",
+        volume = "10",
+        pages = "737 (slides)",
+        journal = "F1000Research",
+        doi = "10.7490/f1000research.1118704.1",
+        url = "https://doi.org/10.7490/f1000research.1118704.1",
+        textVersion = "Belleau P, Deschênes A, Beyaz S et al. CNVMetrics package: Quantifying similarity between copy number profiles [version 1; not peer reviewed]. F1000Research 2021, 10:737 (slides) (https://doi.org/10.7490/f1000research.1118704.1)"
+    )
+)
