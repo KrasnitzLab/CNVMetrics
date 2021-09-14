@@ -46,7 +46,8 @@ Artistic license 2.0. You are free to use and redistribute this software.
 
 # Citing
 
-If you use this package for a publication, we would ask you to cite the following:
+If you use this package for a publication, we would ask you 
+to cite the following:
 
 >Belleau P, Deschênes A, Beyaz S et al. CNVMetrics package: Quantifying similarity between copy number profiles [version 1; not peer reviewed]. F1000Research 2021, 10:737 (slides) (doi: 10.7490/f1000research.1118704.1)
 
