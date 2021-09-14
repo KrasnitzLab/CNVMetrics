@@ -126,9 +126,9 @@
 #' @encoding UTF-8
 #' @export
 calculateOverlapMetric <- function(segmentData, 
-                                   states=c("AMPLIFICATION", "DELETION"),
-                                   method=c("sorensen", "szymkiewicz", 
-                                            "jaccard")) {
+                                    states=c("AMPLIFICATION", "DELETION"),
+                                    method=c("sorensen", "szymkiewicz", 
+                                                "jaccard")) {
     
     ## Select metric method to be used
     method <- match.arg(method)
@@ -159,7 +159,7 @@ calculateOverlapMetric <- function(segmentData,
                     FUN = function(x) {"state" %in% colnames(mcols(x))},
                     FUN.VALUE = logical(1)))) {
         stop("at least one sample doesn't have a metadata column ", 
-             "called \'state\'")
+                "called \'state\'")
     }
     
     results <- list()
@@ -278,8 +278,8 @@ calculateOverlapMetric <- function(segmentData,
 #' @encoding UTF-8
 #' @export
 calculateLog2ratioMetric <- function(segmentData, 
-                                   method=c("weightedEuclideanDistance"),
-                                   minThreshold=0.2, excludedRegions=NULL) {
+                                    method=c("weightedEuclideanDistance"),
+                                    minThreshold=0.2, excludedRegions=NULL) {
     
     method <- match.arg(method)
     
@@ -313,7 +313,7 @@ calculateLog2ratioMetric <- function(segmentData,
                     FUN = function(x) {"log2ratio" %in% colnames(mcols(x))},
                     FUN.VALUE = logical(1)))) {
         stop("at least one sample doesn't have a metadata column ", 
-             "called \'log2ratio\'")
+                "called \'log2ratio\'")
     }
     
     results <- list()
