@@ -134,8 +134,8 @@ calculateOverlapMetric <- function(segmentData,
     
     ## At least one state must be present
     if (!is.vector(states) | ! is.character(states) | length(states) < 1){
-        stop(paste0("the \'states\' argument must be a vector of strings ",
-                        "with at least one value"))
+        stop("the \'states\' argument must be a vector of strings ",
+                        "with at least one value")
     }
     
     ## The cnv data must be in a GRangesList format
@@ -294,8 +294,8 @@ calculateLog2ratioMetric <- function(segmentData,
     
     ## The minThreshold must be a positive numeric value
     if (!is.null(excludedRegions) & !is(excludedRegions, "GRanges")) {
-        stop(paste0("the \'excludedRegions\' argument must ", 
-            "a \'Granges\' object or NULL"))
+        stop("the \'excludedRegions\' argument must ", 
+            "a \'Granges\' object or NULL")
     }
     
     names <- names(segmentData)
