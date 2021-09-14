@@ -19,7 +19,6 @@ BiocStyle::markdown()
 
 suppressPackageStartupMessages({
   library(knitr)
-  library(GenomeInfoDb)
   library(GenomicRanges)
   library(CNVMetrics)
 })

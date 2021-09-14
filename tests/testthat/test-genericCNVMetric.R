@@ -4,7 +4,6 @@ library(CNVMetrics)
 library(GenomicRanges)
 library(S4Vectors)
 library(IRanges)
-library(GenomeInfoDb)
 
 ### Tests print() for CNVMetric class
 
