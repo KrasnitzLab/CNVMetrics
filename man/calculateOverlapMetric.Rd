@@ -97,7 +97,8 @@ demo[["sample01"]] <- GRanges(seqnames = "chr1",
 
 demo[["sample02"]] <- GRanges(seqnames = "chr1", 
     ranges =  IRanges(start = c(1995066, 31611222, 31690000, 32006222), 
-    end = c(2204505, 31689898, 31895666, 32789233)), strand =  c("-", "+", "+", "+"),
+    end = c(2204505, 31689898, 31895666, 32789233)), 
+    strand =  c("-", "+", "+", "+"),
     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 
 ## The amplified region in sample03 is a subset of the amplified regions 
