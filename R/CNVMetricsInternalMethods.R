@@ -65,69 +65,6 @@ createSegments <- function(fileList, sourceList, bedExclusion) {
 }
 
 
-#' @title Linear regression analysis between each paired samples using
-#' segment values.
-#' 
-#' @description Do an linear regression between each paired samples using
-#' segment values only from the included segments. The segment file used as
-#' reference is the same for all analysis.
-#' 
-#' @param segmentData a \code{list} of that 
-#' contains the segments from multiple files. The \code{list} is composed of 
-#' those entries:
-#' \itemize{
-#' \item a \code{segment} that contains the \code{GRanges} with the segment
-#' information.
-#' }
-#' 
-#' @return a \code{list} of that 
-#' contains the segments from multiple files. The \code{list} is composed of 
-#' those entries:
-#' \itemize{
-#' \item a \code{segment} that contains the \code{GRanges} with the segment
-#' information.
-#' \item a \code{regression} that contains the result of the paired 
-#' regressions.
-#' }
-#' 
-#' @examples
-#'
-#' # TODO
-#' 
-#' @author Astrid Deschenes, Pascal Belleau
-#' @importFrom GenomicRanges elementMetadata
-#' @importFrom stats lm
-#' @keywords internal
-doRegression <- function(segmentData) {
-    
-    segments <- segmentData$segments
-    
-    names <- colnames(elementMetadata(segments))
-    names <- names[names != "included"]
-    
-    nbNames <- length(names)
-    
-    metric <- matrix(nrow = nbNames, ncol = nbNames, 
-                        dimnames = rep(list(ID = names), 2))
-    
-    incResults <- elementMetadata(segments[segments$included, ])
-    
-    segmentData$regression <- list()
-    
-    for (i in 2:nbNames) {
-        subData <- incResults[, c(names[1], names[i])]
-        colnames(subData) <- c("y", "x")
-        reg <- lm("y ~ x", data=subData)
-        segmentData$regression[[i - 1]] <- list()
-        segmentData$regression[[i - 1]][["lm"]] <- reg
-        segmentData$regression[[i - 1]][["y_used"]] <- names[1]
-        segmentData$regression[[i - 1]][["x_used"]] <- names[i]
-    }
-    
-    return(segmentData)   
-}
-
-
 #' @title calculate the regressed values for all segment file.
 #' 
 #' @description Use the linear regression model obtained for each paired of
