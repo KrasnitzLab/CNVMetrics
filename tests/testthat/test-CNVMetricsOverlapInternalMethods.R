@@ -4,8 +4,6 @@ library(CNVMetrics)
 library(GenomicRanges)
 library(S4Vectors)
 library(IRanges)
-library(GenomeInfoDb)
-
 ### Tests calculateSzymkiewicz() results
 
 context("calculateSzymkiewicz() results")
