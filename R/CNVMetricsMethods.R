@@ -101,7 +101,8 @@
 #' 
 #' demo[["sample02"]] <- GRanges(seqnames = "chr1", 
 #'     ranges =  IRanges(start = c(1995066, 31611222, 31690000, 32006222), 
-#'     end = c(2204505, 31689898, 31895666, 32789233)), strand =  c("-", "+", "+", "+"),
+#'     end = c(2204505, 31689898, 31895666, 32789233)), 
+#'     strand =  c("-", "+", "+", "+"),
 #'     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 #' 
 #' ## The amplified region in sample03 is a subset of the amplified regions 
@@ -125,9 +126,9 @@
 #' @encoding UTF-8
 #' @export
 calculateOverlapMetric <- function(segmentData, 
-                                   states=c("AMPLIFICATION", "DELETION"),
-                                   method=c("sorensen", "szymkiewicz", 
-                                            "jaccard")) {
+                                    states=c("AMPLIFICATION", "DELETION"),
+                                    method=c("sorensen", "szymkiewicz", 
+                                                "jaccard")) {
     
     ## Select metric method to be used
     method <- match.arg(method)
@@ -158,7 +159,7 @@ calculateOverlapMetric <- function(segmentData,
                     FUN = function(x) {"state" %in% colnames(mcols(x))},
                     FUN.VALUE = logical(1)))) {
         stop("at least one sample doesn't have a metadata column ", 
-             "called \'state\'")
+                "called \'state\'")
     }
     
     results <- list()
@@ -277,8 +278,8 @@ calculateOverlapMetric <- function(segmentData,
 #' @encoding UTF-8
 #' @export
 calculateLog2ratioMetric <- function(segmentData, 
-                                   method=c("weightedEuclideanDistance"),
-                                   minThreshold=0.2, excludedRegions=NULL) {
+                                    method=c("weightedEuclideanDistance"),
+                                    minThreshold=0.2, excludedRegions=NULL) {
     
     method <- match.arg(method)
     
@@ -312,7 +313,7 @@ calculateLog2ratioMetric <- function(segmentData,
                     FUN = function(x) {"log2ratio" %in% colnames(mcols(x))},
                     FUN.VALUE = logical(1)))) {
         stop("at least one sample doesn't have a metadata column ", 
-             "called \'log2ratio\'")
+                "called \'log2ratio\'")
     }
     
     results <- list()

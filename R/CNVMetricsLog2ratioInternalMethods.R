@@ -85,8 +85,8 @@ calculateOneLog2valueMetric <- function(sample01, sample02, bedExclusion,
     
     if (length(sample01) > 0 && length(sample02) > 0) { 
         result <- switch(method,
-                         weightedEuclideanDistance = 
-                             calculateWeightedEuclideanDistanceFor2Samples(
+                            weightedEuclideanDistance = 
+                                calculateWeightedEuclideanDistanceFor2Samples(
                                     segmentData=disjoinR, 
                                     minThreshold=minThreshold))
     }
@@ -146,8 +146,8 @@ calculateOneLog2valueMetric <- function(sample01, sample02, bedExclusion,
 #' @importFrom magrittr %>%
 #' @keywords internal
 createDisjoinSegmentsForTwoSamples <- function(segmentDataSample1, 
-                                               segmentDataSample2, 
-                                               bedExclusion=NULL) {
+                                                segmentDataSample2, 
+                                                bedExclusion=NULL) {
     
     results <- disjoin(c(segmentDataSample1, segmentDataSample2))
     results$included <- TRUE
@@ -243,7 +243,7 @@ createDisjoinSegmentsForTwoSamples <- function(segmentDataSample1,
 #' @importFrom IRanges ranges width
 #' @keywords internal
 calculateWeightedEuclideanDistanceFor2Samples <- function(segmentData, 
-                                                          minThreshold) {
+                                                            minThreshold) {
     
     names <- colnames(elementMetadata(segmentData))
     names <- names[names != "included"]
