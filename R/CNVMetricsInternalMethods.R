@@ -263,7 +263,7 @@ calculateRegressedValues <- function(segmentData) {
 #' @encoding UTF-8
 #' @keywords internal
 plotOneMetric <- function(metric, type, colorRange, show_colnames, 
-                                 silent, ...) 
+                                            silent, ...) 
 {
     ## Extract matrix with metric values
     metricMat <- metric[[type]]
@@ -279,8 +279,7 @@ plotOneMetric <- function(metric, type, colorRange, show_colnames,
     if ((!("clustering_distance_cols" %in% names(dots))) &&
         (!("clustering_distance_rows" %in% names(dots)))) {
         ## Prepare matrix to be able to calculate distance
-        metricMat[lower.tri(metricMat) & 
-                      is.na(metricMat)] <- 0.0
+        metricMat[lower.tri(metricMat) & is.na(metricMat)] <- 0.0
         metricDist <- as.dist(1-metricMat)
         
         dots[["clustering_distance_cols"]] <- metricDist
