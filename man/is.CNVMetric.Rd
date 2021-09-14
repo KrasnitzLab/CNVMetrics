@@ -11,6 +11,9 @@
 
 \item{\ldots}{further arguments passed to or from other methods.}
 }
+\value{
+a \code{logical}.
+}
 \description{
 Functions to test inheritance relationships between an 
 object and class \code{CNVMetric}.

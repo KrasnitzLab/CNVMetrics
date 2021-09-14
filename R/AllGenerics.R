@@ -53,6 +53,8 @@ print.CNVMetric <- function(x, ...) {
 #' 
 #' @param \ldots further arguments passed to or from other methods.
 #' 
+#' @return a \code{logical}.
+#' 
 #' @importFrom methods is
 #' @export
 is.CNVMetric <- function(x, ...) {
