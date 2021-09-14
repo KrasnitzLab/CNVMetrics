@@ -19,11 +19,8 @@ Authors@R: c(person("Astrid", "Deschênes", email = "adeschen@hotmail.com",
 Encoding: UTF-8
 License: Artistic-2.0
 Depends: R (>= 4.0)
-Imports: rtracklayer, 
-    GenomicRanges, 
+Imports: GenomicRanges, 
     IRanges, 
-    utils,
-    GenomeInfoDb,
     S4Vectors,
     methods, 
     magrittr, 
@@ -33,7 +30,7 @@ Imports: rtracklayer,
     grDevices
 Suggests: BiocStyle, 
     knitr, 
-    rmarkdown, 
+    rmarkdown,
     testthat
 biocViews: BiologicalQuestion, 
     Software,

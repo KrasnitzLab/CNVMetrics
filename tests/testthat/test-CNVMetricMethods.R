@@ -1,11 +1,9 @@
 ### Unit tests for CNVMetricsMethods.R functions
 
 library(CNVMetrics)
-library(rtracklayer)
 library(GenomicRanges)
 library(S4Vectors)
 library(IRanges)
-library(GenomeInfoDb)
 
 
 #############################################################################

@@ -4,7 +4,6 @@ library(CNVMetrics)
 library(GenomicRanges)
 library(S4Vectors)
 library(IRanges)
-library(GenomeInfoDb)
 
 ### Tests calculateWeightedEuclideanDistanceFor2Samples() results
 
