@@ -7,7 +7,7 @@ library(IRanges)
 
 
 
-### Tests prepareInformation() results
+### Tests createSegments() results
 
 context("createSegments() results")
 
@@ -132,55 +132,6 @@ test_that("calculateRegressedValues() must return expected results", {
     expect_equal(results, expected)
 })
 
-
-### Tests doRegression() results
-
-context("doRegression() results")
-
-test_that("doRegression() must return expected results", {
-    
-    segmentData <- list()
-    
-    segment  <- GRanges(seqnames = "chr1", 
-                        ranges = IRanges(start=c(1, 50, 101, 150, 200, 251),
-                                         end=c(49, 100, 110, 199, 250, 300)))
-    
-    y <- c(0.1, 0.1, NA, NA, 0.15, 0.2)
-    x <- c(NA, 0.3, 0.3, 0.4, 0.4, 0.8)
-    
-    elementMetadata(segment) <- DataFrame(included = c(rep(TRUE, 6)), 
-                                          File1 = y,  
-                                          File2 = x)
-    segmentData$segments <- segment
-    
-    results <- CNVMetrics:::doRegression(segmentData)
-    
-    
-    
-    segmentExp  <- GRanges(seqnames = "chr1", 
-                           ranges = IRanges(start=c(1, 50, 101, 150, 200, 251),
-                                            end=c(49, 100, 110, 199, 250, 300)))
-
-    elementMetadata(segmentExp) <- DataFrame(included = c(rep(TRUE, 6)), 
-                                          File1 = y,  
-                                          File2 = x)
-    
-    expected <- list()
-    expected$segments <- segmentExp
-    
-    subData <- data.frame(x=x, y=y)
-    
-    
-    segmentData <- list()
-    segmentData$segments <- segment
-    expected$regression <- list()
-    expected$regression[[1]] <- list()
-    expected$regression[[1]][["lm"]] <- lm("y ~ x", subData)
-    expected$regression[[1]][["y_used"]] <- "File1"
-    expected$regression[[1]][["x_used"]] <- "File2"
-    
-    expect_equal(results, expected)
-})
 
 
 ### Tests createDisjoinSegmentsForTwoSamples() results
