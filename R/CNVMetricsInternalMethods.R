@@ -131,6 +131,54 @@ calculateRegressedValues <- function(segmentData) {
 }
 
 
+#' @title Parameters validation for the \code{\link{calculateOverlapMetric}} 
+#' function
+#' 
+#' @description Validation of all parameters needed by the public
+#' \code{\link{calculateOverlapMetric}} function.
+#' 
+#' @param states a \code{vector} of \code{character} string with at least one
+#' entry. The strings are representing the states that will be analyzed.
+#' 
+#' @param nJobs a single positive \code{integer} specifying the number of 
+#' worker jobs to create in case of distributed computation.
+#' 
+#' @return \code{0}. 
+#' 
+#' @examples
+#'
+#' 
+#' ## Return zero as all parameters are valid
+#' CNVMetrics:::validateCalculateOverlapMetricParameters(
+#'     states="GAIN", nJobs=1)
+#' 
+#' @author Astrid Deschênes
+#' @importFrom S4Vectors isSingleInteger isSingleNumber
+#' @keywords internal
+validateCalculateOverlapMetricParameters <- function(states, nJobs) {
+    
+    ## Validate that nJobs is an positive integer
+    if (!(isSingleInteger(nJobs) || isSingleNumber(nJobs)) ||
+            as.integer(nJobs) < 1) {
+            stop("nJobs must be a positive integer")
+    }
+    
+    ## Validate that nJobs is set to 1 on Windows system
+    if (Sys.info()["sysname"] == "Windows" && as.integer(nJobs) != 1) {
+            stop("nJobs must be 1 on a Windows system")
+    }
+    
+    ## At least one state must be present
+    if (!is.vector(states) | ! is.character(states) | length(states) < 1){
+            stop("the \'states\' argument must be a vector of strings ",
+                    "with at least one value")
+    }
+    
+    return(0L)
+}
+    
+    
+
 
 #' @title Plot one graph related to one set of metrics.
 #' 

@@ -199,3 +199,43 @@ test_that("createDisjoinSegmentsForTwoSamples() must return expected results whe
     expect_equal(results, expected)
 })
 
+
+### Tests validateCalculateOverlapMetricParameters() results
+
+context("validateCalculateOverlapMetricParameters() results")
+
+test_that("validateCalculateOverlapMetricParameters() must return expected zero", {
+    
+    results <- CNVMetrics:::validateCalculateOverlapMetricParameters(states="LOH", 
+                                        nJobs=1)
+    
+    expect_equal(results, 0L)
+})
+
+test_that("validateCalculateOverlapMetricParameters() must return error when nJobs is negative", {
+    
+    error_message <- "nJobs must be a positive integer"
+    
+    expect_error(CNVMetrics:::validateCalculateOverlapMetricParameters(states="LOH", 
+            nJobs=-3), error_message)
+})
+
+test_that("validateCalculateOverlapMetricParameters() must return error when states is a list", {
+    
+    error_message <- paste0("the \'states\' argument must be a vector ", 
+                                "of strings with at least one value")
+    
+    expect_error(CNVMetrics:::validateCalculateOverlapMetricParameters(states=list(A=1, B=2), 
+            nJobs=1), error_message)
+})
+
+
+test_that("validateCalculateOverlapMetricParameters() must return error when states is a vector of numerics", {
+    
+    error_message <- paste0("the \'states\' argument must be a vector ", 
+                                "of strings with at least one value")
+    
+    expect_error(CNVMetrics:::validateCalculateOverlapMetricParameters(states=c(1,3,4),
+            nJobs=1), error_message)
+})
+

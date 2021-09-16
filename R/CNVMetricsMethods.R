@@ -22,6 +22,10 @@
 #' This should be (an unambiguous abbreviation of) one of "sorensen", 
 #' "szymkiewicz" or "jaccard". Default: "sorensen".
 #' 
+#' @param nJobs a single positive \code{integer} specifying the number of 
+#' worker jobs to create in case of distributed computation. 
+#' Default: \code{1} and always \code{1} for Windows.
+#' 
 #' @details 
 #' 
 #' The two methods each estimate the overlap between paired samples. They use 
@@ -122,29 +126,28 @@
 #' calculateOverlapMetric(demo, states="LOH", method="jaccard")
 #' 
 #' @author Astrid Deschênes, Pascal Belleau
-#' @import GenomicRanges 
+#' @import GenomicRanges
+#' @importFrom BiocParallel multicoreWorkers SnowParam SerialParam bplapply bptry bpok
 #' @encoding UTF-8
 #' @export
 calculateOverlapMetric <- function(segmentData, 
                                     states=c("AMPLIFICATION", "DELETION"),
                                     method=c("sorensen", "szymkiewicz", 
-                                                "jaccard")) {
+                                                "jaccard"),
+                                    nJobs=1) {
     
     ## Select metric method to be used
     method <- match.arg(method)
     
-    ## At least one state must be present
-    if (!is.vector(states) | ! is.character(states) | length(states) < 1){
-        stop("the \'states\' argument must be a vector of strings ",
-                        "with at least one value")
-    }
+    ## Validate some parameters
+    validateCalculateOverlapMetricParameters(states=states, nJobs=nJobs)
+    
     
     ## The cnv data must be in a GRangesList format
     if (!is(segmentData, "GRangesList")) {
         stop("the \'segmentData\' argument must be a \'GRangesList\' object")
     }
-    
-    
+
     names <- names(segmentData)
     nb <- length(names)
     
@@ -161,6 +164,16 @@ calculateOverlapMetric <- function(segmentData,
         stop("at least one sample doesn't have a metadata column ", 
                 "called \'state\'")
     }
+    
+    ## Select the type of parallel environment used for parallel processing
+    nbrThreads <- as.integer(nJobs)
+    if (nbrThreads == 1 || multicoreWorkers() == 1) {
+        coreParam <- SerialParam()
+    } else {
+        seed <- sample(x=seq_len(999999), size=1)
+        coreParam <- SnowParam(workers = nbrThreads, RNGseed = seed)
+    }
+    
     
     results <- list()
     

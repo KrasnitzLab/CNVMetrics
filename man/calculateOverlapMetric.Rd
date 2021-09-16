@@ -8,7 +8,8 @@
 calculateOverlapMetric(
   segmentData,
   states = c("AMPLIFICATION", "DELETION"),
-  method = c("sorensen", "szymkiewicz", "jaccard")
+  method = c("sorensen", "szymkiewicz", "jaccard"),
+  nJobs = 1
 )
 }
 \arguments{
@@ -25,6 +26,10 @@ Default: c('\code{AMPLIFICATION}', '\code{DELETION}').}
 \item{method}{a \code{character} string representing the metric to be used. 
 This should be (an unambiguous abbreviation of) one of "sorensen", 
 "szymkiewicz" or "jaccard". Default: "sorensen".}
+
+\item{nJobs}{a single positive \code{integer} specifying the number of 
+worker jobs to create in case of distributed computation. 
+Default: \code{1} and always \code{1} for Windows.}
 }
 \value{
 an object of class "\code{CNVMetric}" which contains the calculated
