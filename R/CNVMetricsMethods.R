@@ -142,7 +142,6 @@ calculateOverlapMetric <- function(segmentData,
     ## Validate some parameters
     validateCalculateOverlapMetricParameters(states=states, nJobs=nJobs)
     
-    
     ## The cnv data must be in a GRangesList format
     if (!is(segmentData, "GRangesList")) {
         stop("the \'segmentData\' argument must be a \'GRangesList\' object")
@@ -156,8 +155,7 @@ calculateOverlapMetric <- function(segmentData,
         stop("at least 2 samples must be present in the segmentData")
     }
     
-    ## All samples must have a metadata column called 'state' with
-    ## AMPLIFICATION/DELETION/etc status 
+    ## All samples must have a metadata column called 'state' 
     if (!all(vapply(segmentData, 
                     FUN = function(x) {"state" %in% colnames(mcols(x))},
                     FUN.VALUE = logical(1)))) {
@@ -187,8 +185,7 @@ calculateOverlapMetric <- function(segmentData,
             for(j in seq_len(i-1)) {
                 dataTMP[i, j] <- calculateOneOverlapMetric(
                     sample01=segmentData[[names[i]]], 
-                    sample02=segmentData[[names[j]]],
-                    method=method, type=type)
+                    sample02=segmentData[[names[j]]], method=method, type=type)
             }
         }
         results[[type]] <- dataTMP
