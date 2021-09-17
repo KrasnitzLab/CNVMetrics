@@ -173,23 +173,54 @@ calculateOverlapMetric <- function(segmentData,
     }
     
     
+    # 
+    # results <- list()
+    # 
+    # for(type in states) {
+    #     
+    #     dataTMP <- matrix(rep(NA, nb^2), nrow=nb)
+    #     rownames(dataTMP) <- names
+    #     colnames(dataTMP) <- names
+    #     
+    #     for(i in seq_len(nb)[-1]) {
+    #         for(j in seq_len(i-1)) {
+    #             dataTMP[i, j] <- calculateOneOverlapMetric(
+    #                 sample01=segmentData[[names[i]]], 
+    #                 sample02=segmentData[[names[j]]], method=method, type=type)
+    #         }
+    #     }
+    #     results[[type]] <- dataTMP
+    # }
+    # 
+
     results <- list()
-    
+
     for(type in states) {
-        
+        print(type)
         dataTMP <- matrix(rep(NA, nb^2), nrow=nb)
         rownames(dataTMP) <- names
         colnames(dataTMP) <- names
         
-        for(i in seq_len(nb)[-1]) {
-            for(j in seq_len(i-1)) {
-                dataTMP[i, j] <- calculateOneOverlapMetric(
-                    sample01=segmentData[[names[i]]], 
-                    sample02=segmentData[[names[j]]], method=method, type=type)
-            }
+        ind <- which(lower.tri(dataTMP, diag=FALSE), arr.ind=TRUE)
+        entries <- lapply(seq_len(nrow(ind)), function(i) ind[i, ])
+        
+        ## Running each profile id on a separate thread
+        processed <- bptry(bplapply(X=entries, FUN=calculateOneOverlapMetricT, 
+                                    segmentData=segmentData,
+                                    method=method, type=type, 
+                                    BPPARAM=coreParam))
+        ## Check for errors
+        if (!all(bpok(processed))) {
+            stop("At least one parallel task has thrown an error.")
         }
+        
+        for (oneP in processed) {
+            dataTMP[oneP$entry[1], oneP$entry[2]] <- oneP$metric
+        }
+        
         results[[type]] <- dataTMP
     }
+    
     
     # Return a list marked as an CNVMetric class containing:
     # 1- the metric results for the amplified regions
@@ -487,12 +518,10 @@ plotMetric <- function(metric, type="ALL",
     
     for (name in nameList) {
         plot_list[[name]] <- plotOneMetric(metric=metric,
-                                                type=name, 
-                                                colorRange=colorRange, 
-                                                show_colnames=show_colnames, 
-                                                silent=silent, ...)  
+                                type=name, colorRange=colorRange, 
+                                show_colnames=show_colnames, 
+                                silent=silent, ...)  
     }
-    
     
     n_col <- length(plot_list)
     
