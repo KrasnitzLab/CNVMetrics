@@ -552,6 +552,16 @@ grl <- GRangesList("sample01"=gr1, "sample02"=gr2, "sample03"=gr3)
 <br>
 <br>
 
+
+# Reproducible research
+
+To ensure reproducible results, *set.seed()* function should be call 
+before *calculateOverlapMetric()* and *calculateLog2ratioMetric()*. 
+Beware that the *nJobs* parameter must 
+also be fixed. Change in the value of the *nJobs* parameter might  
+lead to different results.
+
+
 # Session info
 
 Here is the output of `sessionInfo()` on the system on which this document was 
