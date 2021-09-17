@@ -5,59 +5,6 @@ library(GenomicRanges)
 library(S4Vectors)
 library(IRanges)
 
-### Tests calculateRegressedValues() results
-
-context("calculateRegressedValues() results")
-
-test_that("calculateRegressedValues() must return expected results", {
-    
-    segment  <- GRanges(seqnames = "chr1", 
-                        ranges = IRanges(start=c(1, 50, 101, 150, 200, 251),
-                                         end=c(49, 100, 110, 199, 250, 300)))
-    
-    y <- c(0.1, 0.1, NA, NA, 0.15, 0.2)
-    x <- c(NA, 0.3, 0.3, 0.4, 0.4, 0.8)
-    
-    elementMetadata(segment) <- DataFrame(included = c(rep(TRUE, 6)), 
-                                  File1 = y,  
-                                  File2 = x)
-    
-    segmentData <- list()
-    segmentData$segments <- segment
-    segmentData$regression <- list()
-    segmentData$regression[[1]] <- list()
-    segmentData$regression[[1]][["y_used"]] <- "File1"
-    segmentData$regression[[1]][["x_used"]] <- "File2"
-    segmentData$regression[[1]][["lm"]] <- lm("y ~ x", data.frame(x=x, y=y))
-    
-    results <- CNVMetrics:::calculateRegressedValues(segmentData)
-    
-    
-    
-    segmentExp  <- GRanges(seqnames = "chr1", 
-                        ranges = IRanges(start=c(1, 50, 101, 150, 200, 251),
-                                         end=c(49, 100, 110, 199, 250, 300)))
-    
-    y <- c(0.1, 0.1, NA, NA, 0.15, 0.2)
-    x <- c(NA, 0.11428571428571400459, 0.11428571428571400459, 
-           0.13214285714285700646, 0.13214285714285700646, 
-           0.20357142857142898618)
-    
-    values(segmentExp) <- DataFrame(included = c(rep(TRUE, 6)), 
-                                 File1 = y,  
-                                 File2 = x)
-    
-    expected <- segmentData
-    expected$regressedData <- segmentData$segments 
-    
-    elementMetadata(expected$regressedData) <- DataFrame(included = c(rep(TRUE, 6)), 
-                                                         File1 = y,  
-                                                         File2 = x)
-    
-    expect_equal(results, expected)
-})
-
-
 
 ### Tests createDisjoinSegmentsForTwoSamples() results
 
