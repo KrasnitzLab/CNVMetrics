@@ -165,21 +165,21 @@ calculateOneOverlapMetric <- function(sample01, sample02, method, type) {
 #'     state = c("AMPLIFICATION", "DELETION"))
 #' 
 #' ## The 2 samples used to calculate the metric
-#' analysis <- c(3, 2)   
+#' entries <- data.frame(row=c(2, 3), col=c(1, 1))   
 #' 
 #' ## Calculate Sorensen metric for the amplified regions on samples 2 and 3  
-#' CNVMetrics:::calculateOneOverlapMetricT(entry=analysis, segmentData=demo,
+#' CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
 #'     method="sorensen", type="AMPLIFICATION")
 #' 
 #' ## Calculate Szymkiewicz-Simpson metric for the amplified regions 
 #' ## in samples 1 and 2  
 #' ## Amplified regions of sample02 are a subset of the amplified 
 #' ## regions in sample01
-#' CNVMetrics:::calculateOneOverlapMetricT(entry=c(1, 2), segmentData=demo,
+#' CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
 #'     method="szymkiewicz", type="AMPLIFICATION")
 #' 
 #' ## Calculate Sorensen metric for the deleted regions in samples 1 and 2  
-#' CNVMetrics:::calculateOneOverlapMetricT(entry=c(1, 2), segmentData=demo,
+#' CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
 #'     method="sorensen", type="DELETION")
 #' 
 #' @author Astrid Deschênes
@@ -187,23 +187,26 @@ calculateOneOverlapMetric <- function(sample01, sample02, method, type) {
 #' @keywords internal
 calculateOneOverlapMetricT <- function(entry, segmentData, method, type) {
     
-    sample01 <- segmentData[[entry[1]]]
-    sample01 <- sample01[sample01$state == type,]
-    sample02 <- segmentData[[entry[2]]]
+    sample02 <- segmentData[[entry$col[1]]]
     sample02 <- sample02[sample02$state == type,]
     
-    result <- NA
+    result <- entry
+    result$metric <- rep(NA, nrow(result))
     
-    if (length(sample01) > 0 && length(sample02) > 0) { 
-        result <- switch(method,
-                        sorensen = calculateSorensen(sample01, sample02),
-                        szymkiewicz = calculateSzymkiewicz(sample01, sample02),
-                        jaccard = calculateJaccard(sample01, sample02))
+    for(i in seq_len(nrow(entry))) {
+        sample01 <- segmentData[[entry$row[i]]]
+        sample01 <- sample01[sample01$state == type,]
+        
+        if (length(sample01) > 0 && length(sample02) > 0) { 
+            result$metric[i] <- switch(method,
+                    sorensen = calculateSorensen(sample01, sample02),
+                    szymkiewicz = calculateSzymkiewicz(sample01, sample02),
+                    jaccard = calculateJaccard(sample01, sample02))
+        }
     }
     
-    return(result <- list(entry=entry, metric=result))
+    return(result <- list(metric=result))
 }
-
 
 #' @title Calculate Sorensen metric
 #' 

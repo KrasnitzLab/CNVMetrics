@@ -69,21 +69,21 @@ demo[["sample03"]] <- GRanges(seqnames = "chr1",
     state = c("AMPLIFICATION", "DELETION"))
 
 ## The 2 samples used to calculate the metric
-analysis <- c(3, 2)   
+entries <- data.frame(row=c(2, 3), col=c(1, 1))   
 
 ## Calculate Sorensen metric for the amplified regions on samples 2 and 3  
-CNVMetrics:::calculateOneOverlapMetricT(entry=analysis, segmentData=demo,
+CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
     method="sorensen", type="AMPLIFICATION")
 
 ## Calculate Szymkiewicz-Simpson metric for the amplified regions 
 ## in samples 1 and 2  
 ## Amplified regions of sample02 are a subset of the amplified 
 ## regions in sample01
-CNVMetrics:::calculateOneOverlapMetricT(entry=c(1, 2), segmentData=demo,
+CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
     method="szymkiewicz", type="AMPLIFICATION")
 
 ## Calculate Sorensen metric for the deleted regions in samples 1 and 2  
-CNVMetrics:::calculateOneOverlapMetricT(entry=c(1, 2), segmentData=demo,
+CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
     method="sorensen", type="DELETION")
 
 }

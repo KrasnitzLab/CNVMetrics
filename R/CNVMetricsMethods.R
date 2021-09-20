@@ -194,15 +194,14 @@ calculateOverlapMetric <- function(segmentData,
     # 
 
     results <- list()
-
+    
     for(type in states) {
-        print(type)
         dataTMP <- matrix(rep(NA, nb^2), nrow=nb)
         rownames(dataTMP) <- names
         colnames(dataTMP) <- names
         
         ind <- which(lower.tri(dataTMP, diag=FALSE), arr.ind=TRUE)
-        entries <- lapply(seq_len(nrow(ind)), function(i) ind[i, ])
+        entries <- split(as.data.frame(ind), ind[,2])
         
         ## Running each profile id on a separate thread
         processed <- bptry(bplapply(X=entries, FUN=calculateOneOverlapMetricT, 
@@ -215,7 +214,7 @@ calculateOverlapMetric <- function(segmentData,
         }
         
         for (oneP in processed) {
-            dataTMP[oneP$entry[1], oneP$entry[2]] <- oneP$metric
+            dataTMP[oneP$metric$row, oneP$metric$col] <- oneP$metric$metric
         }
         
         results[[type]] <- dataTMP
