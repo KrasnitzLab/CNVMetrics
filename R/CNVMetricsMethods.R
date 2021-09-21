@@ -171,37 +171,22 @@ calculateOverlapMetric <- function(segmentData,
         seed <- sample(x=seq_len(999999), size=1)
         coreParam <- SnowParam(workers = nbrThreads, RNGseed = seed)
     }
-    
-    
-    # 
-    # results <- list()
-    # 
-    # for(type in states) {
-    #     
-    #     dataTMP <- matrix(rep(NA, nb^2), nrow=nb)
-    #     rownames(dataTMP) <- names
-    #     colnames(dataTMP) <- names
-    #     
-    #     for(i in seq_len(nb)[-1]) {
-    #         for(j in seq_len(i-1)) {
-    #             dataTMP[i, j] <- calculateOneOverlapMetric(
-    #                 sample01=segmentData[[names[i]]], 
-    #                 sample02=segmentData[[names[j]]], method=method, type=type)
-    #         }
-    #     }
-    #     results[[type]] <- dataTMP
-    # }
-    # 
 
+    ## List that will contain the results
     results <- list()
     
+    ## Loop for each state
     for(type in states) {
+        ## Matrix to be filled with the metrics
         dataTMP <- matrix(rep(NA, nb^2), nrow=nb)
         rownames(dataTMP) <- names
         colnames(dataTMP) <- names
         
+        ## Each combinaison that needs to be calculated
         ind <- which(lower.tri(dataTMP, diag=FALSE), arr.ind=TRUE)
-        entries <- split(as.data.frame(ind), ind[,2])
+        jobSplit <- rep(seq_len(nJobs), 
+                        each=ceiling(nrow(ind)/nJobs))[seq_len(nrow(ind))]
+        entries <- split(as.data.frame(ind), jobSplit)
         
         ## Running each profile id on a separate thread
         processed <- bptry(bplapply(X=entries, FUN=calculateOneOverlapMetricT, 
@@ -210,11 +195,15 @@ calculateOverlapMetric <- function(segmentData,
                                     BPPARAM=coreParam))
         ## Check for errors
         if (!all(bpok(processed))) {
-            stop("At least one parallel task has thrown an error.")
+            stop("At least one parallel task has failed.")
         }
         
+        ## Assigned the metrics to the final matrix
         for (oneP in processed) {
-            dataTMP[oneP$metric$row, oneP$metric$col] <- oneP$metric$metric
+            for(i in seq_len(nrow(oneP$metric))) {
+                dataTMP[oneP$metric$row[i], oneP$metric$col[i]] <- 
+                                                    oneP$metric$metric[i]
+            }
         }
         
         results[[type]] <- dataTMP

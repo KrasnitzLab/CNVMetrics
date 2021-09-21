@@ -112,9 +112,10 @@ calculateOneOverlapMetric <- function(sample01, sample02, method, type) {
 #' @description Calculate a specific metric using overlapping 
 #' amplified/deleted regions between two samples. 
 #' 
-#' @param entry a \code{vector} which contains the row and column indexes 
+#' @param entry a \code{list} which contains the row and column indexes 
 #' (always in this order) of 
-#' the metric in the final matrix and the positions of the two samples used
+#' the metric in the final matrix. Those values correspond to the positions 
+#' of the two samples used
 #' to calculate the metric in the \code{GRangesList} (\code{segmentData}).
 #' @param segmentData a \code{GRangesList} that contains a collection of 
 #' genomic ranges representing copy number events, including amplified/deleted 
@@ -126,14 +127,15 @@ calculateOneOverlapMetric <- function(sample01, sample02, method, type) {
 #' @param type a \code{character} string representing the type of 
 #' copy number events to be used ('\code{AMPLIFICATION}' or '\code{DELETION}').
 #' 
-#' @return a \code{list} containing 2 entries:
+#' @return a \code{list} containing 1 entry:
 #' \itemize{
-#' \item{\code{entry}}{ a \code{vector} of 2 \code{integer} representing the
-#' two samples that have been used to calculate the metric and the position in
-#' the final matrix of metrics (row and column indexes).
-#' }
-#' \item{\code{metric}}{ a \code{numeric}, the value of the specified metric. 
-#' If the metric cannot be calculated, \code{NA} is returned. 
+#' \item{\code{metric}}{ a \code{data.frame}, which contains 3 columns. The 2 
+#' first columns, called \code{row} and \code{column} correspond to the 
+#' indexes of the metric in the final matrix. Those
+#' 2 first columns match to the \code{entry} parameter. The third column, 
+#' called \code{metric}, 
+#' contains the values of the specified metric for each combination. 
+#' If the metric cannot be calculated, \code{NA} is present. 
 #' }
 #' }
 #' 
@@ -187,25 +189,36 @@ calculateOneOverlapMetric <- function(sample01, sample02, method, type) {
 #' @keywords internal
 calculateOneOverlapMetricT <- function(entry, segmentData, method, type) {
     
-    sample02 <- segmentData[[entry$col[1]]]
-    sample02 <- sample02[sample02$state == type,]
+    entries <- split(entry, entry$col)
     
-    result <- entry
-    result$metric <- rep(NA, nrow(result))
+    results <- list()
     
-    for(i in seq_len(nrow(entry))) {
-        sample01 <- segmentData[[entry$row[i]]]
-        sample01 <- sample01[sample01$state == type,]
+    for (data in entries) {
         
-        if (length(sample01) > 0 && length(sample02) > 0) { 
-            result$metric[i] <- switch(method,
-                    sorensen = calculateSorensen(sample01, sample02),
+        result <- data
+        result$metric <- rep(NA, nrow(result))
+        
+        sample02 <- segmentData[[data$col[1]]]
+        sample02 <- sample02[sample02$state == type,]
+        
+        for(i in seq_len(nrow(data))) {
+            sample01 <- segmentData[[data$row[i]]]
+            sample01 <- sample01[sample01$state == type,]
+            
+            if (length(sample01) > 0 && length(sample02) > 0) { 
+                result$metric[i] <- switch(method,
+                sorensen = calculateSorensen(sample01, sample02),
                     szymkiewicz = calculateSzymkiewicz(sample01, sample02),
                     jaccard = calculateJaccard(sample01, sample02))
+            }
         }
+        
+        results[[length(results) + 1]] <- result
     }
     
-    return(result <- list(metric=result))
+    results <- do.call(rbind, results)
+
+    return(result <- list(metric=results))
 }
 
 #' @title Calculate Sorensen metric

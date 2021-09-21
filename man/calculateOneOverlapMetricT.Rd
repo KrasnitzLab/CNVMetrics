@@ -9,9 +9,10 @@ two samples.}
 calculateOneOverlapMetricT(entry, segmentData, method, type)
 }
 \arguments{
-\item{entry}{a \code{vector} which contains the row and column indexes 
+\item{entry}{a \code{list} which contains the row and column indexes 
 (always in this order) of 
-the metric in the final matrix and the positions of the two samples used
+the metric in the final matrix. Those values correspond to the positions 
+of the two samples used
 to calculate the metric in the \code{GRangesList} (\code{segmentData}).}
 
 \item{segmentData}{a \code{GRangesList} that contains a collection of 
@@ -27,14 +28,15 @@ used ('\code{sorensen}' or '\code{szymkiewicz}'.}
 copy number events to be used ('\code{AMPLIFICATION}' or '\code{DELETION}').}
 }
 \value{
-a \code{list} containing 2 entries:
+a \code{list} containing 1 entry:
 \itemize{
-\item{\code{entry}}{ a \code{vector} of 2 \code{integer} representing the
-two samples that have been used to calculate the metric and the position in
-the final matrix of metrics (row and column indexes).
-}
-\item{\code{metric}}{ a \code{numeric}, the value of the specified metric. 
-If the metric cannot be calculated, \code{NA} is returned. 
+\item{\code{metric}}{ a \code{data.frame}, which contains 3 columns. The 2 
+first columns, called \code{row} and \code{column} correspond to the 
+indexes of the metric in the final matrix. Those
+2 first columns match to the \code{entry} parameter. The third column, 
+called \code{metric}, 
+contains the values of the specified metric for each combination. 
+If the metric cannot be calculated, \code{NA} is present. 
 }
 }
 }
