@@ -9,7 +9,8 @@ calculateLog2ratioMetric(
   segmentData,
   method = c("weightedEuclideanDistance"),
   minThreshold = 0.2,
-  excludedRegions = NULL
+  excludedRegions = NULL,
+  nJobs = 1
 )
 }
 \arguments{
@@ -29,6 +30,10 @@ will be replaced by zero. Default: 0.2.}
 
 \item{excludedRegions}{an optional \code{GRanges} containing the regions 
 that have to be excluded for the metric calculation. Default: \code{NULL}.}
+
+\item{nJobs}{a single positive \code{integer} specifying the number of 
+worker jobs to create in case of distributed computation. 
+Default: \code{1} and always \code{1} for Windows.}
 }
 \value{
 an object of class "\code{CNVMetric}" which contains the calculated

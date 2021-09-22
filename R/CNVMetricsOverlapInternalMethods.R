@@ -117,13 +117,16 @@ calculateOneOverlapMetric <- function(sample01, sample02, method, type) {
 #' the metric in the final matrix. Those values correspond to the positions 
 #' of the two samples used
 #' to calculate the metric in the \code{GRangesList} (\code{segmentData}).
+#' 
 #' @param segmentData a \code{GRangesList} that contains a collection of 
 #' genomic ranges representing copy number events, including amplified/deleted 
 #' status, from at least 2 samples. All samples must have a metadata column 
 #' called '\code{state}' with a state, in an character string format, 
 #' specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).
+#' 
 #' @param method a \code{character} string representing the metric to be
 #' used ('\code{sorensen}' or '\code{szymkiewicz}'.
+#' 
 #' @param type a \code{character} string representing the type of 
 #' copy number events to be used ('\code{AMPLIFICATION}' or '\code{DELETION}').
 #' 

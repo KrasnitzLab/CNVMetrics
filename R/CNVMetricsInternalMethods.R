@@ -45,7 +45,63 @@ validateCalculateOverlapMetricParameters <- function(states, nJobs) {
     return(0L)
 }
     
+
+#' @title Parameters validation for the \code{\link{calculateLog2ratioMetric}} 
+#' function
+#' 
+#' @description Validation of all parameters needed by the public
+#' \code{\link{calculateLog2ratioMetric}} function.
+#' 
+#' @param minThreshold a single positive \code{numeric} setting the minimum 
+#' value to consider two segments as different during the metric calculation. 
+#' If the absolute difference is below or equal to threshold, the difference 
+#' will be replaced by zero.
+#' 
+#' @param excludedRegions an optional \code{GRanges} containing the regions 
+#' that have to be excluded for the metric calculation or \code{NULL}.
+#' 
+#' @param nJobs a single positive \code{integer} specifying the number of 
+#' worker jobs to create in case of distributed computation.
+#' 
+#' @return \code{0}. 
+#' 
+#' @examples
+#'
+#' 
+#' ## Return zero as all parameters are valid
+#' CNVMetrics:::validatecalculateLog2ratioMetricParameters(
+#'     minThreshold=0.9, excludedRegions=NULL, nJobs=1)
+#' 
+#' @author Astrid Deschênes
+#' @importFrom S4Vectors isSingleInteger isSingleNumber
+#' @keywords internal
+validatecalculateLog2ratioMetricParameters <- function(minThreshold, 
+                                        excludedRegions, nJobs) {
     
+    ## Validate that nJobs is an positive integer
+    if (!(isSingleInteger(nJobs) || isSingleNumber(nJobs)) ||
+        as.integer(nJobs) < 1) {
+        stop("nJobs must be a positive integer")
+    }
+    
+    ## Validate that nJobs is set to 1 on Windows system
+    if (Sys.info()["sysname"] == "Windows" && as.integer(nJobs) != 1) {
+        stop("nJobs must be 1 on a Windows system")
+    }
+    
+    ## The minThreshold must be a positive numeric value
+    if (!is.numeric(minThreshold) | minThreshold < 0.0) {
+        stop("the \'minThreshold\' argument must be a positive numeric value")
+    }
+    
+    ## The minThreshold must be a positive numeric value
+    if (!is.null(excludedRegions) & !is(excludedRegions, "GRanges")) {
+        stop("the \'excludedRegions\' argument must ", 
+             "a \'Granges\' object or NULL")
+    }
+    
+    return(0L)
+}    
 
 
 #' @title Plot one graph related to one set of metrics.
