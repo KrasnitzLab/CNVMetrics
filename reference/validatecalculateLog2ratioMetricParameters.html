@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Citation and Authors • CNVMetrics</title>
+<title>Parameters validation for the calculateLog2ratioMetric 
+function — validatecalculateLog2ratioMetricParameters • CNVMetrics</title>
 
 
 <!-- jquery -->
@@ -18,8 +19,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
-<link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script>
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -33,15 +34,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 
 
-  <link href="extra.css" rel="stylesheet">
+  <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Citation and Authors" />
+<meta property="og:title" content="Parameters validation for the calculateLog2ratioMetric 
+function — validatecalculateLog2ratioMetricParameters" />
+<meta property="og:description" content="Validation of all parameters needed by the public
+calculateLog2ratioMetric function." />
 
 
 
@@ -60,7 +64,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-citation-authors">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -72,7 +76,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">CNVMetrics</a>
+        <a class="navbar-link" href="../index.html">CNVMetrics</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
@@ -80,19 +84,19 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">
+  <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="articles/CNVMetrics.html">Get started</a>
+  <a href="../articles/CNVMetrics.html">Get started</a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="news/index.html">Changelog</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -113,56 +117,69 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Citation</h1>
-      <small class="dont-index">Source: <a href='https://github.com/krasnitzlab/CNVMetrics/blob/master/inst/CITATION'><code>inst/CITATION</code></a></small>
+    <h1>Parameters validation for the <code><a href='calculateLog2ratioMetric.html'>calculateLog2ratioMetric</a></code> 
+function</h1>
+    <small class="dont-index">Source: <a href='https://github.com/krasnitzlab/CNVMetrics/blob/master/R/CNVMetricsInternalMethods.R'><code>R/CNVMetricsInternalMethods.R</code></a></small>
+    <div class="hidden name"><code>validatecalculateLog2ratioMetricParameters.Rd</code></div>
     </div>
 
-    <p>Astrid Deschênes, Pascal Belleau, Alexander Krasnitz (2021). CNVMetrics: Copy Number Variant Metrics. https://github.com/krasnitzlab/CNVMetrics,
-https://krasnitzlab.github.io/CNVMetrics/</p>
-    <pre>@Manual{,
-  title = {CNVMetrics: Copy Number Variant Metrics},
-  author = {Astrid Deschênes and Pascal Belleau and Alexander Krasnitz},
-  year = {2021},
-  url = {https://krasnitzlab.github.io/CNVMetrics},
-  note = {https://github.com//CNVMetrics - R package version 0.1.6},
-}</pre>
-    <p>Belleau P, Deschênes A, Beyaz S et al. CNVMetrics package: Quantifying similarity between copy number profiles [version 1; not peer reviewed]. F1000Research 2021, 10:737 (slides) (https://doi.org/10.7490/f1000research.1118704.1)</p>
-    <pre>@Manual{,
-  title = {CNVMetrics package: Quantifying similarity between copy number profiles [version 1; not peer reviewed]},
-  author = {Pascal Belleau and Astrid Deschênes and Semir Beyaz and David A. Tuveson and Alex Krasnitz},
-  year = {2021},
-  volume = {10},
-  pages = {737 (slides)},
-  journal = {F1000Research},
-  doi = {10.7490/f1000research.1118704.1},
-  url = {https://doi.org/10.7490/f1000research.1118704.1},
-}</pre>
-
-    <div class="page-header">
-      <h1>Authors</h1>
+    <div class="ref-description">
+    <p>Validation of all parameters needed by the public
+<code><a href='calculateLog2ratioMetric.html'>calculateLog2ratioMetric</a></code> function.</p>
     </div>
 
-    <ul class="list-unstyled">
-      <li>
-        <p><strong>Astrid Deschênes</strong>. Author, maintainer. <a href='https://orcid.org/0000-0001-7846-6749' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
-        </p>
-      </li>
-      <li>
-        <p><strong>Pascal Belleau</strong>. Author. <a href='https://orcid.org/0000-0002-0802-1071' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
-        </p>
-      </li>
-      <li>
-        <p><strong>Alexander Krasnitz</strong>. Author. 
-        </p>
-      </li>
-    </ul>
+    <pre class="usage"><span class='fu'>validatecalculateLog2ratioMetricParameters</span><span class='op'>(</span>
+  <span class='va'>minThreshold</span>,
+  <span class='va'>excludedRegions</span>,
+  <span class='va'>nJobs</span>
+<span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>minThreshold</th>
+      <td><p>a single positive <code>numeric</code> setting the minimum 
+value to consider two segments as different during the metric calculation. 
+If the absolute difference is below or equal to threshold, the difference 
+will be replaced by zero.</p></td>
+    </tr>
+    <tr>
+      <th>excludedRegions</th>
+      <td><p>an optional <code>GRanges</code> containing the regions 
+that have to be excluded for the metric calculation or <code>NULL</code>.</p></td>
+    </tr>
+    <tr>
+      <th>nJobs</th>
+      <td><p>a single positive <code>integer</code> specifying the number of 
+worker jobs to create in case of distributed computation.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>0</code>.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Astrid Deschênes</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+
+<span class='co'>## Return zero as all parameters are valid</span>
+<span class='fu'>CNVMetrics</span><span class='fu'>:::</span><span class='fu'>validatecalculateLog2ratioMetricParameters</span><span class='op'>(</span>
+    minThreshold<span class='op'>=</span><span class='fl'>0.9</span>, excludedRegions<span class='op'>=</span><span class='cn'>NULL</span>, nJobs<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0</div><div class='input'>
+</div></pre>
   </div>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
+  </div>
 </div>
-
 
 
       <footer>

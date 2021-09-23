@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate metric using the log2ratio values between two samples. — calculateOneLog2valueMetric • CNVMetrics</title>
+<title>Calculate metric using the log2ratio values between two samples. — calculateOneLog2valueMetricT • CNVMetrics</title>
 
 
 <!-- jquery -->
@@ -41,7 +41,7 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Calculate metric using the log2ratio values between two samples. — calculateOneLog2valueMetric" />
+<meta property="og:title" content="Calculate metric using the log2ratio values between two samples. — calculateOneLog2valueMetricT" />
 <meta property="og:description" content="Calculate a specific metric using the level of 
 amplification/deletion, in log2 ratio,  between 
 two samples." />
@@ -120,7 +120,7 @@ two samples." />
     <div class="page-header">
     <h1>Calculate metric using the log2ratio values between two samples.</h1>
     <small class="dont-index">Source: <a href='https://github.com/krasnitzlab/CNVMetrics/blob/master/R/CNVMetricsLog2ratioInternalMethods.R'><code>R/CNVMetricsLog2ratioInternalMethods.R</code></a></small>
-    <div class="hidden name"><code>calculateOneLog2valueMetric.Rd</code></div>
+    <div class="hidden name"><code>calculateOneLog2valueMetricT.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -129,34 +129,31 @@ amplification/deletion, in log2 ratio,  between
 two samples.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calculateOneLog2valueMetric</span><span class='op'>(</span>
-  <span class='va'>sample01</span>,
-  <span class='va'>sample02</span>,
-  <span class='va'>bedExclusion</span>,
+    <pre class="usage"><span class='fu'>calculateOneLog2valueMetricT</span><span class='op'>(</span>
+  <span class='va'>entry</span>,
+  <span class='va'>segmentData</span>,
   <span class='va'>method</span>,
-  <span class='va'>minThreshold</span>
+  <span class='va'>minThreshold</span>,
+  <span class='va'>bedExclusion</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>sample01</th>
-      <td><p>a <code>GRanges</code> which contains a collection of 
-genomic ranges representing copy number events for the first sample. 
-The <code>GRanges</code> must have a metadata column called '<code>log2ratio</code>' 
-with the log2ratio value for each segment.</p></td>
+      <th>entry</th>
+      <td><p>a <code>list</code> which contains the row and column indexes 
+(always in this order) of 
+the metric in the final matrix. Those values correspond to the positions 
+of the two samples used
+to calculate the metric in the <code>GRangesList</code> (<code>segmentData</code>).</p></td>
     </tr>
     <tr>
-      <th>sample02</th>
-      <td><p>a <code>GRanges</code> which contains a collection of 
-genomic ranges representing copy number events for the second sample.
-The <code>GRanges</code> must have a metadata column called '<code>log2ratio</code>' 
-with the log2ratio value for each segment.</p></td>
-    </tr>
-    <tr>
-      <th>bedExclusion</th>
-      <td><p>a <code>GRanges</code> TODO</p></td>
+      <th>segmentData</th>
+      <td><p>a <code>GRangesList</code> that contains a collection of 
+genomic ranges representing copy number events, including amplified/deleted 
+status, from at least 2 samples. All samples must have a metadata column 
+called '<code>log2ratio</code>' with the log2ratio values.</p></td>
     </tr>
     <tr>
       <th>method</th>
@@ -168,14 +165,27 @@ used ('<code>weightedEuclideanDistance</code>').</p></td>
       <td><p>a single <code>numeric</code> setting the minimum value 
 to consider two segments as different during the metric calculation. If the 
 absolute difference is below or equal to threshold, the difference will be 
-replaced by zero. Default: 0.2.</p></td>
+replaced by zero.</p></td>
+    </tr>
+    <tr>
+      <th>bedExclusion</th>
+      <td><p>an optional <code>GRanges</code> containing the regions 
+that have to be excluded for the metric calculation or codeNULL.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code>numeric</code>, the value of the specified metric. If
-the metric cannot be calculated, <code>NA</code> is returned.</p>
+    <p>a <code>list</code> containing 1 entry:</p><ul>
+<li><p><code>metric</code> a <code>data.frame</code>, which contains 3 columns. The 2 
+first columns, called <code>row</code> and <code>column</code> correspond to the 
+indexes of the metric in the final matrix. Those
+2 first columns match to the <code>entry</code> parameter. The third column, 
+called <code>metric</code>, 
+contains the values of the specified metric for each combination. 
+If the metric cannot be calculated, <code>NA</code> is present.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The method calculates a specified metric using overlapping
@@ -187,12 +197,6 @@ calculating the metric.</p>
 the intersection by the sum of the size of the two sets. If the sum of
 the size of the two sets is zero; the value <code>NA</code> is
 returned instead.</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Sørensen, Thorvald. n.d. “A Method of Establishing Groups of Equal 
-Amplitude in Plant Sociology Based on Similarity of Species and Its 
-Application to Analyses of the Vegetation on Danish Commons.” 
-Biologiske Skrifter, no. 5: 1–34.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Astrid Deschênes</p>
@@ -202,21 +206,31 @@ Biologiske Skrifter, no. 5: 1–34.</p>
 <span class='co'>## Load required package to generate the two samples</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://bioconductor.org/packages/GenomicRanges'>GenomicRanges</a></span><span class='op'>)</span>
 
+<span class='co'>## Create a GRangesList object with 3 samples</span>
+<span class='co'>## The stand of the regions doesn't affect the calculation of the metric</span>
+<span class='va'>demo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html'>GRangesList</a></span><span class='op'>(</span><span class='op'>)</span>
+
 <span class='co'>## Generate two samples with log2value information as a metadata column</span>
-<span class='va'>sample01</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, 
+<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample01"</span><span class='op'>]</span><span class='op'>]</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, 
     ranges<span class='op'>=</span><span class='fu'>IRanges</span><span class='op'>(</span>start<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>201</span>, <span class='fl'>400</span><span class='op'>)</span>, 
     end<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>200</span>, <span class='fl'>350</span>, <span class='fl'>500</span><span class='op'>)</span><span class='op'>)</span>, strand<span class='op'>=</span><span class='st'>"*"</span>,
     log2ratio<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1.1111</span>, <span class='fl'>2.2222</span>, <span class='op'>-</span><span class='fl'>0.9999</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>sample02</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, 
+<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample02"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, 
     ranges<span class='op'>=</span><span class='fu'>IRanges</span><span class='op'>(</span>start<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>150</span>, <span class='fl'>200</span>, <span class='fl'>450</span><span class='op'>)</span>, 
     end<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>250</span>, <span class='fl'>350</span>, <span class='fl'>500</span><span class='op'>)</span><span class='op'>)</span>, strand<span class='op'>=</span><span class='st'>"*"</span>,
     log2ratio<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2.2121</span>, <span class='fl'>1.1212</span>, <span class='op'>-</span><span class='fl'>1.3939</span><span class='op'>)</span><span class='op'>)</span>
 
+<span class='co'>## The 2 samples used to calculate the metric</span>
+<span class='va'>entries</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>row<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>, col<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span> 
+
 <span class='co'>## Calculate weighted Euclidean distance </span>
-<span class='fu'>CNVMetrics</span><span class='fu'>:::</span><span class='fu'>calculateOneLog2valueMetric</span><span class='op'>(</span>sample01<span class='op'>=</span><span class='va'>sample01</span>, 
-    sample02<span class='op'>=</span><span class='va'>sample02</span>, bedExclusion<span class='op'>=</span><span class='cn'>NULL</span>, 
-    method<span class='op'>=</span><span class='st'>"weightedEuclideanDistance"</span>, minThreshold<span class='op'>=</span><span class='fl'>0.2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.1737391</div><div class='input'>
+<span class='fu'>CNVMetrics</span><span class='fu'>:::</span><span class='fu'>calculateOneLog2valueMetricT</span><span class='op'>(</span>entry<span class='op'>=</span><span class='va'>entries</span>, 
+    segmentData<span class='op'>=</span><span class='va'>demo</span>, method<span class='op'>=</span><span class='st'>"weightedEuclideanDistance"</span>, 
+    minThreshold<span class='op'>=</span><span class='fl'>0.2</span>, bedExclusion<span class='op'>=</span><span class='cn'>NULL</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $metric
+#&gt;   row col    metric
+#&gt; 1   2   1 0.1737391
+#&gt; </div><div class='input'>
 
 </div></pre>
   </div>
