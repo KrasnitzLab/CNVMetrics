@@ -55,19 +55,19 @@
 #' require(GenomicRanges)
 #'
 #' ## Generate two samples with log2value information as a metadata column
-#' sample01 <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(100, 201, 400), 
-#'     end = c(200, 350, 500)), strand =  "*",
-#'     log2ratio = c(1.1111, 2.2222, -0.9999))
-#' sample02 <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(150, 200, 450), 
-#'     end = c(250, 350, 500)), strand =  "*",
-#'     log2ratio = c(2.2121, 1.1212, -1.3939))
+#' sample01 <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(100, 201, 400), 
+#'     end=c(200, 350, 500)), strand="*",
+#'     log2ratio=c(1.1111, 2.2222, -0.9999))
+#' sample02 <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(150, 200, 450), 
+#'     end=c(250, 350, 500)), strand="*",
+#'     log2ratio=c(2.2121, 1.1212, -1.3939))
 #' 
 #' ## Calculate weighted Euclidean distance 
-#' CNVMetrics:::calculateOneLog2valueMetric(sample01, sample02,
-#'     bedExclusion=NULL, method="weightedEuclideanDistance", 
-#'     minThreshold=0.2)
+#' CNVMetrics:::calculateOneLog2valueMetric(sample01=sample01, 
+#'     sample02=sample02, bedExclusion=NULL, 
+#'     method="weightedEuclideanDistance", minThreshold=0.2)
 #' 
 #' 
 #' @author Astrid Deschênes
@@ -85,7 +85,7 @@ calculateOneLog2valueMetric <- function(sample01, sample02, bedExclusion,
     
     if (length(sample01) > 0 && length(sample02) > 0) { 
         result <- switch(method,
-                            weightedEuclideanDistance = 
+                            weightedEuclideanDistance= 
                                 calculateWeightedEuclideanDistanceFor2Samples(
                                     segmentData=disjoinR, 
                                     minThreshold=minThreshold))
@@ -158,14 +158,14 @@ calculateOneLog2valueMetric <- function(sample01, sample02, bedExclusion,
 #' demo <- GRangesList()
 #' 
 #' ## Generate two samples with log2value information as a metadata column
-#' demo[["sample01"]]  <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(100, 201, 400), 
-#'     end = c(200, 350, 500)), strand =  "*",
-#'     log2ratio = c(1.1111, 2.2222, -0.9999))
-#' demo[["sample02"]] <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(150, 200, 450), 
-#'     end = c(250, 350, 500)), strand =  "*",
-#'     log2ratio = c(2.2121, 1.1212, -1.3939))
+#' demo[["sample01"]]  <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(100, 201, 400), 
+#'     end=c(200, 350, 500)), strand="*",
+#'     log2ratio=c(1.1111, 2.2222, -0.9999))
+#' demo[["sample02"]] <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(150, 200, 450), 
+#'     end=c(250, 350, 500)), strand="*",
+#'     log2ratio=c(2.2121, 1.1212, -1.3939))
 #' 
 #' ## The 2 samples used to calculate the metric
 #' entries <- data.frame(row=c(2), col=c(1)) 
@@ -204,7 +204,7 @@ calculateOneLog2valueMetricT <- function(entry, segmentData, method,
 
             if (length(sample01) > 0 && length(sample02) > 0) { 
                 result$metric[i] <- switch(method,
-                            weightedEuclideanDistance = 
+                            weightedEuclideanDistance= 
                                 calculateWeightedEuclideanDistanceFor2Samples(
                                         segmentData=disjoinR, 
                                         minThreshold=minThreshold))
@@ -252,8 +252,8 @@ calculateOneLog2valueMetricT <- function(entry, segmentData, method,
 #' 
 #' # Create first Granges representing first sample
 #' sample01 <- GRanges(seqnames="chr1",
-#'     ranges =  IRanges(start=c(100, 201, 400), end=c(200, 350, 500)),
-#'     strand =  "*", log2ratio=c(0.3091175, 0.4582058, -0.3798390))
+#'     ranges=IRanges(start=c(100, 201, 400), end=c(200, 350, 500)),
+#'     strand="*", log2ratio=c(0.3091175, 0.4582058, -0.3798390))
 #' 
 #' # Create second Granges representing second sample
 #' sample02 <- GRanges(seqnames="chr1",
@@ -345,8 +345,8 @@ createDisjoinSegmentsForTwoSamples <- function(segmentDataSample1,
 #' 
 #' # Create first Granges representing first sample
 #' sample01 <- GRanges(seqnames="chr1",
-#'     ranges =  IRanges(start=c(100, 201, 400), end=c(200, 350, 500)),
-#'     strand =  "*", log2ratio=c(0.3091175, 0.4582058, -0.3798390))
+#'     ranges=IRanges(start=c(100, 201, 400), end=c(200, 350, 500)),
+#'     strand="*", log2ratio=c(0.3091175, 0.4582058, -0.3798390))
 #' 
 #' # Create second Granges representing second sample
 #' sample02 <- GRanges(seqnames="chr1",
@@ -390,7 +390,7 @@ calculateWeightedEuclideanDistanceFor2Samples <- function(segmentData,
         
         ## Calculate metric
         temp01 <- temp01 * temp01 * log2(incWidth)
-        final <- 1/(1 + sum(temp01, na.rm = TRUE) ^ (1/2))
+        final <- 1/(1 + sum(temp01, na.rm=TRUE) ^ (1/2))
     }
     
     return(final)   

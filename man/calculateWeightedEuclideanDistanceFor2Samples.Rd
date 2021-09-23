@@ -44,8 +44,8 @@ require(GenomicRanges)
 
 # Create first Granges representing first sample
 sample01 <- GRanges(seqnames="chr1",
-    ranges =  IRanges(start=c(100, 201, 400), end=c(200, 350, 500)),
-    strand =  "*", log2ratio=c(0.3091175, 0.4582058, -0.3798390))
+    ranges=IRanges(start=c(100, 201, 400), end=c(200, 350, 500)),
+    strand="*", log2ratio=c(0.3091175, 0.4582058, -0.3798390))
 
 # Create second Granges representing second sample
 sample02 <- GRanges(seqnames="chr1",

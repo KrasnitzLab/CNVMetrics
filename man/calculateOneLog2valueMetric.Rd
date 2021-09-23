@@ -61,19 +61,19 @@ returned instead.
 require(GenomicRanges)
 
 ## Generate two samples with log2value information as a metadata column
-sample01 <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(100, 201, 400), 
-    end = c(200, 350, 500)), strand =  "*",
-    log2ratio = c(1.1111, 2.2222, -0.9999))
-sample02 <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(150, 200, 450), 
-    end = c(250, 350, 500)), strand =  "*",
-    log2ratio = c(2.2121, 1.1212, -1.3939))
+sample01 <- GRanges(seqnames="chr1", 
+    ranges=IRanges(start=c(100, 201, 400), 
+    end=c(200, 350, 500)), strand="*",
+    log2ratio=c(1.1111, 2.2222, -0.9999))
+sample02 <- GRanges(seqnames="chr1", 
+    ranges=IRanges(start=c(150, 200, 450), 
+    end=c(250, 350, 500)), strand="*",
+    log2ratio=c(2.2121, 1.1212, -1.3939))
 
 ## Calculate weighted Euclidean distance 
-CNVMetrics:::calculateOneLog2valueMetric(sample01, sample02,
-    bedExclusion=NULL, method="weightedEuclideanDistance", 
-    minThreshold=0.2)
+CNVMetrics:::calculateOneLog2valueMetric(sample01=sample01, 
+    sample02=sample02, bedExclusion=NULL, 
+    method="weightedEuclideanDistance", minThreshold=0.2)
 
 
 }

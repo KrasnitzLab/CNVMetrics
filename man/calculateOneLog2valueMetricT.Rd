@@ -76,14 +76,14 @@ require(GenomicRanges)
 demo <- GRangesList()
 
 ## Generate two samples with log2value information as a metadata column
-demo[["sample01"]]  <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(100, 201, 400), 
-    end = c(200, 350, 500)), strand =  "*",
-    log2ratio = c(1.1111, 2.2222, -0.9999))
-demo[["sample02"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(150, 200, 450), 
-    end = c(250, 350, 500)), strand =  "*",
-    log2ratio = c(2.2121, 1.1212, -1.3939))
+demo[["sample01"]]  <- GRanges(seqnames="chr1", 
+    ranges=IRanges(start=c(100, 201, 400), 
+    end=c(200, 350, 500)), strand="*",
+    log2ratio=c(1.1111, 2.2222, -0.9999))
+demo[["sample02"]] <- GRanges(seqnames="chr1", 
+    ranges=IRanges(start=c(150, 200, 450), 
+    end=c(250, 350, 500)), strand="*",
+    log2ratio=c(2.2121, 1.1212, -1.3939))
 
 ## The 2 samples used to calculate the metric
 entries <- data.frame(row=c(2), col=c(1)) 
