@@ -511,6 +511,11 @@ of the number of bases of the analyzed segments. The final metric is 1 over
 1 added to the squared sum of the values obtained for all segments included 
 in the calculation.
 
+The Weighted Euclidean Distance corresponds to the euclidean distance between
+the log2 values of the two samples multiplied by the natural logarithm 
+of the number of bases of the analyzed segments. The final metric is 1 over
+1 added to the squared sum of the values obtained for all segments included 
+in the calculation.
 
 \begin{equation}
   \frac{1}{1 + \sqrt{\sum_{i=1} log_{2}(w_{i}) (A_{i} - B_{i})^{2}}}
@@ -523,6 +528,7 @@ paired.
 
 <br>
 <br>
+
 
 # Supplementary information
 

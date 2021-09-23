@@ -559,7 +559,6 @@ test_that("calculateLog2ratioMetric() must return an error when segmentData is a
         excludedRegions=NULL), error_message)
 })
 
-
 test_that("calculateLog2ratioMetric() must return an error when segmentData has only one sample", {
     
     demo <- GRangesList()
@@ -662,3 +661,4 @@ test_that("calculateLog2ratioMetric() must return an error when excludedRegions 
                 method="weightedEuclideanDistance", minThreshold=0.4, 
                 excludedRegions="hello"), error_message)
 })
+

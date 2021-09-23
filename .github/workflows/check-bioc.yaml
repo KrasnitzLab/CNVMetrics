@@ -39,7 +39,6 @@ env:
   run_pkgdown: 'true'
   has_RUnit: 'false'
   cache-version: 'cache-v5'
-
 jobs:
   build-check:
     runs-on: ${{ matrix.config.os }}
