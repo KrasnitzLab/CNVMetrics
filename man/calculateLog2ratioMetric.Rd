@@ -76,25 +76,25 @@ require(GenomicRanges)
 ## Create a GRangesList object with 3 samples
 ## The stand of the regions doesn't affect the calculation of the metric
 demo <- GRangesList()
-demo[["sample01"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
-    end = c(2004603, 4577608, 31695808)), strand =  "*",
-    log2ratio = c(2.5555, 1.9932, -0.9999))
+demo[["sample01"]] <- GRanges(seqnames="chr1", 
+    ranges=IRanges(start=c(1905048, 4554832, 31686841), 
+    end=c(2004603, 4577608, 31695808)), strand="*",
+    log2ratio=c(2.5555, 1.9932, -0.9999))
 
-demo[["sample02"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1995066, 31611222, 31690000), 
-    end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
-    log2ratio = c(0.3422, 0.5454, -1.4444))
+demo[["sample02"]] <- GRanges(seqnames="chr1", 
+    ranges=IRanges(start=c(1995066, 31611222, 31690000), 
+    end=c(2204505, 31689898, 31895666)), strand=c("-", "+", "+"),
+    log2ratio=c(0.3422, 0.5454, -1.4444))
 
 ## The amplified region in sample03 is a subset of the amplified regions 
 ## in sample01
-demo[["sample03"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1906069, 4558838), 
-    end = c(1909505, 4570601)), strand =  "*",
-    log2ratio = c(3.2222, -1.3232))
+demo[["sample03"]] <- GRanges(seqnames="chr1", 
+    ranges=IRanges(start=c(1906069, 4558838), 
+    end=c(1909505, 4570601)), strand="*",
+    log2ratio=c(3.2222, -1.3232))
 
 ## Calculating Sorensen metric
-calculateLog2ratioMetric(demo, method="weightedEuclideanDistance")
+calculateLog2ratioMetric(demo, method="weightedEuclideanDistance", nJobs=1)
 
 
 }

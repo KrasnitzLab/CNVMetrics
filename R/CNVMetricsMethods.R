@@ -98,32 +98,33 @@
 #' ## Create a GRangesList object with 3 samples
 #' ## The stand of the regions doesn't affect the calculation of the metric
 #' demo <- GRangesList()
-#' demo[["sample01"]] <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1905048, 4554832, 31686841, 32686222), 
-#'     end = c(2004603, 4577608, 31695808, 32689222)), strand =  "*",
-#'     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
+#' demo[["sample01"]] <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222), 
+#'     end=c(2004603, 4577608, 31695808, 32689222)), strand="*",
+#'     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 #' 
-#' demo[["sample02"]] <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1995066, 31611222, 31690000, 32006222), 
-#'     end = c(2204505, 31689898, 31895666, 32789233)), 
-#'     strand =  c("-", "+", "+", "+"),
-#'     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
+#' demo[["sample02"]] <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1995066, 31611222, 31690000, 32006222), 
+#'     end=c(2204505, 31689898, 31895666, 32789233)), 
+#'     strand=c("-", "+", "+", "+"),
+#'     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 #' 
 #' ## The amplified region in sample03 is a subset of the amplified regions 
 #' ## in sample01
-#' demo[["sample03"]] <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1906069, 4558838), 
-#'     end = c(1909505, 4570601)), strand =  "*",
-#'     state = c("AMPLIFICATION", "DELETION"))
+#' demo[["sample03"]] <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1906069, 4558838), 
+#'     end=c(1909505, 4570601)), strand="*",
+#'     state=c("AMPLIFICATION", "DELETION"))
 #' 
 #' ## Calculating Sorensen metric for both AMPLIFICATION and DELETION
-#' calculateOverlapMetric(demo, method="sorensen")
+#' calculateOverlapMetric(demo, method="sorensen", nJobs=1)
 #' 
 #' ## Calculating Szymkiewicz-Simpson metric on AMPLIFICATION only
-#' calculateOverlapMetric(demo, states="AMPLIFICATION", method="szymkiewicz")
+#' calculateOverlapMetric(demo, states="AMPLIFICATION", method="szymkiewicz",
+#'     nJobs=1)
 #' 
 #' ## Calculating Jaccard metric on LOH only
-#' calculateOverlapMetric(demo, states="LOH", method="jaccard")
+#' calculateOverlapMetric(demo, states="LOH", method="jaccard", nJobs=1)
 #' 
 #' @author Astrid Deschênes, Pascal Belleau
 #' @import GenomicRanges
@@ -159,8 +160,8 @@ calculateOverlapMetric <- function(segmentData,
     
     ## All samples must have a metadata column called 'state' 
     if (!all(vapply(segmentData, 
-                    FUN = function(x) {"state" %in% colnames(mcols(x))},
-                    FUN.VALUE = logical(1)))) {
+                    FUN=function(x) {"state" %in% colnames(mcols(x))},
+                    FUN.VALUE=logical(1)))) {
         stop("at least one sample doesn't have a metadata column ", 
                 "called \'state\'")
     }
@@ -171,7 +172,7 @@ calculateOverlapMetric <- function(segmentData,
         coreParam <- SerialParam()
     } else {
         seed <- sample(x=seq_len(999999), size=1)
-        coreParam <- SnowParam(workers = nbrThreads, RNGseed = seed)
+        coreParam <- SnowParam(workers=nbrThreads, RNGseed=seed)
     }
 
     ## List that will contain the results
@@ -287,26 +288,26 @@ calculateOverlapMetric <- function(segmentData,
 #' ## Create a GRangesList object with 3 samples
 #' ## The stand of the regions doesn't affect the calculation of the metric
 #' demo <- GRangesList()
-#' demo[["sample01"]] <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
-#'     end = c(2004603, 4577608, 31695808)), strand =  "*",
-#'     log2ratio = c(2.5555, 1.9932, -0.9999))
+#' demo[["sample01"]] <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1905048, 4554832, 31686841), 
+#'     end=c(2004603, 4577608, 31695808)), strand="*",
+#'     log2ratio=c(2.5555, 1.9932, -0.9999))
 #' 
-#' demo[["sample02"]] <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1995066, 31611222, 31690000), 
-#'     end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
-#'     log2ratio = c(0.3422, 0.5454, -1.4444))
+#' demo[["sample02"]] <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1995066, 31611222, 31690000), 
+#'     end=c(2204505, 31689898, 31895666)), strand=c("-", "+", "+"),
+#'     log2ratio=c(0.3422, 0.5454, -1.4444))
 #' 
 #' ## The amplified region in sample03 is a subset of the amplified regions 
 #' ## in sample01
-#' demo[["sample03"]] <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1906069, 4558838), 
-#'     end = c(1909505, 4570601)), strand =  "*",
-#'     log2ratio = c(3.2222, -1.3232))
+#' demo[["sample03"]] <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1906069, 4558838), 
+#'     end=c(1909505, 4570601)), strand="*",
+#'     log2ratio=c(3.2222, -1.3232))
 #' 
 
 #' ## Calculating Sorensen metric
-#' calculateLog2ratioMetric(demo, method="weightedEuclideanDistance")
+#' calculateLog2ratioMetric(demo, method="weightedEuclideanDistance", nJobs=1)
 #' 
 #' 
 #' @author Astrid Deschênes, Pascal Belleau
@@ -342,8 +343,8 @@ calculateLog2ratioMetric <- function(segmentData,
     ## All samples must have a metadata column called 'log2ratio' with
     ## log2ratio values
     if (!all(vapply(segmentData, 
-                    FUN = function(x) {"log2ratio" %in% colnames(mcols(x))},
-                    FUN.VALUE = logical(1)))) {
+                    FUN=function(x) {"log2ratio" %in% colnames(mcols(x))},
+                    FUN.VALUE=logical(1)))) {
         stop("at least one sample doesn't have a metadata column ", 
                 "called \'log2ratio\'")
     }
@@ -354,7 +355,7 @@ calculateLog2ratioMetric <- function(segmentData,
         coreParam <- SerialParam()
     } else {
         seed <- sample(x=seq_len(999999), size=1)
-        coreParam <- SnowParam(workers = nbrThreads, RNGseed = seed)
+        coreParam <- SnowParam(workers=nbrThreads, RNGseed=seed)
     }
     
     ## List that will contain the results
@@ -452,22 +453,22 @@ calculateLog2ratioMetric <- function(segmentData,
 #' ## Create a GRangesList object with 3 samples
 #' ## The stand of the regions doesn't affect the calculation of the metric
 #' demo <- GRangesList()
-#' demo[["sample01"]] <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
-#'     end = c(2004603, 4577608, 31695808)), strand =  "*",
-#'     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+#' demo[["sample01"]] <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1905048, 4554832, 31686841), 
+#'     end=c(2004603, 4577608, 31695808)), strand="*",
+#'     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
 #' 
-#' demo[["sample02"]] <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1995066, 31611222, 31690000), 
-#'     end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
-#'     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+#' demo[["sample02"]] <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1995066, 31611222, 31690000), 
+#'     end=c(2204505, 31689898, 31895666)), strand=c("-", "+", "+"),
+#'     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
 #' 
 #' ## The amplified region in sample03 is a subset of the amplified regions 
 #' ## in sample01
-#' demo[["sample03"]] <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1906069, 4558838), 
-#'     end = c(1909505, 4570601)), strand =  "*",
-#'     state = c("AMPLIFICATION", "DELETION"))
+#' demo[["sample03"]] <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1906069, 4558838), 
+#'     end=c(1909505, 4570601)), strand="*",
+#'     state=c("AMPLIFICATION", "DELETION"))
 #' 
 #' ## Calculating Sorensen metric
 #' metric <- calculateOverlapMetric(demo, method="sorensen")
@@ -525,7 +526,7 @@ plotMetric <- function(metric, type="ALL",
     }
     
     ## Validate that the color name is valid
-    tryCatch(col2rgb(colorRange), error = function(e) {
+    tryCatch(col2rgb(colorRange), error=function(e) {
         stop("\'colorRange\' must be be a vector of 2 valid color names.")
     })
     
