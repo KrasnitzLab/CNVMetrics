@@ -243,7 +243,7 @@ The calculation of the similarity metrics is done with the
 ## So, the 'states' parameter doesn't have to be specified
 ## The 'states' parameter needs to be adjusted for user-specific states
 ## Ex: states=c("LOH", "gain")
-metric <- calculateOverlapMetric(grl, method = "sorensen")
+metric <- calculateOverlapMetric(segmentData=grl, method="sorensen", nJobs=1)
 
 metric
 ```
@@ -453,7 +453,7 @@ The calculation of the similarity metrics is done with the
 
 ```{r demoCalculateMetricLog}
 metricLog <- calculateLog2ratioMetric(segmentData=grlog, 
-                              method="weightedEuclideanDistance")
+                              method="weightedEuclideanDistance", nJobs=1)
 
 metricLog
 ```
