@@ -1,135 +1,107 @@
 
-#' @title Generate common segments to enable calculation of metrics on 
-#' multiple segment files.
+#' @title Parameters validation for the \code{\link{calculateOverlapMetric}} 
+#' function
 #' 
-#' @description All segments are gathered together, including exclusion 
-#' segments when specified, and a disjoin operation is done to create a 
-#' collection of non-overlapping ranges. The ranges included in the exclusion
-#' segments are marked as so to be removed from futur analysis.
+#' @description Validation of all parameters needed by the public
+#' \code{\link{calculateOverlapMetric}} function.
 #' 
-#' @param fileList a \code{list} of \code{GRanges}, the segments from multiple
-#' files.
+#' @param states a \code{vector} of \code{character} string with at least one
+#' entry. The strings are representing the states that will be analyzed.
 #' 
-#' @param sourceList a \code{list}
+#' @param nJobs a single positive \code{integer} specifying the number of 
+#' worker jobs to create in case of distributed computation.
 #' 
-#' @param bedExclusion a \code{GRanges}, the regions that must be
-#' excluded from the analysis. Default: \code{NULL}.
-#' 
-#' @return a \code{GRanges} containing the segment information from the file.
-#'
-#' @examples
-#'
-#' # TODO
-#' 
-#' @author Astrid Deschenes, Pascal Belleau
-#' @importFrom GenomicRanges disjoin findOverlaps elementMetadata
-#' @importFrom S4Vectors queryHits subjectHits values<-
-#' @importFrom magrittr %>%
-#' @keywords internal
-createSegments <- function(fileList, sourceList, bedExclusion) {
-    
-    fileData <- fileList
-    
-    ## Add same columns to GRanges related to bed exclusion than the
-    ## other GRanges
-    if (!is.null(bedExclusion) && (length(bedExclusion) > 0)) {
-        bedExclusion$score <- NA
-        bedExclusion$source <- "exclusion"
-        fileList[[length(fileList)+1]] <- bedExclusion   
-    }
-    
-    results <- do.call("c", fileList) %>% disjoin()
-    results$included <- TRUE
-    
-    ## Add information about excluded regions
-    if (!is.null(bedExclusion) && (length(bedExclusion) > 0)) {
-        olaps <- findOverlaps(results, bedExclusion)
-        
-        if (length(olaps) > 0) {
-            results[queryHits(olaps)]$included <- FALSE
-        }
-    }
-    
-    for (i in seq_len(length(fileData))) {
-        if (!is.null(fileData[[i]])) {
-            olaps <- findOverlaps(results, fileData[[i]])
-            temp <- elementMetadata(results)
-            temp[, sourceList[[i]]] <- NA
-            temp[queryHits(olaps), sourceList[[i]]] <- 
-                fileData[[i]]$score[subjectHits(olaps)]
-            values(results) <- temp
-        }
-    }
-    
-    return(results)
-}
-
-
-#' @title calculate the regressed values for all segment file.
-#' 
-#' @description Use the linear regression model obtained for each paired of
-#' segment files (current file versus reference) to calculate the regressed 
-#' values for all segment files except for the reference file.
-#' 
-#' @param segmentData a \code{list} of that 
-#' contains the segments from multiple files. The \code{list} is composed of 
-#' those entries:
-#' \itemize{
-#' \item a \code{segment} that contains the \code{GRanges} with the segment
-#' information.
-#' \item a \code{regression} that contains the result of the paired 
-#' regressions. The number of entries corresponds to the number of paired
-#' segment files considering that the reference file is always the same. Each 
-#' entry is a \code{list} composed of those entries:
-#' \itemize{
-#' \item a \code{x_used} with the name of the file that segments values
-#' are used as x values in the regression model.
-#' \item a \code{y_used} with the name of the file that segments values
-#' are used as y values in the regression model. This is the reference file. 
-#' It is the same for all paired regressions.
-#' \item a \code{lm} that contains the regression model.
-#' }
-#' }
-#' 
-#' @return a \code{list} of that 
-#' contains the segments from multiple files. The \code{list} is composed of 
-#' those entries:
-#' \itemize{
-#' \item a \code{segments} that contains the \code{GRanges} with the segment
-#' information and values from each segment file.
-#' \item a \code{regression} that contains the result of the paired 
-#' regressions.
-#' \item a \code{regressedData} that contains the \code{GRanges} with the 
-#' segment information and the regressed values for each segment file.
-#' }
+#' @return \code{0}. 
 #' 
 #' @examples
 #'
-#' # TODO
 #' 
-#' @author Astrid Deschênes, Pascal Belleau
-#' @importFrom GenomicRanges elementMetadata elementMetadata<-
-#' @importFrom stats predict
+#' ## Return zero as all parameters are valid
+#' CNVMetrics:::validateCalculateOverlapMetricParameters(
+#'     states="GAIN", nJobs=1)
+#' 
+#' @author Astrid Deschênes
+#' @importFrom S4Vectors isSingleInteger isSingleNumber
 #' @keywords internal
-calculateRegressedValues <- function(segmentData) {
+validateCalculateOverlapMetricParameters <- function(states, nJobs) {
     
-    segments <- elementMetadata(segmentData$segments)
-
-    #segmentData$regressed <- segments
-    
-    for (i in seq_len(length(segmentData$regression))) {
-        lmData <- segmentData$regression[[i]][["lm"]]
-        xName <- segmentData$regression[[i]][["x_used"]]
-        tempVal <- data.frame(x=segments[, xName])
-        segments[, xName] <- as.vector(predict(lmData, newdata = tempVal))
+    ## Validate that nJobs is an positive integer
+    if (!(isSingleInteger(nJobs) || isSingleNumber(nJobs)) ||
+            as.integer(nJobs) < 1) {
+            stop("nJobs must be a positive integer")
     }
     
-    segmentData$regressedData <- segmentData$segments
-    elementMetadata(segmentData$regressedData) <- segments
+    ## Validate that nJobs is set to 1 on Windows system
+    if (Sys.info()["sysname"] == "Windows" && as.integer(nJobs) != 1) {
+            stop("nJobs must be 1 on a Windows system")
+    }
     
-    return(segmentData)
+    ## At least one state must be present
+    if (!is.vector(states) | ! is.character(states) | length(states) < 1){
+            stop("the \'states\' argument must be a vector of strings ",
+                    "with at least one value")
+    }
+    
+    return(0L)
 }
+    
 
+#' @title Parameters validation for the \code{\link{calculateLog2ratioMetric}} 
+#' function
+#' 
+#' @description Validation of all parameters needed by the public
+#' \code{\link{calculateLog2ratioMetric}} function.
+#' 
+#' @param minThreshold a single positive \code{numeric} setting the minimum 
+#' value to consider two segments as different during the metric calculation. 
+#' If the absolute difference is below or equal to threshold, the difference 
+#' will be replaced by zero.
+#' 
+#' @param excludedRegions an optional \code{GRanges} containing the regions 
+#' that have to be excluded for the metric calculation or \code{NULL}.
+#' 
+#' @param nJobs a single positive \code{integer} specifying the number of 
+#' worker jobs to create in case of distributed computation.
+#' 
+#' @return \code{0}. 
+#' 
+#' @examples
+#'
+#' 
+#' ## Return zero as all parameters are valid
+#' CNVMetrics:::validatecalculateLog2ratioMetricParameters(
+#'     minThreshold=0.9, excludedRegions=NULL, nJobs=1)
+#' 
+#' @author Astrid Deschênes
+#' @importFrom S4Vectors isSingleInteger isSingleNumber
+#' @keywords internal
+validatecalculateLog2ratioMetricParameters <- function(minThreshold, 
+                                        excludedRegions, nJobs) {
+    
+    ## Validate that nJobs is an positive integer
+    if (!(isSingleInteger(nJobs) || isSingleNumber(nJobs)) ||
+        as.integer(nJobs) < 1) {
+        stop("nJobs must be a positive integer")
+    }
+    
+    ## Validate that nJobs is set to 1 on Windows system
+    if (Sys.info()["sysname"] == "Windows" && as.integer(nJobs) != 1) {
+        stop("nJobs must be 1 on a Windows system")
+    }
+    
+    ## The minThreshold must be a positive numeric value
+    if (!is.numeric(minThreshold) | minThreshold < 0.0) {
+        stop("the \'minThreshold\' argument must be a positive numeric value")
+    }
+    
+    ## The minThreshold must be a positive numeric value
+    if (!is.null(excludedRegions) & !is(excludedRegions, "GRanges")) {
+        stop("the \'excludedRegions\' argument must ", 
+                "a \'Granges\' object or NULL")
+    }
+    
+    return(0L)
+}    
 
 
 #' @title Plot one graph related to one set of metrics.

@@ -243,7 +243,7 @@ The calculation of the similarity metrics is done with the
 ## So, the 'states' parameter doesn't have to be specified
 ## The 'states' parameter needs to be adjusted for user-specific states
 ## Ex: states=c("LOH", "gain")
-metric <- calculateOverlapMetric(grl, method = "sorensen")
+metric <- calculateOverlapMetric(segmentData=grl, method="sorensen", nJobs=1)
 
 metric
 ```
@@ -453,7 +453,7 @@ The calculation of the similarity metrics is done with the
 
 ```{r demoCalculateMetricLog}
 metricLog <- calculateLog2ratioMetric(segmentData=grlog, 
-                              method="weightedEuclideanDistance")
+                              method="weightedEuclideanDistance", nJobs=1)
 
 metricLog
 ```
@@ -511,6 +511,11 @@ of the number of bases of the analyzed segments. The final metric is 1 over
 1 added to the squared sum of the values obtained for all segments included 
 in the calculation.
 
+The Weighted Euclidean Distance corresponds to the euclidean distance between
+the log2 values of the two samples multiplied by the natural logarithm 
+of the number of bases of the analyzed segments. The final metric is 1 over
+1 added to the squared sum of the values obtained for all segments included 
+in the calculation.
 
 \begin{equation}
   \frac{1}{1 + \sqrt{\sum_{i=1} log_{2}(w_{i}) (A_{i} - B_{i})^{2}}}
@@ -523,6 +528,7 @@ paired.
 
 <br>
 <br>
+
 
 # Supplementary information
 
@@ -551,6 +557,16 @@ grl <- GRangesList("sample01"=gr1, "sample02"=gr2, "sample03"=gr3)
 
 <br>
 <br>
+
+
+# Reproducible research
+
+To ensure reproducible results, *set.seed()* function should be call 
+before *calculateOverlapMetric()* and *calculateLog2ratioMetric()*. 
+Beware that the *nJobs* parameter must 
+also be fixed. Change in the value of the *nJobs* parameter might  
+lead to different results.
+
 
 # Session info
 

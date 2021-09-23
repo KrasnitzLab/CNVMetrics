@@ -405,6 +405,7 @@ test_that("calculateOverlapMetric() must return expected results with jaccard", 
                                   0.000000000000000, 0.500499500499501, NA), 
                                 nrow = 3, ncol = 3, 
                                 byrow = TRUE)
+
     colnames(expected$DELETION) <- c("sample01", "sample02", "sample03")
     rownames(expected$DELETION) <- c("sample01", "sample02", "sample03")
     
@@ -662,3 +663,5 @@ test_that("calculateLog2ratioMetric() must return an error when excludedRegions 
                 method="weightedEuclideanDistance", minThreshold=0.4, 
                 excludedRegions="hello"), error_message)
 })
+
+

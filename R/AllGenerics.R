@@ -24,7 +24,7 @@ print.CNVMetric <- function(x, ...) {
     cat("\n")
     
     for(i in seq_len(length(x))) {
-        cat(paste0("\n", names(x)[1], ":\n"))
+        cat(paste0("\n", names(x)[i], ":\n"))
         dataM <- x[[i]]
         if (nrow(dataM) > 5) {
             print(dataM[seq_len(5), seq_len(5)], ...)
