@@ -72,6 +72,7 @@ test_that("createDisjoinSegmentsForTwoSamples() must return expected results whe
 })
 
 
+
 ### Tests validateCalculateOverlapMetricParameters() results
 
 context("validateCalculateOverlapMetricParameters() results")
@@ -85,6 +86,7 @@ test_that("validateCalculateOverlapMetricParameters() must return expected zero"
 })
 
 test_that("validateCalculateOverlapMetricParameters() must return error when nJobs is negative", {
+
     
     error_message <- "nJobs must be a positive integer"
     

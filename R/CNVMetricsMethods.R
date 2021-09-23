@@ -136,14 +136,12 @@ calculateOverlapMetric <- function(segmentData,
                                     method=c("sorensen", "szymkiewicz", 
                                                 "jaccard"),
                                     nJobs=1) {
-
     
     ## Select metric method to be used
     method <- match.arg(method)
     
     ## Validate some parameters
     validateCalculateOverlapMetricParameters(states=states, nJobs=nJobs)
-
     
     ## The cnv data must be in a GRangesList format
     if (!is(segmentData, "GRangesList")) {
@@ -212,8 +210,6 @@ calculateOverlapMetric <- function(segmentData,
         results[[type]] <- dataTMP
     }
     
-    
-
     # Return a list marked as an CNVMetric class containing:
     # 1- the metric results for the amplified regions
     # 2- the metric results for the deleted regions
@@ -306,6 +302,7 @@ calculateOverlapMetric <- function(segmentData,
 #'     log2ratio=c(3.2222, -1.3232))
 #' 
 
+
 #' ## Calculating Sorensen metric
 #' calculateLog2ratioMetric(demo, method="weightedEuclideanDistance", nJobs=1)
 #' 
@@ -364,7 +361,6 @@ calculateLog2ratioMetric <- function(segmentData,
     ## Loop for each state
     for(type in c("LOG2RATIO")) {
         ## Matrix to be filled with the metrics
-
         dataTMP <- matrix(rep(NA, nb^2), nrow=nb)
         rownames(dataTMP) <- names
         colnames(dataTMP) <- names
@@ -395,7 +391,6 @@ calculateLog2ratioMetric <- function(segmentData,
                     oneP$metric$metric[i]
             }
         }
-        
         results[[type]] <- dataTMP
     }
     
@@ -406,7 +401,6 @@ calculateLog2ratioMetric <- function(segmentData,
     
     return(results)
 }
-
 
 
 #' @title Plot metrics present in a \code{CNVMetric} object.
