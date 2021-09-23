@@ -22,6 +22,10 @@
 #' This should be (an unambiguous abbreviation of) one of "sorensen", 
 #' "szymkiewicz" or "jaccard". Default: "sorensen".
 #' 
+#' @param nJobs a single positive \code{integer} specifying the number of 
+#' worker jobs to create in case of distributed computation. 
+#' Default: \code{1} and always \code{1} for Windows.
+#' 
 #' @details 
 #' 
 #' The two methods each estimate the overlap between paired samples. They use 
@@ -122,29 +126,29 @@
 #' calculateOverlapMetric(demo, states="LOH", method="jaccard")
 #' 
 #' @author Astrid Deschênes, Pascal Belleau
-#' @import GenomicRanges 
+#' @import GenomicRanges
+#' @importFrom BiocParallel multicoreWorkers SnowParam SerialParam bplapply bptry bpok
 #' @encoding UTF-8
 #' @export
 calculateOverlapMetric <- function(segmentData, 
                                     states=c("AMPLIFICATION", "DELETION"),
                                     method=c("sorensen", "szymkiewicz", 
-                                                "jaccard")) {
+                                                "jaccard"),
+                                    nJobs=1) {
+
     
     ## Select metric method to be used
     method <- match.arg(method)
     
-    ## At least one state must be present
-    if (!is.vector(states) | ! is.character(states) | length(states) < 1){
-        stop("the \'states\' argument must be a vector of strings ",
-                        "with at least one value")
-    }
+    ## Validate some parameters
+    validateCalculateOverlapMetricParameters(states=states, nJobs=nJobs)
+
     
     ## The cnv data must be in a GRangesList format
     if (!is(segmentData, "GRangesList")) {
         stop("the \'segmentData\' argument must be a \'GRangesList\' object")
     }
-    
-    
+
     names <- names(segmentData)
     nb <- length(names)
     
@@ -153,8 +157,7 @@ calculateOverlapMetric <- function(segmentData,
         stop("at least 2 samples must be present in the segmentData")
     }
     
-    ## All samples must have a metadata column called 'state' with
-    ## AMPLIFICATION/DELETION/etc status 
+    ## All samples must have a metadata column called 'state' 
     if (!all(vapply(segmentData, 
                     FUN = function(x) {"state" %in% colnames(mcols(x))},
                     FUN.VALUE = logical(1)))) {
@@ -162,25 +165,54 @@ calculateOverlapMetric <- function(segmentData,
                 "called \'state\'")
     }
     
+    ## Select the type of parallel environment used for parallel processing
+    nbrThreads <- as.integer(nJobs)
+    if (nbrThreads == 1 || multicoreWorkers() == 1) {
+        coreParam <- SerialParam()
+    } else {
+        seed <- sample(x=seq_len(999999), size=1)
+        coreParam <- SnowParam(workers = nbrThreads, RNGseed = seed)
+    }
+
+    ## List that will contain the results
     results <- list()
     
+    ## Loop for each state
     for(type in states) {
-        
+        ## Matrix to be filled with the metrics
         dataTMP <- matrix(rep(NA, nb^2), nrow=nb)
         rownames(dataTMP) <- names
         colnames(dataTMP) <- names
         
-        for(i in seq_len(nb)[-1]) {
-            for(j in seq_len(i-1)) {
-                dataTMP[i, j] <- calculateOneOverlapMetric(
-                    sample01=segmentData[[names[i]]], 
-                    sample02=segmentData[[names[j]]],
-                    method=method, type=type)
+        ## Each combinaison that needs to be calculated
+        ind <- which(lower.tri(dataTMP, diag=FALSE), arr.ind=TRUE)
+        jobSplit <- rep(seq_len(nJobs), 
+                        each=ceiling(nrow(ind)/nJobs))[seq_len(nrow(ind))]
+        entries <- split(as.data.frame(ind), jobSplit)
+        
+        ## Running each profile id on a separate thread
+        processed <- bptry(bplapply(X=entries, FUN=calculateOneOverlapMetricT, 
+                                    segmentData=segmentData,
+                                    method=method, type=type, 
+                                    BPPARAM=coreParam))
+        ## Check for errors
+        if (!all(bpok(processed))) {
+            stop("At least one parallel task has failed.")
+        }
+        
+        ## Assigned the metrics to the final matrix
+        for (oneP in processed) {
+            for(i in seq_len(nrow(oneP$metric))) {
+                dataTMP[oneP$metric$row[i], oneP$metric$col[i]] <- 
+                                                    oneP$metric$metric[i]
             }
         }
+        
         results[[type]] <- dataTMP
     }
     
+    
+
     # Return a list marked as an CNVMetric class containing:
     # 1- the metric results for the amplified regions
     # 2- the metric results for the deleted regions
@@ -212,9 +244,12 @@ calculateOverlapMetric <- function(segmentData,
 #' If the absolute difference is below or equal to threshold, the difference 
 #' will be replaced by zero. Default: 0.2.
 #'  
-#' 
 #' @param excludedRegions an optional \code{GRanges} containing the regions 
 #' that have to be excluded for the metric calculation. Default: \code{NULL}.
+#' 
+#' @param nJobs a single positive \code{integer} specifying the number of 
+#' worker jobs to create in case of distributed computation. 
+#' Default: \code{1} and always \code{1} for Windows.
 #' 
 #' @details 
 #' 
@@ -269,34 +304,31 @@ calculateOverlapMetric <- function(segmentData,
 #'     end = c(1909505, 4570601)), strand =  "*",
 #'     log2ratio = c(3.2222, -1.3232))
 #' 
+
 #' ## Calculating Sorensen metric
 #' calculateLog2ratioMetric(demo, method="weightedEuclideanDistance")
 #' 
 #' 
 #' @author Astrid Deschênes, Pascal Belleau
-#' @import GenomicRanges 
+#' @import GenomicRanges
+#' @importFrom BiocParallel multicoreWorkers SnowParam SerialParam bplapply bptry bpok 
 #' @encoding UTF-8
 #' @export
 calculateLog2ratioMetric <- function(segmentData, 
                                     method=c("weightedEuclideanDistance"),
-                                    minThreshold=0.2, excludedRegions=NULL) {
+                                    minThreshold=0.2, excludedRegions=NULL, 
+                                    nJobs=1) {
     
+    ## Select metric method to be used
     method <- match.arg(method)
     
-    ## The cnv data must be in a GRangesList format
+    ## Validate some parameters
+    validatecalculateLog2ratioMetricParameters(minThreshold=minThreshold, 
+                                excludedRegions=excludedRegions, nJobs=nJobs)
+    
+    ## The CNV data must be in a GRangesList format
     if (!is(segmentData, "GRangesList")) {
         stop("the \'segmentData\' argument must be a \'GRangesList\' object")
-    }
-    
-    ## The minThreshold must be a positive numeric value
-    if (!is.numeric(minThreshold) | minThreshold < 0.0) {
-        stop("the \'minThreshold\' argument must be a positive numeric value")
-    }
-    
-    ## The minThreshold must be a positive numeric value
-    if (!is.null(excludedRegions) & !is(excludedRegions, "GRanges")) {
-        stop("the \'excludedRegions\' argument must ", 
-            "a \'Granges\' object or NULL")
     }
     
     names <- names(segmentData)
@@ -316,24 +348,53 @@ calculateLog2ratioMetric <- function(segmentData,
                 "called \'log2ratio\'")
     }
     
+    ## Select the type of parallel environment used for parallel processing
+    nbrThreads <- as.integer(nJobs)
+    if (nbrThreads == 1 || multicoreWorkers() == 1) {
+        coreParam <- SerialParam()
+    } else {
+        seed <- sample(x=seq_len(999999), size=1)
+        coreParam <- SnowParam(workers = nbrThreads, RNGseed = seed)
+    }
+    
+    ## List that will contain the results
     results <- list()
     
+    ## Loop for each state
     for(type in c("LOG2RATIO")) {
-        
+        ## Matrix to be filled with the metrics
+
         dataTMP <- matrix(rep(NA, nb^2), nrow=nb)
         rownames(dataTMP) <- names
         colnames(dataTMP) <- names
         
-        for(i in seq_len(nb)[-1]) {
-            for(j in seq_len(i-1)) {
-                
-                dataTMP[i, j] <- calculateOneLog2valueMetric(
-                    sample01=segmentData[[names[i]]], 
-                    sample02=segmentData[[names[j]]],
-                    method=method, minThreshold=minThreshold, 
-                    bedExclusion=excludedRegions)
+        ## Each combination that needs to be calculated
+        ind <- which(lower.tri(dataTMP, diag=FALSE), arr.ind=TRUE)
+        jobSplit <- rep(seq_len(nJobs), 
+                        each=ceiling(nrow(ind)/nJobs))[seq_len(nrow(ind))]
+        entries <- split(as.data.frame(ind), jobSplit)
+        
+        ## Running each profile id on a separate thread
+        processed <- bptry(bplapply(X=entries, 
+                                        FUN=calculateOneLog2valueMetricT, 
+                                        segmentData=segmentData,
+                                        method=method,
+                                        minThreshold=minThreshold, 
+                                        bedExclusion=excludedRegions,
+                                        BPPARAM=coreParam))
+        ## Check for errors
+        if (!all(bpok(processed))) {
+            stop("At least one parallel task has failed.")
+        }
+        
+        ## Assigned the metrics to the final matrix
+        for (oneP in processed) {
+            for(i in seq_len(nrow(oneP$metric))) {
+                dataTMP[oneP$metric$row[i], oneP$metric$col[i]] <- 
+                    oneP$metric$metric[i]
             }
         }
+        
         results[[type]] <- dataTMP
     }
     
@@ -477,12 +538,10 @@ plotMetric <- function(metric, type="ALL",
     
     for (name in nameList) {
         plot_list[[name]] <- plotOneMetric(metric=metric,
-                                                type=name, 
-                                                colorRange=colorRange, 
-                                                show_colnames=show_colnames, 
-                                                silent=silent, ...)  
+                                type=name, colorRange=colorRange, 
+                                show_colnames=show_colnames, 
+                                silent=silent, ...)  
     }
-    
     
     n_col <- length(plot_list)
     

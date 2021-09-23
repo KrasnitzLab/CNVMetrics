@@ -106,6 +106,124 @@ calculateOneOverlapMetric <- function(sample01, sample02, method, type) {
 }
 
 
+#' @title Calculate metric using overlapping amplified/deleted regions between 
+#' two samples.
+#' 
+#' @description Calculate a specific metric using overlapping 
+#' amplified/deleted regions between two samples. 
+#' 
+#' @param entry a \code{list} which contains the row and column indexes 
+#' (always in this order) of 
+#' the metric in the final matrix. Those values correspond to the positions 
+#' of the two samples used
+#' to calculate the metric in the \code{GRangesList} (\code{segmentData}).
+#' 
+#' @param segmentData a \code{GRangesList} that contains a collection of 
+#' genomic ranges representing copy number events, including amplified/deleted 
+#' status, from at least 2 samples. All samples must have a metadata column 
+#' called '\code{state}' with a state, in an character string format, 
+#' specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).
+#' 
+#' @param method a \code{character} string representing the metric to be
+#' used ('\code{sorensen}' or '\code{szymkiewicz}'.
+#' 
+#' @param type a \code{character} string representing the type of 
+#' copy number events to be used ('\code{AMPLIFICATION}' or '\code{DELETION}').
+#' 
+#' @return a \code{list} containing 1 entry:
+#' \itemize{
+#' \item{\code{metric}}{ a \code{data.frame}, which contains 3 columns. The 2 
+#' first columns, called \code{row} and \code{column} correspond to the 
+#' indexes of the metric in the final matrix. Those
+#' 2 first columns match to the \code{entry} parameter. The third column, 
+#' called \code{metric}, 
+#' contains the values of the specified metric for each combination. 
+#' If the metric cannot be calculated, \code{NA} is present. 
+#' }
+#' }
+#' 
+#'
+#' @examples
+#' 
+#' ## Load required package to generate the samples
+#' require(GenomicRanges)
+#' 
+#' ## Create a GRangesList object with 3 samples
+#' ## The stand of the regions doesn't affect the calculation of the metric
+#' demo <- GRangesList()
+#' demo[["sample01"]] <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1905048, 4554832, 31686841, 32686222), 
+#'     end = c(2004603, 4577608, 31695808, 32689222)), strand =  "*",
+#'     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
+#' 
+#' demo[["sample02"]] <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1995066, 31611222, 31690000, 32006222), 
+#'     end = c(2204505, 31689898, 31895666, 32789233)), 
+#'     strand =  c("-", "+", "+", "+"),
+#'     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
+#' 
+#' ## The amplified region in sample03 is a subset of the amplified regions 
+#' ## in sample01
+#' demo[["sample03"]] <- GRanges(seqnames = "chr1", 
+#'     ranges =  IRanges(start = c(1906069, 4558838), 
+#'     end = c(1909505, 4570601)), strand =  "*",
+#'     state = c("AMPLIFICATION", "DELETION"))
+#' 
+#' ## The 2 samples used to calculate the metric
+#' entries <- data.frame(row=c(2, 3), col=c(1, 1))   
+#' 
+#' ## Calculate Sorensen metric for the amplified regions on samples 2 and 3  
+#' CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
+#'     method="sorensen", type="AMPLIFICATION")
+#' 
+#' ## Calculate Szymkiewicz-Simpson metric for the amplified regions 
+#' ## in samples 1 and 2  
+#' ## Amplified regions of sample02 are a subset of the amplified 
+#' ## regions in sample01
+#' CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
+#'     method="szymkiewicz", type="AMPLIFICATION")
+#' 
+#' ## Calculate Sorensen metric for the deleted regions in samples 1 and 2  
+#' CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
+#'     method="sorensen", type="DELETION")
+#' 
+#' @author Astrid Deschênes
+#' @encoding UTF-8
+#' @keywords internal
+calculateOneOverlapMetricT <- function(entry, segmentData, method, type) {
+    
+    entries <- split(entry, entry$col)
+    
+    results <- list()
+    
+    for (data in entries) {
+        
+        result <- data
+        result$metric <- rep(NA, nrow(result))
+        
+        sample02 <- segmentData[[data$col[1]]]
+        sample02 <- sample02[sample02$state == type,]
+        
+        for(i in seq_len(nrow(data))) {
+            sample01 <- segmentData[[data$row[i]]]
+            sample01 <- sample01[sample01$state == type,]
+            
+            if (length(sample01) > 0 && length(sample02) > 0) { 
+                result$metric[i] <- switch(method,
+                sorensen = calculateSorensen(sample01, sample02),
+                    szymkiewicz = calculateSzymkiewicz(sample01, sample02),
+                    jaccard = calculateJaccard(sample01, sample02))
+            }
+        }
+        
+        results[[length(results) + 1]] <- result
+    }
+    
+    results <- do.call(rbind, results)
+
+    return(result <- list(metric=results))
+}
+
 #' @title Calculate Sorensen metric
 #' 
 #' @description Calculate Sorensen metric using overlapping regions between 
