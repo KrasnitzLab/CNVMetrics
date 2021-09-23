@@ -57,32 +57,32 @@ returned instead.
 require(GenomicRanges)
 
 ## Generate two samples with identical sequence levels
-sample01 <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(100, 201, 400), 
-    end = c(200, 350, 500)), strand =  "*",
-    state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
-sample02 <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(150, 200, 450), 
-    end = c(250, 350, 500)), strand =  "*",
-    state = c("AMPLIFICATION", "DELETION", "DELETION"))
+sample01 <- GRanges(seqnames="chr1", 
+    ranges=IRanges(start=c(100, 201, 400), 
+    end=c(200, 350, 500)), strand="*",
+    state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
+sample02 <- GRanges(seqnames="chr1", 
+    ranges=IRanges(start=c(150, 200, 450), 
+    end=c(250, 350, 500)), strand="*",
+    state=c("AMPLIFICATION", "DELETION", "DELETION"))
 
 ## Calculate Sorensen metric for the amplified regions   
-CNVMetrics:::calculateOneOverlapMetric(sample01, sample02, 
-    method="sorensen", type="AMPLIFICATION")
+CNVMetrics:::calculateOneOverlapMetric(sample01=sample01, 
+    sample02=sample02, method="sorensen", type="AMPLIFICATION")
 
 ## Calculate Szymkiewicz-Simpson metric for the amplified regions   
 ## Amplified regions of sample02 are a subset of the amplified 
 ## regions in sample01
-CNVMetrics:::calculateOneOverlapMetric(sample01, sample02, 
-    method="szymkiewicz", type="AMPLIFICATION")
+CNVMetrics:::calculateOneOverlapMetric(sample01=sample01, 
+    sample02=sample02, method="szymkiewicz", type="AMPLIFICATION")
 
 ## Calculate Sorensen metric for the deleted regions   
-CNVMetrics:::calculateOneOverlapMetric(sample01, sample02, 
-    method="sorensen", type="DELETION")
+CNVMetrics:::calculateOneOverlapMetric(sample01=sample01, 
+    sample02=sample02, method="sorensen", type="DELETION")
     
 ## Calculate Szymkiewicz-Simpson metric for the deleted regions    
-CNVMetrics:::calculateOneOverlapMetric(sample01, sample02,
-    method="szymkiewicz", type="DELETION")
+CNVMetrics:::calculateOneOverlapMetric(sample01=sample01, 
+    sample02=sample02, method="szymkiewicz", type="DELETION")
 
 }
 \references{

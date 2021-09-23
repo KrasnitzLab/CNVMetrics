@@ -52,23 +52,23 @@ require(GenomicRanges)
 ## Create a GRangesList object with 3 samples
 ## The stand of the regions doesn't affect the calculation of the metric
 demo <- GRangesList()
-demo[["sample01"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1905048, 4554832, 31686841, 32686222), 
-    end = c(2004603, 4577608, 31695808, 32689222)), strand =  "*",
-    state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
+demo[["sample01"]] <- GRanges(seqnames="chr1", 
+    ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222), 
+    end=c(2004603, 4577608, 31695808, 32689222)), strand="*",
+    state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 
-demo[["sample02"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1995066, 31611222, 31690000, 32006222), 
-    end = c(2204505, 31689898, 31895666, 32789233)), 
-    strand =  c("-", "+", "+", "+"),
-    state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
+demo[["sample02"]] <- GRanges(seqnames="chr1", 
+    ranges= IRanges(start=c(1995066, 31611222, 31690000, 32006222), 
+    end=c(2204505, 31689898, 31895666, 32789233)), 
+    strand=c("-", "+", "+", "+"),
+    state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 
 ## The amplified region in sample03 is a subset of the amplified regions 
 ## in sample01
-demo[["sample03"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1906069, 4558838), 
-    end = c(1909505, 4570601)), strand =  "*",
-    state = c("AMPLIFICATION", "DELETION"))
+demo[["sample03"]] <- GRanges(seqnames="chr1", 
+    ranges=IRanges(start=c(1906069, 4558838), 
+    end=c(1909505, 4570601)), strand="*",
+    state=c("AMPLIFICATION", "DELETION"))
 
 ## The 2 samples used to calculate the metric
 entries <- data.frame(row=c(2, 3), col=c(1, 1))   
