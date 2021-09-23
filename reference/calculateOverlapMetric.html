@@ -235,26 +235,26 @@ doi: <a href='https://doi.org/10.1111/j.1469-8137.1912.tb05611.x'>https://doi.or
 <span class='co'>## Create a GRangesList object with 3 samples</span>
 <span class='co'>## The stand of the regions doesn't affect the calculation of the metric</span>
 <span class='va'>demo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html'>GRangesList</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample01"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr1"</span>, 
-    ranges <span class='op'>=</span>  <span class='fu'>IRanges</span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1905048</span>, <span class='fl'>4554832</span>, <span class='fl'>31686841</span>, <span class='fl'>32686222</span><span class='op'>)</span>, 
-    end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2004603</span>, <span class='fl'>4577608</span>, <span class='fl'>31695808</span>, <span class='fl'>32689222</span><span class='op'>)</span><span class='op'>)</span>, strand <span class='op'>=</span>  <span class='st'>"*"</span>,
-    state <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AMPLIFICATION"</span>, <span class='st'>"AMPLIFICATION"</span>, <span class='st'>"DELETION"</span>, <span class='st'>"LOH"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample01"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, 
+    ranges<span class='op'>=</span><span class='fu'>IRanges</span><span class='op'>(</span>start<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1905048</span>, <span class='fl'>4554832</span>, <span class='fl'>31686841</span>, <span class='fl'>32686222</span><span class='op'>)</span>, 
+    end<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2004603</span>, <span class='fl'>4577608</span>, <span class='fl'>31695808</span>, <span class='fl'>32689222</span><span class='op'>)</span><span class='op'>)</span>, strand<span class='op'>=</span><span class='st'>"*"</span>,
+    state<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AMPLIFICATION"</span>, <span class='st'>"AMPLIFICATION"</span>, <span class='st'>"DELETION"</span>, <span class='st'>"LOH"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample02"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr1"</span>, 
-    ranges <span class='op'>=</span>  <span class='fu'>IRanges</span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1995066</span>, <span class='fl'>31611222</span>, <span class='fl'>31690000</span>, <span class='fl'>32006222</span><span class='op'>)</span>, 
-    end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2204505</span>, <span class='fl'>31689898</span>, <span class='fl'>31895666</span>, <span class='fl'>32789233</span><span class='op'>)</span><span class='op'>)</span>, 
-    strand <span class='op'>=</span>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"-"</span>, <span class='st'>"+"</span>, <span class='st'>"+"</span>, <span class='st'>"+"</span><span class='op'>)</span>,
-    state <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AMPLIFICATION"</span>, <span class='st'>"AMPLIFICATION"</span>, <span class='st'>"DELETION"</span>, <span class='st'>"LOH"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample02"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, 
+    ranges<span class='op'>=</span><span class='fu'>IRanges</span><span class='op'>(</span>start<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1995066</span>, <span class='fl'>31611222</span>, <span class='fl'>31690000</span>, <span class='fl'>32006222</span><span class='op'>)</span>, 
+    end<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2204505</span>, <span class='fl'>31689898</span>, <span class='fl'>31895666</span>, <span class='fl'>32789233</span><span class='op'>)</span><span class='op'>)</span>, 
+    strand<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"-"</span>, <span class='st'>"+"</span>, <span class='st'>"+"</span>, <span class='st'>"+"</span><span class='op'>)</span>,
+    state<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AMPLIFICATION"</span>, <span class='st'>"AMPLIFICATION"</span>, <span class='st'>"DELETION"</span>, <span class='st'>"LOH"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## The amplified region in sample03 is a subset of the amplified regions </span>
 <span class='co'>## in sample01</span>
-<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample03"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr1"</span>, 
-    ranges <span class='op'>=</span>  <span class='fu'>IRanges</span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1906069</span>, <span class='fl'>4558838</span><span class='op'>)</span>, 
-    end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1909505</span>, <span class='fl'>4570601</span><span class='op'>)</span><span class='op'>)</span>, strand <span class='op'>=</span>  <span class='st'>"*"</span>,
-    state <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AMPLIFICATION"</span>, <span class='st'>"DELETION"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample03"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, 
+    ranges<span class='op'>=</span><span class='fu'>IRanges</span><span class='op'>(</span>start<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1906069</span>, <span class='fl'>4558838</span><span class='op'>)</span>, 
+    end<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1909505</span>, <span class='fl'>4570601</span><span class='op'>)</span><span class='op'>)</span>, strand<span class='op'>=</span><span class='st'>"*"</span>,
+    state<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AMPLIFICATION"</span>, <span class='st'>"DELETION"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## Calculating Sorensen metric for both AMPLIFICATION and DELETION</span>
-<span class='fu'>calculateOverlapMetric</span><span class='op'>(</span><span class='va'>demo</span>, method<span class='op'>=</span><span class='st'>"sorensen"</span><span class='op'>)</span>
+<span class='fu'>calculateOverlapMetric</span><span class='op'>(</span><span class='va'>demo</span>, method<span class='op'>=</span><span class='st'>"sorensen"</span>, nJobs<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; CNV Metrics
 #&gt; Metric:
 #&gt; sorensen
@@ -273,7 +273,8 @@ doi: <a href='https://doi.org/10.1111/j.1469-8137.1912.tb05611.x'>https://doi.or
 #&gt; sample03 0.0000000        0       NA
 #&gt; </div><div class='input'>
 <span class='co'>## Calculating Szymkiewicz-Simpson metric on AMPLIFICATION only</span>
-<span class='fu'>calculateOverlapMetric</span><span class='op'>(</span><span class='va'>demo</span>, states<span class='op'>=</span><span class='st'>"AMPLIFICATION"</span>, method<span class='op'>=</span><span class='st'>"szymkiewicz"</span><span class='op'>)</span>
+<span class='fu'>calculateOverlapMetric</span><span class='op'>(</span><span class='va'>demo</span>, states<span class='op'>=</span><span class='st'>"AMPLIFICATION"</span>, method<span class='op'>=</span><span class='st'>"szymkiewicz"</span>,
+    nJobs<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; CNV Metrics
 #&gt; Metric:
 #&gt; szymkiewicz
@@ -285,7 +286,7 @@ doi: <a href='https://doi.org/10.1111/j.1469-8137.1912.tb05611.x'>https://doi.or
 #&gt; sample03 1.00000000        0       NA
 #&gt; </div><div class='input'>
 <span class='co'>## Calculating Jaccard metric on LOH only</span>
-<span class='fu'>calculateOverlapMetric</span><span class='op'>(</span><span class='va'>demo</span>, states<span class='op'>=</span><span class='st'>"LOH"</span>, method<span class='op'>=</span><span class='st'>"jaccard"</span><span class='op'>)</span>
+<span class='fu'>calculateOverlapMetric</span><span class='op'>(</span><span class='va'>demo</span>, states<span class='op'>=</span><span class='st'>"LOH"</span>, method<span class='op'>=</span><span class='st'>"jaccard"</span>, nJobs<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; CNV Metrics
 #&gt; Metric:
 #&gt; jaccard
