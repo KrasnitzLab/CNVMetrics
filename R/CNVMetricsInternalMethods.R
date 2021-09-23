@@ -97,7 +97,7 @@ validatecalculateLog2ratioMetricParameters <- function(minThreshold,
     ## The minThreshold must be a positive numeric value
     if (!is.null(excludedRegions) & !is(excludedRegions, "GRanges")) {
         stop("the \'excludedRegions\' argument must ", 
-             "a \'Granges\' object or NULL")
+                "a \'Granges\' object or NULL")
     }
     
     return(0L)

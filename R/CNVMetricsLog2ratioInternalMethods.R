@@ -206,8 +206,8 @@ calculateOneLog2valueMetricT <- function(entry, segmentData, method,
                 result$metric[i] <- switch(method,
                             weightedEuclideanDistance = 
                                 calculateWeightedEuclideanDistanceFor2Samples(
-                                         segmentData=disjoinR, 
-                                         minThreshold=minThreshold))
+                                        segmentData=disjoinR, 
+                                        minThreshold=minThreshold))
             }
         }
         
