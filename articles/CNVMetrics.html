@@ -149,8 +149,7 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 </div>
 <div id="workflow-for-metrics-calculated-using-cnv-status-calls" class="section level1">
 <h1 class="hasAnchor">
-<a href="#workflow-for-metrics-calculated-using-cnv-status-calls" class="anchor"></a>Workflow for metrics calculated using <em>CNV status calls</em>
-</h1>
+<a href="#workflow-for-metrics-calculated-using-cnv-status-calls" class="anchor"></a>Workflow for metrics calculated using CNV status calls</h1>
 <p>The following workflow gives an overview of the capabilities of <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> to calculate metrics using the <em>CNV status calls</em> (amplification/deletion status or any user specific status):</p>
 <p>The key functions for each step of the workflow are:</p>
 <table class="table">
@@ -174,10 +173,10 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 </tbody>
 </table>
 <p>The <code>package::function()</code> notation is used for functions from other packages.</p>
+<p><br></p>
 <div id="data-input---copy-number-file-containing-the-cnv-status-calls" class="section level2">
 <h2 class="hasAnchor">
-<a href="#data-input---copy-number-file-containing-the-cnv-status-calls" class="anchor"></a>Data Input - Copy number file containing the <em>CNV status calls</em>
-</h2>
+<a href="#data-input---copy-number-file-containing-the-cnv-status-calls" class="anchor"></a>Data Input - Copy number file containing the CNV status calls</h2>
 <p><em>CNV status calls</em> are represented as segments with a copy number state. The state be general, such as “amplification,” “deletion” or “neutral,” or more specific such as of loss of heterozygosity (LOH), 1-copy gain, 2-copy gain, 1-copy loss and so on.</p>
 <p>A basic five-column input file containing genomic position (chromosome, start, end), sample identification and <em>CNV status calls</em> is required. All samples that need to be analyzed together have to be combined into one file.</p>
 <p>A column named <strong>state</strong> is required. In this column, The <em>CNV status call</em> of each segment must be specified using a string. By default, the states that are analyzed by this package are the amplification/deletion states with this specific notation:</p>
@@ -201,6 +200,7 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 Example of a copy number file containing CNV calls.
 </p>
 </div>
+<p><br></p>
 </div>
 <div id="data-importation---grangeslist" class="section level2">
 <h2 class="hasAnchor">
@@ -262,6 +262,7 @@ Example of a copy number file containing CNV calls.
 ## 
 ## ...
 ## &lt;9 more elements&gt;</code></pre>
+<p><br></p>
 </div>
 <div id="metric-calculation" class="section level2">
 <h2 class="hasAnchor">
@@ -296,6 +297,7 @@ Example of a copy number file containing CNV calls.
 ## mM3P 0.2568018 0.3336979 0.6481145         NA  NA
 ## mM6  0.0000000 0.0000000 0.0000000 0.00918594  NA
 ## [ -- omitted 5 rows/columns ]</code></pre>
+<p><br></p>
 </div>
 <div id="metric-visualization" class="section level2">
 <h2 class="hasAnchor">
@@ -350,6 +352,7 @@ Example of a copy number file containing CNV calls.
 <a href="#metrics-using-the-cnv-status-calls" class="anchor"></a>Metrics using the <em>CNV status calls</em>
 </h1>
 <p>This survey represents the overlap metrics that are implemented in <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> package. Those metrics are calculated using the <em>CNV status calls</em>. The size of the amplified/deleted regions as well as the size of the overlapping of regions are always in base paired.</p>
+<p><br></p>
 <div id="sørensen" class="section level2">
 <h2 class="hasAnchor">
 <a href="#s%C3%B8rensen" class="anchor"></a>Sørensen</h2>
@@ -359,6 +362,7 @@ Example of a copy number file containing CNV calls.
   (\#eq:sorensen)
 \end{equation}\]</span></p>
 <p>where <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> represent the regions of each sample in base paired.</p>
+<p><br></p>
 </div>
 <div id="szymkiewiczsimpson" class="section level2">
 <h2 class="hasAnchor">
@@ -369,6 +373,7 @@ Example of a copy number file containing CNV calls.
   (\#eq:szymkiewicz)
 \end{equation}\]</span></p>
 <p>where <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> represent the regions of each sample in base paired. If set <span class="math inline">\(X\)</span> is a subset of <span class="math inline">\(Y\)</span> or vice versa, the overlap coefficient value is 1.</p>
+<p><br></p>
 </div>
 <div id="jaccard" class="section level2">
 <h2 class="hasAnchor">
@@ -384,8 +389,7 @@ Example of a copy number file containing CNV calls.
 </div>
 <div id="workflow-for-metrics-calculated-using-the-level-of-amplificationdeletion" class="section level1">
 <h1 class="hasAnchor">
-<a href="#workflow-for-metrics-calculated-using-the-level-of-amplificationdeletion" class="anchor"></a>Workflow for metrics calculated using <em>the level of amplification/deletion</em>
-</h1>
+<a href="#workflow-for-metrics-calculated-using-the-level-of-amplificationdeletion" class="anchor"></a>Workflow for metrics calculated using the level of amplification/deletion</h1>
 <p>The following section gives an overview of the capabilities of <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> to calculate metrics using the <em>the level of amplification/deletion</em> (log2 ratio values):</p>
 <p>The key functions for each step of the workflow are:</p>
 <table class="table">
@@ -409,10 +413,10 @@ Example of a copy number file containing CNV calls.
 </tbody>
 </table>
 <p>The <code>package::function()</code> notation is used for functions from other packages.</p>
+<p><br></p>
 <div id="data-input---copy-number-file-containing-the-level-of-amplificationdeletion" class="section level2">
 <h2 class="hasAnchor">
-<a href="#data-input---copy-number-file-containing-the-level-of-amplificationdeletion" class="anchor"></a>Data Input - Copy number file containing <em>the level of amplification/deletion</em>
-</h2>
+<a href="#data-input---copy-number-file-containing-the-level-of-amplificationdeletion" class="anchor"></a>Data Input - Copy number file containing the level of amplification/deletion</h2>
 <p>Copy number are often represented as segments with a copy number state and/or the level of amplification/deletion. One usual unit to quantify the level of amplification or deletion is in log2 ratio.</p>
 <p>A basic five-column input file containing genomic position (chromosome, start, end), sample identification and <em>the level of amplification/deletion</em> is required. All samples that need to be analyzed together have to be combined into one file.</p>
 <p>A column named <strong>log2ratio</strong> is required. In this column, the amplified and deleted segments must be assigned a numerical value representing the log2ratio or NA.</p>
@@ -421,6 +425,7 @@ Example of a copy number file containing CNV calls.
 Example of a copy number file containing log2ratio values.
 </p>
 </div>
+<p><br></p>
 </div>
 <div id="data-importation---grangeslist-1" class="section level2">
 <h2 class="hasAnchor">
@@ -482,6 +487,7 @@ Example of a copy number file containing log2ratio values.
 ## 
 ## ...
 ## &lt;9 more elements&gt;</code></pre>
+<p><br></p>
 </div>
 <div id="metric-calculation-1" class="section level2">
 <h2 class="hasAnchor">
@@ -504,6 +510,7 @@ Example of a copy number file containing log2ratio values.
 ## mM3P 0.09499932 0.06838924 0.09040692         NA  NA
 ## mM6  0.10819206 0.08071789 0.07608047 0.07192307  NA
 ## [ -- omitted 5 rows/columns ]</code></pre>
+<p><br></p>
 </div>
 <div id="metric-visualization-1" class="section level2">
 <h2 class="hasAnchor">
@@ -534,6 +541,7 @@ Example of a copy number file containing log2ratio values.
 <h1 class="hasAnchor">
 <a href="#metrics-using-the-level-of-amplificationdeletion" class="anchor"></a>Metrics using the level of amplification/deletion</h1>
 <p>This section presents the similarity measure that is implemented in <em><a href="https://github.com/KrasnitzLab/CNVMetrics">CNVMetrics</a></em> package. This metric are calculated using the level of amplification/deletion. The level of amplification/deletion is in log2 ratio while the size of the regions is in base paired.</p>
+<p><br></p>
 <div id="weighted-euclidean-distance-based" class="section level2">
 <h2 class="hasAnchor">
 <a href="#weighted-euclidean-distance-based" class="anchor"></a>Weighted Euclidean Distance-Based</h2>
@@ -550,12 +558,19 @@ Example of a copy number file containing log2ratio values.
 <div id="supplementary-information" class="section level1">
 <h1 class="hasAnchor">
 <a href="#supplementary-information" class="anchor"></a>Supplementary information</h1>
+<p><br></p>
+<div id="using-parallelization" class="section level2">
+<h2 class="hasAnchor">
+<a href="#using-parallelization" class="anchor"></a>Using parallelization</h2>
+<p>When the number of samples is limited, the above steps should be processed in a few minutes. However, for datasets with a high number of samples, the combinatorial calculation of the metrics can lead to longer processing time. In this context, take advantage of parallelized computation is a viable option. Both <em>calculateOverlapMetric()</em> and <em>calculateLog2ratioMetric()</em> functions have paralleled implementation done with the <em><a href="https://bioconductor.org/packages/3.13/BiocParallel">BiocParallel</a></em> package <span class="citation">(Morgan et al. 2021)</span>.</p>
+<p><br></p>
+</div>
 <div id="creating-your-own-grangeslist" class="section level2">
 <h2 class="hasAnchor">
 <a href="#creating-your-own-grangeslist" class="anchor"></a>Creating your own GRangesList</h2>
 <p>The <code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function enables the creation of a list of <code>GRangesList</code> objects from a <code>data.frame</code>. However, <code>GRangesList</code> can also be generated and filled manually.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Construction a GRangesList()</span>
+<code class="sourceCode R"><span class="co">## First, create the GRanges objects; one per sample</span>
 <span class="va">gr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr2"</span>, ranges<span class="op">=</span><span class="fu">IRanges</span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6000</span><span class="op">)</span>,
           strand<span class="op">=</span><span class="st">"+"</span>, state<span class="op">=</span><span class="st">"AMPLIFICATION"</span>, 
           log2ratio<span class="op">=</span><span class="fl">0.45</span><span class="op">)</span>
@@ -568,15 +583,26 @@ Example of a copy number file containing log2ratio values.
           strand<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">"-"</span><span class="op">)</span>, state<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"NEUTRAL"</span>, <span class="st">"AMPLIFICATION"</span><span class="op">)</span>, 
           log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.04</span>, <span class="fl">0.31</span><span class="op">)</span><span class="op">)</span>
 
+<span class="co">## Then, construct a GRangesList() using all the GRanges objects</span>
 <span class="va">grl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html">GRangesList</a></span><span class="op">(</span><span class="st">"sample01"</span><span class="op">=</span><span class="va">gr1</span>, <span class="st">"sample02"</span><span class="op">=</span><span class="va">gr2</span>, <span class="st">"sample03"</span><span class="op">=</span><span class="va">gr3</span><span class="op">)</span></code></pre></div>
+<p><br></p>
+</div>
+<div id="reproducible-research" class="section level2">
+<h2 class="hasAnchor">
+<a href="#reproducible-research" class="anchor"></a>Reproducible research</h2>
+<p>To ensure reproducible results, <em>set.seed()</em> function should be call before <em>calculateOverlapMetric()</em> and <em>calculateLog2ratioMetric()</em>. Beware that the <em>nJobs</em> parameter must also be fixed; change in the value of the <em>nJobs</em> parameter might lead to different results.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## First, fixe the seed value</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">121234</span><span class="op">)</span>
+
+<span class="co">## Run the method to calculated the desired metrics</span>
+<span class="co">## The number of jobs (*nJobs* parameter) can be higher than one but </span>
+<span class="co">## have to remain the same then the calculation is redone to ensure </span>
+<span class="co">## reproducitble results</span>
+<span class="va">metricLog</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculateLog2ratioMetric.html">calculateLog2ratioMetric</a></span><span class="op">(</span>segmentData<span class="op">=</span><span class="va">grlog</span>, 
+                        method<span class="op">=</span><span class="st">"weightedEuclideanDistance"</span>, nJobs<span class="op">=</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p><br><br></p>
 </div>
-</div>
-<div id="reproducible-research" class="section level1">
-<h1 class="hasAnchor">
-<a href="#reproducible-research" class="anchor"></a>Reproducible research</h1>
-<p>To ensure reproducible results, <em>set.seed()</em> function should be call before <em>calculateOverlapMetric()</em> and <em>calculateLog2ratioMetric()</em>. Beware that the <em>nJobs</em> parameter must also be fixed. Change in the value of the <em>nJobs</em> parameter might<br>
-lead to different results.</p>
 </div>
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
@@ -610,18 +636,18 @@ lead to different results.</p>
 ##  [1] highr_0.9              RColorBrewer_1.1-2     compiler_4.1.0        
 ##  [4] BiocManager_1.30.16    jquerylib_0.1.4        XVector_0.32.0        
 ##  [7] bitops_1.0-7           tools_4.1.0            zlibbioc_1.38.0       
-## [10] digest_0.6.27          lifecycle_1.0.0        gtable_0.3.0          
+## [10] digest_0.6.28          lifecycle_1.0.0        gtable_0.3.0          
 ## [13] evaluate_0.14          memoise_2.0.0          rlang_0.4.11          
 ## [16] yaml_2.2.1             pkgdown_1.6.1          xfun_0.26             
 ## [19] fastmap_1.1.0          gridExtra_2.3          GenomeInfoDbData_1.2.6
 ## [22] stringr_1.4.0          desc_1.3.0             fs_1.5.0              
 ## [25] systemfonts_1.0.2      grid_4.1.0             rprojroot_2.0.2       
 ## [28] R6_2.5.1               textshaping_0.3.5      BiocParallel_1.26.2   
-## [31] rmarkdown_2.11         bookdown_0.24          pheatmap_1.0.12       
-## [34] farver_2.1.0           magrittr_2.0.1         scales_1.1.1          
-## [37] htmltools_0.5.2        colorspace_2.0-2       ragg_1.1.3            
-## [40] stringi_1.7.4          munsell_0.5.0          RCurl_1.98-1.5        
-## [43] cachem_1.0.6           crayon_1.4.1</code></pre>
+## [31] rmarkdown_2.11         pheatmap_1.0.12        farver_2.1.0          
+## [34] magrittr_2.0.1         scales_1.1.1           htmltools_0.5.2       
+## [37] colorspace_2.0-2       ragg_1.1.3             stringi_1.7.4         
+## [40] munsell_0.5.0          RCurl_1.98-1.5         cachem_1.0.6          
+## [43] crayon_1.4.1</code></pre>
 <p><br><br></p>
 </div>
 <div id="references" class="section level1 unnumbered">
@@ -642,6 +668,9 @@ Hiroi, N, T Takahashi, A Hishimoto, T Izumi, S Boku, and T Hiramoto. 2013. <span
 </div>
 <div id="ref-Jaccard1912" class="csl-entry">
 Jaccard, Paul. 1912. <span>“<span class="nocase">The distribution of the flora in the alpine zone.</span>”</span> <em>New Phytologist</em> 11 (2): 37–50. <a href="https://doi.org/10.1111/j.1469-8137.1912.tb05611.x">https://doi.org/10.1111/j.1469-8137.1912.tb05611.x</a>.
+</div>
+<div id="ref-Morgan2021" class="csl-entry">
+Morgan, Martin, Valerie Obenchain, Michel Lang, Ryan Thompson, and Nitesh Turaga. 2021. <em>BiocParallel: Bioconductor Facilities for Parallel Evaluation</em>. <a href="https://github.com/Bioconductor/BiocParallel">https://github.com/Bioconductor/BiocParallel</a>.
 </div>
 <div id="ref-Oni2020" class="csl-entry">
 Oni, Tobiloba E, Giulia Biffi, Lindsey A Baker, Yuan Hao, Claudia Tonelli, Tim D D Somerville, Astrid Deschênes, et al. 2020. <span>“<span class="nocase">SOAT1 promotes mevalonate pathway dependency in pancreatic cancer</span>.”</span> <em>Journal of Experimental Medicine</em> 217 (9). <a href="https://doi.org/10.1084/jem.20192389">https://doi.org/10.1084/jem.20192389</a>.
