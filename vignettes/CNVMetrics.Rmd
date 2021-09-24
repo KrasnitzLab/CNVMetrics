@@ -2,7 +2,10 @@
 title: "Quantifying similarity between copy number profiles"
 author: Astrid Deschênes, Pascal Belleau and Alexander Krasnitz
 output:
-  bookdown::html_document2:
+  rmarkdown::html_document:
+    highlight: pygments
+    toc: true
+    fig_width: 5
     number_sections: true
 pkgdown:
   asis: true
@@ -129,7 +132,7 @@ devtools::install_github('KrasnitzLab/CNVMetrics', ref = "v0.1.4")
 <br>
 <br>
 
-# Workflow for metrics calculated using _CNV status calls_
+# Workflow for metrics calculated using CNV status calls
 
 The following workflow gives an overview of the capabilities of 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` to calculate metrics using the 
@@ -147,7 +150,9 @@ The key functions for each step of the workflow are:
  
 The `package::function()` notation is used for functions from other packages.
 
-## Data Input - Copy number file containing the _CNV status calls_
+<br>
+
+## Data Input - Copy number file containing the CNV status calls
 
 _CNV status calls_ are represented as segments with a copy number state. The 
 state be general, such as "amplification", "deletion" or "neutral", or more 
@@ -191,6 +196,8 @@ knitr::include_graphics("Input_CNV_call_300ppi_v02_low_quality.jpg")
 ```
 
 
+<br>
+
 ## Data Importation - GRangesList
 
 The input format for the copy number information, as needed by the 
@@ -233,6 +240,8 @@ grl
 ```
 
 
+<br>
+
 ## Metric Calculation
 
 The calculation of the similarity metrics is done with the 
@@ -247,6 +256,9 @@ metric <- calculateOverlapMetric(segmentData=grl, method="sorensen", nJobs=1)
 
 metric
 ```
+
+
+<br>
 
 ## Metric Visualization  
 
@@ -321,6 +333,8 @@ This survey represents the overlap metrics that are implemented in
 using the _CNV status calls_. The size of the amplified/deleted regions as 
 well as the size of the overlapping of regions are always in base paired. 
 
+<br>
+
 ## Sørensen
 
 The Sørensen coefficient [@Sorensen48] is calculated by dividing twice the 
@@ -332,6 +346,8 @@ size of the intersection by the sum of the size of the two sets:
 \end{equation}    
 
 where $X$ and $Y$ represent the regions of each sample in base paired.
+
+<br>
 
 ## Szymkiewicz–Simpson
 
@@ -348,6 +364,7 @@ where $X$ and $Y$ represent the regions of each sample in base paired. If
 set $X$ is a subset of $Y$ or vice versa, the overlap coefficient 
 value is 1. 
 
+<br>
 
 ## Jaccard
 
@@ -365,7 +382,7 @@ where $X$ and $Y$ represent the regions of each sample in base paired.
 <br>
 <br>
 
-# Workflow for metrics calculated using _the level of amplification/deletion_
+# Workflow for metrics calculated using the level of amplification/deletion
 
 The following section gives an overview of the capabilities of 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` to calculate metrics using the 
@@ -381,8 +398,9 @@ The key functions for each step of the workflow are:
  
 The `package::function()` notation is used for functions from other packages.
 
+<br>
 
-## Data Input - Copy number file containing _the level of amplification/deletion_ 
+## Data Input - Copy number file containing the level of amplification/deletion
 
 Copy number are often represented as segments with a copy number state and/or
 the level of amplification/deletion. One usual unit to quantify the level 
@@ -403,6 +421,7 @@ or NA.
 knitr::include_graphics("Input_CNV_log2ratio_v01_low_quality.jpg")
 ```
 
+<br>
 
 ## Data Importation - GRangesList
 
@@ -445,6 +464,7 @@ grlog <- GenomicRanges::makeGRangesListFromDataFrame(df=calls,
 grlog
 ```
 
+<br>
 
 ## Metric Calculation
 
@@ -457,6 +477,8 @@ metricLog <- calculateLog2ratioMetric(segmentData=grlog,
 
 metricLog
 ```
+
+<br>
 
 ## Metric Visualization  
 
@@ -503,6 +525,8 @@ using the level of amplification/deletion. The level of
 amplification/deletion is in log2 ratio while the size of the regions 
 is in base paired. 
 
+<br>
+
 ## Weighted Euclidean Distance-Based
 
 The Weighted Euclidean Distance corresponds to the euclidean distance between
@@ -532,6 +556,20 @@ paired.
 
 # Supplementary information
 
+<br>
+
+## Using parallelization
+
+When the number of samples is limited, the above steps should be processed
+in a few minutes. However, for datasets with a high number of samples, the
+combinatorial calculation of the metrics can lead to longer processing time. 
+In this context, take advantage of parallelized computation is a viable 
+option. Both *calculateOverlapMetric()* and *calculateLog2ratioMetric()* 
+functions have paralleled implementation done with the 
+`r Biocpkg("BiocParallel")` package [@Morgan2021].
+
+<br>
+
 ## Creating your own GRangesList
 
 The `GenomicRanges::makeGRangesListFromDataFrame()` function enables the 
@@ -539,7 +577,7 @@ creation of a list of `GRangesList` objects from a `data.frame`. However,
 `GRangesList` can also be generated and filled manually. 
 
 ```{r demoGR}
-## Construction a GRangesList()
+## First, create the GRanges objects; one per sample
 gr1 <- GRanges(seqnames="chr2", ranges=IRanges(3, 6000),
           strand="+", state="AMPLIFICATION", 
           log2ratio=0.45)
@@ -552,21 +590,35 @@ gr3 <- GRanges(seqnames=c("chr1", "chr2"),
           strand=c("-", "-"), state=c("NEUTRAL", "AMPLIFICATION"), 
           log2ratio=c(0.04, 0.31))
 
+## Then, construct a GRangesList() using all the GRanges objects
 grl <- GRangesList("sample01"=gr1, "sample02"=gr2, "sample03"=gr3)
 ```
 
 <br>
-<br>
 
-
-# Reproducible research
+## Reproducible research
 
 To ensure reproducible results, *set.seed()* function should be call 
 before *calculateOverlapMetric()* and *calculateLog2ratioMetric()*. 
-Beware that the *nJobs* parameter must 
-also be fixed. Change in the value of the *nJobs* parameter might  
-lead to different results.
+Beware that the *nJobs* parameter must also be fixed; change in the value of 
+the *nJobs* parameter might lead to different results.
 
+
+```{r demoSeed, eval=FALSE}
+## First, fixe the seed value
+set.seed(121234)
+
+## Run the method to calculated the desired metrics
+## The number of jobs (*nJobs* parameter) can be higher than one but 
+## have to remain the same then the calculation is redone to ensure 
+## reproducitble results
+metricLog <- calculateLog2ratioMetric(segmentData=grlog, 
+                        method="weightedEuclideanDistance", nJobs=1)
+
+```
+
+<br>
+<br>
 
 # Session info
 
