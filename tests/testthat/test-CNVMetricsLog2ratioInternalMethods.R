@@ -153,7 +153,6 @@ test_that("createDisjoinSegmentsForTwoSamples() must return expected result when
 })
 
 
-
 test_that("createDisjoinSegmentsForTwoSamples() must return expected result for specific bedExclusion data", {
     
     ## Granges with the information for the 2 samples
@@ -171,7 +170,7 @@ test_that("createDisjoinSegmentsForTwoSamples() must return expected result for 
     
     bedExclusion <-  GRanges(seqnames=c("chr2",  "chr5"), 
                              ranges=IRanges(start=c(4566832, 90), 
-                                            end=c(4568608, 801)), 
+                                                end=c(4568608, 801)), 
                              strand=rep("+", 2))  
     
     results <- CNVMetrics:::createDisjoinSegmentsForTwoSamples(segmentDataSample1=gr1,
@@ -195,8 +194,71 @@ test_that("createDisjoinSegmentsForTwoSamples() must return expected result for 
 })
 
 
+### Tests calculateOneLog2valueMetricT() results
+
+context("calculateOneLog2valueMetricT() results")
 
 
+test_that("calculateOneLog2valueMetricT() must return expected result when bedExclusion=NULL", {
+    
+    demo <- GRangesList()
+    
+    demo[["sample01"]] <- GRanges(seqnames=c("chr1", "chr2", "chr4", "chr5"), 
+                   ranges=IRanges(start=c(1905048, 4554832, 31686841, 90), 
+                                end=c(2004603, 4577608, 31695808, 1001)), 
+                   strand=rep("+", 4),
+                   log2ratio=c(2.12, 2.2323, 1.11, -1.1212))
+    
+    demo[["sample02"]] <- GRanges(seqnames=c("chr1", "chr2", "chr4", "chr5"), 
+                   ranges=IRanges(start=c(2005048, 4564832, 31686841, 190), 
+                                end=c(23114603, 4567608, 31695808, 10001)), 
+                   strand=rep("+", 4),
+                   log2ratio=c(1.22, 2.2323, 3.33, -1.1212))    
+    
+    
+    entries <- data.frame(row=c(2), col=c(1)) 
+    
+    results <- CNVMetrics:::calculateOneLog2valueMetricT(entry=entries, 
+                    segmentData=demo, method="weightedEuclideanDistance", 
+                    minThreshold=0.2, bedExclusion=NULL)
+    
+    expected <- list()
+    expected[["metric"]] <- data.frame(row=c(2), col=c(1), 
+                                    metric=c(0.1105654011651811124972156))
+    
+    expect_equal(results, expected)
+})
+
+
+test_that("calculateOneLog2valueMetricT() must return expected result when no overlap between samples", {
+    
+    demo <- GRangesList()
+    
+    demo[["sample01"]] <- GRanges(seqnames=c("chr5", "chr5", "chr5", "chr5"), 
+                                  ranges=IRanges(start=c(1905048, 14554832, 31686841, 31695999), 
+                                                 end=c(2004603, 14577608, 31695808, 31697999)), 
+                                  strand=rep("+", 4),
+                                  log2ratio=c(2.12, 2.2323, 1.11, -1.1212))
+    
+    demo[["sample02"]] <- GRanges(seqnames=c("chr1", "chr2", "chr4", "chr5"), 
+                                  ranges=IRanges(start=c(2005048, 4564832, 31686841, 190), 
+                                                 end=c(23114603, 4567608, 31695808, 10001)), 
+                                  strand=rep("+", 4),
+                                  log2ratio=c(1.22, 2.2323, 3.33, -1.1212))    
+    
+    
+    entries <- data.frame(row=c(2), col=c(1)) 
+    
+    results <- CNVMetrics:::calculateOneLog2valueMetricT(entry=entries, 
+                        segmentData=demo, method="weightedEuclideanDistance", 
+                        minThreshold=0.2, bedExclusion=NULL)
+    
+    expected <- list()
+    expected[["metric"]] <- data.frame(row=c(2), col=c(1), 
+                                       metric=c(NA))
+    
+    expect_equal(results, expected)
+})
 
 
 
