@@ -17,8 +17,8 @@
 #'
 #' @aliases CNVMetrics-package CNVMetrics
 #'
-#' @author Astrid Deschênes and
-#' Pascal Belleau
+#' @author Astrid Deschênes, Pascal Belleau, David A. Tuveson and
+#' Alexander Krasnitz
 #'
 #' Maintainer:
 #' Astrid Deschênes <adeschen@hotmail.com>
