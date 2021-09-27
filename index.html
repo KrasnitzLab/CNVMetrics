@@ -15,9 +15,14 @@
 <meta property="og:title" content="Copy Number Variant Metrics">
 <meta property="og:description" content="The CNVMetrics package calculates similarity metrics to 
     facilitate copy number variant comparison among samples and/or methods. 
+    Similarity metrics can be employed to compare CNV profiles of genetically 
+    unrelated samples as well as those with a common genetic background. 
     Some metrics are based on the shared amplified/deleted regions while other 
-    metrics rely on the level of amplification/deletion. Finally, 
-    a visualization tool is provided to explore resulting metrics.">
+    metrics rely on the level of amplification/deletion. 
+    The data type used as input is a plain text file containing the genomic 
+    position of the copy number variations, as well as the status and/or 
+    the log2 ratio values.
+    Finally, a visualization tool is provided to explore resulting metrics.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -94,7 +99,7 @@
 <div id="authors" class="section level2">
 <h2 class="hasAnchor">
 <a href="#authors" class="anchor"></a>Authors</h2>
-<p><a href="http://ca.linkedin.com/in/astriddeschenes" title="Astrid Deschênes">Astrid Deschênes</a>, <a href="http://ca.linkedin.com/in/pascalbelleau" title="Pascal Belleau">Pascal Belleau</a> and <a href="https://www.cshl.edu/research/faculty-staff/alexander-krasnitz/" title="Alexander Krasnitz">Alexander Krasnitz</a></p>
+<p><a href="http://ca.linkedin.com/in/astriddeschenes" title="Astrid Deschênes">Astrid Deschênes</a>, <a href="http://ca.linkedin.com/in/pascalbelleau" title="Pascal Belleau">Pascal Belleau</a>, <a href="http://tuvesonlab.labsites.cshl.edu/" title="David A. Tuveson">David A. Tuveson</a> and <a href="https://www.cshl.edu/research/faculty-staff/alexander-krasnitz/" title="Alexander Krasnitz">Alexander Krasnitz</a></p>
 </div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
@@ -154,6 +159,7 @@
 <ul class="list-unstyled">
 <li>Astrid Deschênes <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-7846-6749" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Pascal Belleau <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-0802-1071" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>David A. Tuveson <br><small class="roles"> Author </small>  </li>
 <li>Alexander Krasnitz <br><small class="roles"> Author </small>  </li>
 </ul>
 </div>
@@ -171,7 +177,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Astrid Deschênes, Pascal Belleau, Alexander Krasnitz.</p>
+  <p>Developed by Astrid Deschênes, Pascal Belleau, David A. Tuveson, Alexander Krasnitz.</p>
 </div>
 
 <div class="pkgdown">
