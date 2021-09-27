@@ -24,7 +24,8 @@ If you use this package for a publication, we would ask you to cite the followin
 ## Authors ##
 
 [Astrid Desch&ecirc;nes](http://ca.linkedin.com/in/astriddeschenes "Astrid Desch&ecirc;nes"),
-[Pascal Belleau](http://ca.linkedin.com/in/pascalbelleau "Pascal Belleau") and 
+[Pascal Belleau](http://ca.linkedin.com/in/pascalbelleau "Pascal Belleau"),
+[David A. Tuveson](http://tuvesonlab.labsites.cshl.edu/ "David A. Tuveson") and 
 [Alexander Krasnitz](https://www.cshl.edu/research/faculty-staff/alexander-krasnitz/ "Alexander Krasnitz")
 
 

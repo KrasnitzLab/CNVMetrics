@@ -39,19 +39,6 @@ pkgTextVer <- function(pkg) {
 
 c(
     bibentry(bibtype="manual",
-        title = pkgTitle('CNVMetrics'),
-        author = personList(
-            as.person("Astrid Deschênes"),
-            as.person("Pascal Belleau"),
-            as.person("Alexander Krasnitz")
-        ),
-        year = format(Sys.Date(), "%Y"),
-        url = "https://krasnitzlab.github.io/CNVMetrics",
-        note = pkgVer('CNVMetrics'),
-        doi = '',
-        textVersion = pkgTextVer('CNVMetrics')
-    ),
-    bibentry(bibtype="manual",
         title = "CNVMetrics package: Quantifying similarity between copy number profiles [version 1; not peer reviewed]",
         author = personList(
             as.person("Pascal Belleau"),
