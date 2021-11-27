@@ -77,7 +77,7 @@ present, the metric is calculated for each sample pair." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNVMetrics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
       </span>
     </div>
 
@@ -133,7 +133,7 @@ present, the metric is calculated for each sample pair.</p>
 
     <pre class="usage"><span class='fu'>calculateLog2ratioMetric</span><span class='op'>(</span>
   <span class='va'>segmentData</span>,
-  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weightedEuclideanDistance"</span><span class='op'>)</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"weightedEuclideanDistance"</span><span class='op'>)</span>,
   minThreshold <span class='op'>=</span> <span class='fl'>0.2</span>,
   excludedRegions <span class='op'>=</span> <span class='cn'>NULL</span>,
   nJobs <span class='op'>=</span> <span class='fl'>1</span>
@@ -205,44 +205,45 @@ number of bases of the segment <code>i</code>.</p>
     <p>Astrid Deschênes, Pascal Belleau</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>## Load required package to generate the samples</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://bioconductor.org/packages/GenomicRanges'>GenomicRanges</a></span><span class='op'>)</span>
-
-<span class='co'>## Create a GRangesList object with 3 samples</span>
-<span class='co'>## The stand of the regions doesn't affect the calculation of the metric</span>
-<span class='va'>demo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html'>GRangesList</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample01"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, 
-    ranges<span class='op'>=</span><span class='fu'>IRanges</span><span class='op'>(</span>start<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1905048</span>, <span class='fl'>4554832</span>, <span class='fl'>31686841</span><span class='op'>)</span>, 
-    end<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2004603</span>, <span class='fl'>4577608</span>, <span class='fl'>31695808</span><span class='op'>)</span><span class='op'>)</span>, strand<span class='op'>=</span><span class='st'>"*"</span>,
-    log2ratio<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2.5555</span>, <span class='fl'>1.9932</span>, <span class='op'>-</span><span class='fl'>0.9999</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample02"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, 
-    ranges<span class='op'>=</span><span class='fu'>IRanges</span><span class='op'>(</span>start<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1995066</span>, <span class='fl'>31611222</span>, <span class='fl'>31690000</span><span class='op'>)</span>, 
-    end<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2204505</span>, <span class='fl'>31689898</span>, <span class='fl'>31895666</span><span class='op'>)</span><span class='op'>)</span>, strand<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"-"</span>, <span class='st'>"+"</span>, <span class='st'>"+"</span><span class='op'>)</span>,
-    log2ratio<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.3422</span>, <span class='fl'>0.5454</span>, <span class='op'>-</span><span class='fl'>1.4444</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'>## The amplified region in sample03 is a subset of the amplified regions </span>
-<span class='co'>## in sample01</span>
-<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample03"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, 
-    ranges<span class='op'>=</span><span class='fu'>IRanges</span><span class='op'>(</span>start<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1906069</span>, <span class='fl'>4558838</span><span class='op'>)</span>, 
-    end<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1909505</span>, <span class='fl'>4570601</span><span class='op'>)</span><span class='op'>)</span>, strand<span class='op'>=</span><span class='st'>"*"</span>,
-    log2ratio<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3.2222</span>, <span class='op'>-</span><span class='fl'>1.3232</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'>## Calculating Sorensen metric</span>
-<span class='fu'>calculateLog2ratioMetric</span><span class='op'>(</span><span class='va'>demo</span>, method<span class='op'>=</span><span class='st'>"weightedEuclideanDistance"</span>, nJobs<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; CNV Metrics
-#&gt; Metric:
-#&gt; weightedEuclideanDistance
-#&gt; 
-#&gt; LOG2RATIO:
-#&gt;            sample01 sample02 sample03
-#&gt; sample01         NA       NA       NA
-#&gt; sample02 0.06414725       NA       NA
-#&gt; sample03 0.07458553       NA       NA
-#&gt; </div><div class='input'>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='co'>## Load required package to generate the samples</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://bioconductor.org/packages/GenomicRanges'>GenomicRanges</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Create a GRangesList object with 3 samples</span></span>
+<span class='r-in'><span class='co'>## The stand of the regions doesn't affect the calculation of the metric</span></span>
+<span class='r-in'><span class='va'>demo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html'>GRangesList</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample01"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, </span>
+<span class='r-in'>    ranges<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html'>IRanges</a></span><span class='op'>(</span>start<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>1905048</span>, <span class='fl'>4554832</span>, <span class='fl'>31686841</span><span class='op'>)</span>, </span>
+<span class='r-in'>    end<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>2004603</span>, <span class='fl'>4577608</span>, <span class='fl'>31695808</span><span class='op'>)</span><span class='op'>)</span>, strand<span class='op'>=</span><span class='st'>"*"</span>,</span>
+<span class='r-in'>    log2ratio<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>2.5555</span>, <span class='fl'>1.9932</span>, <span class='op'>-</span><span class='fl'>0.9999</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample02"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, </span>
+<span class='r-in'>    ranges<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html'>IRanges</a></span><span class='op'>(</span>start<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>1995066</span>, <span class='fl'>31611222</span>, <span class='fl'>31690000</span><span class='op'>)</span>, </span>
+<span class='r-in'>    end<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>2204505</span>, <span class='fl'>31689898</span>, <span class='fl'>31895666</span><span class='op'>)</span><span class='op'>)</span>, strand<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"-"</span>, <span class='st'>"+"</span>, <span class='st'>"+"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    log2ratio<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>0.3422</span>, <span class='fl'>0.5454</span>, <span class='op'>-</span><span class='fl'>1.4444</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## The amplified region in sample03 is a subset of the amplified regions </span></span>
+<span class='r-in'><span class='co'>## in sample01</span></span>
+<span class='r-in'><span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample03"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, </span>
+<span class='r-in'>    ranges<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html'>IRanges</a></span><span class='op'>(</span>start<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>1906069</span>, <span class='fl'>4558838</span><span class='op'>)</span>, </span>
+<span class='r-in'>    end<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>1909505</span>, <span class='fl'>4570601</span><span class='op'>)</span><span class='op'>)</span>, strand<span class='op'>=</span><span class='st'>"*"</span>,</span>
+<span class='r-in'>    log2ratio<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>3.2222</span>, <span class='op'>-</span><span class='fl'>1.3232</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Calculating Sorensen metric</span></span>
+<span class='r-in'><span class='fu'>calculateLog2ratioMetric</span><span class='op'>(</span><span class='va'>demo</span>, method<span class='op'>=</span><span class='st'>"weightedEuclideanDistance"</span>, nJobs<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> CNV Metrics</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Metric:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> weightedEuclideanDistance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> LOG2RATIO:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            sample01 sample02 sample03</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample01         NA       NA       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample02 0.06414725       NA       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample03 0.07458553       NA       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -75,7 +75,7 @@ a CNVMetric object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNVMetrics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
       </span>
     </div>
 
@@ -171,45 +171,46 @@ metric.</p>
     <p>Astrid Deschênes</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>#' ## Load required package to generate the samples</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://bioconductor.org/packages/GenomicRanges'>GenomicRanges</a></span><span class='op'>)</span>
-
-<span class='co'>## Create a GRangesList object with 3 samples</span>
-<span class='co'>## The stand of the regions doesn't affect the calculation of the metric</span>
-<span class='va'>demo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html'>GRangesList</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample01"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr1"</span>, 
-    ranges <span class='op'>=</span>  <span class='fu'>IRanges</span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1905048</span>, <span class='fl'>4554832</span>, <span class='fl'>31686841</span><span class='op'>)</span>, 
-    end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2004603</span>, <span class='fl'>4577608</span>, <span class='fl'>31695808</span><span class='op'>)</span><span class='op'>)</span>, strand <span class='op'>=</span>  <span class='st'>"*"</span>,
-    state <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AMPLIFICATION"</span>, <span class='st'>"AMPLIFICATION"</span>, <span class='st'>"DELETION"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample02"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr1"</span>, 
-    ranges <span class='op'>=</span>  <span class='fu'>IRanges</span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1995066</span>, <span class='fl'>31611222</span>, <span class='fl'>31690000</span><span class='op'>)</span>, 
-    end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2204505</span>, <span class='fl'>31689898</span>, <span class='fl'>31895666</span><span class='op'>)</span><span class='op'>)</span>, strand <span class='op'>=</span>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"-"</span>, <span class='st'>"+"</span>, <span class='st'>"+"</span><span class='op'>)</span>,
-    state <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AMPLIFICATION"</span>, <span class='st'>"AMPLIFICATION"</span>, <span class='st'>"DELETION"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'>## The amplified region in sample03 is a subset of the amplified regions </span>
-<span class='co'>## in sample01</span>
-<span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample03"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr1"</span>, 
-    ranges <span class='op'>=</span>  <span class='fu'>IRanges</span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1906069</span>, <span class='fl'>4558838</span><span class='op'>)</span>, 
-    end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1909505</span>, <span class='fl'>4570601</span><span class='op'>)</span><span class='op'>)</span>, strand <span class='op'>=</span>  <span class='st'>"*"</span>,
-    state <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AMPLIFICATION"</span>, <span class='st'>"DELETION"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'>## Calculating Sorensen metric</span>
-<span class='va'>metric</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculateOverlapMetric.html'>calculateOverlapMetric</a></span><span class='op'>(</span><span class='va'>demo</span>, method<span class='op'>=</span><span class='st'>"sorensen"</span><span class='op'>)</span>
-
-<span class='co'>## Plot amplification metrics using darkorange color</span>
-<span class='fu'>CNVMetrics</span><span class='fu'>:::</span><span class='fu'>plotOneMetric</span><span class='op'>(</span><span class='va'>metric</span>, type<span class='op'>=</span><span class='st'>"AMPLIFICATION"</span>, 
-    colorRange<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"white"</span>, <span class='st'>"darkorange"</span><span class='op'>)</span>, show_colnames<span class='op'>=</span><span class='cn'>FALSE</span>, silent<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; TableGrob (5 x 6) "layout": 6 grobs
-#&gt;   z     cells      name                       grob
-#&gt; 1 1 (1-1,3-3)      main         text[GRID.text.30]
-#&gt; 2 2 (2-2,3-3)  col_tree polyline[GRID.polyline.31]
-#&gt; 3 3 (4-4,1-1)  row_tree polyline[GRID.polyline.32]
-#&gt; 4 4 (4-4,3-3)    matrix       gTree[GRID.gTree.34]
-#&gt; 5 5 (4-4,4-4) row_names         text[GRID.text.35]
-#&gt; 6 6 (3-5,5-5)    legend       gTree[GRID.gTree.38]</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='co'>#' ## Load required package to generate the samples</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://bioconductor.org/packages/GenomicRanges'>GenomicRanges</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Create a GRangesList object with 3 samples</span></span>
+<span class='r-in'><span class='co'>## The stand of the regions doesn't affect the calculation of the metric</span></span>
+<span class='r-in'><span class='va'>demo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html'>GRangesList</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample01"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr1"</span>, </span>
+<span class='r-in'>    ranges <span class='op'>=</span>  <span class='fu'><a href='https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html'>IRanges</a></span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>1905048</span>, <span class='fl'>4554832</span>, <span class='fl'>31686841</span><span class='op'>)</span>, </span>
+<span class='r-in'>    end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>2004603</span>, <span class='fl'>4577608</span>, <span class='fl'>31695808</span><span class='op'>)</span><span class='op'>)</span>, strand <span class='op'>=</span>  <span class='st'>"*"</span>,</span>
+<span class='r-in'>    state <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"AMPLIFICATION"</span>, <span class='st'>"AMPLIFICATION"</span>, <span class='st'>"DELETION"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample02"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr1"</span>, </span>
+<span class='r-in'>    ranges <span class='op'>=</span>  <span class='fu'><a href='https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html'>IRanges</a></span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>1995066</span>, <span class='fl'>31611222</span>, <span class='fl'>31690000</span><span class='op'>)</span>, </span>
+<span class='r-in'>    end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>2204505</span>, <span class='fl'>31689898</span>, <span class='fl'>31895666</span><span class='op'>)</span><span class='op'>)</span>, strand <span class='op'>=</span>  <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"-"</span>, <span class='st'>"+"</span>, <span class='st'>"+"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    state <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"AMPLIFICATION"</span>, <span class='st'>"AMPLIFICATION"</span>, <span class='st'>"DELETION"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## The amplified region in sample03 is a subset of the amplified regions </span></span>
+<span class='r-in'><span class='co'>## in sample01</span></span>
+<span class='r-in'><span class='va'>demo</span><span class='op'>[[</span><span class='st'>"sample03"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr1"</span>, </span>
+<span class='r-in'>    ranges <span class='op'>=</span>  <span class='fu'><a href='https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html'>IRanges</a></span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>1906069</span>, <span class='fl'>4558838</span><span class='op'>)</span>, </span>
+<span class='r-in'>    end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>1909505</span>, <span class='fl'>4570601</span><span class='op'>)</span><span class='op'>)</span>, strand <span class='op'>=</span>  <span class='st'>"*"</span>,</span>
+<span class='r-in'>    state <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"AMPLIFICATION"</span>, <span class='st'>"DELETION"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Calculating Sorensen metric</span></span>
+<span class='r-in'><span class='va'>metric</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculateOverlapMetric.html'>calculateOverlapMetric</a></span><span class='op'>(</span><span class='va'>demo</span>, method<span class='op'>=</span><span class='st'>"sorensen"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Plot amplification metrics using darkorange color</span></span>
+<span class='r-in'><span class='fu'>CNVMetrics</span><span class='fu'>:::</span><span class='fu'>plotOneMetric</span><span class='op'>(</span><span class='va'>metric</span>, type<span class='op'>=</span><span class='st'>"AMPLIFICATION"</span>, </span>
+<span class='r-in'>    colorRange<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"white"</span>, <span class='st'>"darkorange"</span><span class='op'>)</span>, show_colnames<span class='op'>=</span><span class='cn'>FALSE</span>, silent<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> TableGrob (5 x 6) "layout": 6 grobs</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   z     cells      name                       grob</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 1 (1-1,3-3)      main         text[GRID.text.30]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 2 (2-2,3-3)  col_tree polyline[GRID.polyline.31]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 3 (4-4,1-1)  row_tree polyline[GRID.polyline.32]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 4 (4-4,3-3)    matrix       gTree[GRID.gTree.34]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 5 (4-4,4-4) row_names         text[GRID.text.35]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 6 (3-5,5-5)    legend       gTree[GRID.gTree.38]</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

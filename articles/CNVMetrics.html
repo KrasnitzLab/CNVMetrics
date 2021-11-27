@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNVMetrics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
       </span>
     </div>
 
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="uri">https://orcid.org/0000-0002-0802-1071</a>), David A. Tuveson [aut], Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.99.1<br><strong>Compiled date</strong>: 2021-10-02<br><strong>License</strong>: Artistic-2.0<br></p>
+</script><p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="uri">https://orcid.org/0000-0002-0802-1071</a>), David A. Tuveson [aut], Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.99.2<br><strong>Compiled date</strong>: 2021-11-27<br><strong>License</strong>: Artistic-2.0<br></p>
 <div id="licensing" class="section level1">
 <h1 class="hasAnchor">
 <a href="#licensing" class="anchor"></a>Licensing</h1>
@@ -221,7 +221,7 @@ Example of a copy number file containing CNV calls.
 <span class="co">## The CNV status calls for all samples are present in one file</span>
 <span class="co">## The 'state' column is required</span>
 <span class="co">## The chromosome Y has been removed</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">calls</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">head</a></span><span class="op">(</span><span class="va">calls</span><span class="op">)</span></code></pre></div>
 <pre><code>##    ID  chr     start       end    log2ratio         state
 ## 1 mT3 chr1   3527630 195471971  0.143253158       NEUTRAL
 ## 2 mT3 chr2   3549740 182113224  0.008638116       NEUTRAL
@@ -231,7 +231,7 @@ Example of a copy number file containing CNV calls.
 ## 6 mT3 chr5 111373751 114262563  0.226961493 AMPLIFICATION</code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## The ID column identifies the 10 samples</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">calls</span><span class="op">[</span>,<span class="st">"ID"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unique.html">unique</a></span><span class="op">(</span><span class="va">calls</span><span class="op">[</span>,<span class="st">"ID"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] "mT3"  "mM6"  "mM10" "mM15" "mT6"  "mT19" "mT23" "mT34" "mM1"  "mM3P"</code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## The ID column is used to split the samples into different GRanges </span>
@@ -316,7 +316,7 @@ Example of a copy number file containing CNV calls.
 <span class="co">## Metric values are printed as 'display_numbers' and 'number_format' are</span>
 <span class="co">## arguments recognized by pheatmap() function</span>
 <span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type<span class="op">=</span><span class="st">"DELETION"</span>, 
-                    colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"darkorange"</span><span class="op">)</span>,
+                    colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"darkorange"</span><span class="op">)</span>,
                     show_colnames<span class="op">=</span><span class="cn">TRUE</span>,
                     display_numbers<span class="op">=</span><span class="cn">TRUE</span>,
                     number_format<span class="op">=</span><span class="st">"%.2f"</span><span class="op">)</span></code></pre></div>
@@ -333,15 +333,15 @@ Example of a copy number file containing CNV calls.
 
 <span class="co">## The row names must correspond to the names assigned to the rows/columns</span>
 <span class="co">## in the CNVMetric object</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">annotOrg</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annotOrg</span><span class="op">$</span><span class="va">ID</span>
+<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">annotOrg</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annotOrg</span><span class="op">$</span><span class="va">ID</span>
 <span class="va">annotOrg</span><span class="op">$</span><span class="va">ID</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
-<span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">annotOrg</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">metric</span><span class="op">$</span><span class="va">AMPLIFICATION</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">annotOrg</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">metric</span><span class="op">$</span><span class="va">AMPLIFICATION</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to amplified regions</span>
 <span class="co">## Rows are annotated with the stage and mouse information</span>
 <span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type<span class="op">=</span><span class="st">"AMPLIFICATION"</span>, 
-                    colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"steelblue"</span><span class="op">)</span>,
+                    colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"steelblue"</span><span class="op">)</span>,
                     annotation_row<span class="op">=</span><span class="va">annotOrg</span><span class="op">)</span></code></pre></div>
 <p><img src="CNVMetrics_files/figure-html/demoPlot03-1.png" width="576" style="display: block; margin: auto;"></p>
 <p><br><br></p>
@@ -450,7 +450,7 @@ Example of a copy number file containing log2ratio values.
 <span class="co">## The CNV status calls for all samples are present in one file</span>
 <span class="co">## The 'log2ratio' column is required</span>
 <span class="co">## The chromosome Y has been removed</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">calls</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">head</a></span><span class="op">(</span><span class="va">calls</span><span class="op">)</span></code></pre></div>
 <pre><code>##    ID  chr     start       end    log2ratio         state
 ## 1 mT3 chr1   3527630 195471971  0.143253158       NEUTRAL
 ## 2 mT3 chr2   3549740 182113224  0.008638116       NEUTRAL
@@ -460,7 +460,7 @@ Example of a copy number file containing log2ratio values.
 ## 6 mT3 chr5 111373751 114262563  0.226961493 AMPLIFICATION</code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## The ID column identifies the 10 samples</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">calls</span><span class="op">[</span>,<span class="st">"ID"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unique.html">unique</a></span><span class="op">(</span><span class="va">calls</span><span class="op">[</span>,<span class="st">"ID"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] "mT3"  "mM6"  "mM10" "mM15" "mT6"  "mT19" "mT23" "mT34" "mM1"  "mM3P"</code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## The ID column is used to split the samples into different GRanges </span>
@@ -532,7 +532,7 @@ Example of a copy number file containing log2ratio values.
 <span class="co">## Remove title (argument main="")</span>
 <span class="co">## Metric values are printed as 'display_numbers' and 'number_format' are</span>
 <span class="co">## arguments recognized by pheatmap() function</span>
-<span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metricLog</span>, colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"darkorange"</span><span class="op">)</span>,
+<span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metricLog</span>, colorRange<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"darkorange"</span><span class="op">)</span>,
                     show_colnames<span class="op">=</span><span class="cn">TRUE</span>,
                     display_numbers<span class="op">=</span><span class="cn">TRUE</span>,
                     number_format<span class="op">=</span><span class="st">"%.2f"</span>,
@@ -610,17 +610,17 @@ Example of a copy number file containing log2ratio values.
 <p>The <code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function enables the creation of a list of <code>GRangesList</code> objects from a <code>data.frame</code>. However, <code>GRangesList</code> can also be generated and filled manually.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## First, create the GRanges objects; one per sample</span>
-<span class="va">gr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr2"</span>, ranges<span class="op">=</span><span class="fu">IRanges</span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6000</span><span class="op">)</span>,
+<span class="va">gr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr2"</span>, ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html">IRanges</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6000</span><span class="op">)</span>,
           strand<span class="op">=</span><span class="st">"+"</span>, state<span class="op">=</span><span class="st">"AMPLIFICATION"</span>, 
           log2ratio<span class="op">=</span><span class="fl">0.45</span><span class="op">)</span>
-<span class="va">gr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr2"</span><span class="op">)</span>,
-          ranges<span class="op">=</span><span class="fu">IRanges</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">7</span>,<span class="fl">5555</span><span class="op">)</span>, width<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1200</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span>,
-          strand<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"+"</span>, <span class="st">"-"</span><span class="op">)</span>,  state<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"NEUTRAL"</span>, <span class="st">"AMPLIFICATION"</span><span class="op">)</span>, 
-          log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.034</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>
-<span class="va">gr3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr2"</span><span class="op">)</span>,
-          ranges<span class="op">=</span><span class="fu">IRanges</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5577</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">5666</span><span class="op">)</span><span class="op">)</span>,
-          strand<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">"-"</span><span class="op">)</span>, state<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"NEUTRAL"</span>, <span class="st">"AMPLIFICATION"</span><span class="op">)</span>, 
-          log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.04</span>, <span class="fl">0.31</span><span class="op">)</span><span class="op">)</span>
+<span class="va">gr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr2"</span><span class="op">)</span>,
+          ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html">IRanges</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="fl">7</span>,<span class="fl">5555</span><span class="op">)</span>, width<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="fl">1200</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span>,
+          strand<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"+"</span>, <span class="st">"-"</span><span class="op">)</span>,  state<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"NEUTRAL"</span>, <span class="st">"AMPLIFICATION"</span><span class="op">)</span>, 
+          log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="fl">0.034</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>
+<span class="va">gr3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr2"</span><span class="op">)</span>,
+          ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html">IRanges</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5577</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">5666</span><span class="op">)</span><span class="op">)</span>,
+          strand<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">"-"</span><span class="op">)</span>, state<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"NEUTRAL"</span>, <span class="st">"AMPLIFICATION"</span><span class="op">)</span>, 
+          log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="fl">0.04</span>, <span class="fl">0.31</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co">## Then, construct a GRangesList() using all the GRanges objects</span>
 <span class="va">grl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html">GRangesList</a></span><span class="op">(</span><span class="st">"sample01"</span><span class="op">=</span><span class="va">gr1</span>, <span class="st">"sample02"</span><span class="op">=</span><span class="va">gr2</span>, <span class="st">"sample03"</span><span class="op">=</span><span class="va">gr3</span><span class="op">)</span></code></pre></div>
@@ -667,8 +667,8 @@ Example of a copy number file containing log2ratio values.
 ## [8] methods   base     
 ## 
 ## other attached packages:
-## [1] CNVMetrics_0.99.1    GenomicRanges_1.44.0 GenomeInfoDb_1.28.4 
-## [4] IRanges_2.26.0       S4Vectors_0.30.1     BiocGenerics_0.38.0 
+## [1] CNVMetrics_0.99.2    GenomicRanges_1.44.0 GenomeInfoDb_1.28.4 
+## [4] IRanges_2.26.0       S4Vectors_0.30.2     BiocGenerics_0.38.0 
 ## [7] knitr_1.36           BiocStyle_2.20.2    
 ## 
 ## loaded via a namespace (and not attached):
@@ -676,17 +676,17 @@ Example of a copy number file containing log2ratio values.
 ##  [4] BiocManager_1.30.16    jquerylib_0.1.4        XVector_0.32.0        
 ##  [7] bitops_1.0-7           tools_4.1.1            zlibbioc_1.38.0       
 ## [10] digest_0.6.28          lifecycle_1.0.1        gtable_0.3.0          
-## [13] evaluate_0.14          memoise_2.0.0          rlang_0.4.11          
-## [16] yaml_2.2.1             pkgdown_1.6.1          xfun_0.26             
+## [13] evaluate_0.14          memoise_2.0.0          rlang_0.4.12          
+## [16] yaml_2.2.1             pkgdown_1.6.1          xfun_0.28             
 ## [19] fastmap_1.1.0          gridExtra_2.3          GenomeInfoDbData_1.2.6
 ## [22] stringr_1.4.0          desc_1.4.0             fs_1.5.0              
-## [25] systemfonts_1.0.2      grid_4.1.1             rprojroot_2.0.2       
-## [28] R6_2.5.1               textshaping_0.3.5      BiocParallel_1.26.2   
+## [25] systemfonts_1.0.3      grid_4.1.1             rprojroot_2.0.2       
+## [28] R6_2.5.1               textshaping_0.3.6      BiocParallel_1.26.2   
 ## [31] rmarkdown_2.11         pheatmap_1.0.12        farver_2.1.0          
 ## [34] magrittr_2.0.1         scales_1.1.1           htmltools_0.5.2       
-## [37] colorspace_2.0-2       ragg_1.1.3             stringi_1.7.4         
+## [37] colorspace_2.0-2       ragg_1.2.0             stringi_1.7.5         
 ## [40] munsell_0.5.0          RCurl_1.98-1.5         cachem_1.0.6          
-## [43] crayon_1.4.1</code></pre>
+## [43] crayon_1.4.2</code></pre>
 <p><br><br></p>
 </div>
 <div id="references" class="section level1 unnumbered">
