@@ -648,6 +648,16 @@ metricLog <- calculateLog2ratioMetric(segmentData=grlog,
 <br>
 
 
+# Acknowledgments
+
+This work was supported by the Lustgarten Foundation, where David A. Tuveson 
+is a distinguished scholar and Director of the Lustgarten Foundation–designated 
+Laboratory of Pancreatic Cancer Research. 
+
+<br>
+<br>
+
+
 # Session info
 
 Here is the output of `sessionInfo()` on the system on which this document was 
