@@ -104,30 +104,18 @@ sample-to-sample heatmaps.
 
 # Installation
 
-To install the latest version accessible on the 
-[CNVMetrics Github Website](https://github.com/KrasnitzLab/CNVMetrics "CNVMetrics Github Site"), 
-the `r CRANpkg("devtools")` package is required.
+To install this package from [Bioconductor](https://bioconductor.org/packages/CNVMetrics), start R (version "4.2") and enter: 
 
 ```{r installDemo01, eval=FALSE}
-## Load required package
-library(devtools)
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
 
-## Install the latest version of CNVMetrics
-devtools::install_github('KrasnitzLab/CNVMetrics')
+# The following initializes usage of Bioc devel
+BiocManager::install(version='devel')
+
+BiocManager::install("CNVMetrics")
 ```
 
-It is also possible to install an official release. The list of available 
-releases is posted on the [CNVMetrics Release Website](https://github.com/KrasnitzLab/CNVMetrics/releases "CNVMetrics Release Site").
-
-
-```{r installDemo02, eval=FALSE}
-## Load required package
-library(devtools)
-
-## Install the version v0.1.4 of CNVMetrics
-## using 'ref' parameter
-devtools::install_github('KrasnitzLab/CNVMetrics', ref = "v0.1.4")
-```
 
 <br>
 <br>
