@@ -126,21 +126,15 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 <div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h1>
-<p>To install the latest version accessible on the <a href="https://github.com/KrasnitzLab/CNVMetrics" title="CNVMetrics Github Site" class="external-link">CNVMetrics Github Website</a>, the <em><a href="https://CRAN.R-project.org/package=devtools" class="external-link">devtools</a></em> package is required.</p>
+<p>To install this package from <a href="https://bioconductor.org/packages/CNVMetrics" class="external-link">Bioconductor</a>, start R (version “4.2”) and enter:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Load required package</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
 
-<span class="co">## Install the latest version of CNVMetrics</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'KrasnitzLab/CNVMetrics'</span><span class="op">)</span></code></pre></div>
-<p>It is also possible to install an official release. The list of available releases is posted on the <a href="https://github.com/KrasnitzLab/CNVMetrics/releases" title="CNVMetrics Release Site" class="external-link">CNVMetrics Release Website</a>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Load required package</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span>
+<span class="co"># The following initializes usage of Bioc devel</span>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span>version<span class="op">=</span><span class="st">'devel'</span><span class="op">)</span>
 
-<span class="co">## Install the version v0.1.4 of CNVMetrics</span>
-<span class="co">## using 'ref' parameter</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'KrasnitzLab/CNVMetrics'</span>, ref <span class="op">=</span> <span class="st">"v0.1.4"</span><span class="op">)</span></code></pre></div>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"CNVMetrics"</span><span class="op">)</span></code></pre></div>
 <p><br><br></p>
 </div>
 <div class="section level1">
@@ -204,7 +198,7 @@ Example of a copy number file containing CNV calls.
 <p>The input format for the copy number information, as needed by the <code><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric()</a></code> function, is a <code>GRangesList</code> object.</p>
 <p>The easiest way to generate a <code>GRangesList</code> object is to first load the copy number information into an R <code>data.frame</code> and then, use the <code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html" class="external-link">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function to convert them to a <code>GRangesList</code>.</p>
 <p>For this demonstration, we consider <em>CNV status calls</em> as obtained with <em><a href="https://github.com/KrasnitzLab/CNprep" class="external-link">CNprep</a></em> <span class="citation">(Belleau et al. 2020)</span>, from ten mouse pancreatic organoids <span class="citation">(Oni et al. 2020)</span>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Load required libraries</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/krasnitzlab/CNVMetrics" class="external-link">CNVMetrics</a></span><span class="op">)</span>
@@ -225,11 +219,11 @@ Example of a copy number file containing CNV calls.
 <span class="co">## 4 mT3 chr4   3734693 156508116 -0.026741963       NEUTRAL</span>
 <span class="co">## 5 mT3 chr5   3575586 111373751 -0.018519856       NEUTRAL</span>
 <span class="co">## 6 mT3 chr5 111373751 114262563  0.226961493 AMPLIFICATION</span></code></pre>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## The ID column identifies the 10 samples</span>
 <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">calls</span><span class="op">[</span>,<span class="st">"ID"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">##  [1] "mT3"  "mM6"  "mM10" "mM15" "mT6"  "mT19" "mT23" "mT34" "mM1"  "mM3P"</span></code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## The ID column is used to split the samples into different GRanges </span>
 <span class="co">## inside a GRangesList</span>
 <span class="co">## The 'keep.extra.column=TRUE' parameter is needed to retained the extra </span>
@@ -264,7 +258,7 @@ Example of a copy number file containing CNV calls.
 <h2 id="metric-calculation">Metric Calculation<a class="anchor" aria-label="anchor" href="#metric-calculation"></a>
 </h2>
 <p>The calculation of the similarity metrics is done with the <code><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric()</a></code> function.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## In this case, the default states (AMPLIFICATION, DELETION) are used. </span>
 <span class="co">## So, the 'states' parameter doesn't have to be specified</span>
 <span class="co">## The 'states' parameter needs to be adjusted for user-specific states</span>
@@ -300,14 +294,14 @@ Example of a copy number file containing CNV calls.
 </h2>
 <p>A heatmap of this similarity metrics can be a useful tool to get an overview over similarities and dissimilarities between samples.</p>
 <p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical representation of the similarity metrics in the form of a sample-to-sample heatmap. By default, an hierarchical clustering based on the sample distances (1-metric) is used. When NA values are present in the metric matrix, those are replaced by zero.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to amplified regions</span>
 <span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type<span class="op">=</span><span class="st">"AMPLIFICATION"</span><span class="op">)</span></code></pre></div>
 <p><img src="CNVMetrics_files/figure-html/demoPlot01-1.png" width="432" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p><br></p>
 <p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function uses the <em><a href="https://CRAN.R-project.org/package=pheatmap" class="external-link">pheatmap</a></em> package to generate the graph. All arguments accepted by <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap::pheatmap()</a></code> function are valid arguments.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to deleted regions</span>
 <span class="co">## Metric values are printed as 'display_numbers' and 'number_format' are</span>
 <span class="co">## arguments recognized by pheatmap() function</span>
@@ -319,7 +313,7 @@ Example of a copy number file containing CNV calls.
 <p><img src="CNVMetrics_files/figure-html/demoPlot02-1.png" width="460.8" style="display: block; margin: auto;"></p>
 <p><br><br></p>
 <p>Row and/or column annotation is often useful and can easily be done by using the <code>annotation_row</code> or <code>annotation_col</code> arguments, as described in the <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap::pheatmap</a></code> method.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Load file containing annotations for the mouse organoids</span>
 <span class="co">## The mouse ID identifying the source of the sample</span>
 <span class="co">## The stage identifying the state (tumor vs metastasis) of the sample</span>
@@ -333,7 +327,7 @@ Example of a copy number file containing CNV calls.
 <span class="va">annotOrg</span><span class="op">$</span><span class="va">ID</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
 <span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">annotOrg</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">metric</span><span class="op">$</span><span class="va">AMPLIFICATION</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## [1] TRUE</span></code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to amplified regions</span>
 <span class="co">## Rows are annotated with the stage and mouse information</span>
 <span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type<span class="op">=</span><span class="st">"AMPLIFICATION"</span>, 
@@ -432,7 +426,7 @@ Example of a copy number file containing log2ratio values.
 <p>The input format for the copy number information, as needed by the <code><a href="../reference/calculateLog2ratioMetric.html">calculateLog2ratioMetric()</a></code> function, is a <code>GRangesList</code> object.</p>
 <p>The easiest way to generate a <code>GRangesList</code> object is to first load the copy number information into an R <code>data.frame</code> and then, use the <code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html" class="external-link">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function to convert them to a <code>GRangesList</code>.</p>
 <p>For this demonstration, we consider <em>the level of amplification/deletion</em> as obtained with <em><a href="https://github.com/KrasnitzLab/CNprep" class="external-link">CNprep</a></em> <span class="citation">(Belleau et al. 2020)</span>, from ten mouse pancreatic organoids <span class="citation">(Oni et al. 2020)</span>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Load required libraries</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/krasnitzlab/CNVMetrics" class="external-link">CNVMetrics</a></span><span class="op">)</span>
@@ -453,11 +447,11 @@ Example of a copy number file containing log2ratio values.
 <span class="co">## 4 mT3 chr4   3734693 156508116 -0.026741963       NEUTRAL</span>
 <span class="co">## 5 mT3 chr5   3575586 111373751 -0.018519856       NEUTRAL</span>
 <span class="co">## 6 mT3 chr5 111373751 114262563  0.226961493 AMPLIFICATION</span></code></pre>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## The ID column identifies the 10 samples</span>
 <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">calls</span><span class="op">[</span>,<span class="st">"ID"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">##  [1] "mT3"  "mM6"  "mM10" "mM15" "mT6"  "mT19" "mT23" "mT34" "mM1"  "mM3P"</span></code></pre>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## The ID column is used to split the samples into different GRanges </span>
 <span class="co">## inside a GRangesList</span>
 <span class="co">## The 'keep.extra.column=TRUE' parameter is needed to retained the extra </span>
@@ -492,7 +486,7 @@ Example of a copy number file containing log2ratio values.
 <h2 id="metric-calculation-1">Metric Calculation<a class="anchor" aria-label="anchor" href="#metric-calculation-1"></a>
 </h2>
 <p>The calculation of the similarity metrics is done with the <code><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric()</a></code> function.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">metricLog</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculateLog2ratioMetric.html">calculateLog2ratioMetric</a></span><span class="op">(</span>segmentData<span class="op">=</span><span class="va">grlog</span>, 
                               method<span class="op">=</span><span class="st">"weightedEuclideanDistance"</span>, nJobs<span class="op">=</span><span class="fl">1</span><span class="op">)</span>
 
@@ -516,13 +510,13 @@ Example of a copy number file containing log2ratio values.
 </h2>
 <p>A heatmap of this similarity metrics can be a useful tool to get an overview over similarities and dissimilarities between samples.</p>
 <p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical representation of the similarity metrics in the form of a sample-to-sample heatmap. By default, an hierarchical clustering based on the sample distances (1-metric) is used. When NA values are present in the metric matrix, those are replaced by zero.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the metrics related to weighted Euclidean distance-based</span>
 <span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metricLog</span><span class="op">)</span></code></pre></div>
 <p><img src="CNVMetrics_files/figure-html/demoPlotLog01-1.png" width="432" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function uses the <em><a href="https://CRAN.R-project.org/package=pheatmap" class="external-link">pheatmap</a></em> package to generate the graph. All arguments accepted by <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap::pheatmap</a></code> function are valid arguments.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Create graph for the weighted Euclidean distance-based metrics</span>
 <span class="co">## Remove title (argument main="")</span>
 <span class="co">## Metric values are printed as 'display_numbers' and 'number_format' are</span>
@@ -603,7 +597,7 @@ Example of a copy number file containing log2ratio values.
 <h2 id="creating-your-own-grangeslist">Creating your own GRangesList<a class="anchor" aria-label="anchor" href="#creating-your-own-grangeslist"></a>
 </h2>
 <p>The <code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html" class="external-link">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function enables the creation of a list of <code>GRangesList</code> objects from a <code>data.frame</code>. However, <code>GRangesList</code> can also be generated and filled manually.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## First, create the GRanges objects; one per sample</span>
 <span class="va">gr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr2"</span>, ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6000</span><span class="op">)</span>,
           strand<span class="op">=</span><span class="st">"+"</span>, state<span class="op">=</span><span class="st">"AMPLIFICATION"</span>, 
@@ -625,7 +619,7 @@ Example of a copy number file containing log2ratio values.
 <h2 id="reproducible-research">Reproducible research<a class="anchor" aria-label="anchor" href="#reproducible-research"></a>
 </h2>
 <p>To ensure reproducible results, <em>set.seed()</em> function should be call before <em>calculateOverlapMetric()</em> and <em>calculateLog2ratioMetric()</em>. Beware that the <em>nJobs</em> parameter must also be fixed; change in the value of the <em>nJobs</em> parameter might lead to different results.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## First, fixe the seed value</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">121234</span><span class="op">)</span>
 
