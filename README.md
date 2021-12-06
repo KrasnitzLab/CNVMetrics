@@ -2,6 +2,8 @@
 [![R-CMD-check-bio](https://github.com/KrasnitzLab/CNVMetrics/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/KrasnitzLab/CNVMetrics/actions)
 [![codecov](https://codecov.io/gh/KrasnitzLab/CNVMetrics/branch/master/graph/badge.svg)](https://codecov.io/gh/KrasnitzLab/CNVMetrics)
 [![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
+
+
 <!-- badges: end -->
 
 <p align="center">
@@ -29,6 +31,19 @@ If you use this package for a publication, we would ask you to cite the followin
 [Alexander Krasnitz](https://www.cshl.edu/research/faculty-staff/alexander-krasnitz/ "Alexander Krasnitz")
 
 
+## Bioconductor Package ##
+
+[![Bioconductor Time](https://bioconductor.org/shields/years-in-bioc/CNVMetrics.svg)](https://bioconductor.org/packages/CNVMetrics)
+
+The **_CNVMetrics_** package is now an official package of [Bioconductor](http://bioconductor.org/). 
+
+The current release can be directly downloaded from their website:
+[Current release](https://bioconductor.org/packages/CNVMetrics)
+
+However, all official releases can be downloaded from this site:
+[All releases](https://github.com/KrasnitzLab/CNVMetrics/releases)
+
+
 ## Documentation ##
 
 [CNVMetrics Website](https://krasnitzlab.github.io/CNVMetrics/)
@@ -38,8 +53,20 @@ If you use this package for a publication, we would ask you to cite the followin
 
 ## Installation ##
 
-To install the latest version accessible, the  [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
-package is required.
+
+To install this package from [Bioconductor](https://bioconductor.org/packages/CNVMetrics), start R (version "4.2") and enter: 
+
+    if (!requireNamespace("BiocManager", quietly = TRUE))
+        install.packages("BiocManager")
+
+    # The following initializes usage of Bioc devel
+    BiocManager::install(version='devel')
+
+    BiocManager::install("CNVMetrics")
+
+
+To install the latest version accessible using the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
+package:
 
      ## Load required package
      library(devtools)
