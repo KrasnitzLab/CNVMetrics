@@ -20,7 +20,8 @@ Authors@R: c(person("Astrid", "Deschênes", email = "adeschen@hotmail.com",
     role = c("aut"),
     comment = c(ORCID = "0000-0002-0802-1071")),
     person(given="David A.", family="Tuveson",  
-    email="dtuveson@cshl.edu", role = c("aut")),
+    email="dtuveson@cshl.edu", role = c("aut"), 
+    comment = c(ORCID = "0000-0002-8017-2712")),
     person("Alexander", "Krasnitz", email = "krasnitz@cshl.edu",
     role = c("aut")))
 Encoding: UTF-8
