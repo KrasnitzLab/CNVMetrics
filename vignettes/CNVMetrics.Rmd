@@ -2,8 +2,13 @@
 title: "Quantifying similarity between copy number profiles"
 author: Astrid Deschênes, Pascal Belleau and Alexander Krasnitz
 output:
-  BiocStyle::html_document:
+  rmarkdown::html_document:
+    highlight: pygments
     toc: true
+    fig_width: 5
+    number_sections: true
+pkgdown:
+  asis: true
 bibliography: CNVMetrics.bibtex
 vignette: >
   %\VignetteIndexEntry{Copy number variant metrics}
@@ -12,12 +17,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r style, echo = FALSE, results = 'hide', warning=FALSE, message=FALSE}
+```{r style, echo = FALSE, results = 'asis', warning=FALSE, message=FALSE}
 BiocStyle::markdown()
 
 suppressPackageStartupMessages({
   library(knitr)
-  library(GenomeInfoDb)
   library(GenomicRanges)
   library(CNVMetrics)
 })
@@ -40,6 +44,21 @@ The `r Githubpkg("KrasnitzLab/CNVMetrics")` package and the underlying
 Artistic license 2.0. You are free to use and redistribute this software. 
 
 
+<br>
+<br>
+
+# Citing
+
+If you use this package for a publication, we would ask you 
+to cite the following:
+
+>Belleau P, Deschênes A, Beyaz S et al. CNVMetrics package: Quantifying similarity between copy number profiles [version 1; not peer reviewed]. F1000Research 2021, 10:737 (slides) (doi: 10.7490/f1000research.1118704.1)
+
+[F1000Research poster](http://www.doi.org/10.7490/f1000research.1118704.1)
+
+<br>
+<br>
+
 # Introduction
 
 Copy number variation (CNV) includes multiplication and deletion of DNA
@@ -58,7 +77,7 @@ data of two mouse pancreatic organoids [@Oni2020], calculated with
 `r Biocpkg("gtrellis")` [@Gu2016a].
 
 
-```{r graphCNVpro, echo = FALSE, fig.align="center", fig.cap="Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).", out.width = '95%'}
+```{r graphCNVpro, echo = FALSE, fig.align="center", fig.cap="Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).", out.width = '95%', results='asis'}
 knitr::include_graphics("CNV_mM30_mM10_v03_Feb_08_2021_small.jpeg")
 ```
 
@@ -74,68 +93,69 @@ recapitulate CNV patterns of the tumor tissue of origin [@Gendoo2019].
 
 The `r Githubpkg("KrasnitzLab/CNVMetrics")` package calculates metrics to 
 estimate the level of similarity between copy number profiles. Some metrics 
-are calculated using the _CNV status calls_ (amplification/deletion status) 
-while others are based on the level of amplification/deletion. Finally, a 
-visualization tool is provided to explore resulting metrics in the form of 
+are calculated using the _CNV status calls_ (amplification/deletion/LOH status
+or any user specific status) while others are based on the level of 
+amplification/deletion in log2 ratio. Finally, a visualization tool is 
+provided to explore resulting metrics in the form of 
 sample-to-sample heatmaps.
+
+<br>
+<br>
 
 # Installation
 
-To install the latest version accessible on the 
-[CNVMetrics Github Website](https://github.com/KrasnitzLab/CNVMetrics "CNVMetrics Github Site"), 
-the `r CRANpkg("devtools")` package is required.
+To install this package from [Bioconductor](https://bioconductor.org/packages/CNVMetrics), start R (version "4.2") and enter: 
 
 ```{r installDemo01, eval=FALSE}
-## Load required package
-library(devtools)
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
 
-## Install the latest version of CNVMetrics
-devtools::install_github('KrasnitzLab/CNVMetrics')
+# The following initializes usage of Bioc devel
+BiocManager::install(version='devel')
+
+BiocManager::install("CNVMetrics")
 ```
 
-It is also possible to install an official release. The list of available 
-releases is posted on the [CNVMetrics Release Website](https://github.com/KrasnitzLab/CNVMetrics/releases "CNVMetrics Release Site").
 
+<br>
+<br>
 
-```{r installDemo02, eval=FALSE}
-## Load required package
-library(devtools)
+# Workflow for metrics calculated using CNV status calls
 
-## Install the version v0.1.4 of CNVMetrics
-## using 'ref' parameter
-devtools::install_github('KrasnitzLab/CNVMetrics', ref = "v0.1.4")
-```
-
-# Workflow for metrics calculated using _CNV status calls_
-
-The following figure gives an overview of the capabilities of 
+The following workflow gives an overview of the capabilities of 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` to calculate metrics using the 
-_CNV status calls_ (amplification/deletion status):
+_CNV status calls_ (amplification/deletion status or any user specific 
+status):
 
 
-The key functions for each step are:
+The key functions for each step of the workflow are:
 
  Step                   | Function                    
 ----------------------- | ---------------------------------------------
  Data Importation       | `GenomicRanges::makeGRangesListFromDataFrame()`
  Metric Calculation     | `calculateOverlapMetric()`   
- Metric Visualization   | `plotOverlapMetric()`
+ Metric Visualization   | `plotMetric()`
  
 The `package::function()` notation is used for functions from other packages.
 
-## Data Input - Copy number file
+<br>
+
+## Data Input - Copy number file containing the CNV status calls
 
 _CNV status calls_ are represented as segments with a copy number state. The 
 state be general, such as "amplification", "deletion" or "neutral", or more 
-specific such as TODO.
+specific such as of loss of heterozygosity (LOH), 1-copy gain, 2-copy gain, 
+1-copy loss and so on.
 
 A basic five-column input file containing genomic position 
 (chromosome, start, end), sample identification and _CNV status calls_ is 
 required. All samples that need to be analyzed together have to be combined 
 into one file. 
 
-A column named **state** is required. In this column, the amplified and 
-deleted segments must be assigned those values:
+A column named **state** is required. In this column, The _CNV status call_ of
+each segment must be specified using a string. By default, the states that are
+analyzed by this package are the amplification/deletion states with
+this specific notation:
 
 * **<span style="color:darkred">AMPLIFICATION</span>**
 * **<span style="color:darkred">DELETION</span>**
@@ -143,11 +163,28 @@ deleted segments must be assigned those values:
 Segments with other **state** values can be present in the file. However, 
 those segments won't be retain for the calculation of the metrics.
 
+However, the user can define is how notation and decided which **state** will
+be used to calculate the similarity metrics. The user defined states can be
+in upper or lower cases. Examples of possible states:
+
+
+* **<span style="color:darkred">LOH</span>**
+* **<span style="color:darkred">loh</span>**
+* **<span style="color:darkred">1-copy gain</span>**
+* **<span style="color:darkred">GAIN</span>**
+* **<span style="color:darkred">loss</span>**
+* and so on...
+
+Beware that states with different spelling or upper/lower case nomenclature 
+are considered as distinct states and are analyzed separately.
+
 ```{r figureCNVFile, echo = FALSE, fig.align="center", fig.cap="Example of a copy number file containing CNV calls.", out.width = '100%'}
 
-knitr::include_graphics("Input_CNV_call_300ppi_v01.jpg")
+knitr::include_graphics("Input_CNV_call_300ppi_v02_low_quality.jpg")
 ```
 
+
+<br>
 
 ## Data Importation - GRangesList
 
@@ -191,45 +228,55 @@ grl
 ```
 
 
+<br>
+
 ## Metric Calculation
 
 The calculation of the similarity metrics is done with the 
 `calculateOverlapMetric()` function. 
 
 ```{r demoCalculateMetric01}
-metric <- calculateOverlapMetric(grl, method = "sorensen")
+## In this case, the default states (AMPLIFICATION, DELETION) are used. 
+## So, the 'states' parameter doesn't have to be specified
+## The 'states' parameter needs to be adjusted for user-specific states
+## Ex: states=c("LOH", "gain")
+metric <- calculateOverlapMetric(segmentData=grl, method="sorensen", nJobs=1)
 
 metric
 ```
+
+
+<br>
 
 ## Metric Visualization  
 
 A heatmap of this similarity metrics can be a useful tool to get an overview 
 over similarities and dissimilarities between samples.
 
-The `plotOverlapMetric()` function generates a graphical representation of 
+The `plotMetric()` function generates a graphical representation of 
 the similarity metrics in the form of a sample-to-sample heatmap. By default, 
-an hierarchical clustering based on based on the sample distances 
-(1-metrics) is used.
+an hierarchical clustering based on the sample distances 
+(1-metric) is used. When NA values are present in the metric matrix, those
+are replaced by zero.
 
 ```{r demoPlot01, fig.align="center", fig.height=4.5, fig.width=4.5}
 ## Create graph for the metrics related to amplified regions
-plotOverlapMetric(metric, type = "AMPLIFICATION")
+plotMetric(metric, type="AMPLIFICATION")
 ```
 
 <br>
 
 <br>
 
-The `plotOverlapMetric()` function uses the `r CRANpkg("pheatmap")` package to 
-generate the graph. All arguments accepted by `pheatmap::pheatmap` function 
+The `plotMetric()` function uses the `r CRANpkg("pheatmap")` package to 
+generate the graph. All arguments accepted by `pheatmap::pheatmap()` function 
 are valid arguments.
 
 ```{r demoPlot02, fig.align="center", fig.height=4.8, fig.width=4.8}
 ## Create graph for the metrics related to deleted regions
-## Metric value is printed as 'display_numbers' and 'number_format' are
+## Metric values are printed as 'display_numbers' and 'number_format' are
 ## arguments recognized by pheatmap() function
-plotOverlapMetric(metric, type = "DELETION", 
+plotMetric(metric, type="DELETION", 
                     colorRange=c("white", "darkorange"),
                     show_colnames=TRUE,
                     display_numbers=TRUE,
@@ -237,7 +284,6 @@ plotOverlapMetric(metric, type = "DELETION",
 ```
 
 <br>
-
 <br>
 
 Row and/or column annotation is often useful and can easily be done 
@@ -260,11 +306,12 @@ all(rownames(annotOrg) == rownames(metric$AMPLIFICATION))
 
 ## Create graph for the metrics related to amplified regions
 ## Rows are annotated with the stage and mouse information
-plotOverlapMetric(metric, type = "AMPLIFICATION", 
+plotMetric(metric, type="AMPLIFICATION", 
                     colorRange=c("white", "steelblue"),
                     annotation_row=annotOrg)
 ```
 
+<br>
 <br>
 
 # Metrics using the _CNV status calls_
@@ -273,6 +320,8 @@ This survey represents the overlap metrics that are implemented in
 `r Githubpkg("KrasnitzLab/CNVMetrics")` package. Those metrics are calculated 
 using the _CNV status calls_. The size of the amplified/deleted regions as 
 well as the size of the overlapping of regions are always in base paired. 
+
+<br>
 
 ## Sørensen
 
@@ -285,6 +334,8 @@ size of the intersection by the sum of the size of the two sets:
 \end{equation}    
 
 where $X$ and $Y$ represent the regions of each sample in base paired.
+
+<br>
 
 ## Szymkiewicz–Simpson
 
@@ -301,6 +352,7 @@ where $X$ and $Y$ represent the regions of each sample in base paired. If
 set $X$ is a subset of $Y$ or vice versa, the overlap coefficient 
 value is 1. 
 
+<br>
 
 ## Jaccard
 
@@ -313,27 +365,176 @@ of the intersection by the smaller of the size of the two sets:
   (\#eq:jaccard)
 \end{equation}    
 
-where \eqn{X} and $Y$ represent the regions of each sample in base paired.
+where $X$ and $Y$ represent the regions of each sample in base paired.
+
+<br>
+<br>
+
+# Workflow for metrics calculated using the level of amplification/deletion
+
+The following section gives an overview of the capabilities of 
+`r Githubpkg("KrasnitzLab/CNVMetrics")` to calculate metrics using the 
+_the level of amplification/deletion_ (log2 ratio values):
+
+The key functions for each step of the workflow are:
+
+<div align="center">
+<div style="width: 60%; margin:0 left;text-align: center;">
+ Step                   | Function                    
+----------------------- | ---------------------------------------------
+ Data Importation       | `GenomicRanges::makeGRangesListFromDataFrame()`
+ Metric Calculation     | `calculateLog2ratioMetric()`   
+ Metric Visualization   | `plotMetric()`
+</div>
+</div>
+
+The `package::function()` notation is used for functions from other packages.
+
+<br>
+
+## Data Input - Copy number file containing the level of amplification/deletion
+
+Copy number are often represented as segments with a copy number state and/or
+the level of amplification/deletion. One usual unit to quantify the level 
+of amplification or deletion is in log2 ratio. 
+
+A basic five-column input file containing genomic position 
+(chromosome, start, end), sample identification and 
+_the level of amplification/deletion_ is 
+required. All samples that need to be analyzed together have to be combined 
+into one file. 
+
+A column named **log2ratio** is required. In this column, the amplified and 
+deleted segments must be assigned a numerical value representing the log2ratio
+or NA.
+
+```{r figureCNVFileLog2Ratio, echo = FALSE, fig.align="center", fig.cap="Example of a copy number file containing log2ratio values.", out.width = '100%'}
+
+knitr::include_graphics("Input_CNV_log2ratio_v01_low_quality.jpg")
+```
+
+<br>
+
+## Data Importation - GRangesList
+
+The input format for the copy number information, as needed by the 
+`calculateLog2ratioMetric()` function, is a `GRangesList` object.
+
+The easiest way to generate a `GRangesList` object is to first load the 
+copy number information into an R `data.frame` and then, use the 
+`GenomicRanges::makeGRangesListFromDataFrame()` function to convert them 
+to a `GRangesList`.
+
+For this demonstration, we consider _the level of amplification/deletion_ as 
+obtained with `r Githubpkg("KrasnitzLab/CNprep")` [@Belleau2020], 
+from ten mouse pancreatic organoids [@Oni2020]. 
+
+```{r demoImport02}
+## Load required libraries
+library(GenomicRanges)
+library(CNVMetrics)
+
+## Load file containing CNV calls for 10 mouse organoids
+data.dir <- system.file("extdata", package="CNVMetrics")
+cnv.file <- file.path(data.dir, "mousePairedOrganoids.txt")
+calls <- read.table(cnv.file, header=TRUE, sep="\t")
+
+## The CNV status calls for all samples are present in one file
+## The 'log2ratio' column is required
+## The chromosome Y has been removed
+head(calls)
+
+## The ID column identifies the 10 samples
+unique(calls[,"ID"])
+
+## The ID column is used to split the samples into different GRanges 
+## inside a GRangesList
+## The 'keep.extra.column=TRUE' parameter is needed to retained the extra 
+## column 'state' that is needed for the calculation of the metrics
+grlog <- GenomicRanges::makeGRangesListFromDataFrame(df=calls, 
+    split.field="ID", keep.extra.columns=TRUE)
+grlog
+```
+
+<br>
+
+## Metric Calculation
+
+The calculation of the similarity metrics is done with the 
+`calculateOverlapMetric()` function. 
+
+```{r demoCalculateMetricLog}
+metricLog <- calculateLog2ratioMetric(segmentData=grlog, 
+                              method="weightedEuclideanDistance", nJobs=1)
+
+metricLog
+```
+
+<br>
+
+## Metric Visualization  
+
+A heatmap of this similarity metrics can be a useful tool to get an overview 
+over similarities and dissimilarities between samples.
+
+The `plotMetric()` function generates a graphical representation of 
+the similarity metrics in the form of a sample-to-sample heatmap. By default, 
+an hierarchical clustering based on the sample distances 
+(1-metric) is used. When NA values are present in the metric matrix, those
+are replaced by zero.
+
+```{r demoPlotLog01, fig.align="center", fig.height=4.5, fig.width=4.5}
+## Create graph for the metrics related to weighted Euclidean distance-based
+plotMetric(metricLog)
+```
+
+<br>
+
+The `plotMetric()` function uses the `r CRANpkg("pheatmap")` package to 
+generate the graph. All arguments accepted by `pheatmap::pheatmap` function 
+are valid arguments.
+
+```{r demoPlotLog02, fig.align="center", fig.height=4.8, fig.width=4.8}
+## Create graph for the weighted Euclidean distance-based metrics
+## Remove title (argument main="")
+## Metric values are printed as 'display_numbers' and 'number_format' are
+## arguments recognized by pheatmap() function
+plotMetric(metricLog, colorRange=c("white", "darkorange"),
+                    show_colnames=TRUE,
+                    display_numbers=TRUE,
+                    number_format="%.2f",
+                    main="")
+```
+
+<br>
+<br>
 
 # Metrics using the level of amplification/deletion
 
-This survey represents the similarity measures that are implemented in 
-`r Githubpkg("KrasnitzLab/CNVMetrics")` package. Those metrics are calculated 
+This section presents the similarity measure that is implemented in 
+`r Githubpkg("KrasnitzLab/CNVMetrics")` package. This metric are calculated 
 using the level of amplification/deletion. The level of 
 amplification/deletion is in log2 ratio while the size of the regions 
 is in base paired. 
 
-## Weighted Euclidean Distance
+<br>
+
+## Weighted Euclidean Distance-Based
 
 The Weighted Euclidean Distance corresponds to the euclidean distance between
 the log2 values of the two samples multiplied by the natural logarithm 
-of the number of bases of the analyzed segments. The final metric is the 
-squared sum of the values obtained for all segments included in the 
-calculation.
+of the number of bases of the analyzed segments. The final metric is 1 over
+1 added to the squared sum of the values obtained for all segments included 
+in the calculation.
 
+The Weighted Euclidean Distance corresponds to the euclidean distance between
+the log2 values of the two samples multiplied by the natural logarithm 
+of the number of bases of the analyzed segments. The final metric is 1 over
+1 added to the squared sum of the values obtained for all segments included 
+in the calculation.
 
 \begin{equation}
-  \sqrt{\sum_{i=1} log_{2}(w_{i}) (A_{i} - B_{i})^{2}}
+  \frac{1}{1 + \sqrt{\sum_{i=1} log_{2}(w_{i}) (A_{i} - B_{i})^{2}}}
   (\#eq:euclidean)
 \end{equation}  
 
@@ -341,7 +542,48 @@ where $A_{i}$ and $B_{i}$ represent the log2 ratio values of samples $A$ and
 $B$ for the region $i$ while $w_{i}$ is the length of region $i$ in base 
 paired.
 
+<br>
+<br>
+
+
 # Supplementary information
+
+<br>
+
+## Using parallelization
+
+When the number of samples is limited, the above steps should be processed
+in a few minutes. However, for datasets with a high number of samples, the
+combinatorial calculation of the metrics can lead to longer processing time. 
+In this context, take advantage of parallelized computation is a viable 
+option. Both *calculateOverlapMetric()* and *calculateLog2ratioMetric()* 
+functions have paralleled implementation done with the 
+`r Biocpkg("BiocParallel")` package [@Morgan2021].
+
+The copy number data from The Cancer Genome Atlas (TCGA) Uterine 
+Carcinosarcoma (UCS) study generated by the TCGA Research Network
+(https://www.cancer.gov/tcga) is used as an demonstration. The copy number 
+variation information, as obtained from the DNACopy workflow [@DNAcopy] 
+is available for 53 patients.
+
+The following table highlights the time differences for processing the 
+Sørensen metric for all samples (metrics for all the 1378 possible 
+combinations) using rbenchmark [@rbenchmark] with 100 replications. This
+comparison has been done on a high performance computing (HPC) server:
+
+<div align="center">
+<div style="width: 60%; margin:0 left;text-align: center;">
+| Number of threads<br>(*nJobs* parameter)  | Average elapsed time<br> |
+| -------- | ----------- |
+| 24 | 1 min 26 sec |
+| 16 | 1 min 27 sec |
+|  8 | 1 min 51 sec |
+|  4 | 3 min 15 sec |
+|  1 | 7 min 37 sec |
+</div>
+</div>
+
+<br>
 
 ## Creating your own GRangesList
 
@@ -350,7 +592,7 @@ creation of a list of `GRangesList` objects from a `data.frame`. However,
 `GRangesList` can also be generated and filled manually. 
 
 ```{r demoGR}
-## Construction a GRangesList()
+## First, create the GRanges objects; one per sample
 gr1 <- GRanges(seqnames="chr2", ranges=IRanges(3, 6000),
           strand="+", state="AMPLIFICATION", 
           log2ratio=0.45)
@@ -363,8 +605,45 @@ gr3 <- GRanges(seqnames=c("chr1", "chr2"),
           strand=c("-", "-"), state=c("NEUTRAL", "AMPLIFICATION"), 
           log2ratio=c(0.04, 0.31))
 
+## Then, construct a GRangesList() using all the GRanges objects
 grl <- GRangesList("sample01"=gr1, "sample02"=gr2, "sample03"=gr3)
 ```
+
+<br>
+
+## Reproducible research
+
+To ensure reproducible results, *set.seed()* function should be call 
+before *calculateOverlapMetric()* and *calculateLog2ratioMetric()*. 
+Beware that the *nJobs* parameter must also be fixed; change in the value of 
+the *nJobs* parameter might lead to different results.
+
+
+```{r demoSeed, eval=FALSE}
+## First, fixe the seed value
+set.seed(121234)
+
+## Run the method to calculated the desired metrics
+## The number of jobs (*nJobs* parameter) can be higher than one but 
+## have to remain the same then the calculation is redone to ensure 
+## reproducitble results
+metricLog <- calculateLog2ratioMetric(segmentData=grlog, 
+                        method="weightedEuclideanDistance", nJobs=1)
+
+```
+
+<br>
+<br>
+
+
+# Acknowledgments
+
+This work was supported by the Lustgarten Foundation, where David A. Tuveson 
+is a distinguished scholar and Director of the Lustgarten Foundation–designated 
+Laboratory of Pancreatic Cancer Research. 
+
+<br>
+<br>
 
 
 # Session info
@@ -376,6 +655,8 @@ compiled:
 sessionInfo()
 ```
 
+<br>
+<br>
 
 # References
 

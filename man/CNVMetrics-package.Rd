@@ -7,23 +7,29 @@
 \alias{CNVMetrics}
 \title{CNVMetrics: Copy number variant metrics}
 \description{
-The CNVMetrics package calculates similarity metrics to facilitate copy 
-number variant comparison among samples and/or methods. Some metrics are 
-based on the shared amplified/deleted regions while other metrics rely on 
-the level of amplification/deletion. Finally, a visualization tool is 
-provided to explore resulting metrics.
+The CNVMetrics package calculates similarity metrics to 
+facilitate copy number variant comparison among samples and/or methods. 
+Similarity metrics can be employed to compare CNV profiles of genetically 
+unrelated samples as well as those with a common genetic background. 
+Some metrics are based on the shared amplified/deleted regions while other 
+metrics rely on the level of amplification/deletion. 
+The data type used as input is a plain text file containing the genomic 
+position of the copy number variations, as well as the status and/or 
+the log2 ratio values.
+Finally, a visualization tool is provided to explore resulting metrics.
 }
 \seealso{
 \itemize{
     \item \code{\link{calculateOverlapMetric}} {for calculating metric 
     using overlapping amplified/deleted regions}
-    \item \code{\link{plotOneOverlapMetric}} {for plotting metrics based 
-    on overlapping amplified/deleted regions}
+    \item \code{\link{calculateLog2ratioMetric}} {for calculating metric 
+    using log2ratio values}
+    \item \code{\link{plotMetric}} {for plotting metrics}
 }
 }
 \author{
-Astrid Deschênes and
-Pascal Belleau
+Astrid Deschênes, Pascal Belleau, David A. Tuveson and
+Alexander Krasnitz
 
 Maintainer:
 Astrid Deschênes <adeschen@hotmail.com>

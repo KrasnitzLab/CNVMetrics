@@ -1,44 +1,51 @@
 Package: CNVMetrics
 Type: Package
-Version: 0.1.4
-Date: 2021-02-17
+Version: 0.99.3
+Date: 2021-11-23
 Title: Copy Number Variant Metrics
 Description: The CNVMetrics package calculates similarity metrics to 
     facilitate copy number variant comparison among samples and/or methods. 
+    Similarity metrics can be employed to compare CNV profiles of genetically 
+    unrelated samples as well as those with a common genetic background. 
     Some metrics are based on the shared amplified/deleted regions while other 
-    metrics rely on the level of amplification/deletion. Finally, 
-    a visualization tool is provided to explore resulting metrics.
+    metrics rely on the level of amplification/deletion. 
+    The data type used as input is a plain text file containing the genomic 
+    position of the copy number variations, as well as the status and/or 
+    the log2 ratio values.
+    Finally, a visualization tool is provided to explore resulting metrics.
 Authors@R: c(person("Astrid", "Deschênes", email = "adeschen@hotmail.com",
     role = c("aut", "cre"),
     comment = c(ORCID = "0000-0001-7846-6749")), 
     person("Pascal", "Belleau", email = "pascal_belleau@hotmail.com",
     role = c("aut"),
     comment = c(ORCID = "0000-0002-0802-1071")),
+    person(given="David A.", family="Tuveson",  
+    email="dtuveson@cshl.edu", role = c("aut"), 
+    comment = c(ORCID = "0000-0002-8017-2712")),
     person("Alexander", "Krasnitz", email = "krasnitz@cshl.edu",
     role = c("aut")))
 Encoding: UTF-8
 License: Artistic-2.0
-Depends: R (>= 4.0)
-Imports: rtracklayer, 
-    GenomicRanges, 
+Depends: R (>= 4.1)
+Imports: GenomicRanges, 
     IRanges, 
-    GenomeInfoDb,
     S4Vectors,
+    BiocParallel,
     methods, 
     magrittr, 
     stats,
-    utils,
     pheatmap,
     gridExtra,
     grDevices
 Suggests: BiocStyle, 
     knitr, 
-    rmarkdown, 
+    rmarkdown,
     testthat
 biocViews: BiologicalQuestion, 
     Software,
     CopyNumberVariation
 VignetteBuilder: knitr
-URL: https://github.com/krasnitzlab/CNVMetrics, https://krasnitzlab.github.io/CNVMetrics/
+URL: https://github.com/krasnitzlab/CNVMetrics, 
+    https://krasnitzlab.github.io/CNVMetrics/
 BugReports: https://github.com/krasnitzlab/CNVMetrics/issues
 RoxygenNote: 7.1.1

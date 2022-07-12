@@ -5,106 +5,117 @@
 #' @description Calculate a specific metric using overlapping 
 #' amplified/deleted regions between two samples. 
 #' 
-#' @param sample01 a \code{GRanges} which contains a collection of 
-#' genomic ranges representing copy number events for the first sample. 
-#' The \code{GRanges} must have a metadata column called '\code{state}' with 
-#' amplified regions identified as '\code{AMPLIFICATION}' and 
-#' deleted regions identified as '\code{DELETION}'; regions with different 
-#' identifications will not be used in the
-#' calculation of the metric.  
-#' @param sample02 a \code{GRanges} which contains a collection of 
-#' genomic ranges representing copy number events for the second sample.
+#' @param entry a \code{list} which contains the row and column indexes 
+#' (always in this order) of 
+#' the metric in the final matrix. Those values correspond to the positions 
+#' of the two samples used
+#' to calculate the metric in the \code{GRangesList} (\code{segmentData}).
+#' 
+#' @param segmentData a \code{GRangesList} that contains a collection of 
+#' genomic ranges representing copy number events, including amplified/deleted 
+#' status, from at least 2 samples. All samples must have a metadata column 
+#' called '\code{state}' with a state, in an character string format, 
+#' specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).
+#' 
 #' @param method a \code{character} string representing the metric to be
 #' used ('\code{sorensen}' or '\code{szymkiewicz}'.
+#' 
 #' @param type a \code{character} string representing the type of 
 #' copy number events to be used ('\code{AMPLIFICATION}' or '\code{DELETION}').
 #' 
-#' @details 
+#' @return a \code{list} containing 1 entry:
+#' \itemize{
+#' \item{\code{metric}}{ a \code{data.frame}, which contains 3 columns. The 2 
+#' first columns, called \code{row} and \code{column} correspond to the 
+#' indexes of the metric in the final matrix. Those
+#' 2 first columns match to the \code{entry} parameter. The third column, 
+#' called \code{metric}, 
+#' contains the values of the specified metric for each combination. 
+#' If the metric cannot be calculated, \code{NA} is present. 
+#' }
+#' }
 #' 
-#' The method calculates a specified metric using overlapping
-#' regions between the samples. Only regions corresponding to the type
-#' specified by user are used in the calculation of the metric. The strand of 
-#' the regions is not taken into account while
-#' calculating the metric.
-#' 
-#' The Sorensen metric is calculated by dividing twice the size of 
-#' the intersection by the sum of the size of the two sets. If the sum of
-#' the size of the two sets is zero; the value \code{NA} is
-#' returned instead. 
-#' 
-#' The Szymkiewicz-Simpson metric is calculated by dividing the size of 
-#' the intersection by the smaller of the size of the two sets. If one sample
-#' has a size of zero, the metric is not calculated; the value \code{NA} is
-#' returned instead. 
-#' 
-#' @return a \code{numeric}, the value of the specified metric. If
-#' the metric cannot be calculated, \code{NA} is returned.
-#' 
-#' @references 
-#' 
-#' Sørensen, Thorvald. n.d. “A Method of Establishing Groups of Equal 
-#' Amplitude in Plant Sociology Based on Similarity of Species and Its 
-#' Application to Analyses of the Vegetation on Danish Commons.” 
-#' Biologiske Skrifter, no. 5: 1–34.
-#' 
-#' Vijaymeena, M. K, and Kavitha K. 2016. “A Survey on Similarity Measures in 
-#' Text Mining.” Machine Learning and Applications: An International 
-#' Journal 3 (1): 19–28. doi: \url{https://doi.org/10.5121/mlaij.2016.3103}
 #'
-#' 
 #' @examples
 #' 
-#' ## Load required package to generate the two samples
+#' ## Load required package to generate the samples
 #' require(GenomicRanges)
-#'
-#' ## Generate two samples with identical sequence levels
-#' sample01 <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(100, 201, 400), 
-#'     end = c(200, 350, 500)), strand =  "*",
-#'     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
-#' sample02 <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(150, 200, 450), 
-#'     end = c(250, 350, 500)), strand =  "*",
-#'     state = c("AMPLIFICATION", "DELETION", "DELETION"))
 #' 
-#' ## Calculate Sorensen metric for the amplified regions   
-#' CNVMetrics:::calculateOneOverlapMetric(sample01, sample02, 
+#' ## Create a GRangesList object with 3 samples
+#' ## The stand of the regions doesn't affect the calculation of the metric
+#' demo <- GRangesList()
+#' demo[["sample01"]] <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222), 
+#'     end=c(2004603, 4577608, 31695808, 32689222)), strand="*",
+#'     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
+#' 
+#' demo[["sample02"]] <- GRanges(seqnames="chr1", 
+#'     ranges= IRanges(start=c(1995066, 31611222, 31690000, 32006222), 
+#'     end=c(2204505, 31689898, 31895666, 32789233)), 
+#'     strand=c("-", "+", "+", "+"),
+#'     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
+#' 
+#' ## The amplified region in sample03 is a subset of the amplified regions 
+#' ## in sample01
+#' demo[["sample03"]] <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1906069, 4558838), 
+#'     end=c(1909505, 4570601)), strand="*",
+#'     state=c("AMPLIFICATION", "DELETION"))
+#' 
+#' ## The 2 samples used to calculate the metric
+#' entries <- data.frame(row=c(2, 3), col=c(1, 1))   
+#' 
+#' ## Calculate Sorensen metric for the amplified regions on samples 2 and 3  
+#' CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
 #'     method="sorensen", type="AMPLIFICATION")
 #' 
-#' ## Calculate Szymkiewicz-Simpson metric for the amplified regions   
+#' ## Calculate Szymkiewicz-Simpson metric for the amplified regions 
+#' ## in samples 1 and 2  
 #' ## Amplified regions of sample02 are a subset of the amplified 
 #' ## regions in sample01
-#' CNVMetrics:::calculateOneOverlapMetric(sample01, sample02, 
+#' CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
 #'     method="szymkiewicz", type="AMPLIFICATION")
 #' 
-#' ## Calculate Sorensen metric for the deleted regions   
-#' CNVMetrics:::calculateOneOverlapMetric(sample01, sample02, 
+#' ## Calculate Sorensen metric for the deleted regions in samples 1 and 2  
+#' CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
 #'     method="sorensen", type="DELETION")
-#'     
-#' ## Calculate Szymkiewicz-Simpson metric for the deleted regions    
-#' CNVMetrics:::calculateOneOverlapMetric(sample01, sample02,
-#'     method="szymkiewicz", type="DELETION")
 #' 
 #' @author Astrid Deschênes
 #' @encoding UTF-8
 #' @keywords internal
-calculateOneOverlapMetric <- function(sample01, sample02, method, type) {
+calculateOneOverlapMetricT <- function(entry, segmentData, method, type) {
     
-    sample01 <- sample01[sample01$state == type,]
-    sample02 <- sample02[sample02$state == type,]
+    entries <- split(entry, entry$col)
     
-    result <- NA
+    results <- list()
     
-    if (length(sample01) > 0 && length(sample02) > 0) { 
-        result <- switch(method,
-                        sorensen = calculateSorensen(sample01, sample02),
-                        szymkiewicz = calculateSzymkiewicz(sample01, sample02),
-                        jaccard = calculateJaccard(sample01, sample02))
+    for (data in entries) {
+        
+        result <- data
+        result$metric <- rep(NA, nrow(result))
+        
+        sample02 <- segmentData[[data$col[1]]]
+        sample02 <- sample02[sample02$state == type,]
+        
+        for(i in seq_len(nrow(data))) {
+            sample01 <- segmentData[[data$row[i]]]
+            sample01 <- sample01[sample01$state == type,]
+            
+            if (length(sample01) > 0 && length(sample02) > 0) { 
+                result$metric[i] <- switch(method,
+                sorensen=calculateSorensen(sample01, sample02),
+                    szymkiewicz=calculateSzymkiewicz(sample01, sample02),
+                    jaccard=calculateJaccard(sample01, sample02))
+            }
+        }
+        
+        results[[length(results) + 1]] <- result
     }
     
-    return(result)
-}
+    results <- do.call(rbind, results)
 
+    return(result <- list(metric=results))
+}
 
 #' @title Calculate Sorensen metric
 #' 
@@ -145,15 +156,15 @@ calculateOneOverlapMetric <- function(sample01, sample02, method, type) {
 #' require(GenomicRanges)
 #'
 #' ## Generate two samples with identical sequence levels
-#' sample01 <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
-#'     end = c(2004603, 4577608, 31695808)), strand =  "*")
-#' sample02 <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1995066, 31611222), 
-#'     end = c(2204505, 31689898)), strand =  "*")
+#' sample01 <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1905048, 4554832, 31686841), 
+#'     end=c(2004603, 4577608, 31695808)), strand="*")
+#' sample02 <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1995066, 31611222), 
+#'     end=c(2204505, 31689898)), strand="*")
 #' 
 #' ## Calculate Sorensen metric    
-#' CNVMetrics:::calculateSorensen(sample01, sample02)
+#' CNVMetrics:::calculateSorensen(sample01=sample01, sample02=sample02)
 #'     
 #' @author Astrid Deschênes
 #' @importFrom GenomicRanges intersect width
@@ -212,15 +223,15 @@ calculateSorensen <- function(sample01, sample02) {
 #' require(GenomicRanges)
 #'
 #' ## Generate two samples with identical sequence levels
-#' sample01 <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
-#'     end = c(2004603, 4577608, 31695808)), strand =  "*")
-#' sample02 <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1995066, 31611222), 
-#'     end = c(2204505, 31689898)), strand =  c("+", "-"))
+#' sample01 <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1905048, 4554832, 31686841), 
+#'     end=c(2004603, 4577608, 31695808)), strand="*")
+#' sample02 <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1995066, 31611222), 
+#'     end=c(2204505, 31689898)), strand=c("+", "-"))
 #' 
 #' ## Calculate Szymkiewicz-Simpson metric
-#' CNVMetrics:::calculateSzymkiewicz(sample01, sample02)
+#' CNVMetrics:::calculateSzymkiewicz(sample01=sample01, sample02=sample02)
 #'     
 #' @author Astrid Deschênes
 #' @importFrom GenomicRanges intersect width
@@ -282,15 +293,15 @@ calculateSzymkiewicz <- function(sample01, sample02) {
 #' require(GenomicRanges)
 #'
 #' ## Generate two samples with identical sequence levels
-#' sample01 <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
-#'     end = c(2004603, 4577608, 31695808)), strand =  "*")
-#' sample02 <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1995066, 31611222), 
-#'     end = c(2204505, 31689898)), strand =  "*")
+#' sample01 <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1905048, 4554832, 31686841), 
+#'     end=c(2004603, 4577608, 31695808)), strand="*")
+#' sample02 <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1995066, 31611222), 
+#'     end=c(2204505, 31689898)), strand="*")
 #' 
 #' ## Calculate Sorensen metric    
-#' CNVMetrics:::calculateJaccard(sample01, sample02)
+#' CNVMetrics:::calculateJaccard(sample01=sample01, sample02=sample02)
 #'     
 #' @author Astrid Deschênes
 #' @importFrom GenomicRanges intersect width
@@ -313,128 +324,3 @@ calculateJaccard <- function(sample01, sample02) {
 }
 
 
-#' @title Plot one graph related to metrics based on overlapping 
-#' amplified/deleted regions
-#' 
-#' @description Plot one heatmap of the metrics based on overlapping 
-#' amplified/deleted regions. 
-#' 
-#' @param metric a \code{CNVMetric} object containing the metrics calculated
-#' by \code{calculateOverlapMetric}.
-#' 
-#' @param type a \code{character} string indicating which graph to generate. 
-#' This should be (an unambiguous abbreviation of) one of  
-#' "\code{AMPLIFICATION}" or "\code{DELETION}".
-#' 
-#' @param show_colnames a \code{boolean} specifying if column names are 
-#' be shown.
-#' 
-#' @param silent a \code{boolean} specifying if the plot should not be drawn. 
-#' 
-#' @param \ldots further arguments passed to 
-#' \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method.
-#' 
-#' @return a \code{gtable} object containing the heatmap for the specified 
-#' metric.
-#' 
-#' @seealso 
-#' 
-#' The default method  \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}}.
-#' 
-#' @examples
-#' 
-#' #' ## Load required package to generate the samples
-#' require(GenomicRanges)
-#' 
-#' ## Create a GRangesList object with 3 samples
-#' ## The stand of the regions doesn't affect the calculation of the metric
-#' demo <- GRangesList()
-#' demo[["sample01"]] <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
-#'     end = c(2004603, 4577608, 31695808)), strand =  "*",
-#'     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
-#' 
-#' demo[["sample02"]] <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1995066, 31611222, 31690000), 
-#'     end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
-#'     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
-#' 
-#' ## The amplified region in sample03 is a subset of the amplified regions 
-#' ## in sample01
-#' demo[["sample03"]] <- GRanges(seqnames = "chr1", 
-#'     ranges =  IRanges(start = c(1906069, 4558838), 
-#'     end = c(1909505, 4570601)), strand =  "*",
-#'     state = c("AMPLIFICATION", "DELETION"))
-#' 
-#' ## Calculating Sorensen metric
-#' metric <- calculateOverlapMetric(demo, method="sorensen")
-#' 
-#' ## Plot amplification metrics using darkorange color
-#' CNVMetrics:::plotOneOverlapMetric(metric, type="AMPLIFICATION", 
-#'     colorRange=c("white", "darkorange"), show_colnames=FALSE, silent=TRUE)
-#'
-#' @author Astrid Deschênes
-#' @importFrom pheatmap pheatmap
-#' @importFrom grDevices colorRampPalette
-#' @importFrom methods hasArg
-#' @importFrom stats as.dist
-#' @import GenomicRanges
-#' @encoding UTF-8
-#' @keywords internal
-plotOneOverlapMetric <- function(metric, type, colorRange, show_colnames, 
-                                    silent, ...) 
-{
-    ## Extract matrix with metric values
-    metricMat <- metric[[type]]
-    
-    ## Extract extra arguments
-    dots <- list(...) 
-    
-    ## Prepare matrix by filling upper triangle
-    diag(metricMat) <- 1.0
-    
-    ## If clustering distances are not present in the arguments, 
-    ## the distance used is based on the samples distance
-    if ((!("clustering_distance_cols" %in% names(dots))) &&
-            (!("clustering_distance_rows" %in% names(dots)))) {
-        ## Prepare matrix to be able to calculate distance
-        metricMat[lower.tri(metricMat) & 
-                                    is.na(metricMat)] <- 0.0
-        metricDist <- as.dist(1-metricMat)
-        
-        dots[["clustering_distance_cols"]] <- metricDist
-        dots[["clustering_distance_rows"]] <- metricDist
-    }
-    
-    ## Prepare matrix by filling upper triangle
-    metricMat[upper.tri(metricMat)] <- t(metricMat)[upper.tri(metricMat)]
-    metricMat[is.na(metricMat)] <- 0.0
-    
-    ## Prepare main title (might not be used if main argument given by user)
-    if (!hasArg("main")) {
-        metricInfo <- switch(attributes(metric)$metric, 
-                            "szymkiewicz"="Szymkiewicz-Simpson", 
-                            "sorensen"="Sorensen")
-        dots[["main"]] <- paste0(type, " - ", metricInfo, " metric")
-    }
-
-    ## Create heatmap
-    ## If color information given, that information is used to create graph
-    ## If main title given, that information is used to create graph
-    if (!hasArg("breaks") && !hasArg("color")) {
-        ## Create color palette using colorRange parameter
-        colors <- colorRampPalette(colorRange)(255)
-        breaks <-  seq(0, 1, length.out=255)
-        
-        dots[["color"]] <- colors
-        dots[["breaks"]] <- breaks
-    } 
-    
-    ## Add arguments
-    dots[["mat"]] <- metricMat
-    dots[["show_colnames"]] <- show_colnames
-    dots[["silent"]] <- silent
-    
-    ## Create heatmap
-    do.call(what="pheatmap", args=dots)[[4]]
-}

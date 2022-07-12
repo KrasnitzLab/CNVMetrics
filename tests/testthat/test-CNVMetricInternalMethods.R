@@ -4,183 +4,112 @@ library(CNVMetrics)
 library(GenomicRanges)
 library(S4Vectors)
 library(IRanges)
-library(GenomeInfoDb)
 
 
+### Tests createDisjoinSegmentsForTwoSamples() results
 
-### Tests prepareInformation() results
+context("createDisjoinSegmentsForTwoSamples() results")
 
-context("createSegments() results")
+test_that("createDisjoinSegmentsForTwoSamples() must return expected results", {
 
-test_that("createSegments() must return expected results", {
     
-    segFiles <- list()
-    segFiles[[1]] <-  GRanges(seqnames = "chr1", 
-                              ranges = IRanges(start = c(1,200), 
-                                               end=c(100, 300)))
-    values(segFiles[[1]]) <- DataFrame(score = c(0.1, 0.5), 
-                                       source = c("File1", "File1"))
-    segFiles[[3]] <-  GRanges(seqnames = "chr1", 
-                              ranges = IRanges(start = c(50,150), 
-                                               end=c(110, 250)))
-    values(segFiles[[3]]) <- DataFrame(score = c(0.3, 0.4), 
-                                       source = c("File2", "File2"))
-    
-    sourceFiles <- list()
-    sourceFiles[[1]] <- "File1"
-    sourceFiles[[3]] <- "File2"
-    
-    expected <- GRanges(seqnames = "chr1", 
+    segment1 <- GRanges(seqnames = "chr1", 
                         ranges = IRanges(start=c(1, 50, 101, 150, 200, 251),
-                                            end=c(49, 100, 110, 199, 250, 300)))
-    
-    values(expected) <- DataFrame(included = c(rep(TRUE, 6)), 
-                                 File1 = c(0.1, 0.1, NA, NA, 0.5, 0.5), 
-                                 File2 = c(NA, 0.3, 0.3, 0.4, 0.4, NA))
-                     
-    results <- CNVMetrics:::createSegments(fileList = segFiles, 
-                                           sourceList = sourceFiles, 
-                                           bedExclusion = NULL)
-    
-    expect_identical(results, expected)
-})
-
-test_that("createSegments() with BED file must return expected results", {
-    
-    segFiles <- list()
-    segFiles[[1]] <-  GRanges(seqnames = "chr1", 
-                              ranges = IRanges(start = c(1,200), 
-                                               end=c(55, 220)))
-    values(segFiles[[1]]) <- DataFrame(score = c(0.1, 0.5), 
-                                       source = c("File1", "File1"))
-    segFiles[[3]] <-  GRanges(seqnames = "chr1", 
-                              ranges = IRanges(start = c(30,180), 
-                                               end=c(110, 230)))
-    values(segFiles[[3]]) <- DataFrame(score = c(0.3, 0.4), 
-                                       source = c("File2", "File2"))
-    
-    bedInfo <- GRanges(seqnames = "chr1", 
-            ranges = IRanges(start = c(50), end=c(100)))
-    
-    sourceFiles <- list()
-    sourceFiles[[1]] <- "File1"
-    sourceFiles[[3]] <- "File2"
-    
-    expected <- GRanges(seqnames = "chr1", 
-                        ranges = IRanges(start=c(1, 30, 50, 56, 101, 180, 200, 221),
-                                         end=c(29, 49, 55, 100, 110, 199, 220, 230)))
-    
-    values(expected) <- DataFrame(included = c(rep(TRUE, 2), rep(FALSE, 2), rep(TRUE, 4)), 
-                                  File1 = c(0.1, 0.1, 0.1, NA, NA, NA, 0.5, NA), 
-                                  File2 = c(NA, 0.3, 0.3, 0.3, 0.3, 0.4, 0.4, 0.4))
-    
-    results <- CNVMetrics:::createSegments(fileList = segFiles, 
-                                           sourceList = sourceFiles, 
-                                           bedExclusion = bedInfo)
-    
-    expect_identical(results, expected)
-})
-
-### Tests calculateRegressedValues() results
-
-context("calculateRegressedValues() results")
-
-test_that("calculateRegressedValues() must return expected results", {
-    
-    segment  <- GRanges(seqnames = "chr1", 
-                        ranges = IRanges(start=c(1, 50, 101, 150, 200, 251),
-                                         end=c(49, 100, 110, 199, 250, 300)))
-    
-    y <- c(0.1, 0.1, NA, NA, 0.15, 0.2)
-    x <- c(NA, 0.3, 0.3, 0.4, 0.4, 0.8)
-    
-    elementMetadata(segment) <- DataFrame(included = c(rep(TRUE, 6)), 
-                                  File1 = y,  
-                                  File2 = x)
-    
-    segmentData <- list()
-    segmentData$segments <- segment
-    segmentData$regression <- list()
-    segmentData$regression[[1]] <- list()
-    segmentData$regression[[1]][["y_used"]] <- "File1"
-    segmentData$regression[[1]][["x_used"]] <- "File2"
-    segmentData$regression[[1]][["lm"]] <- lm("y ~ x", data.frame(x=x, y=y))
-    
-    results <- CNVMetrics:::calculateRegressedValues(segmentData)
+                                         end=c(49, 100, 110, 199, 250, 300)),
+                        log2ratio=c(0.1222, 1.3211, 0.1212, -1.1111, -2.2222, -0.4444))
     
     
+    segment2  <- GRanges(seqnames = "chr1", 
+                        ranges = IRanges(start=c(1, 50, 101, 251),
+                                         end=c(300, 100,  199,  400)),
+                        log2ratio=c(0.002, 2.3111, 1.2222, -0.4444))
     
-    segmentExp  <- GRanges(seqnames = "chr1", 
-                        ranges = IRanges(start=c(1, 50, 101, 150, 200, 251),
-                                         end=c(49, 100, 110, 199, 250, 300)))
+    results <- CNVMetrics:::createDisjoinSegmentsForTwoSamples(segmentDataSample1=segment1, 
+                        segmentDataSample2=segment2, bedExclusion = NULL)
     
-    y <- c(0.1, 0.1, NA, NA, 0.15, 0.2)
-    x <- c(NA, 0.11428571428571400459, 0.11428571428571400459, 
-           0.13214285714285700646, 0.13214285714285700646, 
-           0.20357142857142898618)
+   
+    expected <- GRanges(seqnames="chr1", 
+                    ranges=IRanges(start=c(1, 50, 101, 111, 150, 200, 251, 301),
+                                   end=c(49, 100, 110, 149, 199, 250, 300, 400)),
+                    included=rep(TRUE, 8),
+                    sample_1=c(0.1222, 1.3211, 0.1212, NA, -1.1111, -2.2222, -0.4444, NA),
+                    sample_2=c(0.0020, 2.3111, 1.2222, 1.2222, 1.2222, 0.0020, -0.4444, -0.4444))
     
-    values(segmentExp) <- DataFrame(included = c(rep(TRUE, 6)), 
-                                 File1 = y,  
-                                 File2 = x)
-    
-    expected <- segmentData
-    expected$regressedData <- segmentData$segments 
-    
-    elementMetadata(expected$regressedData) <- DataFrame(included = c(rep(TRUE, 6)), 
-                                                         File1 = y,  
-                                                         File2 = x)
     
     expect_equal(results, expected)
 })
 
 
-### Tests doRegression() results
-
-context("doRegression() results")
-
-test_that("doRegression() must return expected results", {
+test_that("createDisjoinSegmentsForTwoSamples() must return expected results when exclusion file used", {
     
-    segmentData <- list()
     
-    segment  <- GRanges(seqnames = "chr1", 
+    segment1 <- GRanges(seqnames = "chr1", 
                         ranges = IRanges(start=c(1, 50, 101, 150, 200, 251),
-                                         end=c(49, 100, 110, 199, 250, 300)))
-    
-    y <- c(0.1, 0.1, NA, NA, 0.15, 0.2)
-    x <- c(NA, 0.3, 0.3, 0.4, 0.4, 0.8)
-    
-    elementMetadata(segment) <- DataFrame(included = c(rep(TRUE, 6)), 
-                                          File1 = y,  
-                                          File2 = x)
-    segmentData$segments <- segment
-    
-    results <- CNVMetrics:::doRegression(segmentData)
+                                         end=c(49, 100, 110, 199, 250, 300)),
+                        log2ratio=c(0.1222, 1.3211, 0.1212, -1.1111, -2.2222, -0.4444))
     
     
+    segment2  <- GRanges(seqnames = "chr1", 
+                         ranges = IRanges(start=c(1, 250, 301, 551),
+                                          end=c(200, 300,  399,  800)),
+                         log2ratio=c(0.002, 2.3111, 1.2222, -0.4444))
     
-    segmentExp  <- GRanges(seqnames = "chr1", 
-                           ranges = IRanges(start=c(1, 50, 101, 150, 200, 251),
-                                            end=c(49, 100, 110, 199, 250, 300)))
-
-    elementMetadata(segmentExp) <- DataFrame(included = c(rep(TRUE, 6)), 
-                                          File1 = y,  
-                                          File2 = x)
+    exclusion <- GRanges(seqnames="chr1", ranges=IRanges(start=c(60, 444), end=c(102, 900)))
     
-    expected <- list()
-    expected$segments <- segmentExp
-    
-    subData <- data.frame(x=x, y=y)
+    results <- CNVMetrics:::createDisjoinSegmentsForTwoSamples(segmentDataSample1=segment1, 
+                        segmentDataSample2=segment2, bedExclusion = exclusion)
     
     
-    segmentData <- list()
-    segmentData$segments <- segment
-    expected$regression <- list()
-    expected$regression[[1]] <- list()
-    expected$regression[[1]][["lm"]] <- lm("y ~ x", subData)
-    expected$regression[[1]][["y_used"]] <- "File1"
-    expected$regression[[1]][["x_used"]] <- "File2"
+    expected <- GRanges(seqnames="chr1", 
+                        ranges=IRanges(start=c(1, 50, 101, 111, 150, 200, 201, 250, 251, 301, 551),
+                                       end=c(49, 100, 110, 149, 199, 200, 249, 250, 300, 399, 800)),
+                        included=c(TRUE, FALSE, FALSE, rep(TRUE, 7), FALSE),
+                        sample_1=c(0.1222, 1.3211, 0.1212, NA, -1.1111, -2.2222, -2.2222, -2.2222, -0.4444, NA, NA),
+                        sample_2=c(0.0020, 0.0020, 0.0020, 0.0020, 0.0020, 0.0020, NA, 2.3111,  2.3111, 1.2222, -0.4444))
+    
     
     expect_equal(results, expected)
 })
 
+
+
+### Tests validateCalculateOverlapMetricParameters() results
+
+context("validateCalculateOverlapMetricParameters() results")
+
+test_that("validateCalculateOverlapMetricParameters() must return expected zero", {
+    
+    results <- CNVMetrics:::validateCalculateOverlapMetricParameters(states="LOH", 
+                                        nJobs=1)
+    
+    expect_equal(results, 0L)
+})
+
+test_that("validateCalculateOverlapMetricParameters() must return error when nJobs is negative", {
+
+    
+    error_message <- "nJobs must be a positive integer"
+    
+    expect_error(CNVMetrics:::validateCalculateOverlapMetricParameters(states="LOH", 
+            nJobs=-3), error_message)
+})
+
+test_that("validateCalculateOverlapMetricParameters() must return error when states is a list", {
+    
+    error_message <- paste0("the \'states\' argument must be a vector ", 
+                                "of strings with at least one value")
+    
+    expect_error(CNVMetrics:::validateCalculateOverlapMetricParameters(states=list(A=1, B=2), 
+            nJobs=1), error_message)
+})
+
+
+test_that("validateCalculateOverlapMetricParameters() must return error when states is a vector of numerics", {
+    
+    error_message <- paste0("the \'states\' argument must be a vector ", 
+                                "of strings with at least one value")
+    
+    expect_error(CNVMetrics:::validateCalculateOverlapMetricParameters(states=c(1,3,4),
+            nJobs=1), error_message)
+})
 
