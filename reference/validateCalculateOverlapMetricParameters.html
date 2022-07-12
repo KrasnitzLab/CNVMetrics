@@ -61,7 +61,7 @@ function</h1>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">validateCalculateOverlapMetricParameters</span><span class="op">(</span><span class="va">states</span>, <span class="va">nJobs</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">validateCalculateOverlapMetricParameters</span><span class="op">(</span><span class="va">states</span>, <span class="va">nJobs</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -69,13 +69,18 @@ function</h1>
     <dl><dt>states</dt>
 <dd><p>a <code>vector</code> of <code>character</code> string with at least one
 entry. The strings are representing the states that will be analyzed.</p></dd>
+
+
 <dt>nJobs</dt>
 <dd><p>a single positive <code>integer</code> specifying the number of 
 worker jobs to create in case of distributed computation.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>0</code>.</p>
+    
+
+<p><code>0</code>.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -84,13 +89,13 @@ worker jobs to create in case of distributed computation.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Return zero as all parameters are valid</span></span>
-<span class="r-in"><span class="fu">CNVMetrics</span><span class="fu">:::</span><span class="fu">validateCalculateOverlapMetricParameters</span><span class="op">(</span></span>
-<span class="r-in">    states<span class="op">=</span><span class="st">"GAIN"</span>, nJobs<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Return zero as all parameters are valid</span></span></span>
+<span class="r-in"><span><span class="fu">CNVMetrics</span><span class="fu">:::</span><span class="fu">validateCalculateOverlapMetricParameters</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    states<span class="op">=</span><span class="st">"GAIN"</span>, nJobs<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -105,7 +110,7 @@ worker jobs to create in case of distributed computation.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

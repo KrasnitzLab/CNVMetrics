@@ -60,13 +60,13 @@ two samples.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">calculateOneLog2valueMetricT</span><span class="op">(</span>
-  <span class="va">entry</span>,
-  <span class="va">segmentData</span>,
-  <span class="va">method</span>,
-  <span class="va">minThreshold</span>,
-  <span class="va">bedExclusion</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calculateOneLog2valueMetricT</span><span class="op">(</span></span>
+<span>  <span class="va">entry</span>,</span>
+<span>  <span class="va">segmentData</span>,</span>
+<span>  <span class="va">method</span>,</span>
+<span>  <span class="va">minThreshold</span>,</span>
+<span>  <span class="va">bedExclusion</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -77,26 +77,37 @@ two samples.</p>
 the metric in the final matrix. Those values correspond to the positions 
 of the two samples used
 to calculate the metric in the <code>GRangesList</code> (<code>segmentData</code>).</p></dd>
+
+
 <dt>segmentData</dt>
 <dd><p>a <code>GRangesList</code> that contains a collection of 
 genomic ranges representing copy number events, including amplified/deleted 
 status, from at least 2 samples. All samples must have a metadata column 
 called '<code>log2ratio</code>' with the log2ratio values.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>a <code>character</code> string representing the metric to be
 used ('<code>weightedEuclideanDistance</code>').</p></dd>
+
+
 <dt>minThreshold</dt>
 <dd><p>a single <code>numeric</code> setting the minimum value 
 to consider two segments as different during the metric calculation. If the 
 absolute difference is below or equal to threshold, the difference will be 
 replaced by zero.</p></dd>
+
+
 <dt>bedExclusion</dt>
 <dd><p>an optional <code>GRanges</code> containing the regions 
 that have to be excluded for the metric calculation or codeNULL.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>list</code> containing 1 entry:</p><ul><li><p><code>metric</code> a <code>data.frame</code>, which contains 3 columns. The 2 
+    
+
+<p>a <code>list</code> containing 1 entry:</p><ul><li><p><code>metric</code> a <code>data.frame</code>, which contains 3 columns. The 2 
 first columns, called <code>row</code> and <code>column</code> correspond to the 
 indexes of the metric in the final matrix. Those
 2 first columns match to the <code>entry</code> parameter. The third column, 
@@ -123,37 +134,37 @@ returned instead.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">## Load required package to generate the two samples</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create a GRangesList object with 3 samples</span></span>
-<span class="r-in"><span class="co">## The stand of the regions doesn't affect the calculation of the metric</span></span>
-<span class="r-in"><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html" class="external-link">GRangesList</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Generate two samples with log2value information as a metadata column</span></span>
-<span class="r-in"><span class="va">demo</span><span class="op">[[</span><span class="st">"sample01"</span><span class="op">]</span><span class="op">]</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr1"</span>, </span>
-<span class="r-in">    ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">201</span>, <span class="fl">400</span><span class="op">)</span>, </span>
-<span class="r-in">    end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">350</span>, <span class="fl">500</span><span class="op">)</span><span class="op">)</span>, strand<span class="op">=</span><span class="st">"*"</span>,</span>
-<span class="r-in">    log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.1111</span>, <span class="fl">2.2222</span>, <span class="op">-</span><span class="fl">0.9999</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">demo</span><span class="op">[[</span><span class="st">"sample02"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr1"</span>, </span>
-<span class="r-in">    ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">200</span>, <span class="fl">450</span><span class="op">)</span>, </span>
-<span class="r-in">    end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">250</span>, <span class="fl">350</span>, <span class="fl">500</span><span class="op">)</span><span class="op">)</span>, strand<span class="op">=</span><span class="st">"*"</span>,</span>
-<span class="r-in">    log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.2121</span>, <span class="fl">1.1212</span>, <span class="op">-</span><span class="fl">1.3939</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The 2 samples used to calculate the metric</span></span>
-<span class="r-in"><span class="va">entries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>row<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Calculate weighted Euclidean distance </span></span>
-<span class="r-in"><span class="fu">CNVMetrics</span><span class="fu">:::</span><span class="fu">calculateOneLog2valueMetricT</span><span class="op">(</span>entry<span class="op">=</span><span class="va">entries</span>, </span>
-<span class="r-in">    segmentData<span class="op">=</span><span class="va">demo</span>, method<span class="op">=</span><span class="st">"weightedEuclideanDistance"</span>, </span>
-<span class="r-in">    minThreshold<span class="op">=</span><span class="fl">0.2</span>, bedExclusion<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Load required package to generate the two samples</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create a GRangesList object with 3 samples</span></span></span>
+<span class="r-in"><span><span class="co">## The stand of the regions doesn't affect the calculation of the metric</span></span></span>
+<span class="r-in"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html" class="external-link">GRangesList</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Generate two samples with log2value information as a metadata column</span></span></span>
+<span class="r-in"><span><span class="va">demo</span><span class="op">[[</span><span class="st">"sample01"</span><span class="op">]</span><span class="op">]</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr1"</span>, </span></span>
+<span class="r-in"><span>    ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">201</span>, <span class="fl">400</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>    end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">350</span>, <span class="fl">500</span><span class="op">)</span><span class="op">)</span>, strand<span class="op">=</span><span class="st">"*"</span>,</span></span>
+<span class="r-in"><span>    log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.1111</span>, <span class="fl">2.2222</span>, <span class="op">-</span><span class="fl">0.9999</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">demo</span><span class="op">[[</span><span class="st">"sample02"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr1"</span>, </span></span>
+<span class="r-in"><span>    ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">200</span>, <span class="fl">450</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>    end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">250</span>, <span class="fl">350</span>, <span class="fl">500</span><span class="op">)</span><span class="op">)</span>, strand<span class="op">=</span><span class="st">"*"</span>,</span></span>
+<span class="r-in"><span>    log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.2121</span>, <span class="fl">1.1212</span>, <span class="op">-</span><span class="fl">1.3939</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The 2 samples used to calculate the metric</span></span></span>
+<span class="r-in"><span><span class="va">entries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>row<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> </span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Calculate weighted Euclidean distance </span></span></span>
+<span class="r-in"><span><span class="fu">CNVMetrics</span><span class="fu">:::</span><span class="fu">calculateOneLog2valueMetricT</span><span class="op">(</span>entry<span class="op">=</span><span class="va">entries</span>, </span></span>
+<span class="r-in"><span>    segmentData<span class="op">=</span><span class="va">demo</span>, method<span class="op">=</span><span class="st">"weightedEuclideanDistance"</span>, </span></span>
+<span class="r-in"><span>    minThreshold<span class="op">=</span><span class="fl">0.2</span>, bedExclusion<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metric</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   row col    metric</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   2   1 0.1737391</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -168,7 +179,7 @@ returned instead.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

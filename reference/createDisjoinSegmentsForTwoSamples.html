@@ -69,11 +69,11 @@ in the metadata columns.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">createDisjoinSegmentsForTwoSamples</span><span class="op">(</span>
-  <span class="va">segmentDataSample1</span>,
-  <span class="va">segmentDataSample2</span>,
-  bedExclusion <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">createDisjoinSegmentsForTwoSamples</span><span class="op">(</span></span>
+<span>  <span class="va">segmentDataSample1</span>,</span>
+<span>  <span class="va">segmentDataSample2</span>,</span>
+<span>  bedExclusion <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -81,16 +81,23 @@ in the metadata columns.</p>
     <dl><dt>segmentDataSample1</dt>
 <dd><p>a <code>GRanges</code>, the segments from the first 
 sample.</p></dd>
+
+
 <dt>segmentDataSample2</dt>
 <dd><p>a <code>GRanges</code>, the segments from the second 
 sample.</p></dd>
+
+
 <dt>bedExclusion</dt>
 <dd><p>a <code>GRanges</code>, the regions that must be
 excluded from the analysis. Default: <code>NULL</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>GRanges</code> containing the common segment information for the
+    
+
+<p>a <code>GRanges</code> containing the common segment information for the
 two samples. The log2ration value are present, for the two samples, in 
 the metadata columns. When there is not log2ratio value for one sample, 
 NA is the assigned value. A metadata column also specifies if the segments
@@ -103,24 +110,24 @@ should be included in the analysis.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">## Load required package to generate the two samples</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Create first Granges representing first sample</span></span>
-<span class="r-in"><span class="va">sample01</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr1"</span>,</span>
-<span class="r-in">    ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">201</span>, <span class="fl">400</span><span class="op">)</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">350</span>, <span class="fl">500</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">    strand<span class="op">=</span><span class="st">"*"</span>, log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3091175</span>, <span class="fl">0.4582058</span>, <span class="op">-</span><span class="fl">0.3798390</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Create second Granges representing second sample</span></span>
-<span class="r-in"><span class="va">sample02</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr1"</span>,</span>
-<span class="r-in">    ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">200</span>, <span class="fl">450</span><span class="op">)</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">250</span>, <span class="fl">350</span>, <span class="fl">500</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">    strand<span class="op">=</span><span class="st">"*"</span>, log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.222174</span>, <span class="fl">0.3282156</span>, <span class="op">-</span><span class="fl">0.2728292</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Create disjoint segment using the 2 samples and without any region</span></span>
-<span class="r-in"><span class="co"># excluded from the analysis (parameter bedExclusion set to null)</span></span>
-<span class="r-in"><span class="fu">CNVMetrics</span><span class="fu">:::</span><span class="fu">createDisjoinSegmentsForTwoSamples</span><span class="op">(</span>segmentDataSample1<span class="op">=</span><span class="va">sample01</span>, </span>
-<span class="r-in">    segmentDataSample2<span class="op">=</span><span class="va">sample02</span>, bedExclusion<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Load required package to generate the two samples</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Create first Granges representing first sample</span></span></span>
+<span class="r-in"><span><span class="va">sample01</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr1"</span>,</span></span>
+<span class="r-in"><span>    ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">201</span>, <span class="fl">400</span><span class="op">)</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">350</span>, <span class="fl">500</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    strand<span class="op">=</span><span class="st">"*"</span>, log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3091175</span>, <span class="fl">0.4582058</span>, <span class="op">-</span><span class="fl">0.3798390</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Create second Granges representing second sample</span></span></span>
+<span class="r-in"><span><span class="va">sample02</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr1"</span>,</span></span>
+<span class="r-in"><span>    ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">200</span>, <span class="fl">450</span><span class="op">)</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">250</span>, <span class="fl">350</span>, <span class="fl">500</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    strand<span class="op">=</span><span class="st">"*"</span>, log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.222174</span>, <span class="fl">0.3282156</span>, <span class="op">-</span><span class="fl">0.2728292</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Create disjoint segment using the 2 samples and without any region</span></span></span>
+<span class="r-in"><span><span class="co"># excluded from the analysis (parameter bedExclusion set to null)</span></span></span>
+<span class="r-in"><span><span class="fu">CNVMetrics</span><span class="fu">:::</span><span class="fu">createDisjoinSegmentsForTwoSamples</span><span class="op">(</span>segmentDataSample1<span class="op">=</span><span class="va">sample01</span>, </span></span>
+<span class="r-in"><span>    segmentDataSample2<span class="op">=</span><span class="va">sample02</span>, bedExclusion<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 7 ranges and 3 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       seqnames    ranges strand |  included  sample_1  sample_2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;logical&gt; &lt;numeric&gt; &lt;numeric&gt;</span>
@@ -133,7 +140,7 @@ should be included in the analysis.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [7]     chr1   450-500      * |      TRUE -0.379839 -0.272829</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -148,7 +155,7 @@ should be included in the analysis.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>
