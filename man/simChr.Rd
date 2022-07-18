@@ -8,29 +8,66 @@
 simChr(curSample, chrCur, nbSim)
 }
 \arguments{
-\item{curSample}{a \code{GRangesList} that contains a collection of
+\item{curSample}{a \code{GRanges} that contains a collection of
 genomic ranges representing copy number events, including amplified/deleted
-status, from at least 1 samples. The sample must have a metadata column
+status, from exactly one sample. The sample must have a metadata column
 called '\code{state}' with a state, in an character string format,
-specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).}
+specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.)
+and a metadata column called '\code{CN}' that contains the log2 copy
+number ratios.}
 
 \item{chrCur}{\code{character} string with the chromosome.}
 
-\item{nbSim}{a \code{integer} which is corresponding to the number of simulation}
+\item{nbSim}{a single \code{integer} which is corresponding to the number
+of simulations that will be generated.}
 }
 \value{
-res TODO
+a code{list} containing one entry per simulation. Each entry is
+a \code{data.frame} containing shuffled segments with 6 columns:
+\itemize{
+\item{\code{ID}}{ the name of the simulation }
+\item{\code{chr}}{ the name fo the chromosome }
+\item{\code{start}}{ the starting position of the segment; the positions
+are between zero and one }
+\item{\code{end}}{ the ending position of the segment; the positions
+are between zero and one }
+\item{\code{log2ratio}} { the log2 copy number ratio assigned to the segment
+state: the state of the region (ex: DELETION, LOH, NEUTRAL, etc.) }
+}
 }
 \description{
 TODO
 }
 \details{
 TODO
-
-metric value of 1 is only obtained when the two samples are identical.
 }
 \examples{
-## TODO
+
+## Load required package to generate the samples
+require(GenomicRanges)
+
+## Create one 'demo' genome with 2 chromosomes
+## in a GRangesList object (1 sample, multiple GRanges)
+## The stand of the regions doesn't affect the calculation of the metric
+demo <- GRangesList()
+demo[["sample01"]] <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
+    ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222,
+        1, 120331, 725531),
+    end=c(2004603, 4577608, 31695808, 32689222, 117121,
+        325555, 1225582)),
+    strand="*",
+    state=c("AMPLIFICATION", "NEUTRAL", "DELETION", "LOH",
+        "DELETION", "NEUTRAL", "NEUTRAL"),
+    CN=(c(0.5849625, 0, -1, -1, -0.87777, 0, 0)))
+
+
+## Generates 10 shuffled chromosomes based on chromosome 2
+## The shuffled chromosomes have a start and an end between 0 an 1
+simChr(curSample=demo[["sample01"]], chrCur="chr2", nbSim=10)
+
+## Generates 4 shuffled chromosomes based on chromosome 1
+## The shuffled chromosomes have a start and an end between 0 an 1
+simChr(curSample=demo[["sample01"]], chrCur="chr1", nbSim=4)
 
 }
 \author{

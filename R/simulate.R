@@ -3,34 +3,69 @@
 #'
 #' @description TODO
 #'
-#' @param curSample a \code{GRangesList} that contains a collection of
+#' @param curSample a \code{GRanges} that contains a collection of
 #' genomic ranges representing copy number events, including amplified/deleted
-#' status, from at least 1 samples. The sample must have a metadata column
+#' status, from exactly one sample. The sample must have a metadata column
 #' called '\code{state}' with a state, in an character string format,
-#' specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).
+#' specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.)
+#' and a metadata column called '\code{CN}' that contains the log2 copy
+#' number ratios.
 #'
 #' @param chrCur \code{character} string with the chromosome.
 #'
-#' @param nbSim a \code{integer} which is corresponding to the number of simulation
+#' @param nbSim a single \code{integer} which is corresponding to the number
+#' of simulations that will be generated.
 #'
 #' @details TODO
 #'
-#' metric value of 1 is only obtained when the two samples are identical.
 #'
-#' @return res TODO
-#'
-#'
+#' @return a code{list} containing one entry per simulation. Each entry is
+#' a \code{data.frame} containing shuffled segments with 6 columns:
+#' \itemize{
+#' \item{\code{ID}}{ the name of the simulation }
+#' \item{\code{chr}}{ the name fo the chromosome }
+#' \item{\code{start}}{ the starting position of the segment; the positions
+#' are between zero and one }
+#' \item{\code{end}}{ the ending position of the segment; the positions
+#' are between zero and one }
+#' \item{\code{log2ratio}} { the log2 copy number ratio assigned to the segment
+#' state: the state of the region (ex: DELETION, LOH, NEUTRAL, etc.) }
+#' }
 #'
 #' @examples
-#' ## TODO
+#'
+#' ## Load required package to generate the samples
+#' require(GenomicRanges)
+#'
+#' ## Create one 'demo' genome with 2 chromosomes
+#' ## in a GRangesList object (1 sample, multiple GRanges)
+#' ## The stand of the regions doesn't affect the calculation of the metric
+#' demo <- GRangesList()
+#' demo[["sample01"]] <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
+#'     ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222,
+#'         1, 120331, 725531),
+#'     end=c(2004603, 4577608, 31695808, 32689222, 117121,
+#'         325555, 1225582)),
+#'     strand="*",
+#'     state=c("AMPLIFICATION", "NEUTRAL", "DELETION", "LOH",
+#'         "DELETION", "NEUTRAL", "NEUTRAL"),
+#'     CN=(c(0.5849625, 0, -1, -1, -0.87777, 0, 0)))
+#'
+#'
+#' ## Generates 10 shuffled chromosomes based on chromosome 2
+#' ## The shuffled chromosomes have a start and an end between 0 an 1
+#' CNVMetrics:::simChr(curSample=demo[["sample01"]], chrCur="chr2", nbSim=10)
+#'
+#' ## Generates 4 shuffled chromosomes based on chromosome 1
+#' ## The shuffled chromosomes have a start and an end between 0 an 1
+#' CNVMetrics:::simChr(curSample=demo[["sample01"]], chrCur="chr1", nbSim=4)
 #'
 #' @author Astrid Deschênes, Pascal Belleau
 #' @import GenomicRanges
 #' @importFrom rBeta2009 rdirichlet
 #' @encoding UTF-8
-#' @export
-
-simChr <- function(curSample, chrCur, nbSim){
+#' @keywords internal
+simChr <- function(curSample, chrCur, nbSim) {
     curSampleGR <- curSample[seqnames(curSample) == chrCur]
     minStart <- min(start(curSampleGR))
     maxEnd <- max(end(curSampleGR))
@@ -43,10 +78,10 @@ simChr <- function(curSample, chrCur, nbSim){
     listCN <- curSampleGR$CN
 
     # Create the partition
-    if(length(listWP) == 2){
+    if(length(listWP) == 2) {
         tmp <- round(rdirichlet(nbSim, listWP) * sizeT)
         partDir <- unname(cbind(tmp, sizeT - tmp))
-    }else if(length(listWP) == 1){
+    }else if(length(listWP) == 1) {
         partDir <- matrix(rep(sizeT, nbSim), ncol = 1)
     }else{
         partDir <- round(rdirichlet(nbSim, listWP) * sizeT)
@@ -54,7 +89,7 @@ simChr <- function(curSample, chrCur, nbSim){
 
     # Adjust the length
     if(dim(partDir)[2] > 1){
-        partDir <- t(apply(partDir, 1, FUN = function(x,sizeT){
+        partDir <- t(apply(partDir, 1, FUN = function(x,sizeT) {
             v <- sizeT - sum(x)
             x[which.max(x)] <- x[which.max(x)] + v
             return(x)
@@ -206,49 +241,56 @@ processChr <- function(curSample, dfChr, chrCur){
 #'
 #'
 #' @examples
-#' ## TODO
 #'
 #' ## Load required package to generate the samples
 #' require(GenomicRanges)
 #'
-#' ## Create a GRangesList object with 1 samples
+#' ## Create one 'demo' genome with 2 chromosomes
+#' ## in a GRangesList object (1 sample, multiple GRanges)
 #' ## The stand of the regions doesn't affect the calculation of the metric
 #' demo <- GRangesList()
-#' demo[["sample01"]] <- GRanges(seqnames="chr1",
-#'     ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222),
-#'     end=c(2004603, 4577608, 31695808, 32689222)), strand="*",
-#'     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"),
-#'     CN=(c(0.5849625, 1, -1, -1)))
+#' demo[["sample01"]] <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
+#'     ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222,
+#'         1, 120331, 725531),
+#'     end=c(2004603, 4577608, 31695808, 32689222, 117121,
+#'         325555, 1225582)),
+#'     strand="*",
+#'     state=c("AMPLIFICATION", "NEUTRAL", "DELETION", "LOH",
+#'         "DELETION", "NEUTRAL", "NEUTRAL"),
+#'     CN=(c(0.5849625, 0, -1, -1, -0.87777, 0, 0)))
 #'
-#' simRes <- processSim(demo[["sample01"]], 10)
+#' ## Generates 10 simulated genomes based on the 'demo' genome
+#' simRes <- processSim(curSample=demo[["sample01"]], nbSim=10)
 #'
 #' @author Astrid Deschênes, Pascal Belleau
 #' @import GenomicRanges
 #' @encoding UTF-8
 #' @export
+processSim <- function(curSample, nbSim) {
 
-processSim <- function(curSample, nbSim){
-
+    ## The list of unique chromosomes in the sample
     listChr <- as.character(unique(seqnames(curSample)))
+
+    ## Generated list of shuffled chromosomes
     resChr <- list()
 
-    #print(system.time({
-    for(chr in listChr){
-
-        resChr[[chr]] <- simChr(curSample, chr, nbSim)
+    ## Create shuffled chromosomes, one chromosome at the time
+    for(chr in listChr) {
+        resChr[[chr]] <- simChr(curSample=curSample, chrCur=chr, nbSim=nbSim)
     }
-    #}))
+
+    ## Generated list of simulated samples
     df <- list()
 
-    for(chr in listChr){
+    ##
+    for(chr in listChr) {
         newChr <- list()
-        #print(paste0("chr ", chr) )
-        #print(system.time({
         for(i in seq_len(nbSim)){
-            chrSel <- sample(x=seq_len(length(listChr)),1)
-            newChr[[i]] <- processChr(curSample, resChr[[listChr[chrSel]]][[i]], chr)
+            chrSel <- sample(x=seq_len(length(listChr)), 1)
+            newChr[[i]] <- processChr(curSample=curSample,
+                                        dfChr=resChr[[listChr[chrSel]]][[i]],
+                                        chrCur=chr)
         }
-        #}))
         df[[chr]] <- do.call(rbind, newChr)
     }
 
