@@ -47,10 +47,9 @@ TODO
 require(GenomicRanges)
 
 ## Create one 'demo' genome with 2 chromosomes
-## in a GRangesList object (1 sample, multiple GRanges)
+## in a GRanges object
 ## The stand of the regions doesn't affect the calculation of the metric
-demo <- GRangesList()
-demo[["sample01"]] <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
+sample01 <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
     ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222,
         1, 120331, 725531),
     end=c(2004603, 4577608, 31695808, 32689222, 117121,
@@ -63,13 +62,14 @@ demo[["sample01"]] <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
 
 ## Generates 10 shuffled chromosomes based on chromosome 2
 ## The shuffled chromosomes have a start and an end between 0 an 1
-simChr(curSample=demo[["sample01"]], chrCur="chr2", nbSim=10)
+CNVMetrics:::simChr(curSample=sample01, chrCur="chr2", nbSim=10)
 
 ## Generates 4 shuffled chromosomes based on chromosome 1
 ## The shuffled chromosomes have a start and an end between 0 an 1
-simChr(curSample=demo[["sample01"]], chrCur="chr1", nbSim=4)
+CNVMetrics:::simChr(curSample=sample01, chrCur="chr1", nbSim=4)
 
 }
 \author{
 Astrid Deschênes, Pascal Belleau
 }
+\keyword{internal}

@@ -44,7 +44,7 @@ demo[["sample01"]] <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
     strand="*",
     state=c("AMPLIFICATION", "NEUTRAL", "DELETION", "LOH",
         "DELETION", "NEUTRAL", "NEUTRAL"),
-    CN=(c(0.5849625, 0, -1, -1, -0.87777, 0, 0)))
+    CN=c(0.5849625, 0, -1, -1, -0.87777, 0, 0))
 
 ## Generates 10 simulated genomes based on the 'demo' genome
 simRes <- processSim(curSample=demo[["sample01"]], nbSim=10)

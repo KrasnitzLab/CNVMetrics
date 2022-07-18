@@ -38,10 +38,9 @@
 #' require(GenomicRanges)
 #'
 #' ## Create one 'demo' genome with 2 chromosomes
-#' ## in a GRangesList object (1 sample, multiple GRanges)
+#' ## in a GRanges object
 #' ## The stand of the regions doesn't affect the calculation of the metric
-#' demo <- GRangesList()
-#' demo[["sample01"]] <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
+#' sample01 <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
 #'     ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222,
 #'         1, 120331, 725531),
 #'     end=c(2004603, 4577608, 31695808, 32689222, 117121,
@@ -54,11 +53,11 @@
 #'
 #' ## Generates 10 shuffled chromosomes based on chromosome 2
 #' ## The shuffled chromosomes have a start and an end between 0 an 1
-#' CNVMetrics:::simChr(curSample=demo[["sample01"]], chrCur="chr2", nbSim=10)
+#' CNVMetrics:::simChr(curSample=sample01, chrCur="chr2", nbSim=10)
 #'
 #' ## Generates 4 shuffled chromosomes based on chromosome 1
 #' ## The shuffled chromosomes have a start and an end between 0 an 1
-#' CNVMetrics:::simChr(curSample=demo[["sample01"]], chrCur="chr1", nbSim=4)
+#' CNVMetrics:::simChr(curSample=sample01, chrCur="chr1", nbSim=4)
 #'
 #' @author Astrid Deschênes, Pascal Belleau
 #' @import GenomicRanges
@@ -257,16 +256,23 @@ processChr <- function(curSample, dfChr, chrCur){
 #'     strand="*",
 #'     state=c("AMPLIFICATION", "NEUTRAL", "DELETION", "LOH",
 #'         "DELETION", "NEUTRAL", "NEUTRAL"),
-#'     CN=(c(0.5849625, 0, -1, -1, -0.87777, 0, 0)))
+#'     CN=c(0.5849625, 0, -1, -1, -0.87777, 0, 0))
 #'
 #' ## Generates 10 simulated genomes based on the 'demo' genome
 #' simRes <- processSim(curSample=demo[["sample01"]], nbSim=10)
 #'
 #' @author Astrid Deschênes, Pascal Belleau
 #' @import GenomicRanges
+#' @importFrom S4Vectors isSingleInteger
 #' @encoding UTF-8
 #' @export
 processSim <- function(curSample, nbSim) {
+
+    ## Validate that nbSim is an positive integer
+    if (!(isSingleInteger(nbSim) || isSingleNumber(nbSim)) ||
+        as.integer(nbSim) < 1) {
+        stop("nbSim must be a positive integer")
+    }
 
     ## The list of unique chromosomes in the sample
     listChr <- as.character(unique(seqnames(curSample)))
