@@ -65,3 +65,12 @@ test_that("processSim() must return an error when nbSim is a character string", 
 
     expect_error(processSim(curSample = sample, nbSim ="hello"), error_message)
 })
+
+
+
+test_that("processSim() must return an error when curSample is a character string", {
+
+    error_message <- "the \'curSample\' argument must be a \'GRanges\' object"
+
+    expect_error(processSim(curSample = "sample", nbSim = 10), error_message)
+})
