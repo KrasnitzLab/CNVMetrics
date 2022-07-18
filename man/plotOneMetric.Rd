@@ -11,48 +11,48 @@ plotOneMetric(metric, type, colorRange, show_colnames, silent, ...)
 \item{metric}{a \code{CNVMetric} object containing the metrics calculated
 by \code{calculateOverlapMetric}.}
 
-\item{type}{a \code{character} string indicating which graph to generate. 
-This should be (an unambiguous abbreviation of) one of  
+\item{type}{a \code{character} string indicating which graph to generate.
+This should be (an unambiguous abbreviation of) one of
 "\code{AMPLIFICATION}" or "\code{DELETION}" or "\code{LOG2RATIO}".}
 
-\item{show_colnames}{a \code{boolean} specifying if column names are 
+\item{show_colnames}{a \code{boolean} specifying if column names are
 be shown.}
 
 \item{silent}{a \code{boolean} specifying if the plot should not be drawn.}
 
-\item{\ldots}{further arguments passed to 
+\item{\ldots}{further arguments passed to
 \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method.}
 }
 \value{
-a \code{gtable} object containing the heatmap for the specified 
+a \code{gtable} object containing the heatmap for the specified
 metric.
 }
 \description{
-Plot one heatmap of one set of metrics present in a 
+Plot one heatmap of one set of metrics present in a
 a \code{CNVMetric} object.
 }
 \examples{
 
-#' ## Load required package to generate the samples
+## Load required package to generate the samples
 require(GenomicRanges)
 
 ## Create a GRangesList object with 3 samples
 ## The stand of the regions doesn't affect the calculation of the metric
 demo <- GRangesList()
-demo[["sample01"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1905048, 4554832, 31686841), 
+demo[["sample01"]] <- GRanges(seqnames = "chr1",
+    ranges =  IRanges(start = c(1905048, 4554832, 31686841),
     end = c(2004603, 4577608, 31695808)), strand =  "*",
     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
 
-demo[["sample02"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1995066, 31611222, 31690000), 
+demo[["sample02"]] <- GRanges(seqnames = "chr1",
+    ranges =  IRanges(start = c(1995066, 31611222, 31690000),
     end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
     state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
 
-## The amplified region in sample03 is a subset of the amplified regions 
+## The amplified region in sample03 is a subset of the amplified regions
 ## in sample01
-demo[["sample03"]] <- GRanges(seqnames = "chr1", 
-    ranges =  IRanges(start = c(1906069, 4558838), 
+demo[["sample03"]] <- GRanges(seqnames = "chr1",
+    ranges =  IRanges(start = c(1906069, 4558838),
     end = c(1909505, 4570601)), strand =  "*",
     state = c("AMPLIFICATION", "DELETION"))
 
@@ -60,7 +60,7 @@ demo[["sample03"]] <- GRanges(seqnames = "chr1",
 metric <- calculateOverlapMetric(demo, method="sorensen")
 
 ## Plot amplification metrics using darkorange color
-CNVMetrics:::plotOneMetric(metric, type="AMPLIFICATION", 
+CNVMetrics:::plotOneMetric(metric, type="AMPLIFICATION",
     colorRange=c("white", "darkorange"), show_colnames=FALSE, silent=TRUE)
 
 }

@@ -8,10 +8,10 @@
 processSim(curSample, nbSim)
 }
 \arguments{
-\item{curSample}{a \code{GRangesList} that contains a collection of 
-genomic ranges representing copy number events, including amplified/deleted 
-status, from at least 1 samples. The sample must have a metadata column 
-called '\code{state}' with a state, in an character string format, 
+\item{curSample}{a \code{GRangesList} that contains a collection of
+genomic ranges representing copy number events, including amplified/deleted
+status, from at least 1 samples. The sample must have a metadata column
+called '\code{state}' with a state, in an character string format,
 specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).}
 
 \item{nbSim}{a \code{integer} which is corresponding to the number of simulation}
@@ -28,12 +28,16 @@ TODO
 metric value of 1 is only obtained when the two samples are identical.
 }
 \examples{
-TODO
+## TODO
+
+## Load required package to generate the samples
+require(GenomicRanges)
+
 ## Create a GRangesList object with 1 samples
 ## The stand of the regions doesn't affect the calculation of the metric
 demo <- GRangesList()
-demo[["sample01"]] <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222), 
+demo[["sample01"]] <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222),
     end=c(2004603, 4577608, 31695808, 32689222)), strand="*",
     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"),
     CN=(c(0.5849625, 1, -1, -1)))

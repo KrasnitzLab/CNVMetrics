@@ -8,10 +8,10 @@
 processChr(curSample, dfChr, chrCur)
 }
 \arguments{
-\item{curSample}{a \code{GRangesList} that contains a collection of 
-genomic ranges representing copy number events, including amplified/deleted 
-status, from at least 1 samples. The sample must have a metadata column 
-called '\code{state}' with a state, in an character string format, 
+\item{curSample}{a \code{GRangesList} that contains a collection of
+genomic ranges representing copy number events, including amplified/deleted
+status, from at least 1 samples. The sample must have a metadata column
+called '\code{state}' with a state, in an character string format,
 specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).}
 
 \item{dfChr}{data.frame}
@@ -30,7 +30,7 @@ TODO
 metric value of 1 is only obtained when the two samples are identical.
 }
 \examples{
-TODO
+## TODO
 
 }
 \author{
