@@ -31,7 +31,7 @@
 #' @export
 
 simChr <- function(curSample, chrCur, nbSim){
-    curSampleGR <- curRef[seqnames(curSample) == chrCur]
+    curSampleGR <- curSample[seqnames(curSample) == chrCur]
     minStart <- min(start(curSampleGR))
     maxEnd <- max(end(curSampleGR))
     
@@ -123,7 +123,7 @@ simChr <- function(curSample, chrCur, nbSim){
 #' @export
 
 processChr <- function(curSample, dfChr, chrCur){
-    curSampleGR <- curRef[seqnames(curSample) == chrCur]
+    curSampleGR <- curSample[seqnames(curSample) == chrCur]
     listStart <- start(curSampleGR)
     listOrd <- order(listStart)
     listStart <- listStart[listOrd]
@@ -208,6 +208,16 @@ processChr <- function(curSample, dfChr, chrCur){
 #' 
 #' @examples
 #' TODO
+#' ## Create a GRangesList object with 1 samples
+#' ## The stand of the regions doesn't affect the calculation of the metric
+#' demo <- GRangesList()
+#' demo[["sample01"]] <- GRanges(seqnames="chr1", 
+#'     ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222), 
+#'     end=c(2004603, 4577608, 31695808, 32689222)), strand="*",
+#'     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"),
+#'     CN=(c(0.5849625, 1, -1, -1)))
+#' 
+#' simRes <- processSim(demo[["sample01"]], 10)
 #' 
 #' @author Astrid Deschênes, Pascal Belleau
 #' @import GenomicRanges
