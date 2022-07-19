@@ -13,8 +13,8 @@
 #'
 #' @param chrCur \code{character} string with the chromosome.
 #'
-#' @param nbSim a single \code{integer} which is corresponding to the number
-#' of simulations that will be generated.
+#' @param nbSim a single positive \code{integer} which is corresponding to
+#' the number of simulations that will be generated.
 #'
 #' @details TODO
 #'
@@ -28,8 +28,10 @@
 #' are between zero and one }
 #' \item{\code{end}}{ the ending position of the segment; the positions
 #' are between zero and one }
-#' \item{\code{log2ratio}} { the log2 copy number ratio assigned to the segment
-#' state: the state of the region (ex: DELETION, LOH, NEUTRAL, etc.) }
+#' \item{\code{log2ratio}} { the log2 copy number ratio assigned to
+#' the segment }
+#' \item{\code{state}} { the state of the region (ex: DELETION, LOH,
+#' AMPLIFICATION, NEUTRAL, etc.) }
 #' }
 #'
 #' @examples
@@ -136,13 +138,12 @@ simChr <- function(curSample, chrCur, nbSim) {
 #' called '\code{state}' with a state, in an character string format,
 #' specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).
 #'
-#' @param dfChr data.frame
+#' @param dfChr data.frame TODO
 #'
-#' @param chrCur a \code{integer} which is corresponding to the number of simulation
+#' @param chrCur a \code{integer} TODO
 #'
 #' @details TODO
 #'
-#' metric value of 1 is only obtained when the two samples are identical.
 #'
 #' @return df TODO
 #'
@@ -154,8 +155,8 @@ simChr <- function(curSample, chrCur, nbSim) {
 #' @author Astrid Deschênes, Pascal Belleau
 #' @import GenomicRanges
 #' @encoding UTF-8
-#' @export
-processChr <- function(curSample, dfChr, chrCur){
+#' @keywords internal
+processChr <- function(curSample, dfChr, chrCur) {
     curSampleGR <- curSample[seqnames(curSample) == chrCur]
     listStart <- start(curSampleGR)
     listOrd <- order(listStart)
@@ -219,23 +220,39 @@ processChr <- function(curSample, dfChr, chrCur){
 }
 
 
-#' @title TODO
+#' @title Generate simulated samples with copy number profiles derived from
+#' a specific sample
 #'
 #' @description TODO
 #'
-#' @param curSample a \code{GRangesList} that contains a collection of
+#' @param curSample a \code{GRanges} that contains a collection of
 #' genomic ranges representing copy number events, including amplified/deleted
-#' status, from at least 1 samples. The sample must have a metadata column
+#' status, from one sample. The sample must have a metadata column
 #' called '\code{state}' with a state, in an character string format,
-#' specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).
+#' specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.)
+#' and a metadata column called '\code{CN}' that contains the log2 copy
+#' number ratios.
 #'
-#' @param nbSim a \code{integer} which is corresponding to the number of simulation
+#' @param nbSim a single positive \code{integer} which is corresponding to the
+#'  number of simulations that will be generated.
 #'
 #' @details TODO
 #'
-#' metric value of 1 is only obtained when the two samples are identical.
 #'
-#' @return df TODO
+#' @return  a \code{data.frame} containing the segments for each
+#' simulated sample. The \code{data.frame} has 6 columns:
+#' \itemize{
+#' \item{\code{ID}}{ a \code{character} string, the name of the simulated
+#' sample }
+#' \item{\code{chr}}{ a \code{character} string, the name fo the chromosome }
+#' \item{\code{start}}{ a \code{integer}, the starting position of the
+#' segment }
+#' \item{\code{end}}{ a \code{integer}, the ending position of the segment }
+#' \item{\code{log2ratio}} { a \code{numerical}, the log2 copy number
+#' ratio assigned to the segment }
+#' \item{\code{state}} { a \code{character} string, the state of the segment
+#' (ex: DELETION, LOH, NEUTRAL, etc.) }
+#' }
 #'
 #'
 #'

@@ -3,29 +3,44 @@
 \encoding{UTF-8}
 \name{processSim}
 \alias{processSim}
-\title{TODO}
+\title{Generate simulated samples with copy number profiles derived from
+a specific sample}
 \usage{
 processSim(curSample, nbSim)
 }
 \arguments{
-\item{curSample}{a \code{GRangesList} that contains a collection of
+\item{curSample}{a \code{GRanges} that contains a collection of
 genomic ranges representing copy number events, including amplified/deleted
-status, from at least 1 samples. The sample must have a metadata column
+status, from one sample. The sample must have a metadata column
 called '\code{state}' with a state, in an character string format,
-specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).}
+specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.)
+and a metadata column called '\code{CN}' that contains the log2 copy
+number ratios.}
 
-\item{nbSim}{a \code{integer} which is corresponding to the number of simulation}
+\item{nbSim}{a single positive \code{integer} which is corresponding to the
+number of simulations that will be generated.}
 }
 \value{
-df TODO
+a \code{data.frame} containing the segments for each
+simulated sample. The \code{data.frame} has 6 columns:
+\itemize{
+\item{\code{ID}}{ a \code{character} string, the name of the simulated
+sample }
+\item{\code{chr}}{ a \code{character} string, the name fo the chromosome }
+\item{\code{start}}{ a \code{integer}, the starting position of the
+segment }
+\item{\code{end}}{ a \code{integer}, the ending position of the segment }
+\item{\code{log2ratio}} { a \code{numerical}, the log2 copy number
+ratio assigned to the segment }
+\item{\code{state}} { a \code{character} string, the state of the segment
+(ex: DELETION, LOH, NEUTRAL, etc.) }
+}
 }
 \description{
 TODO
 }
 \details{
 TODO
-
-metric value of 1 is only obtained when the two samples are identical.
 }
 \examples{
 

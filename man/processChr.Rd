@@ -14,9 +14,9 @@ status, from at least 1 samples. The sample must have a metadata column
 called '\code{state}' with a state, in an character string format,
 specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).}
 
-\item{dfChr}{data.frame}
+\item{dfChr}{data.frame TODO}
 
-\item{chrCur}{a \code{integer} which is corresponding to the number of simulation}
+\item{chrCur}{a \code{integer} TODO}
 }
 \value{
 df TODO
@@ -26,8 +26,6 @@ TODO
 }
 \details{
 TODO
-
-metric value of 1 is only obtained when the two samples are identical.
 }
 \examples{
 ## TODO
@@ -36,3 +34,4 @@ metric value of 1 is only obtained when the two samples are identical.
 \author{
 Astrid Deschênes, Pascal Belleau
 }
+\keyword{internal}

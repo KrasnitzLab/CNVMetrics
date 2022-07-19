@@ -13,22 +13,22 @@ calculateOverlapMetric(
 )
 }
 \arguments{
-\item{segmentData}{a \code{GRangesList} that contains a collection of 
-genomic ranges representing copy number events, including amplified/deleted 
-status, from at least 2 samples. All samples must have a metadata column 
-called '\code{state}' with a state, in an character string format, 
+\item{segmentData}{a \code{GRangesList} that contains a collection of
+genomic ranges representing copy number events, including amplified/deleted
+status, from at least 2 samples. All samples must have a metadata column
+called '\code{state}' with a state, in an character string format,
 specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).}
 
 \item{states}{a \code{vector} of \code{character} string with at least one
-entry. The strings are representing the states that will be analyzed. 
+entry. The strings are representing the states that will be analyzed.
 Default: c('\code{AMPLIFICATION}', '\code{DELETION}').}
 
-\item{method}{a \code{character} string representing the metric to be used. 
-This should be (an unambiguous abbreviation of) one of "sorensen", 
+\item{method}{a \code{character} string representing the metric to be used.
+This should be (an unambiguous abbreviation of) one of "sorensen",
 "szymkiewicz" or "jaccard". Default: "sorensen".}
 
-\item{nJobs}{a single positive \code{integer} specifying the number of 
-worker jobs to create in case of distributed computation. 
+\item{nJobs}{a single positive \code{integer} specifying the number of
+worker jobs to create in case of distributed computation.
 Default: \code{1} and always \code{1} for Windows.}
 }
 \value{
@@ -36,55 +36,56 @@ an object of class "\code{CNVMetric}" which contains the calculated
 metric. This object is a list where each entry corresponds to one state
 specified in the '\code{states}' parameter. Each entry is a \code{matrix}:
 \itemize{
-\item{\code{state}}{ a lower-triangular \code{matrix} with the 
+\item{\code{state}}{ a lower-triangular \code{matrix} with the
     results of the selected metric on the amplified regions for each paired
-    samples. The value \code{NA} is present when the metric cannot be 
-    calculated. The value \code{NA} is also present in the top-triangular 
+    samples. The value \code{NA} is present when the metric cannot be
+    calculated. The value \code{NA} is also present in the top-triangular
     section, as well as the diagonal, of the matrix.
 }
 }
 
-The object has the following attributes (besides "class" equal 
+The object has the following attributes (besides "class" equal
 to "CNVMetric"):
 \itemize{
 \item{\code{metric}}{ the metric used for the calculation.
-} 
+}
 \item{\code{names}}{ the names of the two matrix containing the metrics for
 the amplified and deleted regions.
 }}
 }
 \description{
-Calculate a specific metric using overlapping 
+This function calculates a specific metric, as specified by
+the user, using overlapping
 regions of specific state between to samples. The metric is calculated for
-each state separately. When more than 2 samples are 
+each state separately. When more than 2 samples are
 present, the metric is calculated for each sample pair. By default, the
-function is calculating metrics for the AMPLIFICATION and DELETION states. 
+function is calculating metrics for the AMPLIFICATION and DELETION states.
 However, the user can specify the list of states to be analyzed.
 }
 \details{
-The two methods each estimate the overlap between paired samples. They use 
-different metrics, all in the range [0, 1] with 0 indicating no overlap. 
+The two methods each estimate the overlap between paired samples. They use
+different metrics, all in the range [0, 1] with 0 indicating no overlap.
 The \code{NA} is used when the metric cannot be calculated.
 
 The available metrics are (written for two GRanges):
 
 \code{sorensen}:
 
-This metric is calculated by dividing twice the size of the intersection 
-by the sum of the size of the two sets. 
+This metric is calculated by dividing twice the size of the intersection
+by the sum of the size of the two sets.
 With this metric, an overlap metric value of 1 is only obtained when the
-two samples are identical. 
+two samples are identical.
 
 \code{szymkiewicz}:
 
-This metric is calculated by dividing the size of the intersection 
-by the size of the smallest set. With this metric, if one set is a 
+This metric is calculated by dividing the size of the intersection
+by the size of the smallest set. With this metric, if one set is a
 subset of the other set, the overlap metric value is 1.
 
 \code{jaccard}:
 
-This metric is calculated by dividing the size of the intersection 
-by the size of the union of the two sets. With this metric, an overlap 
+This metric is calculated by dividing the size of the intersection
+by the size of the union of the two sets. With this metric, an overlap
 metric value of 1 is only obtained when the two samples are identical.
 }
 \examples{
@@ -95,21 +96,21 @@ require(GenomicRanges)
 ## Create a GRangesList object with 3 samples
 ## The stand of the regions doesn't affect the calculation of the metric
 demo <- GRangesList()
-demo[["sample01"]] <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222), 
+demo[["sample01"]] <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222),
     end=c(2004603, 4577608, 31695808, 32689222)), strand="*",
     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 
-demo[["sample02"]] <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1995066, 31611222, 31690000, 32006222), 
-    end=c(2204505, 31689898, 31895666, 32789233)), 
+demo[["sample02"]] <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1995066, 31611222, 31690000, 32006222),
+    end=c(2204505, 31689898, 31895666, 32789233)),
     strand=c("-", "+", "+", "+"),
     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 
-## The amplified region in sample03 is a subset of the amplified regions 
+## The amplified region in sample03 is a subset of the amplified regions
 ## in sample01
-demo[["sample03"]] <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1906069, 4558838), 
+demo[["sample03"]] <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1906069, 4558838),
     end=c(1909505, 4570601)), strand="*",
     state=c("AMPLIFICATION", "DELETION"))
 
@@ -125,17 +126,17 @@ calculateOverlapMetric(demo, states="LOH", method="jaccard", nJobs=1)
 
 }
 \references{
-Sørensen, Thorvald. n.d. “A Method of Establishing Groups of Equal 
-Amplitude in Plant Sociology Based on Similarity of Species and Its 
-Application to Analyses of the Vegetation on Danish Commons.” 
+Sørensen, Thorvald. n.d. “A Method of Establishing Groups of Equal
+Amplitude in Plant Sociology Based on Similarity of Species and Its
+Application to Analyses of the Vegetation on Danish Commons.”
 Biologiske Skrifter, no. 5: 1–34.
 
-Vijaymeena, M. K, and Kavitha K. 2016. “A Survey on Similarity Measures in 
-Text Mining.” Machine Learning and Applications: An International 
+Vijaymeena, M. K, and Kavitha K. 2016. “A Survey on Similarity Measures in
+Text Mining.” Machine Learning and Applications: An International
 Journal 3 (1): 19–28. doi: \url{https://doi.org/10.5121/mlaij.2016.3103}
 
-Jaccard, P. (1912), The Distribution of the Flora in the Alpine Zone.  
-New Phytologist, 11: 37-50. 
+Jaccard, P. (1912), The Distribution of the Flora in the Alpine Zone.
+New Phytologist, 11: 37-50.
 doi: \url{https://doi.org/10.1111/j.1469-8137.1912.tb05611.x}
 }
 \author{

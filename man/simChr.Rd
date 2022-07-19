@@ -18,8 +18,8 @@ number ratios.}
 
 \item{chrCur}{\code{character} string with the chromosome.}
 
-\item{nbSim}{a single \code{integer} which is corresponding to the number
-of simulations that will be generated.}
+\item{nbSim}{a single positive \code{integer} which is corresponding to
+the number of simulations that will be generated.}
 }
 \value{
 a code{list} containing one entry per simulation. Each entry is
@@ -31,8 +31,10 @@ a \code{data.frame} containing shuffled segments with 6 columns:
 are between zero and one }
 \item{\code{end}}{ the ending position of the segment; the positions
 are between zero and one }
-\item{\code{log2ratio}} { the log2 copy number ratio assigned to the segment
-state: the state of the region (ex: DELETION, LOH, NEUTRAL, etc.) }
+\item{\code{log2ratio}} { the log2 copy number ratio assigned to
+the segment }
+\item{\code{state}} { the state of the region (ex: DELETION, LOH,
+AMPLIFICATION, NEUTRAL, etc.) }
 }
 }
 \description{
