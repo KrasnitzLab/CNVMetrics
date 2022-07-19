@@ -74,3 +74,35 @@ test_that("processSim() must return an error when curSample is a character strin
 
     expect_error(processSim(curSample = "sample", nbSim = 10), error_message)
 })
+
+
+test_that("processSim() must return the expected result", {
+
+    sample <- GRanges(seqnames = "chr1",
+                      ranges =  IRanges(start = c(1995066, 31611222, 31690000),
+                                        end = c(2204505, 31689898, 31895666)),
+                      strand =  c("-", "+", "+"),
+                      state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"),
+                      CN=c(0.5849625, 0.4444333, -1))
+
+    expected <- data.frame(ID=c(rep("S1", 5), rep("S2", 5), rep("S3", 5)),
+                    chr=c(rep("chr1", 15)), start=c(1995066, 31611222, 31612582,
+                    31690000,  31698335, 1995066, 2204346, 31611222, 31690000,
+                    31816977, 1995066, 2187998, 31611222, 31690000, 31814749),
+                    end=c(2204505, 31612581, 31689898, 31698334, 31895669,
+                          2204345,  2204505, 31689898, 31816976, 31895669,
+                          2187997,  2204505, 31689898, 31814748, 31895669),
+                    log2ratio=c(-1.000000,-1.000000, 0.4444333, 0.4444333, 0.5849625,
+                                -1.000000, 0.5849625  , 0.5849625  , 0.5849625  , 0.4444333,
+                                0.5849625  , -1.000000, -1.000000, -1.000000, 0.4444333),
+                    state=c("DELETION", "DELETION", "AMPLIFICATION", "AMPLIFICATION",
+                            "AMPLIFICATION", "DELETION", "AMPLIFICATION", "AMPLIFICATION",
+                            "AMPLIFICATION", "AMPLIFICATION", "AMPLIFICATION", "DELETION",
+                            "DELETION", "DELETION", "AMPLIFICATION"))
+
+    set.seed(1212)
+
+    result <- processSim(curSample = sample, nbSim = 3)
+
+    expect_equal(result, expected)
+})
