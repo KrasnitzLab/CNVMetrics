@@ -303,8 +303,6 @@ calculateOverlapMetric <- function(segmentData,
 #'     end=c(1909505, 4570601)), strand="*",
 #'     log2ratio=c(3.2222, -1.3232))
 #'
-
-
 #' ## Calculating Sorensen metric
 #' calculateLog2ratioMetric(demo, method="weightedEuclideanDistance", nJobs=1)
 #'

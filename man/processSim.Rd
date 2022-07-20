@@ -33,7 +33,7 @@ segment }
 \item{\code{log2ratio}} { a \code{numerical}, the log2 copy number
 ratio assigned to the segment }
 \item{\code{state}} { a \code{character} string, the state of the segment
-(ex: DELETION, LOH, NEUTRAL, etc.) }
+(ex: DELETION, AMPLIFICATION, NEUTRAL, etc.) }
 }
 }
 \description{
@@ -52,8 +52,7 @@ TODO
 ## Load required package to generate the samples
 require(GenomicRanges)
 
-## Create one 'demo' genome with 2 chromosomes
-## in a GRangesList object (1 sample, multiple GRanges)
+## Create one 'demo' genome with 2 chromosomes and few segments
 ## The stand of the regions doesn't affect the calculation of the metric
 sample01 <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
     ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222,
@@ -63,7 +62,7 @@ sample01 <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
     strand="*",
     state=c("AMPLIFICATION", "NEUTRAL", "DELETION", "LOH",
         "DELETION", "NEUTRAL", "NEUTRAL"),
-    CN=c(0.5849625, 0, -1, -1, -0.87777, 0, 0))
+    log2ratio=c(0.5849625, 0, -1, -1, -0.87777, 0, 0))
 
 ## Generates 10 simulated genomes based on the 'demo' genome
 simRes <- processSim(curSample=sample01, nbSim=10)

@@ -19,7 +19,7 @@ test_that("processSim() must return an error when nbSim is a vector of integers"
                 ranges =  IRanges(start = c(1995066, 31611222, 31690000),
                 end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
                 state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"),
-                CN=c(0.5849625, 0.4444333, -1))
+                log2ratio=c(0.5849625, 0.4444333, -1))
 
     error_message <- "nbSim must be a positive integer"
 
@@ -32,7 +32,7 @@ test_that("processSim() must return an error when nbSim is zero", {
                 ranges =  IRanges(start = c(1995066, 31611222, 31690000),
                 end = c(2204505, 31689898, 31895666)), strand =  c("-", "+", "+"),
                 state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"),
-                CN=c(0.5849625, 0.4444333, -1))
+                log2ratio=c(0.5849625, 0.4444333, -1))
 
     error_message <- "nbSim must be a positive integer"
 
@@ -45,7 +45,7 @@ test_that("processSim() must return an error when nbSim is negative integer", {
                 ranges=IRanges(start = c(1995066, 31611222, 31690000),
                 end=c(2204505, 31689898, 31895666)), strand=c("-", "+", "+"),
                 state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"),
-                CN=c(0.5849625, 0.4444333, -1))
+                log2ratio=c(0.5849625, 0.4444333, -1))
 
     error_message <- "nbSim must be a positive integer"
 
@@ -59,13 +59,28 @@ test_that("processSim() must return an error when nbSim is a character string", 
                 end = c(2204505, 31689898, 31895666)),
                 strand =  c("-", "+", "+"),
                 state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"),
-                CN=c(0.5849625, 0.4444333, -1))
+                log2ratio=c(0.5849625, 0.4444333, -1))
 
     error_message <- "nbSim must be a positive integer"
 
     expect_error(processSim(curSample = sample, nbSim ="hello"), error_message)
 })
 
+
+test_that("processSim() must return an error when curSample doesn't have a log2ratio column", {
+
+    sample <- GRanges(seqnames="chr1",
+                      ranges=IRanges(start = c(1995066, 31611222, 31690000),
+                                        end = c(2204505, 31689898, 31895666)),
+                      strand=c("-", "+", "+"),
+                      state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"),
+                      CN=c(0.5849625, 0.4444333, -1))
+
+    error_message <- paste0("the sample must have a metadata column ",
+                            "called \'log2ratio\'")
+
+    expect_error(processSim(curSample=sample, nbSim=3), error_message)
+})
 
 
 test_that("processSim() must return an error when curSample is a character string", {
@@ -83,7 +98,7 @@ test_that("processSim() must return the expected result", {
                                         end = c(2204505, 31689898, 31895666)),
                       strand =  c("-", "+", "+"),
                       state = c("AMPLIFICATION", "AMPLIFICATION", "DELETION"),
-                      CN=c(0.5849625, 0.4444333, -1))
+                      log2ratio=c(0.5849625, 0.4444333, -1))
 
     expected <- data.frame(ID=c(rep("S1", 5), rep("S2", 5), rep("S3", 5)),
                     chr=c(rep("chr1", 15)), start=c(1995066, 31611222, 31612582,

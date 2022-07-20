@@ -74,7 +74,7 @@ sample01 <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
     strand="*",
     state=c("AMPLIFICATION", "NEUTRAL", "DELETION", "LOH",
         "DELETION", "NEUTRAL", "NEUTRAL"),
-    CN=(c(0.5849625, 0, -1, -1, -0.87777, 0, 0)))
+    log2ratio=(c(0.5849625, 0, -1, -1, -0.87777, 0, 0)))
 
 
 ## Generates 10 simulated chromosomes (one chromosome per simulated sample)
