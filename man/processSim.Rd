@@ -37,7 +37,12 @@ ratio assigned to the segment }
 }
 }
 \description{
-TODO
+The function uses the input sample to
+simulate new samples. The simulated samples will possess similar
+sizes of events, proportional to the original chromosome.
+To generate realistic simulations, the specified sample
+must contain segments covering the majority of the genome. Most
+importantly, the NEUTRAL segments should be present.
 }
 \details{
 TODO

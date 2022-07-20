@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{simChr}
 \alias{simChr}
-\title{TODO}
+\title{Generate a simulated chromosome based on a reference sample}
 \usage{
 simChr(curSample, chrCur, nbSim)
 }
@@ -16,7 +16,8 @@ specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.)
 and a metadata column called '\code{CN}' that contains the log2 copy
 number ratios.}
 
-\item{chrCur}{\code{character} string with the chromosome.}
+\item{chrCur}{a \code{character} string representing the name of the
+chromosome that is used as reference for the simulation.}
 
 \item{nbSim}{a single positive \code{integer} which is corresponding to
 the number of simulations that will be generated.}
@@ -25,20 +26,34 @@ the number of simulations that will be generated.}
 a code{list} containing one entry per simulation. Each entry is
 a \code{data.frame} containing shuffled segments with 6 columns:
 \itemize{
-\item{\code{ID}}{ the name of the simulation }
-\item{\code{chr}}{ the name fo the chromosome }
-\item{\code{start}}{ the starting position of the segment; the positions
-are between zero and one }
-\item{\code{end}}{ the ending position of the segment; the positions
-are between zero and one }
-\item{\code{log2ratio}} { the log2 copy number ratio assigned to
-the segment }
-\item{\code{state}} { the state of the region (ex: DELETION, LOH,
-AMPLIFICATION, NEUTRAL, etc.) }
+\item{\code{ID}}{ The name of the simulation. }
+\item{\code{chr}}{ The name fo the chromosome. }
+\item{\code{start}}{ The starting position of the segment; the positions
+are between zero and one. The segment width is representing the
+proportional size of the segment relative to the global segment size.}
+\item{\code{end}}{ The ending position of the segment; the positions
+are between zero and one. The segment width is representing the
+proportional size of the segment relative to the global segment size. }
+\item{\code{log2ratio}} { The log2 copy number ratio assigned to
+the segment. }
+\item{\code{state}} { The state of the region (ex: DELETION, LOH,
+AMPLIFICATION, NEUTRAL, etc.). }
 }
 }
 \description{
-TODO
+The function generates a list of simulated segments
+that represent a simulated chromosome based on a reference sample
+specified by the user. The function only accounts for the positions where
+a segment is assigned. In addition, the total number of segments
+is preserved. A dirichlet is used to assigned new sizes
+to the segments with respect to the
+relative initial size of the segment. Then, those new segments are shuffled
+without replacement. The positions are replaced by values between zero and
+one that represent the relative position in a chromosome where positions
+without segment have been removed.
+To ensure valuable results, the reference sample
+should have segments covering
+a good proportion of the chromosome; those should include NEUTRAL segments.
 }
 \details{
 TODO
@@ -62,11 +77,13 @@ sample01 <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
     CN=(c(0.5849625, 0, -1, -1, -0.87777, 0, 0)))
 
 
-## Generates 10 shuffled chromosomes based on chromosome 2
+## Generates 10 simulated chromosomes (one chromosome per simulated sample)
+## based on chromosome 2 from the input sample.
 ## The shuffled chromosomes have a start and an end between 0 an 1
 CNVMetrics:::simChr(curSample=sample01, chrCur="chr2", nbSim=10)
 
-## Generates 4 shuffled chromosomes based on chromosome 1
+## Generates 4 simulated chromosomes (one chromosome per simulated sample)
+## based on chromosome 1 from the input sample.
 ## The shuffled chromosomes have a start and an end between 0 an 1
 CNVMetrics:::simChr(curSample=sample01, chrCur="chr1", nbSim=4)
 
