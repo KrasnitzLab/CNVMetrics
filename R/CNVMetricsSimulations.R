@@ -168,15 +168,23 @@ simChr <- function(curSample, chrCur, nbSim) {
 #'
 #' @description TODO
 #'
-#' @param curSample a \code{GRangesList} that contains a collection of
+#' @param curSample a \code{GRanges} that contains a collection of
 #' genomic ranges representing copy number events, including amplified/deleted
-#' status, from at least 1 samples. The sample must have a metadata column
+#' status, from one sample. The sample must have a metadata column
 #' called '\code{state}' with a state, in an character string format,
-#' specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).
+#' specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.)
+#' and a metadata column called '\code{CN}' that contains the log2 copy
+#' number ratios.
 #'
-#' @param dfChr data.frame TODO
+#' @param simChr a \code{data.frame} containing the information from one
+#' simulated chromosome (shuffled segments). The starting position and the
+#' ending position of the segments should be between zero and one. The segment
+#' width is representing the proportional size of the segment relative to the
+#' global segment size for the chromosome.The \code{data.frame} columns names
+#' should be: 'ID', 'chr', 'start', 'end', 'log2ratio', 'state'.
 #'
-#' @param chrCur a \code{integer} TODO
+#' @param chrCur a \code{character} string representing the name of the
+#' chromosome.
 #'
 #' @details TODO
 #'
@@ -186,14 +194,47 @@ simChr <- function(curSample, chrCur, nbSim) {
 #'
 #'
 #' @examples
-#' ## TODO
+#'
+#' ## Load required package to generate the samples
+#' require(GenomicRanges)
+#'
+#' ## Create one 'demo' genome with 2 chromosomes and few segments
+#' ## The stand of the regions doesn't affect the calculation of the metric
+#' sample01 <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
+#'     ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222,
+#'         1, 120331, 725531),
+#'     end=c(2004603, 4577608, 31695808, 32689222, 117121,
+#'         325555, 1225582)),
+#'     strand="*",
+#'     state=c("AMPLIFICATION", "NEUTRAL", "DELETION", "LOH",
+#'         "DELETION", "NEUTRAL", "NEUTRAL"),
+#'     log2ratio=c(0.5849625, 0, -1, -1, -0.87777, 0, 0))
+#'
+#' ## The simulated chromosome with shuffled segment
+#' ## The simulated chromosome can be a different chromosome
+#' simulatedChr <- data.frame(ID=rep("S4", 4),
+#'     chr=rep("chr2", 4), start=c(0, 0.02515227, 0.09360992, 0.25903561),
+#'     end=c(0.02515227, 0.09360992, 0.25903561, 1),
+#'     log2ratio=c(-1.0, -0.9999, 0.0, 0.5843),
+#'     state=c("LOH", "DELETION", "NEUTRAL", "AMPLIFICATION"))
+#'
+#' ## Generates a simulation for chromosome 1 using a simulated chromosome
+#' ## The segments from the simulated chromosome will be positioned on the
+#' ## chromosome 1 after resizing for the size of chromosome 1.
+#' ## The spaces between the segments in chromosome 1 will be
+#' ## preserved.
+#' CNVMetrics:::processChr(curSample=sample01, simChr=simulatedChr,
+#'     chrCur="chr1")
 #'
 #' @author Astrid Deschênes, Pascal Belleau
 #' @import GenomicRanges
 #' @encoding UTF-8
 #' @keywords internal
-processChr <- function(curSample, dfChr, chrCur) {
+processChr <- function(curSample, simChr, chrCur) {
+
+    ## Extract information about current chromosome (real chromosome)
     curSampleGR <- curSample[seqnames(curSample) == chrCur]
+
     listStart <- start(curSampleGR)
     listOrd <- order(listStart)
     listStart <- listStart[listOrd]
@@ -207,50 +248,54 @@ processChr <- function(curSample, dfChr, chrCur) {
     listW <- width(curSampleGR)[listOrd]
     sizeT <- sum(listW)
 
-    listHole <- data.frame(start = listEnd[-1 * length(listEnd)],
-                           end = listStart[-1])
+    ## Identify spaces between segments in the real chromosome (> 100bp)
+    listHole <- data.frame(start=listEnd[-1 * length(listEnd)],
+                            end=listStart[-1])
     listHoles <- listHole[listHole$end - listHole$start > 100,]
-    newChr <- list()
 
 
-    curW <- as.integer(round((dfChr$end - dfChr$start) * sizeT))
+    ## Calculates the number of bases that each segment in the simulated
+    ## chromosome should occupy in the final chromosome
+    ## The proportion of each simulated segment is preserved when
+    ## transferred to the final chromosome
+    curW <- as.integer(round((simChr$end - simChr$start) * sizeT))
 
-    df <- data.frame(ID = dfChr[, "ID"],
-                     chr = rep(chrCur ,nrow(dfChr)),
-                     start = minStart + c(0, cumsum(curW[-1*length(curW)]) + 1),
-                     end = minStart + cumsum(curW),
-                     log2ratio = dfChr[, "log2ratio"],
-                     state = dfChr[, "state"],
-                     stringsAsFactors = FALSE)
+    ## Prepare the final chromosome using the information from the real
+    ## chromosome and the simulated chromosome
+    ## Name from real chromosome
+    ## Start, End from the simulated chromosome adapted to the real chromosome
+    ## State, log2ration from the simulated chromosome
+    df <- data.frame(ID=simChr[, "ID"],
+                        chr=rep(chrCur ,nrow(simChr)),
+                        start=minStart +
+                                    c(0, cumsum(curW[-1*length(curW)]) + 1),
+                        end=minStart + cumsum(curW),
+                        log2ratio=simChr[, "log2ratio"],
+                        state=simChr[, "state"],
+                        stringsAsFactors=FALSE)
 
-    if(nrow(listHole) > 0){
-        for(j in seq_len(nrow(listHole))){
-            # z <- cbind(c(df$start+1, df$end+1, listHole$start[j]),
-            #            c(seq_len(nrow(df)),
-            #              -1 * seq_len(nrow(df)),
-            #              0),
-            #            c(rep(0, nrow(df)),
-            #              rep(0, nrow(df)),
-            #              1))
-            # z <- z[order(z[,1]),]
-            # pos <- cumsum(z[,2])[z[,3]==1]
-            pos <- which(df$start < listHole$start[j] & df$end >= listHole$start[j])
-            if(listHole$start[j] < df$end[pos]){
+    ## Add the spaces present in the real chromosome to the final chromosome
+    if(nrow(listHole) > 0) {
+        for(j in seq_len(nrow(listHole))) {
+            pos <- which(df$start < listHole$start[j] &
+                                df$end >= listHole$start[j])
+            if(listHole$start[j] < df$end[pos]) {
                 tmp <- df[pos, ,drop = FALSE]
                 df[pos,"end"] <- listHole$start[j]
 
                 tmp$start <- listHole$end[j]
                 tmp$end <- tmp$end + listHole$end[j] - listHole$start[j]
-                if(pos < nrow(df)){
-                    df$start[(pos+1):nrow(df)] <- df$start[(pos+1):nrow(df)] + listHole$end[j] - listHole$start[j]
-                    df$end[(pos+1):nrow(df)] <- df$end[(pos+1):nrow(df)] + listHole$end[j] - listHole$start[j]
+                if(pos < nrow(df)) {
+                    df$start[(pos+1):nrow(df)] <- df$start[(pos+1):nrow(df)] +
+                            listHole$end[j] - listHole$start[j]
+                    df$end[(pos+1):nrow(df)] <- df$end[(pos+1):nrow(df)] +
+                            listHole$end[j] - listHole$start[j]
                 }
                 df <- rbind(df, tmp)
                 df <- df[order(df$start),]
             }
         }
     }
-    #newChr[[i]] <- df
 
     return(df)
 }
@@ -348,7 +393,7 @@ processSim <- function(curSample, nbSim) {
     ## Generated list of shuffled chromosomes
     resChr <- list()
 
-    ## Create shuffled chromosomes, one chromosome at the time
+    ## Create simulated chromosomes, one chromosome at the time
     ## There is as many shuffled chromosomes created as the number
     ## of simulations specified
     for(chr in listChr) {
@@ -358,13 +403,15 @@ processSim <- function(curSample, nbSim) {
     ## Generated list of simulated samples
     df <- list()
 
-    ##
+    ## For each chromosome
+    ## Randomly select a chromosome for the list (with replacement)
+    ## Use the select simulated chromosome to TODO
     for(chr in listChr) {
         newChr <- list()
-        for(i in seq_len(nbSim)){
+        for(i in seq_len(nbSim)) {
             chrSel <- sample(x=seq_len(length(listChr)), 1)
             newChr[[i]] <- processChr(curSample=curSample,
-                                        dfChr=resChr[[listChr[chrSel]]][[i]],
+                                        simChr=resChr[[listChr[chrSel]]][[i]],
                                         chrCur=chr)
         }
         df[[chr]] <- do.call(rbind, newChr)

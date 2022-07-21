@@ -5,18 +5,26 @@
 \alias{processChr}
 \title{TODO}
 \usage{
-processChr(curSample, dfChr, chrCur)
+processChr(curSample, simChr, chrCur)
 }
 \arguments{
-\item{curSample}{a \code{GRangesList} that contains a collection of
+\item{curSample}{a \code{GRanges} that contains a collection of
 genomic ranges representing copy number events, including amplified/deleted
-status, from at least 1 samples. The sample must have a metadata column
+status, from one sample. The sample must have a metadata column
 called '\code{state}' with a state, in an character string format,
-specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).}
+specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.)
+and a metadata column called '\code{CN}' that contains the log2 copy
+number ratios.}
 
-\item{dfChr}{data.frame TODO}
+\item{simChr}{a \code{data.frame} containing the information from one
+simulated chromosome (shuffled segments). The starting position and the
+ending position of the segments should be between zero and one. The segment
+width is representing the proportional size of the segment relative to the
+global segment size for the chromosome.The \code{data.frame} columns names
+should be: 'ID', 'chr', 'start', 'end', 'log2ratio', 'state'.}
 
-\item{chrCur}{a \code{integer} TODO}
+\item{chrCur}{a \code{character} string representing the name of the
+chromosome.}
 }
 \value{
 df TODO
@@ -28,7 +36,37 @@ TODO
 TODO
 }
 \examples{
-## TODO
+
+## Load required package to generate the samples
+require(GenomicRanges)
+
+## Create one 'demo' genome with 2 chromosomes and few segments
+## The stand of the regions doesn't affect the calculation of the metric
+sample01 <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
+    ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222,
+        1, 120331, 725531),
+    end=c(2004603, 4577608, 31695808, 32689222, 117121,
+        325555, 1225582)),
+    strand="*",
+    state=c("AMPLIFICATION", "NEUTRAL", "DELETION", "LOH",
+        "DELETION", "NEUTRAL", "NEUTRAL"),
+    log2ratio=c(0.5849625, 0, -1, -1, -0.87777, 0, 0))
+
+## The simulated chromosome with shuffled segment
+## The simulated chromosome can be a different chromosome
+simulatedChr <- data.frame(ID=rep("S4", 4),
+    chr=rep("chr2", 4), start=c(0, 0.02515227, 0.09360992, 0.25903561),
+    end=c(0.02515227, 0.09360992, 0.25903561, 1),
+    log2ratio=c(-1.0, -0.9999, 0.0, 0.5843),
+    state=c("LOH", "DELETION", "NEUTRAL", "AMPLIFICATION"))
+
+## Generates a simulation for chromosome 1 using a simulated chromosome
+## The segments from the simulated chromosome will be positioned on the
+## chromosome 1 after resizing for the size of chromosome 1.
+## The spaces between the segments in chromosome 1 will be
+## preserved.
+CNVMetrics:::processChr(curSample=sample01, simChr=simulatedChr,
+    chrCur="chr1")
 
 }
 \author{
