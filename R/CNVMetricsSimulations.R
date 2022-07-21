@@ -5,7 +5,7 @@
 #' that represent a simulated chromosome based on a reference sample
 #' specified by the user. The function only accounts for the positions where
 #' a segment is assigned. In addition, the total number of segments
-#' is preserved. A dirichlet is used to assigned new sizes
+#' is preserved. A Dirichlet distribution is used to assigned new sizes
 #' to the segments with respect to the
 #' relative initial size of the segment. Then, those new segments are shuffled
 #' without replacement. The positions are replaced by values between zero and
