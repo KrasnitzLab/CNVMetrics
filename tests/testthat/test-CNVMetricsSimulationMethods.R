@@ -121,3 +121,88 @@ test_that("processSim() must return the expected result", {
 
     expect_equal(result, expected)
 })
+
+
+
+
+
+#############################################################################
+### Tests simChr() results
+#############################################################################
+
+context("simChr() results")
+
+
+test_that("simChr() must return the expected result when only 1 segment", {
+
+    sample <- GRanges(seqnames = "chr1",
+                      ranges =  IRanges(start = c(1995066),
+                                        end = c(2204505)),
+                      strand =  c("-"),
+                      state = c("AMPLIFICATION"),
+                      log2ratio=c(0.5849625))
+
+    expected <- list()
+
+    expected[[1]] <- data.frame(ID=c("S1"),
+                           chr=c("chr1"), start=c(0),
+                           end=c(1),
+                           log2ratio=c(0.5849625),
+                           state=c("AMPLIFICATION"))
+
+    expected[[2]] <- data.frame(ID=c("S2"),
+                                chr=c("chr1"), start=c(0),
+                                end=c(1),
+                                log2ratio=c(0.5849625),
+                                state=c("AMPLIFICATION"))
+
+    expected[[3]] <- data.frame(ID=c("S3"),
+                                chr=c("chr1"), start=c(0),
+                                end=c(1),
+                                log2ratio=c(0.5849625),
+                                state=c("AMPLIFICATION"))
+
+    set.seed(1212)
+
+    result <- CNVMetrics:::simChr(curSample = sample, chrCur="chr1", nbSim = 3)
+
+    expect_equal(result, expected)
+})
+
+test_that("simChr() must return the expected result when only 2 segments", {
+
+    sample <- GRanges(seqnames = rep("chr1", 2),
+                      ranges =  IRanges(start = c(1995066, 4333332),
+                                        end = c(2204505, 14333332)),
+                      strand =  c("-", "*"),
+                      state = c("AMPLIFICATION", "NEUTRAL"),
+                      log2ratio=c(0.5849625, 0.00011))
+
+    expected <- list()
+
+    expected[[1]] <- data.frame(ID=rep("S1", 2),
+                                chr=rep("chr1", 2), start=c(0, 0.019211531757713),
+                                end=c(0.019211531757713, 1),
+                                log2ratio=c(0.5849625, 0.00011),
+                                state=c("AMPLIFICATION", "NEUTRAL"))
+
+    expected[[2]] <- data.frame(ID=rep("S2", 2),
+                                chr=rep("chr1", 2), start=c(0, 0.971207630270844),
+                                end=c(0.971207630270844, 1),
+                                log2ratio=c(0.00011, 0.5849625),
+                                state=c("NEUTRAL", "AMPLIFICATION"))
+
+    expected[[3]] <- data.frame(ID=rep("S3", 2),
+                                chr=rep("chr1", 2), start=c(0, 0.988944448574609),
+                                end=c(0.988944448574609, 1),
+                                log2ratio=c(0.00011, 0.5849625),
+                                state=c("NEUTRAL", "AMPLIFICATION"))
+
+    set.seed(112)
+
+    result <- CNVMetrics:::simChr(curSample = sample, chrCur="chr1", nbSim = 3)
+
+    expect_equal(result, expected)
+})
+
+
