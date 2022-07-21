@@ -102,7 +102,7 @@ simChr <- function(curSample, chrCur, nbSim) {
     ## the proportion of the segment relative to the total size of the
     ## chromosome (covered with segment) as the shape parameters
     if(length(listWP) == 2) {
-        tmp <- round(rdirichlet(nbSim, listWP) * sizeT)
+        tmp <- round(suppressWarnings(rdirichlet(nbSim, listWP)) * sizeT)
         partDir <- unname(cbind(tmp, sizeT - tmp))
     }else if(length(listWP) == 1) {
         ## The simulated segment has the same size that
