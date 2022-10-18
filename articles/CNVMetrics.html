@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNVMetrics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -70,8 +70,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Quantifying similarity between copy number profiles</h1>
-                        <h4 data-toc-skip class="author">Astrid Deschênes, Pascal Belleau and Alexander Krasnitz</h4>
+      <h1 data-toc-skip>Quantifying similarity between copy number
+profiles</h1>
+                        <h4 data-toc-skip class="author">Astrid
+Deschênes, Pascal Belleau and Alexander Krasnitz</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/krasnitzlab/CNVMetrics/blob/HEAD/vignettes/CNVMetrics.Rmd" class="external-link"><code>vignettes/CNVMetrics.Rmd</code></a></small>
@@ -92,41 +94,81 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), David A. Tuveson [aut] (<a href="https://orcid.org/0000-0002-8017-2712" class="external-link uri">https://orcid.org/0000-0002-8017-2712</a>), Alexander Krasnitz [aut]<br><strong>Version</strong>: 0.99.3<br><strong>Compiled date</strong>: 2022-07-12<br><strong>License</strong>: Artistic-2.0<br></p>
+</script><p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau
+[aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), David A. Tuveson
+[aut] (<a href="https://orcid.org/0000-0002-8017-2712" class="external-link uri">https://orcid.org/0000-0002-8017-2712</a>), Alexander
+Krasnitz [aut]<br><strong>Version</strong>: 1.1.0<br><strong>Compiled date</strong>: 2022-10-18<br><strong>License</strong>: Artistic-2.0<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
-<p>The <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em> package and the underlying <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em> code are distributed under the Artistic license 2.0. You are free to use and redistribute this software.</p>
+<p>The <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em>
+package and the underlying <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em>
+code are distributed under the Artistic license 2.0. You are free to use
+and redistribute this software.</p>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="citing">Citing<a class="anchor" aria-label="anchor" href="#citing"></a>
 </h2>
-<p>If you use this package for a publication, we would ask you to cite the following:</p>
+<p>If you use this package for a publication, we would ask you to cite
+the following:</p>
 <blockquote>
-<p>Belleau P, Deschênes A, Beyaz S et al. CNVMetrics package: Quantifying similarity between copy number profiles [version 1; not peer reviewed]. F1000Research 2021, 10:737 (slides) (doi: 10.7490/f1000research.1118704.1)</p>
+<p>Belleau P, Deschênes A, Beyaz S et al. CNVMetrics package:
+Quantifying similarity between copy number profiles [version 1; not peer
+reviewed]. F1000Research 2021, 10:737 (slides) (doi:
+10.7490/f1000research.1118704.1)</p>
 </blockquote>
-<p><a href="http://www.doi.org/10.7490/f1000research.1118704.1" class="external-link">F1000Research poster</a></p>
+<p><a href="http://www.doi.org/10.7490/f1000research.1118704.1" class="external-link">F1000Research
+poster</a></p>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Copy number variation (CNV) includes multiplication and deletion of DNA segment. Copy number variations have been shown to be associated with a wide spectrum of pathological conditions and complex traits, such as developmental neuropsychiatric disorders <span class="citation">(Hiroi et al. 2013)</span> and especially cancer <span class="citation">(Stratton, Campbell, and Futreal 2009)</span>.</p>
-<p>CNVs are usually reported, for each sample, as genomic regions that are duplicated or deleted with respect to a reference. Those regions are denoted as <em>CNV status calls</em>. The level of amplification or deletion can also be reported, usually in log2 ratio values or normalized read depth <span class="citation">(Zhao et al. 2013)</span>. As an example, the Figure 1 shows the copy number profiles from sequencing data of two mouse pancreatic organoids <span class="citation">(Oni et al. 2020)</span>, calculated with <em><a href="https://github.com/KrasnitzLab/CNprep" class="external-link">CNprep</a></em> <span class="citation">(Belleau et al. 2020)</span> and plot with <em><a href="https://bioconductor.org/packages/3.13/gtrellis" class="external-link">gtrellis</a></em> <span class="citation">(Gu, Eils, and Schlesner 2016)</span>.</p>
+<p>Copy number variation (CNV) includes multiplication and deletion of
+DNA segment. Copy number variations have been shown to be associated
+with a wide spectrum of pathological conditions and complex traits, such
+as developmental neuropsychiatric disorders <span class="citation">(Hiroi et al. 2013)</span> and especially cancer <span class="citation">(Stratton, Campbell, and Futreal 2009)</span>.</p>
+<p>CNVs are usually reported, for each sample, as genomic regions that
+are duplicated or deleted with respect to a reference. Those regions are
+denoted as <em>CNV status calls</em>. The level of amplification or
+deletion can also be reported, usually in log2 ratio values or
+normalized read depth <span class="citation">(Zhao et al. 2013)</span>.
+As an example, the Figure 1 shows the copy number profiles from
+sequencing data of two mouse pancreatic organoids <span class="citation">(Oni et al. 2020)</span>, calculated with <em><a href="https://github.com/KrasnitzLab/CNprep" class="external-link">CNprep</a></em> <span class="citation">(Belleau et al. 2020)</span> and plot with <em><a href="https://bioconductor.org/packages/3.15/gtrellis" class="external-link">gtrellis</a></em>
+<span class="citation">(Gu, Eils, and Schlesner 2016)</span>.</p>
 <div class="figure" style="text-align: center">
 <img src="CNV_mM30_mM10_v03_Feb_08_2021_small.jpeg" alt="Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30)." width="95%"><p class="caption">
-Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
+Copy number profiles of two mouse metastatic pancreatic organoids (M10
+and M30).
 </p>
 </div>
-<p>While visual representation is a practical way to qualitatively compare copy number profiles, metrics are useful statistical tools for quantitatively measuring similarity and dissimilarity between profiles. Similarity metrics can be employed to compare CNV profiles of genetically unrelated samples. Moreover, those metrics can as well be put to use on samples with common genetic background. As an example, a comparison between primary and metastatic tumor CNV profiles may reveal genomic determinants of metastasis. Similarly, patient-derived xenograft or organoid models of cancer are expected to recapitulate CNV patterns of the tumor tissue of origin <span class="citation">(Gendoo et al. 2019)</span>.</p>
-<p>The <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em> package calculates metrics to estimate the level of similarity between copy number profiles. Some metrics are calculated using the <em>CNV status calls</em> (amplification/deletion/LOH status or any user specific status) while others are based on the level of amplification/deletion in log2 ratio. Finally, a visualization tool is provided to explore resulting metrics in the form of sample-to-sample heatmaps.</p>
+<p>While visual representation is a practical way to qualitatively
+compare copy number profiles, metrics are useful statistical tools for
+quantitatively measuring similarity and dissimilarity between profiles.
+Similarity metrics can be employed to compare CNV profiles of
+genetically unrelated samples. Moreover, those metrics can as well be
+put to use on samples with common genetic background. As an example, a
+comparison between primary and metastatic tumor CNV profiles may reveal
+genomic determinants of metastasis. Similarly, patient-derived xenograft
+or organoid models of cancer are expected to recapitulate CNV patterns
+of the tumor tissue of origin <span class="citation">(Gendoo et al.
+2019)</span>.</p>
+<p>The <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em>
+package calculates metrics to estimate the level of similarity between
+copy number profiles. Some metrics are calculated using the <em>CNV
+status calls</em> (amplification/deletion/LOH status or any user
+specific status) while others are based on the level of
+amplification/deletion in log2 ratio. Finally, a visualization tool is
+provided to explore resulting metrics in the form of sample-to-sample
+heatmaps.</p>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>To install this package from <a href="https://bioconductor.org/packages/CNVMetrics" class="external-link">Bioconductor</a>, start R (version “4.2”) and enter:</p>
+<p>To install this package from <a href="https://bioconductor.org/packages/CNVMetrics" class="external-link">Bioconductor</a>,
+start R (version “4.2”) and enter:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
@@ -140,9 +182,16 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 <div class="section level2">
 <h2 id="workflow-for-metrics-calculated-using-cnv-status-calls">Workflow for metrics calculated using CNV status calls<a class="anchor" aria-label="anchor" href="#workflow-for-metrics-calculated-using-cnv-status-calls"></a>
 </h2>
-<p>The following workflow gives an overview of the capabilities of <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em> to calculate metrics using the <em>CNV status calls</em> (amplification/deletion status or any user specific status):</p>
+<p>The following workflow gives an overview of the capabilities of
+<em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em> to
+calculate metrics using the <em>CNV status calls</em>
+(amplification/deletion status or any user specific status):</p>
 <p>The key functions for each step of the workflow are:</p>
 <table class="table">
+<colgroup>
+<col width="33%">
+<col width="66%">
+</colgroup>
 <thead><tr class="header">
 <th>Step</th>
 <th>Function</th>
@@ -162,20 +211,35 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 </tr>
 </tbody>
 </table>
-<p>The <code>package::function()</code> notation is used for functions from other packages.</p>
+<p>The <code>package::function()</code> notation is used for functions
+from other packages.</p>
 <p><br></p>
 <div class="section level3">
 <h3 id="data-input---copy-number-file-containing-the-cnv-status-calls">Data Input - Copy number file containing the CNV status calls<a class="anchor" aria-label="anchor" href="#data-input---copy-number-file-containing-the-cnv-status-calls"></a>
 </h3>
-<p><em>CNV status calls</em> are represented as segments with a copy number state. The state be general, such as “amplification,” “deletion” or “neutral,” or more specific such as of loss of heterozygosity (LOH), 1-copy gain, 2-copy gain, 1-copy loss and so on.</p>
-<p>A basic five-column input file containing genomic position (chromosome, start, end), sample identification and <em>CNV status calls</em> is required. All samples that need to be analyzed together have to be combined into one file.</p>
-<p>A column named <strong>state</strong> is required. In this column, The <em>CNV status call</em> of each segment must be specified using a string. By default, the states that are analyzed by this package are the amplification/deletion states with this specific notation:</p>
+<p><em>CNV status calls</em> are represented as segments with a copy
+number state. The state be general, such as “amplification”, “deletion”
+or “neutral”, or more specific such as of loss of heterozygosity (LOH),
+1-copy gain, 2-copy gain, 1-copy loss and so on.</p>
+<p>A basic five-column input file containing genomic position
+(chromosome, start, end), sample identification and <em>CNV status
+calls</em> is required. All samples that need to be analyzed together
+have to be combined into one file.</p>
+<p>A column named <strong>state</strong> is required. In this column,
+The <em>CNV status call</em> of each segment must be specified using a
+string. By default, the states that are analyzed by this package are the
+amplification/deletion states with this specific notation:</p>
 <ul>
 <li><strong><span style="color:darkred">AMPLIFICATION</span></strong></li>
 <li><strong><span style="color:darkred">DELETION</span></strong></li>
 </ul>
-<p>Segments with other <strong>state</strong> values can be present in the file. However, those segments won’t be retain for the calculation of the metrics.</p>
-<p>However, the user can define is how notation and decided which <strong>state</strong> will be used to calculate the similarity metrics. The user defined states can be in upper or lower cases. Examples of possible states:</p>
+<p>Segments with other <strong>state</strong> values can be present in
+the file. However, those segments won’t be retain for the calculation of
+the metrics.</p>
+<p>However, the user can define is how notation and decided which
+<strong>state</strong> will be used to calculate the similarity metrics.
+The user defined states can be in upper or lower cases. Examples of
+possible states:</p>
 <ul>
 <li><strong><span style="color:darkred">LOH</span></strong></li>
 <li><strong><span style="color:darkred">loh</span></strong></li>
@@ -184,7 +248,9 @@ Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).
 <li><strong><span style="color:darkred">loss</span></strong></li>
 <li>and so on…</li>
 </ul>
-<p>Beware that states with different spelling or upper/lower case nomenclature are considered as distinct states and are analyzed separately.</p>
+<p>Beware that states with different spelling or upper/lower case
+nomenclature are considered as distinct states and are analyzed
+separately.</p>
 <div class="figure" style="text-align: center">
 <img src="Input_CNV_call_300ppi_v02_low_quality.jpg" alt="Example of a copy number file containing CNV calls." width="100%"><p class="caption">
 Example of a copy number file containing CNV calls.
@@ -195,9 +261,17 @@ Example of a copy number file containing CNV calls.
 <div class="section level3">
 <h3 id="data-importation---grangeslist">Data Importation - GRangesList<a class="anchor" aria-label="anchor" href="#data-importation---grangeslist"></a>
 </h3>
-<p>The input format for the copy number information, as needed by the <code><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric()</a></code> function, is a <code>GRangesList</code> object.</p>
-<p>The easiest way to generate a <code>GRangesList</code> object is to first load the copy number information into an R <code>data.frame</code> and then, use the <code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html" class="external-link">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function to convert them to a <code>GRangesList</code>.</p>
-<p>For this demonstration, we consider <em>CNV status calls</em> as obtained with <em><a href="https://github.com/KrasnitzLab/CNprep" class="external-link">CNprep</a></em> <span class="citation">(Belleau et al. 2020)</span>, from ten mouse pancreatic organoids <span class="citation">(Oni et al. 2020)</span>.</p>
+<p>The input format for the copy number information, as needed by the
+<code><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric()</a></code> function, is a
+<code>GRangesList</code> object.</p>
+<p>The easiest way to generate a <code>GRangesList</code> object is to
+first load the copy number information into an R <code>data.frame</code>
+and then, use the
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html" class="external-link">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function to
+convert them to a <code>GRangesList</code>.</p>
+<p>For this demonstration, we consider <em>CNV status calls</em> as
+obtained with <em><a href="https://github.com/KrasnitzLab/CNprep" class="external-link">CNprep</a></em> <span class="citation">(Belleau et al. 2020)</span>, from ten mouse pancreatic
+organoids <span class="citation">(Oni et al. 2020)</span>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load required libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span></span>
@@ -257,7 +331,8 @@ Example of a copy number file containing CNV calls.
 <div class="section level3">
 <h3 id="metric-calculation">Metric Calculation<a class="anchor" aria-label="anchor" href="#metric-calculation"></a>
 </h3>
-<p>The calculation of the similarity metrics is done with the <code><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric()</a></code> function.</p>
+<p>The calculation of the similarity metrics is done with the
+<code><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## In this case, the default states (AMPLIFICATION, DELETION) are used. </span></span>
 <span><span class="co">## So, the 'states' parameter doesn't have to be specified</span></span>
@@ -292,15 +367,22 @@ Example of a copy number file containing CNV calls.
 <div class="section level3">
 <h3 id="metric-visualization">Metric Visualization<a class="anchor" aria-label="anchor" href="#metric-visualization"></a>
 </h3>
-<p>A heatmap of this similarity metrics can be a useful tool to get an overview over similarities and dissimilarities between samples.</p>
-<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical representation of the similarity metrics in the form of a sample-to-sample heatmap. By default, an hierarchical clustering based on the sample distances (1-metric) is used. When NA values are present in the metric matrix, those are replaced by zero.</p>
+<p>A heatmap of this similarity metrics can be a useful tool to get an
+overview over similarities and dissimilarities between samples.</p>
+<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical
+representation of the similarity metrics in the form of a
+sample-to-sample heatmap. By default, an hierarchical clustering based
+on the sample distances (1-metric) is used. When NA values are present
+in the metric matrix, those are replaced by zero.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Create graph for the metrics related to amplified regions</span></span>
 <span><span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metric</span>, type<span class="op">=</span><span class="st">"AMPLIFICATION"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="CNVMetrics_files/figure-html/demoPlot01-1.png" width="432" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p><br></p>
-<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function uses the <em><a href="https://CRAN.R-project.org/package=pheatmap" class="external-link">pheatmap</a></em> package to generate the graph. All arguments accepted by <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap::pheatmap()</a></code> function are valid arguments.</p>
+<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function uses the <em><a href="https://CRAN.R-project.org/package=pheatmap" class="external-link">pheatmap</a></em>
+package to generate the graph. All arguments accepted by
+<code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap::pheatmap()</a></code> function are valid arguments.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Create graph for the metrics related to deleted regions</span></span>
 <span><span class="co">## Metric values are printed as 'display_numbers' and 'number_format' are</span></span>
@@ -312,7 +394,10 @@ Example of a copy number file containing CNV calls.
 <span>                    number_format<span class="op">=</span><span class="st">"%.2f"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="CNVMetrics_files/figure-html/demoPlot02-1.png" width="460.8" style="display: block; margin: auto;"></p>
 <p><br><br></p>
-<p>Row and/or column annotation is often useful and can easily be done by using the <code>annotation_row</code> or <code>annotation_col</code> arguments, as described in the <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap::pheatmap</a></code> method.</p>
+<p>Row and/or column annotation is often useful and can easily be done
+by using the <code>annotation_row</code> or <code>annotation_col</code>
+arguments, as described in the <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap::pheatmap</a></code>
+method.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load file containing annotations for the mouse organoids</span></span>
 <span><span class="co">## The mouse ID identifying the source of the sample</span></span>
@@ -340,50 +425,74 @@ Example of a copy number file containing CNV calls.
 <div class="section level2">
 <h2 id="metrics-using-the-cnv-status-calls">Metrics using the <em>CNV status calls</em><a class="anchor" aria-label="anchor" href="#metrics-using-the-cnv-status-calls"></a>
 </h2>
-<p>This survey represents the overlap metrics that are implemented in <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em> package. Those metrics are calculated using the <em>CNV status calls</em>. The size of the amplified/deleted regions as well as the size of the overlapping of regions are always in base paired.</p>
+<p>This survey represents the overlap metrics that are implemented in
+<em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em>
+package. Those metrics are calculated using the <em>CNV status
+calls</em>. The size of the amplified/deleted regions as well as the
+size of the overlapping of regions are always in base paired.</p>
 <p><br></p>
 <div class="section level3">
 <h3 id="sørensen">Sørensen<a class="anchor" aria-label="anchor" href="#s%C3%B8rensen"></a>
 </h3>
-<p>The Sørensen coefficient <span class="citation">(Sørensen 1948)</span> is calculated by dividing twice the size of the intersection by the sum of the size of the two sets:</p>
+<p>The Sørensen coefficient <span class="citation">(Sørensen
+1948)</span> is calculated by dividing twice the size of the
+intersection by the sum of the size of the two sets:</p>
 <p><span class="math display">\[\begin{equation}
-  \frac{2\times  \left| X \cap Y \right| }{\left| X \right| + \left| Y \right|}
+  \frac{2\times  \left| X \cap Y \right| }{\left| X \right| + \left| Y
+\right|}
   (\#eq:sorensen)
 \end{equation}\]</span></p>
-<p>where <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> represent the regions of each sample in base paired.</p>
+<p>where <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> represent the regions of each sample in
+base paired.</p>
 <p><br></p>
 </div>
 <div class="section level3">
 <h3 id="szymkiewiczsimpson">Szymkiewicz–Simpson<a class="anchor" aria-label="anchor" href="#szymkiewiczsimpson"></a>
 </h3>
-<p>The Szymkiewicz–Simpson coefficient <span class="citation">(Vijaymeena and K. 2016)</span>, also known as the overlap coefficient, is calculated by dividing the size of the intersection by the smaller of the size of the two sets:</p>
+<p>The Szymkiewicz–Simpson coefficient <span class="citation">(Vijaymeena and K. 2016)</span>, also known as the
+overlap coefficient, is calculated by dividing the size of the
+intersection by the smaller of the size of the two sets:</p>
 <p><span class="math display">\[\begin{equation}
-  \frac{\left| X \cap Y \right|}{min \left(\left| X \right|,\left| Y \right|\right)}
+  \frac{\left| X \cap Y \right|}{min \left(\left| X \right|,\left| Y
+\right|\right)}
   (\#eq:szymkiewicz)
 \end{equation}\]</span></p>
-<p>where <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> represent the regions of each sample in base paired. If set <span class="math inline">\(X\)</span> is a subset of <span class="math inline">\(Y\)</span> or vice versa, the overlap coefficient value is 1.</p>
+<p>where <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> represent the regions of each sample in
+base paired. If set <span class="math inline">\(X\)</span> is a subset
+of <span class="math inline">\(Y\)</span> or vice versa, the overlap
+coefficient value is 1.</p>
 <p><br></p>
 </div>
 <div class="section level3">
 <h3 id="jaccard">Jaccard<a class="anchor" aria-label="anchor" href="#jaccard"></a>
 </h3>
-<p>The Jaccard coefficient <span class="citation">(Jaccard 1912)</span>, also known as coefficient of community, is calculated by dividing the size of the intersection by the smaller of the size of the two sets:</p>
+<p>The Jaccard coefficient <span class="citation">(Jaccard 1912)</span>,
+also known as coefficient of community, is calculated by dividing the
+size of the intersection by the smaller of the size of the two sets:</p>
 <p><span class="math display">\[\begin{equation}
   \frac{\left| X \cap Y \right| }{ \left| X \cup Y \right|}
   (\#eq:jaccard)
 \end{equation}\]</span></p>
-<p>where <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> represent the regions of each sample in base paired.</p>
+<p>where <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> represent the regions of each sample in
+base paired.</p>
 <p><br><br></p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="workflow-for-metrics-calculated-using-the-level-of-amplificationdeletion">Workflow for metrics calculated using the level of amplification/deletion<a class="anchor" aria-label="anchor" href="#workflow-for-metrics-calculated-using-the-level-of-amplificationdeletion"></a>
+<h2 id="workflow-for-metrics-calculated-using-the-level-of-amplificationdeletion">Workflow for metrics calculated using the level of
+amplification/deletion<a class="anchor" aria-label="anchor" href="#workflow-for-metrics-calculated-using-the-level-of-amplificationdeletion"></a>
 </h2>
-<p>The following section gives an overview of the capabilities of <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em> to calculate metrics using the <em>the level of amplification/deletion</em> (log2 ratio values):</p>
+<p>The following section gives an overview of the capabilities of <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em> to
+calculate metrics using the <em>the level of amplification/deletion</em>
+(log2 ratio values):</p>
 <p>The key functions for each step of the workflow are:</p>
 <div align="center">
 <div style="width: 60%; margin:0 left;text-align: center;">
 <table class="table">
+<colgroup>
+<col width="33%">
+<col width="66%">
+</colgroup>
 <thead><tr class="header">
 <th>Step</th>
 <th>Function</th>
@@ -405,14 +514,23 @@ Example of a copy number file containing CNV calls.
 </table>
 </div>
 </div>
-<p>The <code>package::function()</code> notation is used for functions from other packages.</p>
+<p>The <code>package::function()</code> notation is used for functions
+from other packages.</p>
 <p><br></p>
 <div class="section level3">
-<h3 id="data-input---copy-number-file-containing-the-level-of-amplificationdeletion">Data Input - Copy number file containing the level of amplification/deletion<a class="anchor" aria-label="anchor" href="#data-input---copy-number-file-containing-the-level-of-amplificationdeletion"></a>
+<h3 id="data-input---copy-number-file-containing-the-level-of-amplificationdeletion">Data Input - Copy number file containing the level of
+amplification/deletion<a class="anchor" aria-label="anchor" href="#data-input---copy-number-file-containing-the-level-of-amplificationdeletion"></a>
 </h3>
-<p>Copy number are often represented as segments with a copy number state and/or the level of amplification/deletion. One usual unit to quantify the level of amplification or deletion is in log2 ratio.</p>
-<p>A basic five-column input file containing genomic position (chromosome, start, end), sample identification and <em>the level of amplification/deletion</em> is required. All samples that need to be analyzed together have to be combined into one file.</p>
-<p>A column named <strong>log2ratio</strong> is required. In this column, the amplified and deleted segments must be assigned a numerical value representing the log2ratio or NA.</p>
+<p>Copy number are often represented as segments with a copy number
+state and/or the level of amplification/deletion. One usual unit to
+quantify the level of amplification or deletion is in log2 ratio.</p>
+<p>A basic five-column input file containing genomic position
+(chromosome, start, end), sample identification and <em>the level of
+amplification/deletion</em> is required. All samples that need to be
+analyzed together have to be combined into one file.</p>
+<p>A column named <strong>log2ratio</strong> is required. In this
+column, the amplified and deleted segments must be assigned a numerical
+value representing the log2ratio or NA.</p>
 <div class="figure" style="text-align: center">
 <img src="Input_CNV_log2ratio_v01_low_quality.jpg" alt="Example of a copy number file containing log2ratio values." width="100%"><p class="caption">
 Example of a copy number file containing log2ratio values.
@@ -423,9 +541,17 @@ Example of a copy number file containing log2ratio values.
 <div class="section level3">
 <h3 id="data-importation---grangeslist-1">Data Importation - GRangesList<a class="anchor" aria-label="anchor" href="#data-importation---grangeslist-1"></a>
 </h3>
-<p>The input format for the copy number information, as needed by the <code><a href="../reference/calculateLog2ratioMetric.html">calculateLog2ratioMetric()</a></code> function, is a <code>GRangesList</code> object.</p>
-<p>The easiest way to generate a <code>GRangesList</code> object is to first load the copy number information into an R <code>data.frame</code> and then, use the <code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html" class="external-link">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function to convert them to a <code>GRangesList</code>.</p>
-<p>For this demonstration, we consider <em>the level of amplification/deletion</em> as obtained with <em><a href="https://github.com/KrasnitzLab/CNprep" class="external-link">CNprep</a></em> <span class="citation">(Belleau et al. 2020)</span>, from ten mouse pancreatic organoids <span class="citation">(Oni et al. 2020)</span>.</p>
+<p>The input format for the copy number information, as needed by the
+<code><a href="../reference/calculateLog2ratioMetric.html">calculateLog2ratioMetric()</a></code> function, is a
+<code>GRangesList</code> object.</p>
+<p>The easiest way to generate a <code>GRangesList</code> object is to
+first load the copy number information into an R <code>data.frame</code>
+and then, use the
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html" class="external-link">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function to
+convert them to a <code>GRangesList</code>.</p>
+<p>For this demonstration, we consider <em>the level of
+amplification/deletion</em> as obtained with <em><a href="https://github.com/KrasnitzLab/CNprep" class="external-link">CNprep</a></em> <span class="citation">(Belleau et al. 2020)</span>, from ten mouse pancreatic
+organoids <span class="citation">(Oni et al. 2020)</span>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load required libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span></span>
@@ -485,7 +611,8 @@ Example of a copy number file containing log2ratio values.
 <div class="section level3">
 <h3 id="metric-calculation-1">Metric Calculation<a class="anchor" aria-label="anchor" href="#metric-calculation-1"></a>
 </h3>
-<p>The calculation of the similarity metrics is done with the <code><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric()</a></code> function.</p>
+<p>The calculation of the similarity metrics is done with the
+<code><a href="../reference/calculateOverlapMetric.html">calculateOverlapMetric()</a></code> function.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metricLog</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculateLog2ratioMetric.html">calculateLog2ratioMetric</a></span><span class="op">(</span>segmentData<span class="op">=</span><span class="va">grlog</span>, </span>
 <span>                              method<span class="op">=</span><span class="st">"weightedEuclideanDistance"</span>, nJobs<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
@@ -508,14 +635,21 @@ Example of a copy number file containing log2ratio values.
 <div class="section level3">
 <h3 id="metric-visualization-1">Metric Visualization<a class="anchor" aria-label="anchor" href="#metric-visualization-1"></a>
 </h3>
-<p>A heatmap of this similarity metrics can be a useful tool to get an overview over similarities and dissimilarities between samples.</p>
-<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical representation of the similarity metrics in the form of a sample-to-sample heatmap. By default, an hierarchical clustering based on the sample distances (1-metric) is used. When NA values are present in the metric matrix, those are replaced by zero.</p>
+<p>A heatmap of this similarity metrics can be a useful tool to get an
+overview over similarities and dissimilarities between samples.</p>
+<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function generates a graphical
+representation of the similarity metrics in the form of a
+sample-to-sample heatmap. By default, an hierarchical clustering based
+on the sample distances (1-metric) is used. When NA values are present
+in the metric matrix, those are replaced by zero.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Create graph for the metrics related to weighted Euclidean distance-based</span></span>
 <span><span class="fu"><a href="../reference/plotMetric.html">plotMetric</a></span><span class="op">(</span><span class="va">metricLog</span><span class="op">)</span></span></code></pre></div>
 <p><img src="CNVMetrics_files/figure-html/demoPlotLog01-1.png" width="432" style="display: block; margin: auto;"></p>
 <p><br></p>
-<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function uses the <em><a href="https://CRAN.R-project.org/package=pheatmap" class="external-link">pheatmap</a></em> package to generate the graph. All arguments accepted by <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap::pheatmap</a></code> function are valid arguments.</p>
+<p>The <code><a href="../reference/plotMetric.html">plotMetric()</a></code> function uses the <em><a href="https://CRAN.R-project.org/package=pheatmap" class="external-link">pheatmap</a></em>
+package to generate the graph. All arguments accepted by
+<code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap::pheatmap</a></code> function are valid arguments.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Create graph for the weighted Euclidean distance-based metrics</span></span>
 <span><span class="co">## Remove title (argument main="")</span></span>
@@ -533,18 +667,31 @@ Example of a copy number file containing log2ratio values.
 <div class="section level2">
 <h2 id="metrics-using-the-level-of-amplificationdeletion">Metrics using the level of amplification/deletion<a class="anchor" aria-label="anchor" href="#metrics-using-the-level-of-amplificationdeletion"></a>
 </h2>
-<p>This section presents the similarity measure that is implemented in <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em> package. This metric are calculated using the level of amplification/deletion. The level of amplification/deletion is in log2 ratio while the size of the regions is in base paired.</p>
+<p>This section presents the similarity measure that is implemented in
+<em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em>
+package. This metric are calculated using the level of
+amplification/deletion. The level of amplification/deletion is in log2
+ratio while the size of the regions is in base paired.</p>
 <p><br></p>
 <div class="section level3">
 <h3 id="weighted-euclidean-distance-based">Weighted Euclidean Distance-Based<a class="anchor" aria-label="anchor" href="#weighted-euclidean-distance-based"></a>
 </h3>
-<p>The Weighted Euclidean Distance corresponds to the euclidean distance between the log2 values of the two samples multiplied by the natural logarithm of the number of bases of the analyzed segments. The final metric is 1 over 1 added to the squared sum of the values obtained for all segments included in the calculation.</p>
-<p>The Weighted Euclidean Distance corresponds to the euclidean distance between the log2 values of the two samples multiplied by the natural logarithm of the number of bases of the analyzed segments. The final metric is 1 over 1 added to the squared sum of the values obtained for all segments included in the calculation.</p>
+<p>The Weighted Euclidean Distance corresponds to the euclidean distance
+between the log2 values of the two samples multiplied by the natural
+logarithm of the number of bases of the analyzed segments. The final
+metric is 1 over 1 added to the squared sum of the values obtained for
+all segments included in the calculation.</p>
+<p>The Weighted Euclidean Distance corresponds to the euclidean distance
+between the log2 values of the two samples multiplied by the natural
+logarithm of the number of bases of the analyzed segments. The final
+metric is 1 over 1 added to the squared sum of the values obtained for
+all segments included in the calculation.</p>
 <p><span class="math display">\[\begin{equation}
   \frac{1}{1 + \sqrt{\sum_{i=1} log_{2}(w_{i}) (A_{i} - B_{i})^{2}}}
   (\#eq:euclidean)
 \end{equation}\]</span></p>
-<p>where <span class="math inline">\(A_{i}\)</span> and <span class="math inline">\(B_{i}\)</span> represent the log2 ratio values of samples <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> for the region <span class="math inline">\(i\)</span> while <span class="math inline">\(w_{i}\)</span> is the length of region <span class="math inline">\(i\)</span> in base paired.</p>
+<p>where <span class="math inline">\(A_{i}\)</span> and <span class="math inline">\(B_{i}\)</span> represent the log2 ratio values of
+samples <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> for the region <span class="math inline">\(i\)</span> while <span class="math inline">\(w_{i}\)</span> is the length of region <span class="math inline">\(i\)</span> in base paired.</p>
 <p><br><br></p>
 </div>
 </div>
@@ -555,9 +702,24 @@ Example of a copy number file containing log2ratio values.
 <div class="section level3">
 <h3 id="using-parallelization">Using parallelization<a class="anchor" aria-label="anchor" href="#using-parallelization"></a>
 </h3>
-<p>When the number of samples is limited, the above steps should be processed in a few minutes. However, for datasets with a high number of samples, the combinatorial calculation of the metrics can lead to longer processing time. In this context, take advantage of parallelized computation is a viable option. Both <em>calculateOverlapMetric()</em> and <em>calculateLog2ratioMetric()</em> functions have paralleled implementation done with the <em><a href="https://bioconductor.org/packages/3.13/BiocParallel" class="external-link">BiocParallel</a></em> package <span class="citation">(Morgan et al. 2021)</span>.</p>
-<p>The copy number data from The Cancer Genome Atlas (TCGA) Uterine Carcinosarcoma (UCS) study generated by the TCGA Research Network (<a href="https://www.cancer.gov/tcga" class="external-link uri">https://www.cancer.gov/tcga</a>) is used as an demonstration. The copy number variation information, as obtained from the DNACopy workflow <span class="citation">(Seshan and Olshen 2021)</span> is available for 53 patients.</p>
-<p>The following table highlights the time differences for processing the Sørensen metric for all samples (metrics for all the 1378 possible combinations) using rbenchmark <span class="citation">(Kusnierczyk 2012)</span> with 100 replications. This comparison has been done on a high performance computing (HPC) server:</p>
+<p>When the number of samples is limited, the above steps should be
+processed in a few minutes. However, for datasets with a high number of
+samples, the combinatorial calculation of the metrics can lead to longer
+processing time. In this context, take advantage of parallelized
+computation is a viable option. Both <em>calculateOverlapMetric()</em>
+and <em>calculateLog2ratioMetric()</em> functions have paralleled
+implementation done with the <em><a href="https://bioconductor.org/packages/3.15/BiocParallel" class="external-link">BiocParallel</a></em>
+package <span class="citation">(Morgan et al. 2021)</span>.</p>
+<p>The copy number data from The Cancer Genome Atlas (TCGA) Uterine
+Carcinosarcoma (UCS) study generated by the TCGA Research Network (<a href="https://www.cancer.gov/tcga" class="external-link uri">https://www.cancer.gov/tcga</a>) is used as an
+demonstration. The copy number variation information, as obtained from
+the DNACopy workflow <span class="citation">(Seshan and Olshen
+2021)</span> is available for 53 patients.</p>
+<p>The following table highlights the time differences for processing
+the Sørensen metric for all samples (metrics for all the 1378 possible
+combinations) using rbenchmark <span class="citation">(Kusnierczyk
+2012)</span> with 100 replications. This comparison has been done on a
+high performance computing (HPC) server:</p>
 <div align="center">
 <div style="width: 60%; margin:0 left;text-align: center;">
 <table class="table">
@@ -596,7 +758,10 @@ Example of a copy number file containing log2ratio values.
 <div class="section level3">
 <h3 id="creating-your-own-grangeslist">Creating your own GRangesList<a class="anchor" aria-label="anchor" href="#creating-your-own-grangeslist"></a>
 </h3>
-<p>The <code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html" class="external-link">GenomicRanges::makeGRangesListFromDataFrame()</a></code> function enables the creation of a list of <code>GRangesList</code> objects from a <code>data.frame</code>. However, <code>GRangesList</code> can also be generated and filled manually.</p>
+<p>The <code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html" class="external-link">GenomicRanges::makeGRangesListFromDataFrame()</a></code>
+function enables the creation of a list of <code>GRangesList</code>
+objects from a <code>data.frame</code>. However,
+<code>GRangesList</code> can also be generated and filled manually.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## First, create the GRanges objects; one per sample</span></span>
 <span><span class="va">gr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr2"</span>, ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6000</span><span class="op">)</span>,</span>
@@ -618,7 +783,11 @@ Example of a copy number file containing log2ratio values.
 <div class="section level3">
 <h3 id="reproducible-research">Reproducible research<a class="anchor" aria-label="anchor" href="#reproducible-research"></a>
 </h3>
-<p>To ensure reproducible results, <em>set.seed()</em> function should be call before <em>calculateOverlapMetric()</em> and <em>calculateLog2ratioMetric()</em>. Beware that the <em>nJobs</em> parameter must also be fixed; change in the value of the <em>nJobs</em> parameter might lead to different results.</p>
+<p>To ensure reproducible results, <em>set.seed()</em> function should
+be call before <em>calculateOverlapMetric()</em> and
+<em>calculateLog2ratioMetric()</em>. Beware that the <em>nJobs</em>
+parameter must also be fixed; change in the value of the <em>nJobs</em>
+parameter might lead to different results.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## First, fixe the seed value</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">121234</span><span class="op">)</span></span>
@@ -635,54 +804,59 @@ Example of a copy number file containing log2ratio values.
 <div class="section level2">
 <h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
 </h2>
-<p>This work was supported by the Lustgarten Foundation, where David A. Tuveson is a distinguished scholar and Director of the Lustgarten Foundation–designated Laboratory of Pancreatic Cancer Research.</p>
+<p>This work was supported by the Lustgarten Foundation, where David A.
+Tuveson is a distinguished scholar and Director of the Lustgarten
+Foundation–designated Laboratory of Pancreatic Cancer Research.</p>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<p>Here is the output of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code> on the system on which this document was compiled:</p>
-<pre><code><span><span class="co">## R version 4.1.1 (2021-08-10)</span></span>
+<p>Here is the output of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code> on the system on
+which this document was compiled:</p>
+<pre><code><span><span class="co">## R version 4.2.1 (2022-06-23)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">## Running under: Ubuntu 20.04.3 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 20.04.4 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
-<span><span class="co">## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so</span></span>
+<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3</span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/liblapack.so.3</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
 <span><span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
 <span><span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></span>
-<span><span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             </span></span>
+<span><span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
 <span><span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
 <span><span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
 <span><span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## attached base packages:</span></span>
-<span><span class="co">## [1] parallel  stats4    stats     graphics  grDevices utils     datasets </span></span>
-<span><span class="co">## [8] methods   base     </span></span>
+<span><span class="co">## [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
+<span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] CNVMetrics_0.99.3    GenomicRanges_1.44.0 GenomeInfoDb_1.28.4 </span></span>
-<span><span class="co">## [4] IRanges_2.26.0       S4Vectors_0.30.2     BiocGenerics_0.38.0 </span></span>
-<span><span class="co">## [7] knitr_1.39           BiocStyle_2.20.2    </span></span>
+<span><span class="co">## [1] CNVMetrics_1.1.0     GenomicRanges_1.48.0 GenomeInfoDb_1.32.4 </span></span>
+<span><span class="co">## [4] IRanges_2.30.1       S4Vectors_0.34.0     BiocGenerics_0.42.0 </span></span>
+<span><span class="co">## [7] knitr_1.40           BiocStyle_2.24.0    </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] highr_0.9              RColorBrewer_1.1-3     bslib_0.3.1           </span></span>
-<span><span class="co">##  [4] compiler_4.1.1         BiocManager_1.30.18    jquerylib_0.1.4       </span></span>
-<span><span class="co">##  [7] XVector_0.32.0         zlibbioc_1.38.0        bitops_1.0-7          </span></span>
-<span><span class="co">## [10] tools_4.1.1            digest_0.6.29          lifecycle_1.0.1       </span></span>
-<span><span class="co">## [13] gtable_0.3.0           jsonlite_1.8.0         evaluate_0.15         </span></span>
-<span><span class="co">## [16] memoise_2.0.1          rlang_1.0.3            cli_3.3.0             </span></span>
-<span><span class="co">## [19] yaml_2.3.5             pkgdown_2.0.5          xfun_0.31             </span></span>
-<span><span class="co">## [22] fastmap_1.1.0          gridExtra_2.3          GenomeInfoDbData_1.2.6</span></span>
-<span><span class="co">## [25] stringr_1.4.0          desc_1.4.1             fs_1.5.2              </span></span>
-<span><span class="co">## [28] sass_0.4.1             systemfonts_1.0.4      grid_4.1.1            </span></span>
-<span><span class="co">## [31] rprojroot_2.0.3        R6_2.5.1               textshaping_0.3.6     </span></span>
-<span><span class="co">## [34] BiocParallel_1.26.2    rmarkdown_2.14         pheatmap_1.0.12       </span></span>
-<span><span class="co">## [37] farver_2.1.1           purrr_0.3.4            magrittr_2.0.3        </span></span>
-<span><span class="co">## [40] scales_1.2.0           htmltools_0.5.2        colorspace_2.0-3      </span></span>
-<span><span class="co">## [43] ragg_1.2.2             stringi_1.7.6          munsell_0.5.0         </span></span>
-<span><span class="co">## [46] RCurl_1.98-1.7         cachem_1.0.6</span></span></code></pre>
+<span><span class="co">##  [1] highr_0.9              RColorBrewer_1.1-3     bslib_0.4.0           </span></span>
+<span><span class="co">##  [4] compiler_4.2.1         BiocManager_1.30.18    jquerylib_0.1.4       </span></span>
+<span><span class="co">##  [7] XVector_0.36.0         bitops_1.0-7           tools_4.2.1           </span></span>
+<span><span class="co">## [10] zlibbioc_1.42.0        digest_0.6.29          lifecycle_1.0.3       </span></span>
+<span><span class="co">## [13] gtable_0.3.1           jsonlite_1.8.2         evaluate_0.17         </span></span>
+<span><span class="co">## [16] memoise_2.0.1          rlang_1.0.6            cli_3.4.1             </span></span>
+<span><span class="co">## [19] parallel_4.2.1         yaml_2.3.5             pkgdown_2.0.6         </span></span>
+<span><span class="co">## [22] xfun_0.33              fastmap_1.1.0          gridExtra_2.3         </span></span>
+<span><span class="co">## [25] GenomeInfoDbData_1.2.8 stringr_1.4.1          desc_1.4.2            </span></span>
+<span><span class="co">## [28] fs_1.5.2               sass_0.4.2             systemfonts_1.0.4     </span></span>
+<span><span class="co">## [31] grid_4.2.1             rprojroot_2.0.3        R6_2.5.1              </span></span>
+<span><span class="co">## [34] textshaping_0.3.6      BiocParallel_1.30.4    rmarkdown_2.17        </span></span>
+<span><span class="co">## [37] pheatmap_1.0.12        farver_2.1.1           purrr_0.3.5           </span></span>
+<span><span class="co">## [40] magrittr_2.0.3         scales_1.2.1           codetools_0.2-18      </span></span>
+<span><span class="co">## [43] htmltools_0.5.3        colorspace_2.0-3       ragg_1.2.3            </span></span>
+<span><span class="co">## [46] stringi_1.7.8          munsell_0.5.0          RCurl_1.98-1.9        </span></span>
+<span><span class="co">## [49] cachem_1.0.6</span></span></code></pre>
 <p><br><br></p>
 </div>
 <div class="section level2">
@@ -690,43 +864,77 @@ Example of a copy number file containing log2ratio values.
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Belleau2020" class="csl-entry">
-Belleau, P, A Deschênes, G Sun, David A Tuveson, and Alex Krasnitz. 2020. <span>“<span class="nocase">CNprep: Copy number event detection [version 1; not peer reviewed]</span>.”</span> <em>F1000Research</em> 9 (743): (poster). <a href="https://doi.org/10.7490/f1000research.1118065.1" class="external-link">https://doi.org/10.7490/f1000research.1118065.1</a>.
+Belleau, P, A Deschênes, G Sun, David A Tuveson, and Alex Krasnitz.
+2020. <span>“<span class="nocase">CNprep: Copy number event detection
+[version 1; not peer reviewed]</span>.”</span> <em>F1000Research</em> 9
+(743): (poster). <a href="https://doi.org/10.7490/f1000research.1118065.1" class="external-link">https://doi.org/10.7490/f1000research.1118065.1</a>.
 </div>
 <div id="ref-Gendoo2019" class="csl-entry">
-Gendoo, Deena M. A., Robert E. Denroche, Amy Zhang, Nikolina Radulovich, Gun Ho Jang, Mathieu Lemire, Sandra Fischer, et al. 2019. <span>“<span class="nocase">Whole genomes define concordance of matched primary, xenograft, and organoid models of pancreas cancer</span>.”</span> Edited by Amos Tanay. <em>PLOS Computational Biology</em> 15 (1): e1006596. <a href="https://doi.org/10.1371/journal.pcbi.1006596" class="external-link">https://doi.org/10.1371/journal.pcbi.1006596</a>.
+Gendoo, Deena M. A., Robert E. Denroche, Amy Zhang, Nikolina Radulovich,
+Gun Ho Jang, Mathieu Lemire, Sandra Fischer, et al. 2019. <span>“<span class="nocase">Whole genomes define concordance of matched primary,
+xenograft, and organoid models of pancreas cancer</span>.”</span> Edited
+by Amos Tanay. <em>PLOS Computational Biology</em> 15 (1): e1006596. <a href="https://doi.org/10.1371/journal.pcbi.1006596" class="external-link">https://doi.org/10.1371/journal.pcbi.1006596</a>.
 </div>
 <div id="ref-Gu2016a" class="csl-entry">
-Gu, Zuguang, Roland Eils, and Matthias Schlesner. 2016. <span>“<span class="nocase">gtrellis: an R/Bioconductor package for making genome-level Trellis graphics</span>.”</span> <em>BMC Bioinformatics</em> 17 (1): 169. <a href="https://doi.org/10.1186/s12859-016-1051-4" class="external-link">https://doi.org/10.1186/s12859-016-1051-4</a>.
+Gu, Zuguang, Roland Eils, and Matthias Schlesner. 2016. <span>“<span class="nocase">gtrellis: an R/Bioconductor package for making
+genome-level Trellis graphics</span>.”</span> <em>BMC
+Bioinformatics</em> 17 (1): 169. <a href="https://doi.org/10.1186/s12859-016-1051-4" class="external-link">https://doi.org/10.1186/s12859-016-1051-4</a>.
 </div>
 <div id="ref-Hiroi2013" class="csl-entry">
-Hiroi, N, T Takahashi, A Hishimoto, T Izumi, S Boku, and T Hiramoto. 2013. <span>“<span class="nocase">Copy number variation at 22q11.2: from rare variants to common mechanisms of developmental neuropsychiatric disorders</span>.”</span> <em>Molecular Psychiatry</em> 18 (11): 1153–65. <a href="https://doi.org/10.1038/mp.2013.92" class="external-link">https://doi.org/10.1038/mp.2013.92</a>.
+Hiroi, N, T Takahashi, A Hishimoto, T Izumi, S Boku, and T Hiramoto.
+2013. <span>“<span class="nocase">Copy number variation at 22q11.2: from
+rare variants to common mechanisms of developmental neuropsychiatric
+disorders</span>.”</span> <em>Molecular Psychiatry</em> 18 (11):
+1153–65. <a href="https://doi.org/10.1038/mp.2013.92" class="external-link">https://doi.org/10.1038/mp.2013.92</a>.
 </div>
 <div id="ref-Jaccard1912" class="csl-entry">
-Jaccard, Paul. 1912. <span>“<span class="nocase">The distribution of the flora in the alpine zone.</span>”</span> <em>New Phytologist</em> 11 (2): 37–50. <a href="https://doi.org/10.1111/j.1469-8137.1912.tb05611.x" class="external-link">https://doi.org/10.1111/j.1469-8137.1912.tb05611.x</a>.
+Jaccard, Paul. 1912. <span>“<span class="nocase">The distribution of the
+flora in the alpine zone.</span>”</span> <em>New Phytologist</em> 11
+(2): 37–50. <a href="https://doi.org/10.1111/j.1469-8137.1912.tb05611.x" class="external-link">https://doi.org/10.1111/j.1469-8137.1912.tb05611.x</a>.
 </div>
 <div id="ref-rbenchmark" class="csl-entry">
-Kusnierczyk, Wacek. 2012. <em>Rbenchmark: Benchmarking Routine for r</em>. <a href="https://CRAN.R-project.org/package=rbenchmark" class="external-link">https://CRAN.R-project.org/package=rbenchmark</a>.
+Kusnierczyk, Wacek. 2012. <em>Rbenchmark: Benchmarking Routine for
+r</em>. <a href="https://CRAN.R-project.org/package=rbenchmark" class="external-link">https://CRAN.R-project.org/package=rbenchmark</a>.
 </div>
 <div id="ref-Morgan2021" class="csl-entry">
-Morgan, Martin, Valerie Obenchain, Michel Lang, Ryan Thompson, and Nitesh Turaga. 2021. <em>BiocParallel: Bioconductor Facilities for Parallel Evaluation</em>. <a href="https://github.com/Bioconductor/BiocParallel" class="external-link">https://github.com/Bioconductor/BiocParallel</a>.
+Morgan, Martin, Valerie Obenchain, Michel Lang, Ryan Thompson, and
+Nitesh Turaga. 2021. <em>BiocParallel: Bioconductor Facilities for
+Parallel Evaluation</em>. <a href="https://github.com/Bioconductor/BiocParallel" class="external-link">https://github.com/Bioconductor/BiocParallel</a>.
 </div>
 <div id="ref-Oni2020" class="csl-entry">
-Oni, Tobiloba E, Giulia Biffi, Lindsey A Baker, Yuan Hao, Claudia Tonelli, Tim D D Somerville, Astrid Deschênes, et al. 2020. <span>“<span class="nocase">SOAT1 promotes mevalonate pathway dependency in pancreatic cancer</span>.”</span> <em>Journal of Experimental Medicine</em> 217 (9). <a href="https://doi.org/10.1084/jem.20192389" class="external-link">https://doi.org/10.1084/jem.20192389</a>.
+Oni, Tobiloba E, Giulia Biffi, Lindsey A Baker, Yuan Hao, Claudia
+Tonelli, Tim D D Somerville, Astrid Deschênes, et al. 2020. <span>“<span class="nocase">SOAT1 promotes mevalonate pathway dependency in
+pancreatic cancer</span>.”</span> <em>Journal of Experimental
+Medicine</em> 217 (9). <a href="https://doi.org/10.1084/jem.20192389" class="external-link">https://doi.org/10.1084/jem.20192389</a>.
 </div>
 <div id="ref-DNAcopy" class="csl-entry">
-Seshan, Venkatraman E., and Adam Olshen. 2021. <em>DNAcopy: DNA Copy Number Data Analysis</em>.
-</div>
-<div id="ref-Stratton2009" class="csl-entry">
-Stratton, Michael R, Peter J Campbell, and P Andrew Futreal. 2009. <span>“<span class="nocase">The cancer genome</span>.”</span> <em>Nature</em> 458 (7239): 719–24. <a href="https://doi.org/10.1038/nature07943" class="external-link">https://doi.org/10.1038/nature07943</a>.
+Seshan, Venkatraman E., and Adam Olshen. 2021. <em>DNAcopy: DNA Copy
+Number Data Analysis</em>.
 </div>
 <div id="ref-Sorensen48" class="csl-entry">
-Sørensen, Thorvald. 1948. <span>“<span class="nocase">A method of establishing groups of equal amplitude in plant sociology based on similarity of species and its application to analyses of the vegetation on Danish commons</span>.”</span> <em>Biologiske Skrifter</em> 29 (5): 1–34.
+Sørensen, Thorvald. 1948. <span>“<span class="nocase">A method of
+establishing groups of equal amplitude in plant sociology based on
+similarity of species and its application to analyses of the vegetation
+on Danish commons</span>.”</span> <em>Biologiske Skrifter</em> 29 (5):
+1–34.
+</div>
+<div id="ref-Stratton2009" class="csl-entry">
+Stratton, Michael R, Peter J Campbell, and P Andrew Futreal. 2009.
+<span>“<span class="nocase">The cancer genome</span>.”</span>
+<em>Nature</em> 458 (7239): 719–24. <a href="https://doi.org/10.1038/nature07943" class="external-link">https://doi.org/10.1038/nature07943</a>.
 </div>
 <div id="ref-Vijaymeena2016" class="csl-entry">
-Vijaymeena, M. K, and Kavitha K. 2016. <span>“<span class="nocase">A Survey on Similarity Measures in Text Mining</span>.”</span> <em>Machine Learning and Applications: An International Journal</em> 3 (1): 19–28. <a href="https://doi.org/10.5121/mlaij.2016.3103" class="external-link">https://doi.org/10.5121/mlaij.2016.3103</a>.
+Vijaymeena, M. K, and Kavitha K. 2016. <span>“<span class="nocase">A
+Survey on Similarity Measures in Text Mining</span>.”</span> <em>Machine
+Learning and Applications: An International Journal</em> 3 (1): 19–28.
+<a href="https://doi.org/10.5121/mlaij.2016.3103" class="external-link">https://doi.org/10.5121/mlaij.2016.3103</a>.
 </div>
 <div id="ref-Zhao2013" class="csl-entry">
-Zhao, Min, Qingguo Wang, Quan Wang, Peilin Jia, and Zhongming Zhao. 2013. <span>“<span class="nocase">Computational tools for copy number variation (CNV) detection using next-generation sequencing data: features and perspectives</span>.”</span> <em>BMC Bioinformatics</em> 14 (S11): S1. <a href="https://doi.org/10.1186/1471-2105-14-S11-S1" class="external-link">https://doi.org/10.1186/1471-2105-14-S11-S1</a>.
+Zhao, Min, Qingguo Wang, Quan Wang, Peilin Jia, and Zhongming Zhao.
+2013. <span>“<span class="nocase">Computational tools for copy number
+variation (CNV) detection using next-generation sequencing data:
+features and perspectives</span>.”</span> <em>BMC Bioinformatics</em> 14
+(S11): S1. <a href="https://doi.org/10.1186/1471-2105-14-S11-S1" class="external-link">https://doi.org/10.1186/1471-2105-14-S11-S1</a>.
 </div>
 </div>
 </div>
@@ -749,7 +957,7 @@ Zhao, Min, Qingguo Wang, Quan Wang, Peilin Jia, and Zhongming Zhao. 2013. <span>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
