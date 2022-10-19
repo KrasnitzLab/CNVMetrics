@@ -152,12 +152,12 @@ simChr <- function(curSample, chrCur, nbSim) {
         ## segments
         ## The start and end positions are between zero and one.
         res[[i]] <- data.frame(ID=rep(paste0("S", i), ncol(partDir)),
-                               chr=rep(chrCur, ncol(partDir)),
-                               start=c(0, partDir[i, -1 * ncol(partDir)]),
-                               end=partDir[i, ],
-                               log2ratio=partCN[i, ],
-                               state=partEvents[i, ],
-                               stringsAsFactors=FALSE)
+                                chr=rep(chrCur, ncol(partDir)),
+                                start=c(0, partDir[i, -1 * ncol(partDir)]),
+                                end=partDir[i, ],
+                                log2ratio=partCN[i, ],
+                                state=partEvents[i, ],
+                                stringsAsFactors=FALSE)
     }
 
     return(res)
@@ -344,7 +344,7 @@ processChr <- function(curSample, simChr, chrCur) {
 #'
 #' @examples
 #'
-#' ## Load required package to generate the samples
+#' ## Load required package to generate the sample
 #' require(GenomicRanges)
 #'
 #' ## Create one 'demo' genome with 2 chromosomes and few segments
@@ -384,7 +384,7 @@ processSim <- function(curSample, nbSim) {
     ## log2ratio values
     if (! "log2ratio" %in% colnames(mcols(curSample))) {
         stop("the sample must have a metadata column ",
-             "called \'log2ratio\'")
+                "called \'log2ratio\'")
     }
 
     ## The list of unique chromosomes in the sample

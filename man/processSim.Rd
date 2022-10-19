@@ -49,7 +49,7 @@ TODO
 }
 \examples{
 
-## Load required package to generate the samples
+## Load required package to generate the sample
 require(GenomicRanges)
 
 ## Create one 'demo' genome with 2 chromosomes and few segments
