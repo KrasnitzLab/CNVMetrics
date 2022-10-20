@@ -85,8 +85,9 @@ data of two mouse pancreatic organoids [@Oni2020], calculated with
 `r Biocpkg("gtrellis")` [@Gu2016a].
 
 
-```{r graphCNVpro, echo = FALSE, fig.align="center", fig.cap="Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).", out.width = '95%', results='asis'}
-knitr::include_graphics("CNV_mM30_mM10_v03_Feb_08_2021_small.jpeg")
+```{r graphCNVpro, echo = FALSE, fig.align="center", fig.cap="Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).", out.width = '90%', results='asis'}
+
+knitr::include_graphics("CNV_mM30_mM10_v03_Feb_08_2021_small.png")
 ```
 
 While visual representation is a practical way to qualitatively compare copy 
