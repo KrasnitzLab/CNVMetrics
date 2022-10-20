@@ -580,7 +580,7 @@ generate chromosome templates as describe here:
 
 ```{r figureSimulationPart01, echo = FALSE, fig.align="center", fig.cap="Workflow showing the creation of a chromosome template from one reference sample.", out.width = '85%'}
 
-knitr::include_graphics("Simulation_chromosome_workflow_part_01_v03.jpg")
+knitr::include_graphics("Simulation_chromosome_workflow_part_01_v03.png")
 ```
 
 <br>
