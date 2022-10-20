@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </script><p><br><strong>Package</strong>: <em>CNVMetrics</em><br><strong>Authors</strong>: Astrid Deschênes [aut, cre] (<a href="https://orcid.org/0000-0001-7846-6749" class="external-link uri">https://orcid.org/0000-0001-7846-6749</a>), Pascal Belleau
 [aut] (<a href="https://orcid.org/0000-0002-0802-1071" class="external-link uri">https://orcid.org/0000-0002-0802-1071</a>), David A. Tuveson
 [aut] (<a href="https://orcid.org/0000-0002-8017-2712" class="external-link uri">https://orcid.org/0000-0002-8017-2712</a>), Alexander
-Krasnitz [aut]<br><strong>Version</strong>: 1.1.0<br><strong>Compiled date</strong>: 2022-10-18<br><strong>License</strong>: Artistic-2.0<br></p>
+Krasnitz [aut]<br><strong>Version</strong>: 1.1.0<br><strong>Compiled date</strong>: 2022-10-20<br><strong>License</strong>: Artistic-2.0<br></p>
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
@@ -111,7 +111,17 @@ and redistribute this software.</p>
 <h2 id="citing">Citing<a class="anchor" aria-label="anchor" href="#citing"></a>
 </h2>
 <p>If you use this package for a publication, we would ask you to cite
-the following:</p>
+one of the following.</p>
+<p>When using the copy number profile simulating method:</p>
+<blockquote>
+<p>Deschênes A, Belleau P, Tuveson DA and Krasnitz A. Quantifying
+similarity between copy number profiles with CNVMetrics package [version
+1; not peer reviewed]. F1000Research 2022, 11:816 (poster) (doi:
+10.7490/f1000research.1119043.1)</p>
+</blockquote>
+<p><a href="https://doi.org/10.7490/f1000research.1119043.1" class="external-link">F1000Research
+poster</a></p>
+<p>When using the metrics:</p>
 <blockquote>
 <p>Belleau P, Deschênes A, Beyaz S et al. CNVMetrics package:
 Quantifying similarity between copy number profiles [version 1; not peer
@@ -138,7 +148,7 @@ As an example, the Figure 1 shows the copy number profiles from
 sequencing data of two mouse pancreatic organoids <span class="citation">(Oni et al. 2020)</span>, calculated with <em><a href="https://github.com/KrasnitzLab/CNprep" class="external-link">CNprep</a></em> <span class="citation">(Belleau et al. 2020)</span> and plot with <em><a href="https://bioconductor.org/packages/3.15/gtrellis" class="external-link">gtrellis</a></em>
 <span class="citation">(Gu, Eils, and Schlesner 2016)</span>.</p>
 <div class="figure" style="text-align: center">
-<img src="CNV_mM30_mM10_v03_Feb_08_2021_small.jpeg" alt="Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30)." width="95%"><p class="caption">
+<img src="CNV_mM30_mM10_v03_Feb_08_2021_small.png" alt="Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30)." width="90%"><p class="caption">
 Copy number profiles of two mouse metastatic pancreatic organoids (M10
 and M30).
 </p>
@@ -159,16 +169,24 @@ package calculates metrics to estimate the level of similarity between
 copy number profiles. Some metrics are calculated using the <em>CNV
 status calls</em> (amplification/deletion/LOH status or any user
 specific status) while others are based on the level of
-amplification/deletion in log2 ratio. Finally, a visualization tool is
-provided to explore resulting metrics in the form of sample-to-sample
-heatmaps.</p>
+amplification/deletion in log2 ratio.</p>
+<p>Significance of the observed metrics is assessed in comparison to the
+null distribution, using simulated profiles. Functions implementing the
+simulation methods are included in the package.</p>
+<p>Finally, a visualization tool is provided to explore resulting
+metrics in the form of sample-to-sample heatmaps.</p>
+<div class="figure" style="text-align: center">
+<img src="CNVMetrics_partial_workflow_v10.png" alt="General CNVMetrics workflow." width="100%"><p class="caption">
+General CNVMetrics workflow.
+</p>
+</div>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>To install this package from <a href="https://bioconductor.org/packages/CNVMetrics" class="external-link">Bioconductor</a>,
-start R (version “4.2”) and enter:</p>
+start R (version “4.2” or higher) and enter:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
@@ -185,7 +203,7 @@ start R (version “4.2”) and enter:</p>
 <p>The following workflow gives an overview of the capabilities of
 <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em> to
 calculate metrics using the <em>CNV status calls</em>
-(amplification/deletion status or any user specific status):</p>
+(amplification/deletion status or any user specific status).</p>
 <p>The key functions for each step of the workflow are:</p>
 <table class="table">
 <colgroup>
@@ -484,8 +502,8 @@ amplification/deletion<a class="anchor" aria-label="anchor" href="#workflow-for-
 </h2>
 <p>The following section gives an overview of the capabilities of <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em> to
 calculate metrics using the <em>the level of amplification/deletion</em>
-(log2 ratio values):</p>
-<p>The key functions for each step of the workflow are:</p>
+(log2 ratio values). The key functions for each step of the workflow
+are:</p>
 <div align="center">
 <div style="width: 60%; margin:0 left;text-align: center;">
 <table class="table">
@@ -696,6 +714,109 @@ samples <span class="math inline">\(A\)</span> and <span class="math inline">\(B
 </div>
 </div>
 <div class="section level2">
+<h2 id="copy-number-profile-simulating-method">Copy number profile simulating method<a class="anchor" aria-label="anchor" href="#copy-number-profile-simulating-method"></a>
+</h2>
+<p>Significance of the observed metrics can be assessed, in comparison
+to the null distribution, using simulated profiles. A function
+implementing a simulation method are included in the <em><a href="https://github.com/KrasnitzLab/CNVMetrics" class="external-link">CNVMetrics</a></em>
+package.</p>
+<p>First, the method uses the Copy number profile of a reference sample
+to generate chromosome templates as describe here:</p>
+<div class="figure" style="text-align: center">
+<img src="Simulation_chromosome_workflow_part_01_v03.png" alt="Workflow showing the creation of a chromosome template from one reference sample." width="85%"><p class="caption">
+Workflow showing the creation of a chromosome template from one
+reference sample.
+</p>
+</div>
+<p><br></p>
+<p>This process is done for each chromosome of the reference sample.</p>
+<p>Then, the chromosome templates and the reference sample are used to
+generate simulated copy number profiles. For each chromosome from the
+reference sample, a chromosome template is randomly selected, without
+replacement. This way, the template is not necessarily coming from the
+same chromosome that the one from the reference. The workflow to
+simulate one chromosome is shown here:</p>
+<div class="figure" style="text-align: center">
+<img src="Simulation_chromosome_workflow_part02_v03.png" alt="Workflow showing the creation of a simulated chromosome through the use of a template." width="90%"><p class="caption">
+Workflow showing the creation of a simulated chromosome through the use
+of a template.
+</p>
+</div>
+<p><br></p>
+<p>The <code><a href="../reference/processSim.html">processSim()</a></code> function generates as many simulated
+copy profiles as requested by user (<code>nbSim</code> parameter) from
+one reference copy number profile in the form of a <code>GRanges</code>
+object (<code>curSample</code> parameter).</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Load required package to generate the sample</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create one 'demo' genome with 3 chromosomes and few segments</span></span>
+<span><span class="co">## The stand of the regions doesn't affect the calculation of the metric</span></span>
+<span><span class="va">sampleRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"chr2"</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>     ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1905048</span>, <span class="fl">4554832</span>, <span class="fl">31686841</span>, <span class="fl">32686222</span>,</span>
+<span>         <span class="fl">1</span>, <span class="fl">120331</span>, <span class="fl">725531</span>, <span class="fl">12</span>, <span class="fl">10331</span>, <span class="fl">75531</span>, <span class="fl">120001</span>, <span class="fl">188331</span>, <span class="fl">225531</span><span class="op">)</span>,</span>
+<span>     end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2004603</span>, <span class="fl">4577608</span>, <span class="fl">31695808</span>, <span class="fl">32689222</span>, <span class="fl">117121</span>,</span>
+<span>         <span class="fl">325555</span>, <span class="fl">1225582</span>, <span class="fl">9131</span>, <span class="fl">55531</span>, <span class="fl">100103</span>, <span class="fl">158535</span>, <span class="fl">211436</span>, <span class="fl">275331</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>     strand<span class="op">=</span><span class="st">"*"</span>,</span>
+<span>     state<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AMPLIFICATION"</span>, <span class="st">"NEUTRAL"</span>, <span class="st">"DELETION"</span>, <span class="st">"LOH"</span>,</span>
+<span>         <span class="st">"DELETION"</span>, <span class="st">"NEUTRAL"</span>, <span class="st">"NEUTRAL"</span>, <span class="st">"NEUTRAL"</span>, <span class="st">"DELETION"</span>, <span class="st">"DELETION"</span>, </span>
+<span>         <span class="st">"NEUTRAL"</span>, <span class="st">"AMPLIFICATION"</span>, <span class="st">"NEUTRAL"</span><span class="op">)</span>,</span>
+<span>     log2ratio<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5849625</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">0.87777</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0.1</span>, <span class="op">-</span><span class="fl">0.9211</span>, <span class="op">-</span><span class="fl">0.9822</span>, </span>
+<span>                  <span class="fl">0.01</span>, <span class="fl">0.9777</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sampleRef</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## GRanges object with 6 ranges and 2 metadata columns:</span></span>
+<span><span class="co">##       seqnames            ranges strand |         state log2ratio</span></span>
+<span><span class="co">##          &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; |   &lt;character&gt; &lt;numeric&gt;</span></span>
+<span><span class="co">##   [1]     chr1   1905048-2004603      * | AMPLIFICATION  0.584963</span></span>
+<span><span class="co">##   [2]     chr1   4554832-4577608      * |       NEUTRAL  0.000000</span></span>
+<span><span class="co">##   [3]     chr1 31686841-31695808      * |      DELETION -1.000000</span></span>
+<span><span class="co">##   [4]     chr1 32686222-32689222      * |           LOH -1.000000</span></span>
+<span><span class="co">##   [5]     chr2          1-117121      * |      DELETION -0.877770</span></span>
+<span><span class="co">##   [6]     chr2     120331-325555      * |       NEUTRAL  0.000000</span></span>
+<span><span class="co">##   -------</span></span>
+<span><span class="co">##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</span></span></code></pre>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## To ensure reproducibility, the seed must be fixed before running </span></span>
+<span><span class="co">## the simulation method</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">121</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Generates 2 simulated genomes based on the 'demo' genome</span></span>
+<span><span class="co">## The ID column identify each simulation</span></span>
+<span><span class="va">simRes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/processSim.html">processSim</a></span><span class="op">(</span>curSample<span class="op">=</span><span class="va">sampleRef</span>, nbSim<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Each simulated profile contains the same number of chromosomes as </span></span>
+<span><span class="co">## the reference sample</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">simRes</span><span class="op">[</span><span class="va">simRes</span><span class="op">$</span><span class="va">ID</span> <span class="op">==</span> <span class="st">"S1"</span>,<span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   ID  chr    start      end log2ratio    state</span></span>
+<span><span class="co">## 1 S1 chr1  1905048  1989408   0.00000  NEUTRAL</span></span>
+<span><span class="co">## 2 S1 chr1  1989409  2004603   0.00000  NEUTRAL</span></span>
+<span><span class="co">## 3 S1 chr1  4554832  4571791   0.00000  NEUTRAL</span></span>
+<span><span class="co">## 4 S1 chr1  4571792  4577608  -0.87777 DELETION</span></span>
+<span><span class="co">## 5 S1 chr1 31686841 31695808  -0.87777 DELETION</span></span>
+<span><span class="co">## 6 S1 chr1 32686222 32689227  -0.87777 DELETION</span></span></code></pre>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">simRes</span><span class="op">[</span><span class="va">simRes</span><span class="op">$</span><span class="va">ID</span> <span class="op">==</span> <span class="st">"S2"</span>,<span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    ID  chr   start     end log2ratio         state</span></span>
+<span><span class="co">## 7  S2 chr1 1905048 1912443    0.1000       NEUTRAL</span></span>
+<span><span class="co">## 8  S2 chr1 1912444 1946932   -0.9211      DELETION</span></span>
+<span><span class="co">## 9  S2 chr1 1946933 1971928    0.0100       NEUTRAL</span></span>
+<span><span class="co">## 10 S2 chr1 1971929 1986181    0.9777 AMPLIFICATION</span></span>
+<span><span class="co">## 11 S2 chr1 1986182 2004603    0.0000       NEUTRAL</span></span>
+<span><span class="co">## 12 S2 chr1 4554832 4571604    0.0000       NEUTRAL</span></span></code></pre>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">simRes</span><span class="op">[</span><span class="va">simRes</span><span class="op">$</span><span class="va">ID</span> <span class="op">==</span> <span class="st">"S3"</span>,<span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    ID  chr   start     end log2ratio         state</span></span>
+<span><span class="co">## 16 S3 chr1 1905048 1939152   -0.9211      DELETION</span></span>
+<span><span class="co">## 17 S3 chr1 1939153 1954409    0.9777 AMPLIFICATION</span></span>
+<span><span class="co">## 18 S3 chr1 1954410 1958770    0.1000       NEUTRAL</span></span>
+<span><span class="co">## 19 S3 chr1 1958771 1993347    0.0000       NEUTRAL</span></span>
+<span><span class="co">## 20 S3 chr1 1993348 2004603    0.0100       NEUTRAL</span></span>
+<span><span class="co">## 21 S3 chr1 4554832 4573431    0.0100       NEUTRAL</span></span></code></pre>
+<p><br><br></p>
+</div>
+<div class="section level2">
 <h2 id="supplementary-information">Supplementary information<a class="anchor" aria-label="anchor" href="#supplementary-information"></a>
 </h2>
 <p><br></p>
@@ -762,7 +883,7 @@ high performance computing (HPC) server:</p>
 function enables the creation of a list of <code>GRangesList</code>
 objects from a <code>data.frame</code>. However,
 <code>GRangesList</code> can also be generated and filled manually.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## First, create the GRanges objects; one per sample</span></span>
 <span><span class="va">gr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames<span class="op">=</span><span class="st">"chr2"</span>, ranges<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6000</span><span class="op">)</span>,</span>
 <span>          strand<span class="op">=</span><span class="st">"+"</span>, state<span class="op">=</span><span class="st">"AMPLIFICATION"</span>, </span>
@@ -788,7 +909,7 @@ be call before <em>calculateOverlapMetric()</em> and
 <em>calculateLog2ratioMetric()</em>. Beware that the <em>nJobs</em>
 parameter must also be fixed; change in the value of the <em>nJobs</em>
 parameter might lead to different results.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## First, fixe the seed value</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">121234</span><span class="op">)</span></span>
 <span></span>
@@ -843,11 +964,11 @@ which this document was compiled:</p>
 <span><span class="co">##  [1] highr_0.9              RColorBrewer_1.1-3     bslib_0.4.0           </span></span>
 <span><span class="co">##  [4] compiler_4.2.1         BiocManager_1.30.18    jquerylib_0.1.4       </span></span>
 <span><span class="co">##  [7] XVector_0.36.0         bitops_1.0-7           tools_4.2.1           </span></span>
-<span><span class="co">## [10] zlibbioc_1.42.0        digest_0.6.29          lifecycle_1.0.3       </span></span>
+<span><span class="co">## [10] zlibbioc_1.42.0        digest_0.6.30          lifecycle_1.0.3       </span></span>
 <span><span class="co">## [13] gtable_0.3.1           jsonlite_1.8.2         evaluate_0.17         </span></span>
 <span><span class="co">## [16] memoise_2.0.1          rlang_1.0.6            cli_3.4.1             </span></span>
-<span><span class="co">## [19] parallel_4.2.1         yaml_2.3.5             pkgdown_2.0.6         </span></span>
-<span><span class="co">## [22] xfun_0.33              fastmap_1.1.0          gridExtra_2.3         </span></span>
+<span><span class="co">## [19] parallel_4.2.1         yaml_2.3.6             pkgdown_2.0.6         </span></span>
+<span><span class="co">## [22] xfun_0.34              fastmap_1.1.0          gridExtra_2.3         </span></span>
 <span><span class="co">## [25] GenomeInfoDbData_1.2.8 stringr_1.4.1          desc_1.4.2            </span></span>
 <span><span class="co">## [28] fs_1.5.2               sass_0.4.2             systemfonts_1.0.4     </span></span>
 <span><span class="co">## [31] grid_4.2.1             rprojroot_2.0.3        R6_2.5.1              </span></span>
@@ -855,8 +976,8 @@ which this document was compiled:</p>
 <span><span class="co">## [37] pheatmap_1.0.12        farver_2.1.1           purrr_0.3.5           </span></span>
 <span><span class="co">## [40] magrittr_2.0.3         scales_1.2.1           codetools_0.2-18      </span></span>
 <span><span class="co">## [43] htmltools_0.5.3        colorspace_2.0-3       ragg_1.2.3            </span></span>
-<span><span class="co">## [46] stringi_1.7.8          munsell_0.5.0          RCurl_1.98-1.9        </span></span>
-<span><span class="co">## [49] cachem_1.0.6</span></span></code></pre>
+<span><span class="co">## [46] rBeta2009_1.0          stringi_1.7.8          munsell_0.5.0         </span></span>
+<span><span class="co">## [49] RCurl_1.98-1.9         cachem_1.0.6</span></span></code></pre>
 <p><br><br></p>
 </div>
 <div class="section level2">

@@ -64,6 +64,15 @@
     <loc>/reference/print.CNVMetric.html</loc>
   </url>
   <url>
+    <loc>/reference/processChr.html</loc>
+  </url>
+  <url>
+    <loc>/reference/processSim.html</loc>
+  </url>
+  <url>
+    <loc>/reference/simChr.html</loc>
+  </url>
+  <url>
     <loc>/reference/validateCalculateOverlapMetricParameters.html</loc>
   </url>
   <url>
