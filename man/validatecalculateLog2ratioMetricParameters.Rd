@@ -2,7 +2,7 @@
 % Please edit documentation in R/CNVMetricsInternalMethods.R
 \name{validatecalculateLog2ratioMetricParameters}
 \alias{validatecalculateLog2ratioMetricParameters}
-\title{Parameters validation for the \code{\link{calculateLog2ratioMetric}} 
+\title{Parameters validation for the \code{\link{calculateLog2ratioMetric}}
 function}
 \usage{
 validatecalculateLog2ratioMetricParameters(
@@ -12,15 +12,15 @@ validatecalculateLog2ratioMetricParameters(
 )
 }
 \arguments{
-\item{minThreshold}{a single positive \code{numeric} setting the minimum 
-value to consider two segments as different during the metric calculation. 
-If the absolute difference is below or equal to threshold, the difference 
+\item{minThreshold}{a single positive \code{numeric} setting the minimum
+value to consider two segments as different during the metric calculation.
+If the absolute difference is below or equal to threshold, the difference
 will be replaced by zero.}
 
-\item{excludedRegions}{an optional \code{GRanges} containing the regions 
+\item{excludedRegions}{an optional \code{GRanges} containing the regions
 that have to be excluded for the metric calculation or \code{NULL}.}
 
-\item{nJobs}{a single positive \code{integer} specifying the number of 
+\item{nJobs}{a single positive \code{integer} specifying the number of
 worker jobs to create in case of distributed computation.}
 }
 \value{

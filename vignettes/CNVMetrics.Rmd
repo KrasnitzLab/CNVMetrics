@@ -50,7 +50,15 @@ Artistic license 2.0. You are free to use and redistribute this software.
 # Citing
 
 If you use this package for a publication, we would ask you 
-to cite the following:
+to cite one of the following.
+
+When using the copy number profile simulating method:
+
+>Deschênes A, Belleau P, Tuveson DA and Krasnitz A. Quantifying similarity between copy number profiles with CNVMetrics package [version 1; not peer reviewed]. F1000Research 2022, 11:816 (poster) (doi: 10.7490/f1000research.1119043.1)
+
+[F1000Research poster](https://doi.org/10.7490/f1000research.1119043.1) 
+
+When using the metrics:
 
 >Belleau P, Deschênes A, Beyaz S et al. CNVMetrics package: Quantifying similarity between copy number profiles [version 1; not peer reviewed]. F1000Research 2021, 10:737 (slides) (doi: 10.7490/f1000research.1118704.1)
 
@@ -77,8 +85,9 @@ data of two mouse pancreatic organoids [@Oni2020], calculated with
 `r Biocpkg("gtrellis")` [@Gu2016a].
 
 
-```{r graphCNVpro, echo = FALSE, fig.align="center", fig.cap="Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).", out.width = '95%', results='asis'}
-knitr::include_graphics("CNV_mM30_mM10_v03_Feb_08_2021_small.jpeg")
+```{r graphCNVpro, echo = FALSE, fig.align="center", fig.cap="Copy number profiles of two mouse metastatic pancreatic organoids (M10 and M30).", out.width = '90%', results='asis'}
+
+knitr::include_graphics("CNV_mM30_mM10_v03_Feb_08_2021_small.png")
 ```
 
 While visual representation is a practical way to qualitatively compare copy 
@@ -95,16 +104,30 @@ The `r Githubpkg("KrasnitzLab/CNVMetrics")` package calculates metrics to
 estimate the level of similarity between copy number profiles. Some metrics 
 are calculated using the _CNV status calls_ (amplification/deletion/LOH status
 or any user specific status) while others are based on the level of 
-amplification/deletion in log2 ratio. Finally, a visualization tool is 
-provided to explore resulting metrics in the form of 
-sample-to-sample heatmaps.
+amplification/deletion in log2 ratio. 
+
+Significance of the observed metrics is assessed in comparison to the null 
+distribution, using simulated profiles. Functions implementing the 
+simulation methods are included in the package. 
+
+Finally, a visualization tool is provided to explore resulting metrics in 
+the form of sample-to-sample heatmaps.
+
+
+
+```{r figureWorkflow, echo = FALSE, fig.align="center", fig.cap="General CNVMetrics workflow.", out.width = '100%'}
+
+knitr::include_graphics("CNVMetrics_partial_workflow_v10.png")
+```
 
 <br>
 <br>
 
 # Installation
 
-To install this package from [Bioconductor](https://bioconductor.org/packages/CNVMetrics), start R (version "4.2") and enter: 
+To install this package 
+from [Bioconductor](https://bioconductor.org/packages/CNVMetrics), start R 
+(version "4.2" or higher) and enter: 
 
 ```{r installDemo01, eval=FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -125,8 +148,7 @@ BiocManager::install("CNVMetrics")
 The following workflow gives an overview of the capabilities of 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` to calculate metrics using the 
 _CNV status calls_ (amplification/deletion status or any user specific 
-status):
-
+status).
 
 The key functions for each step of the workflow are:
 
@@ -374,9 +396,8 @@ where $X$ and $Y$ represent the regions of each sample in base paired.
 
 The following section gives an overview of the capabilities of 
 `r Githubpkg("KrasnitzLab/CNVMetrics")` to calculate metrics using the 
-_the level of amplification/deletion_ (log2 ratio values):
-
-The key functions for each step of the workflow are:
+_the level of amplification/deletion_ (log2 ratio values). The key functions 
+for each step of the workflow are:
 
 <div align="center">
 <div style="width: 60%; margin:0 left;text-align: center;">
@@ -545,6 +566,87 @@ paired.
 <br>
 <br>
 
+
+# Copy number profile simulating method
+
+
+Significance of the observed metrics can be assessed, in comparison to the 
+null distribution, using simulated profiles. A function implementing a 
+simulation method are included in the `r Githubpkg("KrasnitzLab/CNVMetrics")` 
+package.
+
+First, the method uses the Copy number profile of a reference sample to 
+generate chromosome templates as describe here:
+
+
+```{r figureSimulationPart01, echo = FALSE, fig.align="center", fig.cap="Workflow showing the creation of a chromosome template from one reference sample.", out.width = '85%'}
+
+knitr::include_graphics("Simulation_chromosome_workflow_part_01_v03.png")
+```
+
+<br>
+
+This process is done for each chromosome of the reference sample. 
+
+Then, the chromosome templates and the reference sample are used to generate 
+simulated copy number profiles. For each chromosome from the reference sample, 
+a chromosome template is randomly selected, without replacement. This way, the 
+template is not necessarily coming from the same chromosome that the one from 
+the reference. The workflow to simulate one chromosome is shown here:
+
+
+```{r figureSimulationPart02, echo = FALSE, fig.align="center", fig.cap="Workflow showing the creation of a simulated chromosome through the use of a template.", out.width = '90%'}
+
+knitr::include_graphics("Simulation_chromosome_workflow_part02_v03.png")
+```
+
+<br>
+
+The `processSim()` function generates as many simulated copy profiles as 
+requested by user (`nbSim` parameter) from one reference copy number 
+profile in the form of a `GRanges` object (`curSample` parameter). 
+
+```{r demoSimulation}
+
+## Load required package to generate the sample
+require(GenomicRanges)
+
+## Create one 'demo' genome with 3 chromosomes and few segments
+## The stand of the regions doesn't affect the calculation of the metric
+sampleRef <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3), rep("chr3", 6)),
+     ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222,
+         1, 120331, 725531, 12, 10331, 75531, 120001, 188331, 225531),
+     end=c(2004603, 4577608, 31695808, 32689222, 117121,
+         325555, 1225582, 9131, 55531, 100103, 158535, 211436, 275331)),
+     strand="*",
+     state=c("AMPLIFICATION", "NEUTRAL", "DELETION", "LOH",
+         "DELETION", "NEUTRAL", "NEUTRAL", "NEUTRAL", "DELETION", "DELETION", 
+         "NEUTRAL", "AMPLIFICATION", "NEUTRAL"),
+     log2ratio=c(0.5849625, 0, -1, -1, -0.87777, 0, 0, 0.1, -0.9211, -0.9822, 
+                  0.01, 0.9777, 0))
+
+head(sampleRef)
+
+## To ensure reproducibility, the seed must be fixed before running 
+## the simulation method
+set.seed(121)
+
+## Generates 2 simulated genomes based on the 'demo' genome
+## The ID column identify each simulation
+simRes <- processSim(curSample=sampleRef, nbSim=3)
+
+## Each simulated profile contains the same number of chromosomes as 
+## the reference sample
+head(simRes[simRes$ID == "S1",])
+
+head(simRes[simRes$ID == "S2",])
+
+head(simRes[simRes$ID == "S3",])
+```
+
+
+<br>
+<br>
 
 # Supplementary information
 

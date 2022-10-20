@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{plotMetric}
 \alias{plotMetric}
-\title{Plot metrics present in a \code{CNVMetric} object.}
+\title{Plot metrics present in a \code{CNVMetric} object}
 \usage{
 plotMetric(
   metric,
@@ -18,35 +18,36 @@ plotMetric(
 \item{metric}{a \code{CNVMetric} object containing the metrics calculated
 by \code{calculateOverlapMetric} or by \code{calculateLog2ratioMetric}.}
 
-\item{type}{a single \code{character} string indicating which graph 
-to generate. This should be a type present in the \code{CNVMetric} object or 
-"\code{ALL}". This is useful for the 
-overlapping metrics that have multiple types specified by the user. 
+\item{type}{a single \code{character} string indicating which graph
+to generate. This should be a type present in the \code{CNVMetric} object or
+"\code{ALL}". This is useful for the
+overlapping metrics that have multiple types specified by the user.
 Default: "\code{ALL}".}
 
-\item{colorRange}{a \code{vector} of 2 \code{character} string 
+\item{colorRange}{a \code{vector} of 2 \code{character} string
 representing the 2 colors that will be
-assigned to the lowest (0) and highest value (1) in the heatmap. 
+assigned to the lowest (0) and highest value (1) in the heatmap.
 Default: \code{c("white", "darkblue")}.}
 
-\item{show_colnames}{a \code{boolean} specifying if column names are 
+\item{show_colnames}{a \code{boolean} specifying if column names are
 be shown. Default: \code{FALSE}.}
 
-\item{silent}{a \code{boolean} specifying if the plot should not be drawn. 
+\item{silent}{a \code{boolean} specifying if the plot should not be drawn.
 Default: \code{TRUE}.}
 
-\item{\ldots}{further arguments passed to 
+\item{\ldots}{further arguments passed to
 \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}} method. Beware that
-the \code{filename} argument cannot be used when \code{type} is 
+the \code{filename} argument cannot be used when \code{type} is
  "\code{ALL}".}
 }
 \value{
-a \code{gtable} object containing the heatmap(s) of the specified 
+a \code{gtable} object containing the heatmap(s) of the specified
 metric(s).
 }
 \description{
-Plot one heatmap (or two heatmaps) of the metrics present in
-a \code{CNVMetric} object. For the overlapping metrics, the user can select 
+This function plots one heatmap (or two heatmaps) of the
+metrics present in
+a \code{CNVMetric} object. For the overlapping metrics, the user can select
 to print the heatmap related to amplified or deleted regions or both. The
 \code{NA} values present in the metric matrix are transformed into zero for
 the creation of the heatmap.
@@ -59,20 +60,20 @@ require(GenomicRanges)
 ## Create a GRangesList object with 3 samples
 ## The stand of the regions doesn't affect the calculation of the metric
 demo <- GRangesList()
-demo[["sample01"]] <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1905048, 4554832, 31686841), 
+demo[["sample01"]] <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1905048, 4554832, 31686841),
     end=c(2004603, 4577608, 31695808)), strand="*",
     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
 
-demo[["sample02"]] <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1995066, 31611222, 31690000), 
+demo[["sample02"]] <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1995066, 31611222, 31690000),
     end=c(2204505, 31689898, 31895666)), strand=c("-", "+", "+"),
     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION"))
 
-## The amplified region in sample03 is a subset of the amplified regions 
+## The amplified region in sample03 is a subset of the amplified regions
 ## in sample01
-demo[["sample03"]] <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1906069, 4558838), 
+demo[["sample03"]] <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1906069, 4558838),
     end=c(1909505, 4570601)), strand="*",
     state=c("AMPLIFICATION", "DELETION"))
 
@@ -83,7 +84,7 @@ metric <- calculateOverlapMetric(demo, method="sorensen")
 plotMetric(metric, type="ALL")
 
 ## Extra parameters, used by pheatmap(), can also be passed to the function
-## Here, we have the metric values print to the cell while the 
+## Here, we have the metric values print to the cell while the
 ## row names and column names are removed
 plotMetric(metric, type="DELETION", show_rownames=FALSE,
     show_colnames=FALSE, main="deletion", display_numbers=TRUE,

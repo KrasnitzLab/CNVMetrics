@@ -14,58 +14,59 @@ calculateLog2ratioMetric(
 )
 }
 \arguments{
-\item{segmentData}{a \code{GRangesList} that contains a collection of 
-genomic ranges representing copy number events, including amplified/deleted 
-status, from at least 2 samples. All samples must have a metadata column 
+\item{segmentData}{a \code{GRangesList} that contains a collection of
+genomic ranges representing copy number events, including amplified/deleted
+status, from at least 2 samples. All samples must have a metadata column
 called '\code{log2ratio}' with the log2ratio values.}
 
-\item{method}{a \code{character} string representing the metric to be used. 
-This should be (an unambiguous abbreviation of) one of 
+\item{method}{a \code{character} string representing the metric to be used.
+This should be (an unambiguous abbreviation of) one of
 "weightedEuclideanDistance". Default: "weightedEuclideanDistance".}
 
-\item{minThreshold}{a single positive \code{numeric} setting the minimum 
-value to consider two segments as different during the metric calculation. 
-If the absolute difference is below or equal to threshold, the difference 
+\item{minThreshold}{a single positive \code{numeric} setting the minimum
+value to consider two segments as different during the metric calculation.
+If the absolute difference is below or equal to threshold, the difference
 will be replaced by zero. Default: 0.2.}
 
-\item{excludedRegions}{an optional \code{GRanges} containing the regions 
+\item{excludedRegions}{an optional \code{GRanges} containing the regions
 that have to be excluded for the metric calculation. Default: \code{NULL}.}
 
-\item{nJobs}{a single positive \code{integer} specifying the number of 
-worker jobs to create in case of distributed computation. 
+\item{nJobs}{a single positive \code{integer} specifying the number of
+worker jobs to create in case of distributed computation.
 Default: \code{1} and always \code{1} for Windows.}
 }
 \value{
 an object of class "\code{CNVMetric}" which contains the calculated
 metric. This object is a list with the following components:
 \itemize{
-\item{\code{LOG2RATIO}}{ a lower-triangular \code{matrix} with the 
+\item{\code{LOG2RATIO}}{ a lower-triangular \code{matrix} with the
     results of the selected metric on the log2ratio values for each paired
-    samples. The value \code{NA} is present when the metric cannot be 
-    calculated. The value \code{NA} is also present in the top-triangular 
+    samples. The value \code{NA} is present when the metric cannot be
+    calculated. The value \code{NA} is also present in the top-triangular
     section, as well as the diagonal, of the matrix.
 }}
 
-The object has the following attributes (besides "class" equal 
+The object has the following attributes (besides "class" equal
 to "CNVMetric"):
 \itemize{
 \item{\code{metric}}{ the metric used for the calculation.
-} 
+}
 \item{\code{names}}{ the names of the two matrix containing the metrics for
 the amplified and deleted regions.
 }}
 }
 \description{
-Calculate a specific metric using overlapping 
-amplified/deleted regions between to samples. The metric is calculated for
-the amplified and deleted regions separately. When more than 2 samples are 
+This function calculates a specific metric, as specified
+by the user, using overlapping amplified/deleted regions between to
+samples. The metric is calculated for
+the amplified and deleted regions separately. When more than 2 samples are
 present, the metric is calculated for each sample pair.
 }
 \details{
-The weighted euclidean distance is 
-\eqn{(\sum((x_i - y_i)^2 * log(nbrBases_i))^0.5} 
+The weighted euclidean distance is
+\eqn{(\sum((x_i - y_i)^2 * log(nbrBases_i))^0.5}
 where \code{x} and \code{y} are the
-values of 2 samples for a specific segment \code{i} and \code{nbrBases} the 
+values of 2 samples for a specific segment \code{i} and \code{nbrBases} the
 number of bases of the segment \code{i}.
 }
 \examples{
@@ -76,20 +77,20 @@ require(GenomicRanges)
 ## Create a GRangesList object with 3 samples
 ## The stand of the regions doesn't affect the calculation of the metric
 demo <- GRangesList()
-demo[["sample01"]] <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1905048, 4554832, 31686841), 
+demo[["sample01"]] <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1905048, 4554832, 31686841),
     end=c(2004603, 4577608, 31695808)), strand="*",
     log2ratio=c(2.5555, 1.9932, -0.9999))
 
-demo[["sample02"]] <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1995066, 31611222, 31690000), 
+demo[["sample02"]] <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1995066, 31611222, 31690000),
     end=c(2204505, 31689898, 31895666)), strand=c("-", "+", "+"),
     log2ratio=c(0.3422, 0.5454, -1.4444))
 
-## The amplified region in sample03 is a subset of the amplified regions 
+## The amplified region in sample03 is a subset of the amplified regions
 ## in sample01
-demo[["sample03"]] <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1906069, 4558838), 
+demo[["sample03"]] <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1906069, 4558838),
     end=c(1909505, 4570601)), strand="*",
     log2ratio=c(3.2222, -1.3232))
 

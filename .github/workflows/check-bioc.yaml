@@ -38,7 +38,7 @@ env:
   run_covr: 'false'
   run_pkgdown: 'true'
   has_RUnit: 'false'
-  cache-version: 'cache-v6'
+  cache-version: 'cache-v7'
 
 jobs:
   build-check:
@@ -88,7 +88,7 @@ jobs:
       ## pandoc is already included in the Bioconductor docker images
       - name: Setup pandoc from r-lib
         if: runner.os != 'Linux'
-        uses: r-lib/actions/setup-pandoc@master
+        uses: r-lib/actions/setup-pandoc@v2
 
       - name: Query dependencies
         run: |
