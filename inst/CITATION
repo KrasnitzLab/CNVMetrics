@@ -18,3 +18,22 @@ c(
         textVersion = "Belleau P, Deschênes A, Beyaz S et al. CNVMetrics package: Quantifying similarity between copy number profiles [version 1; not peer reviewed]. F1000Research 2021, 10:737 (slides) (https://doi.org/10.7490/f1000research.1118704.1)"
     )
 )
+
+c(
+    bibentry(bibtype="manual",
+        title = "Quantifying similarity between copy number profiles with CNVMetrics package [version 1; not peer reviewed]",
+        author = personList(
+            as.person("Astrid Deschênes"),
+            as.person("Pascal Belleau"),
+            as.person("David A. Tuveson"),
+            as.person("Alex Krasnitz")
+        ),
+        year = "2022",
+        volume = "11",
+        pages = "816 (poster)",
+        journal = "F1000Research",
+        doi = "10.7490/f1000research.1119043.1",
+        url = "https://doi.org/10.7490/f1000research.1119043.1",
+        textVersion = "Deschênes A, Belleau P, Tuveson DA and Krasnitz A. Quantifying similarity between copy number profiles with CNVMetrics package [version 1; not peer reviewed]. F1000Research 2022, 11:816 (poster) (https://doi.org/10.7490/f1000research.1119043.1)"
+    )
+)
