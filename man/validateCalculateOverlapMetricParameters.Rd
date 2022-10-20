@@ -2,7 +2,7 @@
 % Please edit documentation in R/CNVMetricsInternalMethods.R
 \name{validateCalculateOverlapMetricParameters}
 \alias{validateCalculateOverlapMetricParameters}
-\title{Parameters validation for the \code{\link{calculateOverlapMetric}} 
+\title{Parameters validation for the \code{\link{calculateOverlapMetric}}
 function}
 \usage{
 validateCalculateOverlapMetricParameters(states, nJobs)
@@ -11,7 +11,7 @@ validateCalculateOverlapMetricParameters(states, nJobs)
 \item{states}{a \code{vector} of \code{character} string with at least one
 entry. The strings are representing the states that will be analyzed.}
 
-\item{nJobs}{a single positive \code{integer} specifying the number of 
+\item{nJobs}{a single positive \code{integer} specifying the number of
 worker jobs to create in case of distributed computation.}
 }
 \value{
