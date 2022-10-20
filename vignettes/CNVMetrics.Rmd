@@ -596,7 +596,7 @@ the reference. The workflow to simulate one chromosome is shown here:
 
 ```{r figureSimulationPart02, echo = FALSE, fig.align="center", fig.cap="Workflow showing the creation of a simulated chromosome through the use of a template.", out.width = '90%'}
 
-knitr::include_graphics("Simulation_chromosome_workflow_part02_v03.jpg")
+knitr::include_graphics("Simulation_chromosome_workflow_part02_v03.png")
 ```
 
 <br>
