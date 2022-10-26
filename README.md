@@ -86,7 +86,6 @@ For more information on Artistic 2.0 License see
 
 ## Bugs/Feature requests ##
 
-If you have any bugs or feature requests, 
-[let us know](https://github.com/KrasnitzLab/CNVMetrics/issues). 
+[Please contact us](https://github.com/KrasnitzLab/CNVMetrics/issues) for bug fixes or with feature requests.
 
 Thanks!
