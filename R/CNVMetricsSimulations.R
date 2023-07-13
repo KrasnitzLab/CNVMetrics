@@ -248,10 +248,10 @@ processChr <- function(curSample, simChr, chrCur) {
     listW <- width(curSampleGR)[listOrd]
     sizeT <- sum(listW)
 
-    ## Identify spaces between segments in the real chromosome (> 100bp)
+    ## Identify spaces between segments in the real chromosome (> 1bp)
     listHole <- data.frame(start=listEnd[-1 * length(listEnd)],
                             end=listStart[-1])
-    listHoles <- listHole[listHole$end - listHole$start > 100,]
+    listHole <- listHole[listHole$end - listHole$start > 1,]
 
 
     ## Calculates the number of bases that each segment in the simulated
@@ -279,20 +279,23 @@ processChr <- function(curSample, simChr, chrCur) {
         for(j in seq_len(nrow(listHole))) {
             pos <- which(df$start < listHole$start[j] &
                                 df$end >= listHole$start[j])
-            if(listHole$start[j] < df$end[pos]) {
-                tmp <- df[pos, ,drop = FALSE]
-                df[pos,"end"] <- listHole$start[j]
+            if(length(pos == 1 )){
+                #print(pos)
+                if(listHole$start[j] < df$end[pos]) {
+                    tmp <- df[pos, ,drop = FALSE]
+                    df[pos,"end"] <- listHole$start[j]
 
-                tmp$start <- listHole$end[j]
-                tmp$end <- tmp$end + listHole$end[j] - listHole$start[j]
-                if(pos < nrow(df)) {
-                    df$start[(pos+1):nrow(df)] <- df$start[(pos+1):nrow(df)] +
-                            listHole$end[j] - listHole$start[j]
-                    df$end[(pos+1):nrow(df)] <- df$end[(pos+1):nrow(df)] +
-                            listHole$end[j] - listHole$start[j]
+                    tmp$start <- listHole$end[j]
+                    tmp$end <- tmp$end + listHole$end[j] - listHole$start[j]
+                    if(pos < nrow(df)) {
+                        df$start[(pos+1):nrow(df)] <- df$start[(pos+1):nrow(df)] +
+                                listHole$end[j] - listHole$start[j]
+                        df$end[(pos+1):nrow(df)] <- df$end[(pos+1):nrow(df)] +
+                                listHole$end[j] - listHole$start[j]
+                    }
+                    df <- rbind(df, tmp)
+                    df <- df[order(df$start),]
                 }
-                df <- rbind(df, tmp)
-                df <- df[order(df$start),]
             }
         }
     }
