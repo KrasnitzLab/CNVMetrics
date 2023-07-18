@@ -1,3 +1,18 @@
+# CNVMetrics 1.5.1
+
+NEW FEATURES
+
+* `processSim()` method generates simulated samples with copy number profiles derived from a specific sample.
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+* None
+
+BUG FIXES
+
+* None
+
+
 # CNVMetrics 0.1.6
 
 NEW FEATURES
