@@ -1,6 +1,6 @@
 Package: CNVMetrics
 Type: Package
-Version: 1.11.0
+Version: 1.12.0
 Date: 2021-11-23
 Title: Copy Number Variant Metrics
 Description: The CNVMetrics package calculates similarity metrics to 
