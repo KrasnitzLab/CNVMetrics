@@ -7,34 +7,34 @@
 calculateWeightedEuclideanDistanceFor2Samples(segmentData, minThreshold)
 }
 \arguments{
-\item{segmentData}{a \code{list} marked as a \code{preMetricSegments} 
-\code{class} that contains the disjoint segment information from 2 
+\item{segmentData}{a \code{list} marked as a \code{preMetricSegments}
+\code{class} that contains the disjoint segment information from 2
 samples and the log2ratio values of the samples in the metadata columns.}
 
-\item{minThreshold}{a single \code{numeric} setting the minimum value 
-to consider two segments as different for the metric calculation. If the 
-absolute difference is below or equal to threshold, the value will be 
+\item{minThreshold}{a single \code{numeric} setting the minimum value
+to consider two segments as different for the metric calculation. If the
+absolute difference is below or equal to threshold, the value will be
 replaced by zero.}
 }
 \value{
-a \code{numeric} representing the weighted euclidean distance 
+a \code{numeric} representing the weighted euclidean distance
 between the two samples. If the distance cannot be calculated as the two
 samples don't share any segments with log2ratio value, the value NA is
 assigned.
 }
 \description{
 The weighted Euclidean distance-based metric corresponds to the
-euclidean distance between 2 samples multiplied by the natural logarithm 
+euclidean distance between 2 samples multiplied by the natural logarithm
 of the number of bases of the analyzed segment. The final metric is 1 over
-1 added to the 
-squared sum of the values obtained for all segments that are not 
+1 added to the
+squared sum of the values obtained for all segments that are not
 excluded of the analysis.
 }
 \details{
-The weighted euclidean distance is 
-\eqn{1/(1 + (\sum((x_i - y_i)^2 * log2(nbrBases_i))^0.5)} 
+The weighted euclidean distance is
+\eqn{1/(1 + (\sum((x_i - y_i)^2 * log2(nbrBases_i))^0.5)}
 where \code{x} and \code{y} are the
-values of 2 samples for a specific segment \code{i} and \code{nbrBases} the 
+values of 2 samples for a specific segment \code{i} and \code{nbrBases} the
 number of bases of the segment \code{i}.
 }
 \examples{
@@ -55,7 +55,7 @@ sample02 <- GRanges(seqnames="chr1",
 # Create disjoint segment using the 2 samples and without any region
 # excluded from the analysis (parameter bedExclusion set to null)
 disjoinGRange <- CNVMetrics:::createDisjoinSegmentsForTwoSamples(
-    segmentDataSample1=sample01, segmentDataSample2=sample02, 
+    segmentDataSample1=sample01, segmentDataSample2=sample02,
     bedExclusion=NULL)
 
 ## Calculate the weighted ecucidean distance between the two samples

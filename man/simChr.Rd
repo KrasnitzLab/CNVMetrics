@@ -23,20 +23,20 @@ chromosome that is used as reference for the simulation.}
 the number of simulations that will be generated.}
 }
 \value{
-a code{list} containing one entry per simulation. Each entry is
+a \code{list} containing one entry per simulation. Each entry is
 a \code{data.frame} containing shuffled segments with 6 columns:
 \itemize{
-\item{\code{ID}}{ The name of the simulation. }
-\item{\code{chr}}{ The name fo the chromosome. }
-\item{\code{start}}{ The starting position of the segment; the positions
+\item{\code{ID} The name of the simulation. }
+\item{\code{chr} The name fo the chromosome. }
+\item{\code{start} The starting position of the segment; the positions
 are between zero and one. The segment width is representing the
 proportional size of the segment relative to the global segment size.}
-\item{\code{end}}{ The ending position of the segment; the positions
+\item{\code{end} The ending position of the segment; the positions
 are between zero and one. The segment width is representing the
 proportional size of the segment relative to the global segment size. }
-\item{\code{log2ratio}} { The log2 copy number ratio assigned to
+\item{\code{log2ratio} The log2 copy number ratio assigned to
 the segment. }
-\item{\code{state}} { The state of the region (ex: DELETION, LOH,
+\item{\code{state} The state of the region (ex: DELETION, LOH,
 AMPLIFICATION, NEUTRAL, etc.). }
 }
 }
@@ -55,9 +55,6 @@ To ensure valuable results, the reference sample
 should have segments covering
 a good proportion of the chromosome; those should include NEUTRAL segments.
 }
-\details{
-TODO
-}
 \examples{
 
 ## Load required package to generate the samples
@@ -75,7 +72,6 @@ sample01 <- GRanges(seqnames=c(rep("chr1", 4), rep("chr2", 3)),
     state=c("AMPLIFICATION", "NEUTRAL", "DELETION", "LOH",
         "DELETION", "NEUTRAL", "NEUTRAL"),
     log2ratio=(c(0.5849625, 0, -1, -1, -0.87777, 0, 0)))
-
 
 ## Generates 10 simulated chromosomes (one chromosome per simulated sample)
 ## based on chromosome 2 from the input sample.

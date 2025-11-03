@@ -49,4 +49,4 @@ VignetteBuilder: knitr
 URL: https://github.com/krasnitzlab/CNVMetrics, 
     https://krasnitzlab.github.io/CNVMetrics/
 BugReports: https://github.com/krasnitzlab/CNVMetrics/issues
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.3

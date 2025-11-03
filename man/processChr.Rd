@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{processChr}
 \alias{processChr}
-\title{TODO}
+\title{Generates a simulation for one chromosome}
 \usage{
 processChr(curSample, simChr, chrCur)
 }
@@ -20,19 +20,17 @@ number ratios.}
 simulated chromosome (shuffled segments). The starting position and the
 ending position of the segments should be between zero and one. The segment
 width is representing the proportional size of the segment relative to the
-global segment size for the chromosome.The \code{data.frame} columns names
+global segment size for the chromosome. The \code{data.frame} columns names
 should be: 'ID', 'chr', 'start', 'end', 'log2ratio', 'state'.}
 
 \item{chrCur}{a \code{character} string representing the name of the
 chromosome.}
 }
 \value{
-df TODO
+a \code{data.frame} containing the simulation for the specified
+chromosome.
 }
 \description{
-TODO
-}
-\details{
 TODO
 }
 \examples{

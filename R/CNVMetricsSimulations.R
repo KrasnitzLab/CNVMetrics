@@ -29,23 +29,20 @@
 #' @param nbSim a single positive \code{integer} which is corresponding to
 #' the number of simulations that will be generated.
 #'
-#' @details TODO
-#'
-#'
-#' @return a code{list} containing one entry per simulation. Each entry is
+#' @return a \code{list} containing one entry per simulation. Each entry is
 #' a \code{data.frame} containing shuffled segments with 6 columns:
 #' \itemize{
-#' \item{\code{ID}}{ The name of the simulation. }
-#' \item{\code{chr}}{ The name fo the chromosome. }
-#' \item{\code{start}}{ The starting position of the segment; the positions
+#' \item{\code{ID} The name of the simulation. }
+#' \item{\code{chr} The name fo the chromosome. }
+#' \item{\code{start} The starting position of the segment; the positions
 #' are between zero and one. The segment width is representing the
 #' proportional size of the segment relative to the global segment size.}
-#' \item{\code{end}}{ The ending position of the segment; the positions
+#' \item{\code{end} The ending position of the segment; the positions
 #' are between zero and one. The segment width is representing the
 #' proportional size of the segment relative to the global segment size. }
-#' \item{\code{log2ratio}} { The log2 copy number ratio assigned to
+#' \item{\code{log2ratio} The log2 copy number ratio assigned to
 #' the segment. }
-#' \item{\code{state}} { The state of the region (ex: DELETION, LOH,
+#' \item{\code{state} The state of the region (ex: DELETION, LOH,
 #' AMPLIFICATION, NEUTRAL, etc.). }
 #' }
 #'
@@ -66,7 +63,6 @@
 #'     state=c("AMPLIFICATION", "NEUTRAL", "DELETION", "LOH",
 #'         "DELETION", "NEUTRAL", "NEUTRAL"),
 #'     log2ratio=(c(0.5849625, 0, -1, -1, -0.87777, 0, 0)))
-#'
 #'
 #' ## Generates 10 simulated chromosomes (one chromosome per simulated sample)
 #' ## based on chromosome 2 from the input sample.
@@ -142,7 +138,6 @@ simChr <- function(curSample, chrCur, nbSim) {
         partEvents <- matrix(rep(listEvents, nbSim), ncol=1)
     }
 
-
     ## Final returned list with all simulated samples
     res <- list()
 
@@ -164,7 +159,7 @@ simChr <- function(curSample, chrCur, nbSim) {
 }
 
 
-#' @title TODO
+#' @title Generates a simulation for one chromosome
 #'
 #' @description TODO
 #'
@@ -180,18 +175,14 @@ simChr <- function(curSample, chrCur, nbSim) {
 #' simulated chromosome (shuffled segments). The starting position and the
 #' ending position of the segments should be between zero and one. The segment
 #' width is representing the proportional size of the segment relative to the
-#' global segment size for the chromosome.The \code{data.frame} columns names
+#' global segment size for the chromosome. The \code{data.frame} columns names
 #' should be: 'ID', 'chr', 'start', 'end', 'log2ratio', 'state'.
 #'
 #' @param chrCur a \code{character} string representing the name of the
 #' chromosome.
 #'
-#' @details TODO
-#'
-#'
-#' @return df TODO
-#'
-#'
+#' @return a \code{data.frame} containing the simulation for the specified
+#' chromosome.
 #'
 #' @examples
 #'
@@ -252,7 +243,6 @@ processChr <- function(curSample, simChr, chrCur) {
     listHole <- data.frame(start=listEnd[-1 * length(listEnd)],
                             end=listStart[-1])
     listHole <- listHole[listHole$end - listHole$start > 1,]
-
 
     ## Calculates the number of bases that each segment in the simulated
     ## chromosome should occupy in the final chromosome
@@ -325,25 +315,20 @@ processChr <- function(curSample, simChr, chrCur) {
 #' @param nbSim a single positive \code{integer} which is corresponding to the
 #'  number of simulations that will be generated.
 #'
-#' @details TODO
-#'
-#'
 #' @return  a \code{data.frame} containing the segments for each
 #' simulated sample. The \code{data.frame} has 6 columns:
 #' \itemize{
-#' \item{\code{ID}}{ a \code{character} string, the name of the simulated
+#' \item{\code{ID} a \code{character} string, the name of the simulated
 #' sample }
-#' \item{\code{chr}}{ a \code{character} string, the name fo the chromosome }
-#' \item{\code{start}}{ a \code{integer}, the starting position of the
+#' \item{\code{chr} a \code{character} string, the name fo the chromosome }
+#' \item{\code{start} a \code{integer}, the starting position of the
 #' segment }
-#' \item{\code{end}}{ a \code{integer}, the ending position of the segment }
-#' \item{\code{log2ratio}} { a \code{numerical}, the log2 copy number
+#' \item{\code{end} a \code{integer}, the ending position of the segment }
+#' \item{\code{log2ratio} a \code{numerical}, the log2 copy number
 #' ratio assigned to the segment }
-#' \item{\code{state}} { a \code{character} string, the state of the segment
+#' \item{\code{state} a \code{character} string, the state of the segment
 #' (ex: DELETION, AMPLIFICATION, NEUTRAL, etc.) }
 #' }
-#'
-#'
 #'
 #' @examples
 #'

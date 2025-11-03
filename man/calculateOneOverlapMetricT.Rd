@@ -3,45 +3,45 @@
 \encoding{UTF-8}
 \name{calculateOneOverlapMetricT}
 \alias{calculateOneOverlapMetricT}
-\title{Calculate metric using overlapping amplified/deleted regions between 
+\title{Calculate metric using overlapping amplified/deleted regions between
 two samples.}
 \usage{
 calculateOneOverlapMetricT(entry, segmentData, method, type)
 }
 \arguments{
-\item{entry}{a \code{list} which contains the row and column indexes 
-(always in this order) of 
-the metric in the final matrix. Those values correspond to the positions 
+\item{entry}{a \code{list} which contains the row and column indexes
+(always in this order) of
+the metric in the final matrix. Those values correspond to the positions
 of the two samples used
 to calculate the metric in the \code{GRangesList} (\code{segmentData}).}
 
-\item{segmentData}{a \code{GRangesList} that contains a collection of 
-genomic ranges representing copy number events, including amplified/deleted 
-status, from at least 2 samples. All samples must have a metadata column 
-called '\code{state}' with a state, in an character string format, 
+\item{segmentData}{a \code{GRangesList} that contains a collection of
+genomic ranges representing copy number events, including amplified/deleted
+status, from at least 2 samples. All samples must have a metadata column
+called '\code{state}' with a state, in an character string format,
 specified for each region (ex: DELETION, LOH, AMPLIFICATION, NEUTRAL, etc.).}
 
 \item{method}{a \code{character} string representing the metric to be
 used ('\code{sorensen}' or '\code{szymkiewicz}'.}
 
-\item{type}{a \code{character} string representing the type of 
+\item{type}{a \code{character} string representing the type of
 copy number events to be used ('\code{AMPLIFICATION}' or '\code{DELETION}').}
 }
 \value{
 a \code{list} containing 1 entry:
 \itemize{
-\item{\code{metric}}{ a \code{data.frame}, which contains 3 columns. The 2 
-first columns, called \code{row} and \code{column} correspond to the 
+\item{\code{metric} a \code{data.frame}, which contains 3 columns. The 2
+first columns, called \code{row} and \code{column} correspond to the
 indexes of the metric in the final matrix. Those
-2 first columns match to the \code{entry} parameter. The third column, 
-called \code{metric}, 
-contains the values of the specified metric for each combination. 
-If the metric cannot be calculated, \code{NA} is present. 
+2 first columns match to the \code{entry} parameter. The third column,
+called \code{metric},
+contains the values of the specified metric for each combination.
+If the metric cannot be calculated, \code{NA} is present.
 }
 }
 }
 \description{
-Calculate a specific metric using overlapping 
+Calculate a specific metric using overlapping
 amplified/deleted regions between two samples.
 }
 \examples{
@@ -52,39 +52,39 @@ require(GenomicRanges)
 ## Create a GRangesList object with 3 samples
 ## The stand of the regions doesn't affect the calculation of the metric
 demo <- GRangesList()
-demo[["sample01"]] <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222), 
+demo[["sample01"]] <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1905048, 4554832, 31686841, 32686222),
     end=c(2004603, 4577608, 31695808, 32689222)), strand="*",
     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 
-demo[["sample02"]] <- GRanges(seqnames="chr1", 
-    ranges= IRanges(start=c(1995066, 31611222, 31690000, 32006222), 
-    end=c(2204505, 31689898, 31895666, 32789233)), 
+demo[["sample02"]] <- GRanges(seqnames="chr1",
+    ranges= IRanges(start=c(1995066, 31611222, 31690000, 32006222),
+    end=c(2204505, 31689898, 31895666, 32789233)),
     strand=c("-", "+", "+", "+"),
     state=c("AMPLIFICATION", "AMPLIFICATION", "DELETION", "LOH"))
 
-## The amplified region in sample03 is a subset of the amplified regions 
+## The amplified region in sample03 is a subset of the amplified regions
 ## in sample01
-demo[["sample03"]] <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1906069, 4558838), 
+demo[["sample03"]] <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1906069, 4558838),
     end=c(1909505, 4570601)), strand="*",
     state=c("AMPLIFICATION", "DELETION"))
 
 ## The 2 samples used to calculate the metric
-entries <- data.frame(row=c(2, 3), col=c(1, 1))   
+entries <- data.frame(row=c(2, 3), col=c(1, 1))
 
-## Calculate Sorensen metric for the amplified regions on samples 2 and 3  
+## Calculate Sorensen metric for the amplified regions on samples 2 and 3
 CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
     method="sorensen", type="AMPLIFICATION")
 
-## Calculate Szymkiewicz-Simpson metric for the amplified regions 
-## in samples 1 and 2  
-## Amplified regions of sample02 are a subset of the amplified 
+## Calculate Szymkiewicz-Simpson metric for the amplified regions
+## in samples 1 and 2
+## Amplified regions of sample02 are a subset of the amplified
 ## regions in sample01
 CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
     method="szymkiewicz", type="AMPLIFICATION")
 
-## Calculate Sorensen metric for the deleted regions in samples 1 and 2  
+## Calculate Sorensen metric for the deleted regions in samples 1 and 2
 CNVMetrics:::calculateOneOverlapMetricT(entry=entries, segmentData=demo,
     method="sorensen", type="DELETION")
 
