@@ -1,20 +1,20 @@
 #' @title Print CNVMetric object
-#' 
-#' @description Print a \code{CNVMetric} object and returns it 
+#'
+#' @description Print a \code{CNVMetric} object and returns it
 #' \code{invisibly}.
-#' 
+#'
 #' @method print CNVMetric
-#' 
-#' @param x the output object from \code{calculateOverlapRegionsMetric} 
+#'
+#' @param x the output object from \code{calculateOverlapRegionsMetric}
 #'     function to be printed.
 #' @param \ldots further arguments passed to or from other methods.
-#' 
+#'
 #' @return the argument \code{x}.
-#' 
-#' @seealso 
-#' 
+#'
+#' @seealso
+#'
 #' The default method \code{\link[base]{print.default}}.
-#' 
+#'
 #' @export
 print.CNVMetric <- function(x, ...) {
     # Print title before printing the content of the regression object
@@ -22,7 +22,7 @@ print.CNVMetric <- function(x, ...) {
     cat("Metric:\n")
     cat(attr(x, 'metric'))
     cat("\n")
-    
+
     for(i in seq_len(length(x))) {
         cat(paste0("\n", names(x)[i], ":\n"))
         dataM <- x[[i]]
@@ -31,11 +31,11 @@ print.CNVMetric <- function(x, ...) {
             if (nrow(dataM) == 6) {
                 cat("[ -- omitted 1 row/column ]")
             } else {
-                cat(paste0("[ -- omitted ", (nrow(dataM) - 5), 
+                cat(paste0("[ -- omitted ", (nrow(dataM) - 5),
                             " rows/columns ]"))
             }
         } else {
-            print(dataM, ...) 
+            print(dataM, ...)
         }
         cat("\n")
     }
@@ -43,22 +43,22 @@ print.CNVMetric <- function(x, ...) {
 }
 
 #' @title Is an object of class \code{CNVMetric}
-#' 
-#' @description Functions to test inheritance relationships between an 
+#'
+#' @description Functions to test inheritance relationships between an
 #' object and class \code{CNVMetric}.
-#' 
+#'
 #' @method is CNVMetric
 #'
-#' @param x an object.
-#' 
-#' @param \ldots further arguments passed to or from other methods.
-#' 
+#' @param object an object.
+#'
+#' @param class2 a \code{character} string giving the name of the class.
+#'
 #' @return a \code{logical}.
-#' 
+#'
 #' @importFrom methods is
 #' @export
-is.CNVMetric <- function(x, ...) {
-    inherits(x, "CNVMetric")
+is.CNVMetric <- function(object, class2) {
+    inherits(object, "CNVMetric")
 }
 
 
