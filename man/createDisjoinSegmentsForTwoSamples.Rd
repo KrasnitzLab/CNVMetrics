@@ -2,7 +2,7 @@
 % Please edit documentation in R/CNVMetricsLog2ratioInternalMethods.R
 \name{createDisjoinSegmentsForTwoSamples}
 \alias{createDisjoinSegmentsForTwoSamples}
-\title{Generate common segments to enable calculation of metrics on 
+\title{Generate common segments to enable calculation of metrics on
 two segmented samples.}
 \usage{
 createDisjoinSegmentsForTwoSamples(
@@ -12,10 +12,10 @@ createDisjoinSegmentsForTwoSamples(
 )
 }
 \arguments{
-\item{segmentDataSample1}{a \code{GRanges}, the segments from the first 
+\item{segmentDataSample1}{a \code{GRanges}, the segments from the first
 sample.}
 
-\item{segmentDataSample2}{a \code{GRanges}, the segments from the second 
+\item{segmentDataSample2}{a \code{GRanges}, the segments from the second
 sample.}
 
 \item{bedExclusion}{a \code{GRanges}, the regions that must be
@@ -23,15 +23,15 @@ excluded from the analysis. Default: \code{NULL}.}
 }
 \value{
 a \code{GRanges} containing the common segment information for the
-two samples. The log2ration value are present, for the two samples, in 
-the metadata columns. When there is not log2ratio value for one sample, 
+two samples. The log2ration value are present, for the two samples, in
+the metadata columns. When there is not log2ratio value for one sample,
 NA is the assigned value. A metadata column also specifies if the segments
 should be included in the analysis.
 }
 \description{
-The two segments are gathered together, including excluded 
-regions when specified, and a disjoint operation is done to create a 
-collection of non-overlapping ranges. The ranges overlapping the excluded 
+The two segments are gathered together, including excluded
+regions when specified, and a disjoint operation is done to create a
+collection of non-overlapping ranges. The ranges overlapping the excluded
 regions are marked as so to be removed from future analysis. The log2value
 of each samples are assigned to the new disjointed segments for each sample
 in the metadata columns.
@@ -53,7 +53,7 @@ sample02 <- GRanges(seqnames="chr1",
 
 # Create disjoint segment using the 2 samples and without any region
 # excluded from the analysis (parameter bedExclusion set to null)
-CNVMetrics:::createDisjoinSegmentsForTwoSamples(segmentDataSample1=sample01, 
+CNVMetrics:::createDisjoinSegmentsForTwoSamples(segmentDataSample1=sample01,
     segmentDataSample2=sample02, bedExclusion=NULL)
 
 }

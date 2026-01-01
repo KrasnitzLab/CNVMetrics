@@ -8,10 +8,10 @@
 calculateSorensen(sample01, sample02)
 }
 \arguments{
-\item{sample01}{a \code{GRanges} which contains a collection of 
+\item{sample01}{a \code{GRanges} which contains a collection of
 genomic ranges representing copy number events for the first sample.}
 
-\item{sample02}{a \code{GRanges} which contains a collection of 
+\item{sample02}{a \code{GRanges} which contains a collection of
 genomic ranges representing copy number events for the second sample.}
 }
 \value{
@@ -19,7 +19,7 @@ a \code{numeric}, the value of the Sorensen metric. If
 the metric cannot be calculated, \code{NA} is returned.
 }
 \description{
-Calculate Sorensen metric using overlapping regions between 
+Calculate Sorensen metric using overlapping regions between
 two samples.
 }
 \details{
@@ -27,7 +27,7 @@ The method calculates the Sorensen metric using overlapping
 regions between the samples. All regions present in both samples are used
 for the calculation of the metric.
 
-The Sorensen metric is calculated by dividing twice the size of 
+The Sorensen metric is calculated by dividing twice the size of
 the intersection by the sum of the size of the two sets. If the sum of
 the size of the two sets is zero; the value \code{NA} is
 returned instead. The strand of the regions is not taken into account while
@@ -39,21 +39,21 @@ calculating the intersection.
 require(GenomicRanges)
 
 ## Generate two samples with identical sequence levels
-sample01 <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1905048, 4554832, 31686841), 
+sample01 <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1905048, 4554832, 31686841),
     end=c(2004603, 4577608, 31695808)), strand="*")
-sample02 <- GRanges(seqnames="chr1", 
-    ranges=IRanges(start=c(1995066, 31611222), 
+sample02 <- GRanges(seqnames="chr1",
+    ranges=IRanges(start=c(1995066, 31611222),
     end=c(2204505, 31689898)), strand="*")
 
-## Calculate Sorensen metric    
+## Calculate Sorensen metric
 CNVMetrics:::calculateSorensen(sample01=sample01, sample02=sample02)
-    
+
 }
 \references{
-Sørensen, Thorvald. n.d. “A Method of Establishing Groups of Equal 
-Amplitude in Plant Sociology Based on Similarity of Species and Its 
-Application to Analyses of the Vegetation on Danish Commons.” 
+Sørensen, Thorvald. n.d. “A Method of Establishing Groups of Equal
+Amplitude in Plant Sociology Based on Similarity of Species and Its
+Application to Analyses of the Vegetation on Danish Commons.”
 Biologiske Skrifter, no. 5: 1–34.
 }
 \author{

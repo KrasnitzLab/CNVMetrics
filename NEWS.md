@@ -1,3 +1,10 @@
+# CNVMetrics 1.15.1
+
+NEW FEATURES
+
+* The documentation has been updated.
+
+
 # CNVMetrics 1.5.1
 
 NEW FEATURES

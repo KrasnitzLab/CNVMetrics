@@ -7,7 +7,7 @@
 \method{print}{CNVMetric}(x, ...)
 }
 \arguments{
-\item{x}{the output object from \code{calculateOverlapRegionsMetric} 
+\item{x}{the output object from \code{calculateOverlapRegionsMetric}
 function to be printed.}
 
 \item{\ldots}{further arguments passed to or from other methods.}
@@ -16,7 +16,7 @@ function to be printed.}
 the argument \code{x}.
 }
 \description{
-Print a \code{CNVMetric} object and returns it 
+Print a \code{CNVMetric} object and returns it
 \code{invisibly}.
 }
 \seealso{

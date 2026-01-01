@@ -1,6 +1,6 @@
 Package: CNVMetrics
 Type: Package
-Version: 1.5.1
+Version: 1.15.1
 Date: 2021-11-23
 Title: Copy Number Variant Metrics
 Description: The CNVMetrics package calculates similarity metrics to 
@@ -41,7 +41,8 @@ Imports: GenomicRanges,
 Suggests: BiocStyle, 
     knitr, 
     rmarkdown,
-    testthat
+    testthat,
+    XVector
 biocViews: BiologicalQuestion, 
     Software,
     CopyNumberVariation
@@ -49,4 +50,4 @@ VignetteBuilder: knitr
 URL: https://github.com/krasnitzlab/CNVMetrics, 
     https://krasnitzlab.github.io/CNVMetrics/
 BugReports: https://github.com/krasnitzlab/CNVMetrics/issues
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.3

@@ -24,15 +24,15 @@ number of simulations that will be generated.}
 a \code{data.frame} containing the segments for each
 simulated sample. The \code{data.frame} has 6 columns:
 \itemize{
-\item{\code{ID}}{ a \code{character} string, the name of the simulated
+\item{\code{ID} a \code{character} string, the name of the simulated
 sample }
-\item{\code{chr}}{ a \code{character} string, the name fo the chromosome }
-\item{\code{start}}{ a \code{integer}, the starting position of the
+\item{\code{chr} a \code{character} string, the name fo the chromosome }
+\item{\code{start} a \code{integer}, the starting position of the
 segment }
-\item{\code{end}}{ a \code{integer}, the ending position of the segment }
-\item{\code{log2ratio}} { a \code{numerical}, the log2 copy number
+\item{\code{end} a \code{integer}, the ending position of the segment }
+\item{\code{log2ratio} a \code{numerical}, the log2 copy number
 ratio assigned to the segment }
-\item{\code{state}} { a \code{character} string, the state of the segment
+\item{\code{state} a \code{character} string, the state of the segment
 (ex: DELETION, AMPLIFICATION, NEUTRAL, etc.) }
 }
 }
@@ -43,9 +43,6 @@ sizes of events, proportional to the original chromosome.
 To generate realistic simulations, the specified sample
 must contain segments covering the majority of the genome. Most
 importantly, the NEUTRAL segments should be present.
-}
-\details{
-TODO
 }
 \examples{
 

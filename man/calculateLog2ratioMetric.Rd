@@ -39,7 +39,7 @@ Default: \code{1} and always \code{1} for Windows.}
 an object of class "\code{CNVMetric}" which contains the calculated
 metric. This object is a list with the following components:
 \itemize{
-\item{\code{LOG2RATIO}}{ a lower-triangular \code{matrix} with the
+\item{\code{LOG2RATIO} a lower-triangular \code{matrix} with the
     results of the selected metric on the log2ratio values for each paired
     samples. The value \code{NA} is present when the metric cannot be
     calculated. The value \code{NA} is also present in the top-triangular
@@ -49,11 +49,10 @@ metric. This object is a list with the following components:
 The object has the following attributes (besides "class" equal
 to "CNVMetric"):
 \itemize{
-\item{\code{metric}}{ the metric used for the calculation.
+\item{\code{metric} the metric used for the calculation. }
+\item{\code{names} the names of the two matrix containing the metrics for
+the amplified and deleted regions. }
 }
-\item{\code{names}}{ the names of the two matrix containing the metrics for
-the amplified and deleted regions.
-}}
 }
 \description{
 This function calculates a specific metric, as specified

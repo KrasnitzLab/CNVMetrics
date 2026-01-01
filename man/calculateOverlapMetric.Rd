@@ -36,7 +36,7 @@ an object of class "\code{CNVMetric}" which contains the calculated
 metric. This object is a list where each entry corresponds to one state
 specified in the '\code{states}' parameter. Each entry is a \code{matrix}:
 \itemize{
-\item{\code{state}}{ a lower-triangular \code{matrix} with the
+\item{\code{state} a lower-triangular \code{matrix} with the
     results of the selected metric on the amplified regions for each paired
     samples. The value \code{NA} is present when the metric cannot be
     calculated. The value \code{NA} is also present in the top-triangular
@@ -47,11 +47,10 @@ specified in the '\code{states}' parameter. Each entry is a \code{matrix}:
 The object has the following attributes (besides "class" equal
 to "CNVMetric"):
 \itemize{
-\item{\code{metric}}{ the metric used for the calculation.
+    \item{\code{metric} the metric used for the calculation.}
+    \item{\code{names} the names of the two matrix containing the metrics
+    for the amplified and deleted regions.}
 }
-\item{\code{names}}{ the names of the two matrix containing the metrics for
-the amplified and deleted regions.
-}}
 }
 \description{
 This function calculates a specific metric, as specified by

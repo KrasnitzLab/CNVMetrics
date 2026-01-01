@@ -4,17 +4,17 @@
 \alias{is.CNVMetric}
 \title{Is an object of class \code{CNVMetric}}
 \usage{
-\method{is}{CNVMetric}(x, ...)
+\method{is}{CNVMetric}(object, class2)
 }
 \arguments{
-\item{x}{an object.}
+\item{object}{an object.}
 
-\item{\ldots}{further arguments passed to or from other methods.}
+\item{class2}{a \code{character} string giving the name of the class.}
 }
 \value{
 a \code{logical}.
 }
 \description{
-Functions to test inheritance relationships between an 
+Functions to test inheritance relationships between an
 object and class \code{CNVMetric}.
 }
