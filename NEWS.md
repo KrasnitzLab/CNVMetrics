@@ -1,3 +1,10 @@
+# CNVMetrics 1.15.2
+
+BUG FIXES
+
+* The parameter names of the generic functions have been updated to fit requirement.
+
+
 # CNVMetrics 1.15.1
 
 NEW FEATURES
