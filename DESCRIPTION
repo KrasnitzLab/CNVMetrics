@@ -41,7 +41,8 @@ Imports: GenomicRanges,
 Suggests: BiocStyle, 
     knitr, 
     rmarkdown,
-    testthat
+    testthat,
+    XVector
 biocViews: BiologicalQuestion, 
     Software,
     CopyNumberVariation
